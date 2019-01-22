@@ -9,7 +9,7 @@ layout: page
 }
 </style>
 
-<img style="border-radius: 50%" width="200px" src="/images/denis.jpg" />
+<img style="border-radius: 50%" width="200px" src="/blog/images/denis.jpg" />
 
 <section class="text-center">
     <h2>Denis Kyashif</h2>
