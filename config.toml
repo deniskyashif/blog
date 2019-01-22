@@ -1,0 +1,11 @@
+baseURL = "https://deniskyashif.github.io/blog"
+languageCode = "en-us"
+title = "Denis Kyashif's Blog"
+theme = "tale"
+
+PygmentsCodeFences = true
+PygmentsStyle = "emacs"
+
+[author]
+  name = "Denis Kyashif"
+  homepage = "https://deniskyashif.com"
