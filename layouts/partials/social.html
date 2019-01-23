@@ -1,12 +1,17 @@
 <style>
  .social {
-     margin: 10px 0;
+     margin-top: 15px;
+     text-align: center;
+ }
+
+ .social > a {
+     margin-right: 5px;
  }
 </style>
 
 <section class="social">
-    <a href="https://twitter.com/deniskyashif" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i>Twitter | </a>
-    <a href="https://github.com/deniskyashif" target="_blank"><i class="fa fa-github" aria-hidden="true"></i>GitHub | </a>
-    <a href="https://linkedin.com/in/denis-kyashif" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i>LinkedIn | </a>
-    <a href="mailto:denis.kyashif@gmail.com"><i class="fa fa-envelope-o" aria-hidden="true"></i>Email</a>
+    <a href="https://twitter.com/deniskyashif" target="_blank"><i class="fa fa-{{ .icon_size }} fa-twitter" aria-hidden="true"></i></a>
+    <a href="https://github.com/deniskyashif" target="_blank"><i class="fa fa-{{ .icon_size }} fa-github" aria-hidden="true"></i></a>
+    <a href="https://linkedin.com/in/denis-kyashif" target="_blank"><i class="fa fa-{{ .icon_size }} fa-linkedin" aria-hidden="true"></i></a>
+    <a href="mailto:denis.kyashif@gmail.com"><i class="fa fa-{{ .icon_size }} fa-envelope-o" aria-hidden="true"></i></a>
 </section>

@@ -1,14 +1,14 @@
+
 {{ define "main" }}
 
 <main>
 	<div class="post">
-
 		<h1 class="post-title">{{ .Title }}</h1>
 		<div class="post-line"></div>
 
 		{{ .Content }}
-        {{ partial "social.html" }}
 	</div>
+    {{ partial "social.html" (dict "icon_size" "2x") }}
 </main>
 
 {{ end }}
