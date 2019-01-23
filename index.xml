@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Denis Kyashif&#39;s Blog</title>
+    <title>Denis Kyashif</title>
     <link>https://deniskyashif.github.io/blog/</link>
-    <description>Recent content on Denis Kyashif&#39;s Blog</description>
+    <description>Recent content on Denis Kyashif</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 20 Jan 2019 16:49:24 +0200</lastBuildDate>
@@ -17,7 +17,7 @@
       <pubDate>Sun, 20 Jan 2019 16:49:24 +0200</pubDate>
       
       <guid>https://deniskyashif.github.io/blog/posts/hello-world/</guid>
-      <description>Hello and thanks for stopping by. I&amp;rsquo;m Denis, a software developer, passionate about theoretical computer science, web technologies and natural language processing. In this blog I write down my thoughts and experiences. I hope that you find it interesting and useful.</description>
+      <description>Hello and thanks for stopping by. I&amp;rsquo;m Denis, a software developer, passionate about theoretical computer science, web technologies and natural language processing. In this blog I write down my thoughts and experiences on technology and science. I hope you find it interesting.</description>
     </item>
     
   </channel>
