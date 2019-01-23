@@ -1,6 +1,6 @@
 baseURL = "https://deniskyashif.github.io/blog/"
 languageCode = "en-us"
-title = "Denis Kyashif's Blog"
+title = "Denis Kyashif"
 theme = "tale"
 
 PygmentsCodeFences = true
