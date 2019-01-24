@@ -1,0 +1,11 @@
+.nav-container {
+    padding: 10px 0 15px 0;
+}
+
+.nav {
+    box-shadow: none;
+}
+
+main {
+    border-top: 1px solid #aaa;
+}
