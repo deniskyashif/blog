@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Denis Kyashif&#39;s Blog</title>
-    <link>https://deniskyashif.github.io/blog/</link>
-    <description>Recent content on Denis Kyashif&#39;s Blog</description>
+    <title>1 on Denis Kyashif&#39;s Blog</title>
+    <link>https://deniskyashif.github.io/blog/series/1/</link>
+    <description>Recent content in 1 on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 20 Jan 2019 16:49:24 +0200</lastBuildDate>
     
-	<atom:link href="https://deniskyashif.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://deniskyashif.github.io/blog/series/1/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>

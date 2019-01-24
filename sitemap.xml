@@ -8,12 +8,19 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.github.io/blog/about/</loc>
+    <loc>https://deniskyashif.github.io/blog/series/1/</loc>
+    <lastmod>2019-01-20T16:49:24+02:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://deniskyashif.github.io/blog/categories/</loc>
+    <loc>https://deniskyashif.github.io/blog/series/2/</loc>
+    <lastmod>2019-01-20T16:49:24+02:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.github.io/blog/about/</loc>
   </url>
   
   <url>
@@ -29,7 +36,8 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.github.io/blog/tags/</loc>
+    <loc>https://deniskyashif.github.io/blog/series/</loc>
+    <lastmod>2019-01-20T16:49:24+02:00</lastmod>
     <priority>0</priority>
   </url>
   
