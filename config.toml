@@ -12,7 +12,7 @@ PygmentsStyle = "emacs"
 
 [params]
   description = "My personal blog about software."
-  images = ["/blog/images/site-feature-image.png"]
+  og_image = "/blog/images/site-feature-image.png"
   title = "Blog * Denis Kyashif"
 
 [taxonomies]
