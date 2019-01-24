@@ -6,27 +6,28 @@
     <description>Recent content in Posts on Blog • Denis Kyashif</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 20 Jan 2019 16:49:24 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 30 May 2016 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hello World</title>
-      <link>https://deniskyashif.com/posts/hello-world/</link>
-      <pubDate>Sun, 20 Jan 2019 16:49:24 +0200</pubDate>
+      <title>Validate any DOM element with the KendoUI validator</title>
+      <link>https://deniskyashif.com/2016/05/30/validate-any-dom-element-with-the-kendoui-validator/</link>
+      <pubDate>Mon, 30 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/posts/hello-world/</guid>
-      <description>Hello and thanks for stopping by. I&amp;rsquo;m Denis, a software developer, passionate about theoretical computer science, web technologies and natural language processing.
-const id = x =&amp;gt; x;  In this blog I write down my thoughts and experiences on technology and science. I hope you find it interesting.</description>
+      <guid>https://deniskyashif.com/2016/05/30/validate-any-dom-element-with-the-kendoui-validator/</guid>
+      <description>KendoUI&amp;rsquo;s validator allows declaring rules and easily performing client-side validation for input and textarea elements. It offers great flexibility even when it comes to complex cases, when for example input fields are interconnected. Suppose we want to validate an element other than input or textarea, then calling validate() won&amp;rsquo;t be enough.
+The Problem Let&amp;rsquo;s have a form consisting of a textarea and a grid.
+&amp;lt;form id=&amp;#34;form&amp;#34;&amp;gt; &amp;lt;textarea name=&amp;#34;text&amp;#34;&amp;gt; Our world is a magical smoke screen &amp;lt;/textarea&amp;gt; &amp;lt;div id=&amp;#34;grid&amp;#34;&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;button id=&amp;#34;validate&amp;#34;&amp;gt;Validate&amp;lt;/button&amp;gt; &amp;lt;/form&amp;gt; We want to ensure the textarea&amp;rsquo;s value is not longer than 20 characters and the grid contains at least two rows.</description>
     </item>
     
     <item>
       <title>Bring .NET Development into your favourite editor with Omnisharp</title>
-      <link>https://deniskyashif.com/posts/2015-12-09-bring-dotnet-into-your-editor-omnisharp/</link>
+      <link>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</link>
       <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/posts/2015-12-09-bring-dotnet-into-your-editor-omnisharp/</guid>
+      <guid>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</guid>
       <description>This year the .NET ecosystem welcomed DNX (.NET Execution Environment). Now developers are able to compile to and execute MSIL code on any operating system. This led to the increase of the framework&amp;rsquo;s popularity in places where Visual Studio isn&amp;rsquo;t available. Also the emergence of Roslyn, the new .NET compiler platform, which exposes all the compile stages via an API, allowed powerful code analysis tools to be easily written. This unleashed the development of some amazing projects like Omnisharp.</description>
     </item>
     

@@ -3,12 +3,12 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://deniskyashif.com/posts/hello-world/</loc>
-    <lastmod>2019-01-20T16:49:24+02:00</lastmod>
+    <loc>https://deniskyashif.com/2016/05/30/validate-any-dom-element-with-the-kendoui-validator/</loc>
+    <lastmod>2016-05-30T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/posts/2015-12-09-bring-dotnet-into-your-editor-omnisharp/</loc>
+    <loc>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</loc>
     <lastmod>2015-12-09T00:00:00+00:00</lastmod>
   </url>
   
@@ -18,13 +18,13 @@
   
   <url>
     <loc>https://deniskyashif.com/</loc>
-    <lastmod>2019-01-20T16:49:24+02:00</lastmod>
+    <lastmod>2016-05-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://deniskyashif.com/posts/</loc>
-    <lastmod>2019-01-20T16:49:24+02:00</lastmod>
+    <lastmod>2016-05-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
