@@ -18,3 +18,17 @@ main .social {
 main .social > a {
     margin-right: 5px;
 }
+
+main > .intro {
+    margin-top: 10px;
+}
+
+.img-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.circle {
+    border-radius: 50%;
+}
