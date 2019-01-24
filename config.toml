@@ -1,6 +1,6 @@
-baseURL = "https://deniskyashif.github.io/blog/"
+baseURL = "https://deniskyashif.com/"
 languageCode = "en-us"
-title = "Denis Kyashif's Blog"
+title = "Blog * Denis Kyashif"
 theme = "tale"
 disqusShortname = "deniskyashif"
 PygmentsCodeFences = true
@@ -12,7 +12,7 @@ PygmentsStyle = "emacs"
 
 [params]
   description = "My personal blog about software."
-  og_image = "/blog/images/site-feature-image.png"
+  og_image = "/images/site-feature-image.png"
   title = "Blog * Denis Kyashif"
 
 [taxonomies]

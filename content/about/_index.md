@@ -9,7 +9,7 @@ layout: page
 }
 </style>
 
-<img style="border-radius: 50%" width="200px" src="/blog/images/me.jpg" />
+<img style="border-radius: 50%" width="200px" src="/images/me.jpg" />
 
 Hi, I'm Denis. I'm a software developer based in Sofia, Bulgaria and work for <a href="https://www.prevalent.net/" target="_blank">Prevalent Inc.</a> where I do some cool things with computers. My general interests in software are: 
 
