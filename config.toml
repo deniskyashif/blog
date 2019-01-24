@@ -5,6 +5,7 @@ theme = "tale"
 disqusShortname = "deniskyashif"
 PygmentsCodeFences = true
 PygmentsStyle = "emacs"
+googleAnalytics = "UA-133185625-1"
 
 [author]
   name = "Denis Kyashif"
