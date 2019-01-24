@@ -9,3 +9,12 @@
 main {
     border-top: 1px solid #aaa;
 }
+
+main .social {
+    margin-top: 15px;
+    text-align: center;
+}
+
+main .social > a {
+    margin-right: 5px;
+}
