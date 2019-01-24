@@ -6,3 +6,9 @@ draft: false
 ---
 
 Hello and thanks for stopping by. I'm Denis, a software developer, passionate about theoretical computer science, web technologies and natural language processing. In this blog I write down my thoughts and experiences on technology and science. I hope you find it interesting.
+
+```javascript
+
+const id = x => x;
+
+```

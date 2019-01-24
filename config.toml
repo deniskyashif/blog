@@ -2,7 +2,7 @@ baseURL = "https://deniskyashif.github.io/blog/"
 languageCode = "en-us"
 title = "Denis Kyashif"
 theme = "tale"
-
+disqusShortname = "deniskyashif"
 PygmentsCodeFences = true
 PygmentsStyle = "emacs"
 
