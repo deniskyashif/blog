@@ -1,6 +1,6 @@
 baseURL = "https://deniskyashif.com/"
 languageCode = "en-us"
-title = "Blog • Denis Kyashif"
+title = "Denis Kyashif's Blog"
 theme = "tale"
 disqusShortname = "deniskyashif"
 PygmentsCodeFences = true

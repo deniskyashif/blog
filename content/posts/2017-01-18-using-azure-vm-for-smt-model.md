@@ -5,11 +5,11 @@ draft: false
 tags: ["Natural Language Processing", "Machine Translation", "Azure"]
 ---
 
-Lately I've been working on a side project - a statistical machine translation model (from German to English) using the [Moses SMT toolkit](http://www.statmt.org/moses/index.php?n=Main.HomePage). I've been using laptop to perform even the heavier computations, some of which even took from 6 to 8 hours. It was all manageable until the last stage, where on a reasonable machine with 4 CPU cores it was going to take more than a week to complete. So I decided to check out what Microsoft's Azure Cloud Service can offer and now after the system is complete, let me share my experience with you.
+Lately I've been working on a side project - a statistical machine translation model (from German to English) using the [Moses SMT toolkit](http://www.statmt.org/moses/index.php?n=Main.HomePage). I've been using laptop to perform even the heavier computations, some of which even took from 6 to 8 hours. It was all manageable until the last stage, where on a reasonable machine with 4 CPU cores it was going to take more than a week to complete. So I decided to check out what Microsoft's Azure Cloud Service can offer and now after the model is complete, let me share my experience with you.
 
-## Creating a Machine Translation System
+## Creating a Machine Translation Model
 
-In statistical machine translation (SMT), translation systems are trained on large quantities of parallel data, which is a collection of aligned sentences in two different languages, in that each sentence in one language is matched with its corresponding translated sentence in the other language. We can split the implementation of such system into 4 main stages:
+In statistical machine translation (SMT), translation models are trained on large quantities of parallel data, which is a collection of aligned sentences in two different languages, in that each sentence in one language is matched with its corresponding translated sentence in the other language. We can split the implementation of a such model into 4 main stages:
 
 
 ### Preparing the Data
@@ -26,7 +26,7 @@ After the model has been trained, we can use the efficient search algorithm impl
 
 ### Tuning
 
-The final step in the creation of the machine translation system is the parameter tuning, where the different statistical models are weighted against each other to produce the best possible translations. The part of the corpus allocated for tuning gets translated and the model weights get readjusted. The process repeats until there is a considerable improvement in the translation score. Each iteration takes a lot of time on its own and the task is expected to make around 15 iterations on average until a good local maximum is found. This is the most computationally intensive stage as it can take days even weeks depending on the input data and the hardware.
+The final step in the creation of the machine translation model is the parameter tuning, where the different statistical models are weighted against each other to produce the best possible translations. The part of the corpus allocated for tuning gets translated and the model weights get readjusted. The process repeats until there is a considerable improvement in the translation score. Each iteration takes a lot of time on its own and the task is expected to make around 15 iterations on average until a good local maximum is found. This is the most computationally intensive stage as it can take days even weeks depending on the input data and the hardware.
 
 ## Choosing a VM for the Tuning Process
 
@@ -38,8 +38,8 @@ This was the most satisfying part. Fortunately, the Moses Decoder is "highly par
 
 ![Moses htop](/images/posts/2017-01-18-smt-moses-azure/moses-on-azure-16core.jpg "htop")
 
-Luckily, it made 9 iterations and stopped. It took around 27 hours which on my machine would probably have taken more than a week so I was very pleased with the results. I am now able to translate small to medium length German sentences into English fairly accurately, yet there's still a long way to go until it matches the competitive systems in terms of translation quality.
+Luckily, it made 9 iterations and stopped. It took around 27 hours which on my machine would probably have taken more than a week so I was very pleased with the results. I am now able to translate small to medium length German sentences into English fairly accurately, yet there's still a long way to go until it matches the commercial systems in terms of translation quality.
 
 ![Translation](/images/posts/2017-01-18-smt-moses-azure/translation.png "en-de")
 
-You can check out the scripts for creating the system on [GitHub](https://github.com/deniskyashif/smt-moses).
+You can check out the scripts for creating the model on [GitHub](https://github.com/deniskyashif/smt-moses).
