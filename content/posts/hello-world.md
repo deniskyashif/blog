@@ -4,7 +4,7 @@ author: "deniskyashif"
 date: 2019-01-20T16:49:24+02:00
 draft: false
 description: "My first blog post."
-images: ["/images/hello-world.png"]
+images: ["/blog/images/hello-world.png"]
 series: ["1", "2"]
 tags: ["my", "first", "blog", "post"]
 ---
