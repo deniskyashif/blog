@@ -32,4 +32,6 @@
 	
 	<!-- RSS -->
 	<link href="{{ .RSSLink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+    
+    {{ template "_internal/opengraph.html" . }}
 </head>
