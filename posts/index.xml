@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Blog • Denis Kyashif</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 May 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 10 Oct 2016 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Impressions from EMEA PUG Challenge 2016</title>
+      <link>https://deniskyashif.com/2016/10/10/impressions-from-emea-pug-challenge-2016/</link>
+      <pubDate>Mon, 10 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/2016/10/10/impressions-from-emea-pug-challenge-2016/</guid>
+      <description>Last week I had the pleasure to speak at the annual EMEA PUG (Progress User Group) Challenge conference. Having my session proposal accepted I&amp;rsquo;ve been eagerly anticipating the event and as now it&amp;rsquo;s over, let me share my impressions with you.
+The three-day event is sponsored by Progress and its partners and is aimed primarily at the Progress developer community. To my delight most of the sessions were technical. Needless to say the emphasis was on established technologies like OpenEdge and 4GL.</description>
+    </item>
     
     <item>
       <title>Validate any DOM element with the KendoUI validator</title>
