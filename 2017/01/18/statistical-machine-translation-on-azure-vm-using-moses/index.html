@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
 	<title>
-		Statistical Machine Translation on Azure VM using Moses &middot; Blog • Denis Kyashif
+		Statistical Machine Translation on Azure VM using Moses &middot; Denis Kyashif&#39;s Blog
 	</title>
 	
 	
@@ -20,7 +20,7 @@
     <link rel="manifest" href="/site.webmanifest">
 	
 	
-	<link href="" rel="alternate" type="application/rss+xml" title="Blog • Denis Kyashif" />
+	<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
     <meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png"/>
     <meta property="og:title" content="Statistical Machine Translation on Azure VM using Moses" />
 <meta property="og:description" content="Lately I&rsquo;ve been working on a side project - a statistical machine translation model (from German to English) using the Moses SMT toolkit. I&rsquo;ve been using laptop to perform even the heavier computations, some of which even took from 6 to 8 hours. It was all manageable until the last stage, where on a reasonable machine with 4 CPU cores it was going to take more than a week to complete." />
@@ -49,6 +49,9 @@ if (!doNotTrack) {
 
 <nav class="nav">
 	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
 		<ul>
     <li><a href="/about">About</a></li>
     <li><a href="/">Posts</a></li>
@@ -72,11 +75,11 @@ if (!doNotTrack) {
 
 		
 
-<p>Lately I&rsquo;ve been working on a side project - a statistical machine translation model (from German to English) using the <a href="http://www.statmt.org/moses/index.php?n=Main.HomePage">Moses SMT toolkit</a>. I&rsquo;ve been using laptop to perform even the heavier computations, some of which even took from 6 to 8 hours. It was all manageable until the last stage, where on a reasonable machine with 4 CPU cores it was going to take more than a week to complete. So I decided to check out what Microsoft&rsquo;s Azure Cloud Service can offer and now after the system is complete, let me share my experience with you.</p>
+<p>Lately I&rsquo;ve been working on a side project - a statistical machine translation model (from German to English) using the <a href="http://www.statmt.org/moses/index.php?n=Main.HomePage">Moses SMT toolkit</a>. I&rsquo;ve been using laptop to perform even the heavier computations, some of which even took from 6 to 8 hours. It was all manageable until the last stage, where on a reasonable machine with 4 CPU cores it was going to take more than a week to complete. So I decided to check out what Microsoft&rsquo;s Azure Cloud Service can offer and now after the model is complete, let me share my experience with you.</p>
 
-<h2 id="creating-a-machine-translation-system">Creating a Machine Translation System</h2>
+<h2 id="creating-a-machine-translation-model">Creating a Machine Translation Model</h2>
 
-<p>In statistical machine translation (SMT), translation systems are trained on large quantities of parallel data, which is a collection of aligned sentences in two different languages, in that each sentence in one language is matched with its corresponding translated sentence in the other language. We can split the implementation of such system into 4 main stages:</p>
+<p>In statistical machine translation (SMT), translation models are trained on large quantities of parallel data, which is a collection of aligned sentences in two different languages, in that each sentence in one language is matched with its corresponding translated sentence in the other language. We can split the implementation of a such model into 4 main stages:</p>
 
 <h3 id="preparing-the-data">Preparing the Data</h3>
 
@@ -92,7 +95,7 @@ if (!doNotTrack) {
 
 <h3 id="tuning">Tuning</h3>
 
-<p>The final step in the creation of the machine translation system is the parameter tuning, where the different statistical models are weighted against each other to produce the best possible translations. The part of the corpus allocated for tuning gets translated and the model weights get readjusted. The process repeats until there is a considerable improvement in the translation score. Each iteration takes a lot of time on its own and the task is expected to make around 15 iterations on average until a good local maximum is found. This is the most computationally intensive stage as it can take days even weeks depending on the input data and the hardware.</p>
+<p>The final step in the creation of the machine translation model is the parameter tuning, where the different statistical models are weighted against each other to produce the best possible translations. The part of the corpus allocated for tuning gets translated and the model weights get readjusted. The process repeats until there is a considerable improvement in the translation score. Each iteration takes a lot of time on its own and the task is expected to make around 15 iterations on average until a good local maximum is found. This is the most computationally intensive stage as it can take days even weeks depending on the input data and the hardware.</p>
 
 <h2 id="choosing-a-vm-for-the-tuning-process">Choosing a VM for the Tuning Process</h2>
 
@@ -104,11 +107,11 @@ if (!doNotTrack) {
 
 <p><img src="/images/posts/2017-01-18-smt-moses-azure/moses-on-azure-16core.jpg" alt="Moses htop" title="htop" /></p>
 
-<p>Luckily, it made 9 iterations and stopped. It took around 27 hours which on my machine would probably have taken more than a week so I was very pleased with the results. I am now able to translate small to medium length German sentences into English fairly accurately, yet there&rsquo;s still a long way to go until it matches the competitive systems in terms of translation quality.</p>
+<p>Luckily, it made 9 iterations and stopped. It took around 27 hours which on my machine would probably have taken more than a week so I was very pleased with the results. I am now able to translate small to medium length German sentences into English fairly accurately, yet there&rsquo;s still a long way to go until it matches the commercial systems in terms of translation quality.</p>
 
 <p><img src="/images/posts/2017-01-18-smt-moses-azure/translation.png" alt="Translation" title="en-de" /></p>
 
-<p>You can check out the scripts for creating the system on <a href="https://github.com/deniskyashif/smt-moses">GitHub</a>.</p>
+<p>You can check out the scripts for creating the model on <a href="https://github.com/deniskyashif/smt-moses">GitHub</a>.</p>
 
 
 		<div id="disqus_thread"></div>
@@ -144,7 +147,7 @@ if (!doNotTrack) {
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-01-24 23:36:02.6398493 &#43;0200 EET m=&#43;0.242080201">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-01-25 00:29:20.4753048 &#43;0200 EET m=&#43;0.235604601">2019</time> Denis Kyashif
 	</span>
     <br/>
     <span>Powered By <a href='https://gohugo.io' target="_blank">Hugo</a></span>
