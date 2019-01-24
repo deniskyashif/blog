@@ -17,3 +17,6 @@ googleAnalytics = "UA-133185625-1"
 
 [taxonomies]
   series = "series"
+
+[permalinks]
+  posts = "/:year/:month/:day/:title/"
