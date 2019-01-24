@@ -21,5 +21,14 @@
 const id = x =&amp;gt; x;  In this blog I write down my thoughts and experiences on technology and science. I hope you find it interesting.</description>
     </item>
     
+    <item>
+      <title>Bring .NET Development into your favourite editor with Omnisharp</title>
+      <link>https://deniskyashif.com/posts/2015-12-09-bring-dotnet-into-your-editor-omnisharp/</link>
+      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/posts/2015-12-09-bring-dotnet-into-your-editor-omnisharp/</guid>
+      <description>This year the .NET ecosystem welcomed DNX (.NET Execution Environment). Now developers are able to compile to and execute MSIL code on any operating system. This led to the increase of the framework&amp;rsquo;s popularity in places where Visual Studio isn&amp;rsquo;t available. Also the emergence of Roslyn, the new .NET compiler platform, which exposes all the compile stages via an API, allowed powerful code analysis tools to be easily written. This unleashed the development of some amazing projects like Omnisharp.</description>
+    </item>
+    
   </channel>
 </rss>
