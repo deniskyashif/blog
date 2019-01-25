@@ -6,17 +6,27 @@
     <description>Recent content in Posts on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 25 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 21 Nov 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>KendoUI TreeList Load on Demand</title>
-      <link>https://deniskyashif.com/2019/01/25/kendoui-treelist-load-on-demand/</link>
-      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      <title>Impressions from EMEA Pug Challenge 2017</title>
+      <link>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</link>
+      <pubDate>Tue, 21 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/2019/01/25/kendoui-treelist-load-on-demand/</guid>
+      <guid>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</guid>
+      <description>I had the pleasure to attend the annual EMEA (Progress User Group) Challenge conference. This is my second visit to this event as a speaker. I was very excited about it because I already had fond memories of the last year&amp;rsquo;s one in the Netherlands.
+The Venue The host of this year&amp;rsquo;s conference was Prague, the capital of the Czech Republic. The city is known for its amazing buildings and rich historical heritage.</description>
+    </item>
+    
+    <item>
+      <title>KendoUI TreeList Load on Demand</title>
+      <link>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</link>
+      <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</guid>
       <description>The TreeList isn&amp;rsquo;t among the most popular KendoUI widgets, yet it&amp;rsquo;s very useful and functional. It displays a hierarchically structured data, where each record has an optional relation to another record. The output is a grid which renders its rows in a tree-like fashion. In this blog post we&amp;rsquo;ll see how to load the descendant items of a record on demand.
 The Problem By default the TreeList expects us to provide the complete data set on initial load.</description>
     </item>
