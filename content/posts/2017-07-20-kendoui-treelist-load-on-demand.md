@@ -1,6 +1,6 @@
 ---
 title: "KendoUI TreeList Load on Demand"
-date: 2019-01-25
+date: 2017-06-20
 draft: false
 tags: ["KendoUI", "JavaScript"]
 ---
