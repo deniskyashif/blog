@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 26 Jan 2019 22:31:14 +0200</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Scalable Angular Apps at Devreach 2018</title>
+      <link>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</link>
+      <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</guid>
+      <description>DevReach is one of the largest tech conferences in Eastern Europe, focused primarily on .NET and JavaScript. I had the pleasure to attend the conference as a speaker this time, talking about Scalable Angular Applications.
+I&amp;rsquo;ve been working with the framework for a while and wanted to prepare a session on the topic. It was the largest attendance I ever had on a talk (~200 people) so it was a challenging but also a very rewarding experience for me.</description>
+    </item>
     
     <item>
       <title>Setting Up a Project With Telerik UI for ASP.NET MVC</title>
