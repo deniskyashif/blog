@@ -28,3 +28,13 @@ main > .intro {
 .circle {
     border-radius: 50%;
 }
+
+main .post .post-title {
+    font-size: 3rem;
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+    .post-title {
+        font-size: 2.5rem;
+    }
+}

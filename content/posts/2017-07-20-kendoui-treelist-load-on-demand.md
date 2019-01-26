@@ -2,7 +2,8 @@
 title: "KendoUI TreeList Load on Demand"
 date: 2017-06-20
 draft: false
-tags: ["KendoUI", "JavaScript"]
+tags: ["kendoui", "javascript"]
+summary: "The TreeList is a displays a hierarchically structured data, where each record has an optional relation to another record. The output is a grid which renders its rows in a tree-like fashion. In this blog post we'll see how to load the descendant items of a record on demand."
 ---
 
 The [TreeList](http://demos.telerik.com/kendo-ui/treelist/index) isn't among the most popular KendoUI widgets, yet it's very useful and functional. It displays a hierarchically structured data, where each record has an optional relation to another record. The output is a grid which renders its rows in a tree-like fashion. In this blog post we'll see how to load the descendant items of a record on demand.
