@@ -39,6 +39,10 @@ main .post .post-title {
     }
 }
 
+.social a:hover {
+    color: #0e459e;
+}
+
 .social-share {
     margin: 20px 0;
 }
