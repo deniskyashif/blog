@@ -1,0 +1,39 @@
+<section class="social-share">
+    <!-- Twitter -->
+    {{ if .Site.Params.socialShareTwitter | default true}}
+    <a href="//twitter.com/share?url={{ .Permalink }}&amp;text={{ .Title }}&amp;via={{ .Site.Social.twitter }}" target="_blank" class="share-btn twitter">
+        <i class="fa fa-2x fa-twitter"></i>
+    </a>
+    {{ end }}
+    <!-- Reddit -->
+    {{ if .Site.Params.socialShareReddit | default true}}
+    <a href="//reddit.com/submit?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" class="share-btn reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    {{ end }}
+    <!-- Facebook -->
+    {{ if .Site.Params.socialShareFacebook | default true}}
+    <a href="//www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" class="share-btn facebook">
+        <i class="fa fa-2x fa-facebook"></i>
+    </a>
+    {{ end }}
+    <!-- LinkedIn -->
+    {{ if .Site.Params.socialShareLinkedin | default true}}
+    <a href="//www.linkedin.com/shareArticle?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" class="share-btn linkedin">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    {{ end }}
+    <!-- Pintrest -->
+    {{ if .Site.Params.socialSharePinterest | default true}}
+    <a href="//www.pinterest.com/pin/create/button/?url={{ .Permalink }}&amp;description={{ .Title }}" target="_blank" class="share-btn pinterest">
+        <i class="fa fa-2x fa-pinterest-p"></i>
+        <p>Pinterest</p>
+    </a>
+    {{ end }}
+    <!-- Email -->
+    {{ if .Site.Params.socialShareEmail | default true}}
+    <a href="mailto:?subject=Check out '{{ .Title }}' by {{ .Site.Author.name }}&amp;body={{ .Permalink }}" target="_blank" class="share-btn email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    {{ end }}
+</section>
