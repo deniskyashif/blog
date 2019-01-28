@@ -4,5 +4,5 @@ Built with [Hugo](https://gohugo.io/) using the [Tale](https://github.com/EmielH
 
 ```
 git clone --recurse-submodules https://github.com/deniskyashif/blog.git
-hugo server -D
+cd blog && hugo server -D
 ```

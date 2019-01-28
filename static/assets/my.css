@@ -98,19 +98,11 @@ main .post .post-title {
 .post {
     padding-top: 1.5rem;
 }
-.post-info ul {
-    margin: 0;
-}
 
-.post-info ul.tags > li {
-    display: inline-block;
-    list-style-type: none;
-}
-
-.post-info ul.tags > li::after {
+.post-info .tags > a::after {
     content: ", ";
 }
 
-.post-info ul.tags > li:last-child::after {
+.post-info .tags > a:last-child::after {
     content: "";
 }
