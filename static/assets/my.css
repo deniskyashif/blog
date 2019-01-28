@@ -85,3 +85,8 @@ main .post .post-title {
 .social-share .share-btn.pinterest:hover   { background: #AD0000; }
 .social-share .share-btn.reddit:hover      { background: #e54e00; }
 .social-share .share-btn.email:hover { background: #363636; }
+
+.speaking .divider {
+    margin: 15px 0;
+    border: 1px solid black;
+}
