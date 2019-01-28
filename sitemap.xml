@@ -43,12 +43,78 @@
   </url>
   
   <url>
+    <loc>https://deniskyashif.com/tags/.net/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://deniskyashif.com/about/</loc>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/angular/</loc>
+    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/aspnet/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/azure/</loc>
+    <lastmod>2017-01-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/c/</loc>
+    <lastmod>2015-12-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/conference/</loc>
+    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://deniskyashif.com/</loc>
     <lastmod>2019-01-26T22:31:14+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/javascript/</loc>
+    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/kendoui/</loc>
+    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/machine-translation/</loc>
+    <lastmod>2017-01-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/natural-language-processing/</loc>
+    <lastmod>2017-01-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/omnisharp/</loc>
+    <lastmod>2015-12-09T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -59,12 +125,31 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/series/</loc>
+    <loc>https://deniskyashif.com/tags/roslyn/</loc>
+    <lastmod>2015-12-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/speaking/</loc>
+    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://deniskyashif.com/speaking/</loc>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/telerik/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
 </urlset>

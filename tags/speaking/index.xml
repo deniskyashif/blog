@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Speaking on Denis Kyashif&#39;s Blog</title>
+    <link>https://deniskyashif.com/tags/speaking/</link>
+    <description>Recent content in Speaking on Denis Kyashif&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 26 Jan 2019 22:31:14 +0200</lastBuildDate>
+    
+	<atom:link href="https://deniskyashif.com/tags/speaking/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Scalable Angular Apps at DevReach 2018</title>
+      <link>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</link>
+      <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</guid>
+      <description>DevReach is one of the largest tech conferences in Eastern Europe with around 800 attendees this year. It is focused primarily on .NET and JavaScript. I had the pleasure to attend the conference as a speaker this time, talking about Scalable Angular Applications.
+I&amp;rsquo;ve been working with the framework for a while and wanted to prepare a session on the topic. It was the largest attendance I ever had on a talk so it was a challenging but also a very rewarding experience for me.</description>
+    </item>
+    
+    <item>
+      <title>Impressions from EMEA Pug Challenge 2017</title>
+      <link>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</link>
+      <pubDate>Tue, 21 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</guid>
+      <description>I had the pleasure to attend the annual EMEA (Progress User Group) Challenge conference. This is my second visit to this event as a speaker. I was very excited about it because I already had fond memories of the last year&amp;rsquo;s one in the Netherlands.
+The Venue The host of this year&amp;rsquo;s conference was Prague, the capital of the Czech Republic. The city is known for its amazing buildings and rich historical heritage.</description>
+    </item>
+    
+    <item>
+      <title>Impressions from EMEA PUG Challenge 2016</title>
+      <link>https://deniskyashif.com/2016/10/10/impressions-from-emea-pug-challenge-2016/</link>
+      <pubDate>Mon, 10 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/2016/10/10/impressions-from-emea-pug-challenge-2016/</guid>
+      <description>Last week I had the pleasure to speak at the annual EMEA PUG (Progress User Group) Challenge conference. Having my session proposal accepted I&amp;rsquo;ve been eagerly anticipating the event and as now it&amp;rsquo;s over, let me share my impressions with you.
+The three-day event is sponsored by Progress and its partners and is aimed primarily at the Progress developer community. To my delight most of the sessions were technical. Needless to say the emphasis was on established technologies like OpenEdge and 4GL.</description>
+    </item>
+    
+  </channel>
+</rss>

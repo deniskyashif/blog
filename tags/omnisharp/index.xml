@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Omnisharp on Denis Kyashif&#39;s Blog</title>
+    <link>https://deniskyashif.com/tags/omnisharp/</link>
+    <description>Recent content in Omnisharp on Denis Kyashif&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 09 Dec 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://deniskyashif.com/tags/omnisharp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Bring .NET Development into your favourite editor with Omnisharp</title>
+      <link>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</link>
+      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</guid>
+      <description>This year the .NET ecosystem welcomed DNX (.NET Execution Environment). Now developers are able to compile to and execute MSIL code on any operating system. This led to the increase of the framework&amp;rsquo;s popularity in places where Visual Studio isn&amp;rsquo;t available. Also the emergence of Roslyn, the new .NET compiler platform, which exposes all the compile stages via an API, allowed powerful code analysis tools to be easily written. This unleashed the development of some amazing projects like Omnisharp.</description>
+    </item>
+    
+  </channel>
+</rss>

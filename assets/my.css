@@ -90,3 +90,23 @@ main .post .post-title {
     margin: 15px 0;
     border: 1px solid black;
 }
+
+.post {
+    padding-top: 1.5rem;
+}
+.post-info ul {
+    margin: 0;
+}
+
+.post-info ul.tags > li {
+    display: inline-block;
+    list-style-type: none;
+}
+
+.post-info ul.tags > li::after {
+    content: ", ";
+}
+
+.post-info ul.tags > li:last-child::after {
+    content: "";
+}
