@@ -2,5 +2,14 @@
     {{- if .PublishDate }}
     <time datetime="{{ .PublishDate }}">{{ i18n "publishdate" . }}</time>
     {{- end }}
+    
+    {{ $taxo := "tags" }}
+    <ul class="{{ $taxo }}">
+        {{ range .Param $taxo }}
+        {{ $name := . }}
+        {{ with $.Site.GetPage (printf "/%s/%s" $taxo ($name | urlize)) }}
+        <li><a href="{{ .Permalink }}">{{ $name }}</a></li>
+        {{ end }}
+        {{ end }}
+    </ul>
 </div>
-

@@ -25,7 +25,7 @@ googleAnalytics = "UA-133185625-1"
   twitter = "deniskyashif"
 
 [taxonomies]
-  series = "series"
+  tags = "tags"
 
 [permalinks]
   posts = "/:year/:month/:day/:title/"
