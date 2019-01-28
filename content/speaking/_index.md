@@ -15,6 +15,7 @@ I've had the privilege to speak at various conferences and events. This is a lis
             <br/>
             <span>
                 <a href="https://speakerdeck.com/deniskyashif/scalable-angular-applications">[slides]</a>
+                <a href="https://www.youtube.com/watch?v=KM7fbLkliug">[video]</a>
                 <a href="/2019/01/26/scalable-angular-apps-at-devreach-2018/">[post]</a>
                 <a href="https://github.com/deniskyashif/instructor-hub">[demo]</a>
             </span>
