@@ -1,2 +1,7 @@
 {{ partial "social-share.html" . }}
 {{ template "_internal/disqus.html" . }}
+
+{{ if .Params.useMath }}
+    {{ partial "mathjax.html" }}
+{{ end }}
+
