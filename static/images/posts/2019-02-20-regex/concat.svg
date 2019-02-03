@@ -1,0 +1,12 @@
+<svg width="800" height="200" version="1.1" xmlns="http://www.w3.org/2000/svg" id="fig3.2">
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="199.5" cy="98.5" rx="30" ry="30"/>
+	<text x="196.5" y="104.5" font-family="Times New Roman" font-size="20">i</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="398.5" cy="98.5" rx="30" ry="30"/>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="577.5" cy="98.5" rx="30" ry="30"/>
+	<text x="574.5" y="104.5" font-family="Times New Roman" font-size="20">f</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="577.5" cy="98.5" rx="24" ry="24"/>
+    <ellipse stroke="black" stroke-width="1" fill="none" cx="302" cy="100" rx="150" ry="60"/>
+    <ellipse stroke="black" stroke-width="1" fill="none" cx="479" cy="100" rx="150" ry="60"/>
+    <text x="270.5" y="82.5" font-family="Times New Roman" font-size="20">N(S)</text>
+    <text x="480.5" y="82.5" font-family="Times New Roman" font-size="20">N(T)</text>
+</svg>

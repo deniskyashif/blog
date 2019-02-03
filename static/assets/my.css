@@ -17,10 +17,12 @@ main table {
 
 main table th {
     border-bottom: 1px solid #000;
+    padding: 10px 5px;
 }
 
 main table td {
     border-bottom: 1px solid #ccc;
+    padding: 10px 5px;
 }
 
 main .social {
