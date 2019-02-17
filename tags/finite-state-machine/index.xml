@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Finite State Machine on Denis Kyashif&#39;s Blog</title>
+    <link>https://deniskyashif.com/tags/finite-state-machine/</link>
+    <description>Recent content in Finite State Machine on Denis Kyashif&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 17 Feb 2019 15:05:00 +0200</lastBuildDate>
+    
+	<atom:link href="https://deniskyashif.com/tags/finite-state-machine/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Implementing a Regular Expression Engine</title>
+      <link>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</link>
+      <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</guid>
+      <description>Understanding and using regular expressions properly is a valuable skill when it comes to text processing. Due to their declarative yet idiomatic syntax, they have always been a source of confusion (even anxiety) amongst software developers. In this article, we&amp;rsquo;ll implement a simple and efficient regular expression engine. We&amp;rsquo;ll define the syntax of our regular expressions, learn how to parse them and build our recognizer. First, we&amp;rsquo;ll briefly cover some theoretical foundations.</description>
+    </item>
+    
+  </channel>
+</rss>
