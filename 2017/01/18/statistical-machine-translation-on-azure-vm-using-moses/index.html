@@ -120,11 +120,11 @@ if (!doNotTrack) {
 
 <h2 id="choosing-a-vm-for-the-tuning-process">Choosing a VM for the Tuning Process</h2>
 
-<p>We can choose from a <a href="https://azure.microsoft.com/en-gb/pricing/details/virtual-machines/linux/">variety</a> of machines depending on the needs. There&rsquo;re &ldquo;General Purpose&rdquo;, &ldquo;Compute Optimized&rdquo;, &ldquo;Memory Optimized&rdquo;, &ldquo;GPU&rdquo; and &ldquo;High Performance Compute&rdquo; configurations so I went for the F Series(Compute Optimized) instance F16s with 16 Core Intel Xeon CPU and 32GB of RAM and Ubuntu as OS. Of course we&rsquo;re provided with the option to change the configuration at any time should we decide that the current one doesn&rsquo;t fit our needs. For those of you who want to geek out Microsoft offers a <a href="https://azure.microsoft.com/en-us/trial/free-trial-virtual-machines/">free trial</a>.</p>
+<p>We can choose from a <a href="https://azure.microsoft.com/en-gb/pricing/details/virtual-machines/linux/">variety</a> of machines depending on the needs. There&rsquo;re &ldquo;General Purpose&rdquo;, &ldquo;Compute Optimized&rdquo;, &ldquo;Memory Optimized&rdquo;, &ldquo;GPU&rdquo; and &ldquo;High Performance Compute&rdquo; configurations so I went for the F Series (Compute Optimized) instance F16s with 16 Core Intel Xeon CPU and 32GB of RAM and Ubuntu as OS. Of course we&rsquo;re provided with the option to change the configuration at any time should we decide that the current one doesn&rsquo;t fit our needs. For those of you who want to geek out Microsoft offers a <a href="https://azure.microsoft.com/en-us/trial/free-trial-virtual-machines/">free trial</a>.</p>
 
 <h2 id="the-tuning">The Tuning</h2>
 
-<p>This was the most satisfying part. Fortunately, the Moses Decoder is &ldquo;highly parallelizable&rdquo; so I was able to utilize all of the 16 cores on the machine. The process was a pleasure to watch :).</p>
+<p>This was the most satisfying part. Fortunately, the Moses Decoder is highly parallelizable so I was able to utilize all of the 16 cores on the machine. The process was a pleasure to watch :).</p>
 
 <p><img src="/images/posts/2017-01-18-smt-moses-azure/moses-on-azure-16core.jpg" alt="Moses htop" title="htop" /></p>
 
@@ -207,7 +207,7 @@ if (!doNotTrack) {
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-02-17 20:39:50.0058629 &#43;0200 EET m=&#43;0.185055601">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-02-17 21:10:44.2332607 &#43;0200 EET m=&#43;0.183882201">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
