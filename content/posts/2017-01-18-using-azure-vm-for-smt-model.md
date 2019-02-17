@@ -3,6 +3,7 @@ title: "Statistical Machine Translation on Azure VM using Moses"
 date: 2017-01-18
 draft: false
 tags: ["natural language processing", "machine translation", "azure"]
+summary: "Training a machine translation model on an Azure compute optimized VM."
 ---
 
 Lately I've been working on a side project - a statistical machine translation model (from German to English) using the [Moses SMT toolkit](http://www.statmt.org/moses/index.php?n=Main.HomePage). I've been using laptop to perform even the heavier computations, some of which even took from 6 to 8 hours. It was all manageable until the last stage, where on a reasonable machine with 4 CPU cores it was going to take more than a week to complete. So I decided to check out what Microsoft's Azure Cloud Service can offer and now after the model is complete, let me share my experience with you.
@@ -30,11 +31,11 @@ The final step in the creation of the machine translation model is the parameter
 
 ## Choosing a VM for the Tuning Process
 
-We can choose from a [variety](https://azure.microsoft.com/en-gb/pricing/details/virtual-machines/linux/) of machines depending on the needs. There're "General Purpose", "Compute Optimized", "Memory Optimized", "GPU" and "High Performance Compute" configurations so I went for the F Series(Compute Optimized) instance F16s with 16 Core Intel Xeon CPU and 32GB of RAM and Ubuntu as OS. Of course we're provided with the option to change the configuration at any time should we decide that the current one doesn't fit our needs. For those of you who want to geek out Microsoft offers a [free trial](https://azure.microsoft.com/en-us/trial/free-trial-virtual-machines/).
+We can choose from a [variety](https://azure.microsoft.com/en-gb/pricing/details/virtual-machines/linux/) of machines depending on the needs. There're "General Purpose", "Compute Optimized", "Memory Optimized", "GPU" and "High Performance Compute" configurations so I went for the F Series (Compute Optimized) instance F16s with 16 Core Intel Xeon CPU and 32GB of RAM and Ubuntu as OS. Of course we're provided with the option to change the configuration at any time should we decide that the current one doesn't fit our needs. For those of you who want to geek out Microsoft offers a [free trial](https://azure.microsoft.com/en-us/trial/free-trial-virtual-machines/).
 
 ## The Tuning
 
-This was the most satisfying part. Fortunately, the Moses Decoder is "highly parallelizable" so I was able to utilize all of the 16 cores on the machine. The process was a pleasure to watch :).
+This was the most satisfying part. Fortunately, the Moses Decoder is highly parallelizable so I was able to utilize all of the 16 cores on the machine. The process was a pleasure to watch :).
 
 ![Moses htop](/images/posts/2017-01-18-smt-moses-azure/moses-on-azure-16core.jpg "htop")
 
