@@ -118,9 +118,9 @@ if (!doNotTrack) {
 <p><img id="fig1.1" src="/images/posts/2019-02-20-regex/dfa.png" />
 <p class="text-center"><small>Figure 1.1: Deterministic Finite Automation (DFA)</small></p></p>
 
-<p>In <a href="#fig1.1">Fig 1.1</a> we have automation with four states; <em>q<sub>0</sub></em> is called the <strong>start state</strong> and <em>q<sub>3</sub></em> is the <strong>end (accepting)</strong> state. It recognizes all and only the strings of starting with <em>ab</em>, followed by an arbitrary number of <em>b&rsquo;s</em> and ending with an <em>a</em>.</p>
+<p>In <a href="#fig1.1">Fig 1.1</a> we have automation with four states; <em>q<sub>0</sub></em> is called the <strong>start state</strong> and <em>q<sub>3</sub></em> is the <strong>end (accepting)</strong> state. It recognizes all the strings of starting with <strong>&ldquo;ab&rdquo;</strong>, followed by an arbitrary number of <strong>&lsquo;b&rsquo;</strong>s and ending with an <strong>&lsquo;a&rsquo;</strong>.</p>
 
-<p>A processing of the string &ldquo;abba&rdquo; would look like:</p>
+<p>If we process the string <strong>&ldquo;abba&rdquo;</strong> through the machine on <a href="#fig1.1">Fig 1.1</a> we&rsquo;ll go through the following states:</p>
 
 <table>
 <thead>
@@ -163,7 +163,7 @@ if (!doNotTrack) {
 </tbody>
 </table>
 
-<p>If we process the strings <strong>&ldquo;aba&rdquo;</strong>, <strong>&ldquo;abbba&rdquo;</strong> or <strong>&ldquo;abbbbba&rdquo;</strong> through our automation, we&rsquo;ll end up in the accepting state of <em>q<sub>3</sub></em>. Our machine, however, won&rsquo;t recognize <strong>&ldquo;ab&rdquo;</strong> as it will end up in <em>q<sub>2</sub></em> which is not accepting. If at any point during processing, the machine has no state to follow for a given input symbol - it stops the execution and the string is not recognized. In our example, due to the fact that given input, we can end up in an exactly one state, we say that the machine is <strong>deterministic</strong> (DFA).</p>
+<p>For the strings <strong>&ldquo;aba&rdquo;</strong>, <strong>&ldquo;abbba&rdquo;</strong> or <strong>&ldquo;abbbbba&rdquo;</strong>, the automation will end up in the accepting state of <em>q<sub>3</sub></em>. If at any point during processing, the machine has no state to follow for a given input symbol - it stops the execution and the string is not recognized. So it won&rsquo;t recognize <strong>&ldquo;ab&rdquo;</strong> as it will end up in the non-accepTing State Of <em>q<sub>2</sub></em> and <strong>&ldquo;abca&rdquo;</strong> as there&rsquo;s no transition on the symbol <strong>&lsquo;c&rsquo;</strong> from _q<sub>2</sub>. In the example of <a href="#fig1">Fig 1.1</a>, at each state for a given valid input symbol, we can end up in exactly one state, we say that the machine is <strong>deterministic</strong> (DFA).</p>
 
 <h3 id="nondeterministic-finite-automata-nfa">Nondeterministic Finite Automata (NFA)</h3>
 
@@ -172,25 +172,27 @@ if (!doNotTrack) {
 <p><img id="fig1.2" src="/images/posts/2019-02-20-regex/nfa.png" />
 <p class="text-center"><small>Figure 1.2: Nondeterministic Finite Automation (NFA)</small></p></p>
 
-<p>We can see on <a href="#fig1.2">Fig 1.2</a> that from <em>q<sub>1</sub></em> on input <em>b</em> we can transition to two states - <em>q<sub>1</sub></em> and <em>q<sub>2</sub></em>. In this case, we say that the machine is <strong>nondeterministic</strong> (NFA). It is easy to see that this machine is equivalent to the one in <a href="#fig1.1">Fig 1.1</a>, that is they recognize the same set of strings. Every NFA can be converted to its corresponding DFA, the proof and the conversion, however, are a subject for another article.</p>
+<p>We can see on <a href="#fig1.2">Fig 1.2</a> that from <em>q<sub>1</sub></em> on input <strong>&lsquo;b&rsquo;</strong> we can transition to two states - <em>q<sub>1</sub></em> and <em>q<sub>2</sub></em>. In this case, we say that the machine is <strong>nondeterministic</strong> (NFA). It is easy to see that this machine is equivalent to the one in <a href="#fig1.1">Fig 1.1</a>, that is they recognize the same set of strings. Every NFA can be converted to its corresponding DFA, the proof and the conversion, however, are a subject of another article.</p>
 
 <h3 id="epsilon-nfa">&epsilon;-NFA</h3>
 
-<p>We represent an epsilon-NFA exactly as we do an NFA but with one exception. It includes transitions on the <strong>empty string</strong> - &epsilon;. That means from one state we are able to transition into another without reading an input symbol.</p>
+<p>We represent an &epsilon;-NFA exactly as we do an NFA but with one exception. It includes transitions on the <strong>empty string</strong> - &epsilon;. That means from one state we are able to transition into another without reading an input symbol. These transitions are usually denoted with the Greek letter &epsilon; (epsilon).</p>
 
 <p><img id="fig1.3" src="/images/posts/2019-02-20-regex/enfa.png" />
 <p class="text-center"><small>Figure 1.3: epsilon-NFA</small></p></p>
 
-<p>On <a href="#fig1.3">Fig 1.3</a> we can see that we have <strong>&epsilon;-transition</strong> from q<sub>2</sub> to q<sub>1</sub>. These transitions are usually denoted with the Greek letter &epsilon; (epsilon). This &epsilon;-NFA is equivalent to the NFA in <a href="#fig1.2">Fig 1.2</a>.</p>
+<p>On <a href="#fig1.3">Fig 1.3</a> we can see that we have <strong>&epsilon;-transition</strong> from <em>q<sub>2</sub></em> to <em>q<sub>1</sub></em>. This &epsilon;-NFA is equivalent to the NFA in <a href="#fig1.2">Fig 1.2</a>.</p>
 
 <h2 id="from-regular-expressions-to-finite-automata">From Regular Expressions to Finite Automata</h2>
 
-<p>The <strong>set of strings</strong> recognized by a finite automation <em>A</em> is called <strong>the language of <em>A</em></strong> denoted as <em>L(A)</em>. If a language can be recognized by <strong>finite automation</strong> then there&rsquo;s is a corresponding <strong>regular expression</strong> that describes the same language and vice versa (<a href="http://www.cs.may.ie/staff/jpower/Courses/Previous/parsing/node6.html">Kleene&rsquo;s Theorem</a>). The regular expression, equivalent to the automation in <a href="#fig1.1">Fig 1.1</a>  would be <strong>abb*a</strong>. In other words, regular expressions can be thought of as a <strong>user-friendly alternative</strong> to the NFAs for describing patterns in text.</p>
+<p>The set of strings recognized by a finite automation <em>A</em> is called <strong>the language of <em>A</em></strong> and is denoted as <em>L(A)</em>. If a language can be recognized by <strong>finite automation</strong> then there&rsquo;s is a corresponding <strong>regular expression</strong> that describes the same language and vice versa (<a href="http://www.cs.may.ie/staff/jpower/Courses/Previous/parsing/node6.html">Kleene&rsquo;s Theorem</a>). The regular expression, equivalent to the automation in <a href="#fig1.1">Fig 1.1</a>  would be <strong>abb*a</strong>. In other words, regular expressions can be thought of as a <strong>user-friendly alternative</strong> to finite automata for describing patterns in text.</p>
 
 <h3 id="the-thompson-s-construction">The Thompson&rsquo;s Construction</h3>
 
-<p>Algebras of all kinds start with some elementary expressions, usually constants and/or variables. Then they allow us to construct more expressions by applying a certain set of operations to these elementary expressions. Usually, some method of grouping operators with their operands such as parentheses is required as well.<br />
+<p>Algebras of all kinds start with some elementary expressions, usually constants and/or variables. Then they allow us to construct more complex expressions by applying a certain set of operations to these elementary expressions. Usually, some method of grouping operators with their operands such as parentheses is required as well.<br />
 For instance, in the arithmetic algebra we start with constants such as integers and real numbers, we include variables and using arithmetic operators, such as <em>&plus;</em>, <em>&times;</em>, we build more complex expressions. The regular expressions are in a way no different. Using constants, variables, and operators as building blocks, they denote formal languages (sets of strings).</p>
+
+<p>We&rsquo;ll describe an implementation by <a href="https://en.wikipedia.org/wiki/Ken_Thompson">Ken Thompson</a> presented in his paper <em>Regular Expression Search Algorithm</em> (1968).</p>
 
 <p>To convert a regular expression <em>R</em> to an NFA we first need to parse <em>R</em> into its constituent subexpressions. The rules for constructing an NFA can be split into two parts:</p>
 
@@ -200,14 +202,14 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <h4 id="basis">Basis</h4>
 
 <p><img id="fig2.1" src="/images/posts/2019-02-20-regex/e-nfa-impl.png" />
-<p class="text-center"><small>Figure 2.1: NFA for the expression <strong>&epsilon;</strong></small></p></p>
+<p class="text-center"><small>Figure 2.1: Finite automation for the expression <strong>&epsilon;</strong></small></p></p>
 
-<p>On <a href="#fig2.1">Fig 2.1</a> we see an NFA that recognizes the empty string &epsilon;. <em>i</em> is the start state and <em>q</em> is the accepting state.</p>
+<p>On <a href="#fig2.1">Fig 2.1</a> we have an automation that recognizes the empty string &epsilon;. <em>i</em> is the start state and <em>f</em> is the accepting state.</p>
 
 <p><img id="fig2.2" src="/images/posts/2019-02-20-regex/symbol-nfa.png" />
-<p class="text-center"><small>Figure 2.2: NFA for the expression <em>a</em></small></p></p>
+<p class="text-center"><small>Figure 2.2: Finite automation for the expression <em>a</em></small></p></p>
 
-<p>On <a href="#fig2.2">Fig 2.2</a> we construct an NFA from the symbol <em>a</em>. We treat each symbol of the input alphabet as a regular expression by itself. The language of this automation consists only of the string <strong>&ldquo;a&rdquo;</strong>.</p>
+<p>On <a href="#fig2.2">Fig 2.2</a> we construct an automation for the symbol <em>a</em>. We treat each symbol of the input alphabet as a regular expression by itself. The language of this automation consists only of the string <strong>&ldquo;a&rdquo;</strong>.</p>
 
 <h4 id="induction">Induction</h4>
 
@@ -232,23 +234,23 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p><img id="fig3.3" src="/images/posts/2019-02-20-regex/closure.png" />
 <p class="text-center"><small>Figure 3.3: NFA for the closure of a regular expression.</small></p></p>
 
-<p>We introduce <em>i</em> as start and <em>f</em> as accepting state. We add &epsilon;-transitions: from <em>i</em> to <em>f</em>, from <em>i</em> to the start state of <em>N(S)</em>, then we connect the accepting state of <em>N(S)</em> with <em>f</em> and finally add a transition from the end state of <em>N(S)</em> to its start state. We mark the end state of <em>N(S)</em> as intermediate.</p>
+<p>We introduce <em>i</em> as start and <em>f</em> as an accepting state. We add &epsilon;-transitions: from <em>i</em> to <em>f</em>, from <em>i</em> to the start state of <em>N(S)</em>, then we connect the accepting state of <em>N(S)</em> with <em>f</em> and finally add a transition from the end state of <em>N(S)</em> to its start state. We mark the end state of <em>N(S)</em> as intermediate.</p>
 
-<p>The <em>closure (*)</em> operator has the highest precedence, followed by <em>union (&#8739;)</em>. The <em>concatenation</em> is the operation with the lowest precedence.</p>
+<p>The <em>closure (*)</em> operator has the highest precedence, followed by <em>union (&#8739;)</em>. The <em>concatenation</em> is the operation with the lowest precedence. Modern regex implementations have a additional operations like <em>&plus;</em> (one or more), <em>?</em> (zero or one), however, their implementation is analogous to the ones above and we&rsquo;ll skip them forthe sake of brevity.</p>
 
 <h4 id="example">Example</h4>
 
-<p>Let&rsquo;s go through an example case. We want to construct an NFA for <strong>(a&#8739;b)*c</strong>. The language of this expression are all the strings that have zero or more <em>a</em>&rsquo;s or <em>b</em>&rsquo;s and end with <em>c</em>. Just like in the arithmetic expressions, we use brackets to specify the operator precedence. We break the expression into its atomic subexpressions and build our way up. By the order of precedence we:</p>
+<p>Let&rsquo;s go through an example case. We want to construct an NFA for <strong>(a&#8739;b)*c</strong>. The language of this expression contains all the strings that have zero or more <strong>&lsquo;a&rsquo;</strong>s or <strong>&lsquo;b&rsquo;</strong>s and end with <strong>&lsquo;c&rsquo;</strong>. Just like in arithmetic expressions, we use brackets to explicitly specify the operator precedence. We break the expression into its atomic subexpressions and build our way up. By the order of precedence we:</p>
 
-<p>1) Construct <em>N(a)</em>: a NFA for <em>a</em>.</p>
+<p>1) Construct <em>N(a)</em>: NFA for <strong>&lsquo;a&rsquo;</strong>.</p>
 
 <p><img id="fig4.1" src="/images/posts/2019-02-20-regex/ex-nfa-a.png" />
-<p class="text-center"><small>Figure 4.1: <em>N(a)</em>: NFA for <em>a</em>.</small></p></p>
+<p class="text-center"><small>Figure 4.1: <em>N(a)</em>: NFA for <strong>&lsquo;a&rsquo;</strong>.</small></p></p>
 
-<p>2) Construct <em>N(b)</em>: a NFA for <em>b</em>.</p>
+<p>2) Construct <em>N(b)</em>: a NFA for <strong>&lsquo;b&rsquo;</strong>.</p>
 
 <p><img id="fig4.2" src="/images/posts/2019-02-20-regex/ex-nfa-b.png" />
-<p class="text-center"><small>Figure 4.2: <em>N(b)</em>: NFA for <em>b</em>.</small></p></p>
+<p class="text-center"><small>Figure 4.2: <em>N(b)</em>: NFA for <strong>&lsquo;b&rsquo;</strong>.</small></p></p>
 
 <p>3) Apply <em>union</em> on <em>N(a)</em> and <em>N(b)</em>.</p>
 
@@ -267,15 +269,15 @@ For instance, in the arithmetic algebra we start with constants such as integers
 
 <h3 id="parsing-a-regular-expression">Parsing a regular expression</h3>
 
-<p>First, we need to preprocess the string by adding an explicit concatenation operator. We&rsquo;re going to use the dot (.) symbol, as described in the paper so for example, the expression <strong>abc</strong> would be converted to <strong>a.b.c</strong> and <strong>(a&#8739;b)c</strong> wound turn into <strong>(a&#8739;b).c</strong></p>
+<p>First, we need to preprocess the string by adding an explicit concatenation operator. We&rsquo;re going to use the dot (.) symbol, as described in the paper. So for example, the expression <strong>abc</strong> would be converted to <strong>a.b.c</strong> and <strong>(a&#8739;b)c</strong> wound turn into <strong>(a&#8739;b).c</strong></p>
 
 <p>The modern implementations use the dot character as &ldquo;any&rdquo; metacharacter. The modern implementations would also probably build the NFA during parsing instead of creating a postfix expression but doing it this way would let us understand the process more clearly.</p>
 
-<p>There are several ways of parsing a regular expression. We&rsquo;ll follow through <a href="https://www.fing.edu.uy/inco/cursos/intropln/material/p419-thompson.pdf">Thompson&rsquo;s original paper</a> and that is by converting our expression from <strong>infix</strong> into <strong>postfix</strong> notation. This way we can easily apply the operators in the defined order of precedence.</p>
+<p>There are several ways of parsing a regular expression. We&rsquo;ll follow through Thompson&rsquo;s original paper and that is by converting our expression from <strong>infix</strong> into <strong>postfix</strong> notation. This way we can easily apply the operators in the defined order of precedence.</p>
 
-<p>We won&rsquo;t dwell into the technical details of this algorithm. You can find one in &lt; 40 lines of javascript <a href="github">here</a> and a neat explanation with more examples <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">here</a>.</p>
+<p>We won&rsquo;t dwell into the technical details of this algorithm. You can check an implementation in less than 40 lines of javascript <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1">here</a> and a neat explanation with more examples <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">here</a>.</p>
 
-<h3 id="constructing-an-nfa-following-thompson-s-algorithm">Constructing an NFA following Thompson&rsquo;s algorithm</h3>
+<h3 id="constructing-the-nfa">Constructing the NFA</h3>
 
 <p>We represent an <strong>NFA state</strong> as an object with the following properties:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> createState(isEnd) {
@@ -286,7 +288,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
     };
 }
 </code></pre></div>
-<p>We have two types of transitions - by a symbol and by epsilon (empty string). A state in in Thompson&rsquo;s NFA can either have a symbol transition to at most one state or epsilon transitions to up to two states, but it cannot have a symbol and epsilon transitions at the same time.</p>
+<p>There are <strong>two types of transitions</strong> - by a symbol and by epsilon (empty string). A state in in Thompson&rsquo;s NFA can either have a symbol transition to at most one state or epsilon transitions to up to two states, but it cannot have a symbol and an epsilon transitions at the same time.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> addEpsilonTransition(from, to) {
     from.epsilonTransitions.push(to);
 }
@@ -295,7 +297,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
     from.transition[symbol] <span style="color:#666">=</span> to;
 }
 </code></pre></div>
-<p>From our <strong>basis</strong>, we have two types of NFA&rsquo;s that would serve as our building blocks - an &epsilon;-NFA and a symbol-NFA. The implementation is trivial:</p>
+<p>From our <strong>basis</strong>, we have two types of NFA&rsquo;s that would serve as our building blocks - an &epsilon;-NFA and a symbol-NFA. This is how we implement them:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> fromEpsilon() {
     <span style="color:#a2f;font-weight:bold">const</span> start <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">false</span>);
     <span style="color:#a2f;font-weight:bold">const</span> end <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">true</span>);
@@ -350,7 +352,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
     <span style="color:#a2f;font-weight:bold">return</span> { start, end };
 }
 </code></pre></div>
-<p>Now is time to put it all together. We <strong>scan our postfix expression one symbol at a time</strong> and store our context in a stack. Note that <strong>the stack contains NFAs</strong>. If we scan a character - we construct a character-NFA and push it to the stack. If we scan an operator, we pop from the stack, apply in on the NFA or NFAs and push the resulting NFA back to the stack.</p>
+<p>Now is time to put it all together. We <strong>scan our postfix expression one symbol at a time</strong> and store the context in a stack. <strong>The stack contains NFAs</strong>. If we scan a character - we construct a character-NFA and push it to the stack. If we scan an operator, we pop from the stack, apply in on the NFA(s) and push the resulting NFA back to the stack.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> toNFA(postfixExp) {
     <span style="color:#a2f;font-weight:bold">if</span>(postfixExp <span style="color:#666">===</span> <span style="color:#b44">&#39;&#39;</span>) {
         <span style="color:#a2f;font-weight:bold">return</span> fromEpsilon();
@@ -379,11 +381,11 @@ For instance, in the arithmetic algebra we start with constants such as integers
 </code></pre></div>
 <h4 id="example-1">Example</h4>
 
-<p>Let&rsquo;s simulate our algorithm on <strong>(a&#8739;b)*c</strong></p>
+<p>Let&rsquo;s simulate the algorithm on <strong>(a&#8739;b)*c</strong></p>
 
-<p>1) Insert explicit concatenation operator (.): <strong>(a&#8739;b)*.c</strong><br />
-2) Convert to postfix notation: <strong>ab&#8739;*c.</strong><br />
-3) Construct an NFA</p>
+<p>1) Insert explicit concatenation operator (.): <strong>(a&#8739;b)*c</strong> &rarr; <strong>(a&#8739;b)*.c</strong><br />
+2) Convert to postfix notation: <strong>(a&#8739;b)*.c</strong> &rarr; <strong>ab&#8739;*c.</strong><br />
+3) Construct an NFA:</p>
 
 <table>
 <thead>
@@ -449,22 +451,22 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p><img id="fig5.1" src="/images/posts/2019-02-20-regex/nfa-search.png" />
 <p class="text-center"><small>Figure 5.1: NFA for the expression <em>(aba)&#8739;(abb)</em></small></p></p>
 
-<p>The automation in <a href="#fig5.1">Fig. 5.1</a> recognizes either the string <strong>&ldquo;aba&rdquo;</strong> or <strong>&ldquo;abb&rdquo;</strong>. If we want to process <strong>&ldquo;abb&rdquo;</strong>, our simulation with recursive backtracking would process the the input <strong>one state at a time</strong> so we&rsquo;ll first end up reaching <strong>q<sub>3</sub></strong> after reading &lsquo;a&rsquo; and &lsquo;b&rsquo; from the input string. The next symbol is &lsquo;b&rsquo; but there&rsquo;s no transition from <strong>q<sub>3</sub></strong> on &lsquo;b&rsquo;, therefore, we backtrack to q<sub>0</sub> and take the other path which leads us to the accepting state. An implementation of this algorithm can be found <a href="https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134">here</a></p>
+<p>The automation in <a href="#fig5.1">Fig. 5.1</a> recognizes either the string <strong>&ldquo;aba&rdquo;</strong> or <strong>&ldquo;abb&rdquo;</strong>. If we want to process <strong>&ldquo;abb&rdquo;</strong>, our simulation with recursive backtracking would process the the input <strong>one state at a time</strong> so we&rsquo;ll first end up reaching <em>q<sub>3</sub></em> after reading <strong>&ldquo;ab&rdquo;</strong> from the input string. The next symbol is <strong>&lsquo;b&rsquo;</strong> but there&rsquo;s no transition from <em>q<sub>3</sub></em> on <strong>&lsquo;b&rsquo;</strong>, therefore, we backtrack to <em>q<sub>0</sub></em> and take the other path which leads us to the accepting state. You can check out my implementation on <a href="https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134">GitHub</a>.</p>
 
-<p>For an NFA with N states where from each state it can transition to at most N possible states, there might be maximum \(2^N\) possible paths, therefore, worst case this procedure will end up going through all of these paths until it finds a match (or not). Needless to say, this is not an acceptable performance so we need to a more clever solution.</p>
+<p>For an NFA with N states where from each state it can transition to at most N possible states, there might be maximum \(2^N\) possible paths, therefore, worst case this algorithm will end up going through all of these paths until it finds a match (or not). Needless to say, <em>O(\(2^N\))</em> is not an feasible performance so we need a more clever solution.</p>
 
 <h3 id="being-in-multiple-states-at-once">Being in multiple states at once</h3>
 
-<p>We can represent our NFA to be at multiple states at once.</p>
+<p>We can represent our NFA to be at multiple states at once. This approach is more complex but provides significantly beter performance.</p>
 
-<p>So when reading a symbol from the input string, instead of transitioning one state at a time we&rsquo;ll transition into all the possible states, reachable from the current set of states whith the input symbol symbol. In other words, the current state of the NFA will actually become a set of states. Each turn after reading a symbol from the input string, for each state in the current set we find the states that can be transitioned into using that symbol. So with this approach our simulation for &ldquo;abb&rdquo; would be:</p>
+<p>When reading a symbol from the input string, instead of transitioning one state at a time we&rsquo;ll transition into all the possible states, reachable from the current set of states. In other words, the current state of the NFA will actually become a set of states. Each turn after reading a symbol, for each state in the current set, we find the states that can be transitioned into using that symbol and mark them as the <strong>next states</strong>. So with this approach our simulation for <strong>&ldquo;abb&rdquo;</strong> would be:</p>
 
 <table>
 <thead>
 <tr>
 <th align="left">Step</th>
 <th align="left">Current</th>
-<th align="left">Input</th>
+<th align="left">Scan</th>
 <th align="left">Next</th>
 </tr>
 </thead>
@@ -493,11 +495,11 @@ For instance, in the arithmetic algebra we start with constants such as integers
 </tbody>
 </table>
 
-<p>We check if any state in the set of states that we end up with is an accepting state and if so - the string is recognized by the NFA. In the above case the final set contains only q<sub>9</sub> which is an accepting state.</p>
+<p>We check if any state in the set of states that we end up with is an accepting state and if so - the string is recognized by the NFA. In the above case the final set contains only <em>q<sub>9</sub></em> which is an accepting state.</p>
 
 <h4 id="dealing-with-epsilon-transitions">Dealing with &epsilon;-transitions</h4>
 
-<p>As mentioned above, Thompson&rsquo;s construction has two types of states. Ones with &epsilon;-transitions and ones with a transition on a symbol. So each time we end up in a state with an &epsilon;-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is a recursive procedure.</p>
+<p>As mentioned above, Thompson&rsquo;s construction has two types of states. Ones with &epsilon;-transitions and ones with a transition on a symbol. So each time we end up in a state with &epsilon;-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is obvious on step 3 from the example above - on <em>q<sub>7</sub></em> we read <strong>&lsquo;b&rsquo;</strong> and proceed to <em>q<sub>8</sub></em> which is an epsilon transition state. We follow the &epsilon;-transition and reach <em>q<sub>9</sub></em> which has no &epsilon;-transitions so we add it to the list of next states. This is a recursive procedure.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> addNextState(state, nextStates, visited) {
     <span style="color:#a2f;font-weight:bold">if</span> (state.epsilonTransitions.length) {
         <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#a2f;font-weight:bold">const</span> st <span style="color:#a2f;font-weight:bold">of</span> state.epsilonTransitions) {
@@ -511,7 +513,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
     }
 }
 </code></pre></div>
-<p>We also have to mark the &epsilon;-transition states as visited to prevent infinte looping. The bottom of the recurison is when we reach a state with no &amp;epsilon-transitions. After putting it all together, this is the code or the search procedure.</p>
+<p>We also have to mark the &epsilon;-transition states as visited to prevent infinte looping. The bottom of the recurison is when we reach a state with no &epsilon;-transitions. This is the code or the search procedure:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> search(nfa, word) {
     <span style="color:#a2f;font-weight:bold">let</span> currentStates <span style="color:#666">=</span> [];
     addNextState(nfa.start, currentStates, []);
@@ -531,16 +533,14 @@ For instance, in the arithmetic algebra we start with constants such as integers
     <span style="color:#a2f;font-weight:bold">return</span> currentStates.find(s =&gt; s.isEnd) <span style="color:#666">?</span> <span style="color:#a2f;font-weight:bold">true</span> <span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">false</span>;
 }
 </code></pre></div>
-<p>At the start, the initial set of current states is either the start state itself or the set of states, reachable by epsilon transitions from it. In the example on <a href="#fig6.1">Fig 6.1</a></p>
+<p>The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on <a href="#fig6.1">Fig 6.1</a> the star state <em>q<sub>0</sub></em> is an &epsilon;-transition state, so we follow the transitions recursively until reaching the symbol transition states <em>q<sub>1</sub></em> and <em>q<sub>5</sub></em> which become our initial set of states.</p>
 
 <h2 id="putting-it-all-together">Putting it all together</h2>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> createMatcher(exp) {
     <span style="color:#a2f;font-weight:bold">const</span> postfixExp <span style="color:#666">=</span> toPostfix(insertExplicitConcatOperator(exp));
     <span style="color:#a2f;font-weight:bold">const</span> nfa <span style="color:#666">=</span> toNFA(postfixExp);
 
-    <span style="color:#a2f;font-weight:bold">return</span> <span style="color:#a2f;font-weight:bold">function</span>(word) {
-        <span style="color:#a2f;font-weight:bold">return</span> search(nfa, word);
-    };
+    <span style="color:#a2f;font-weight:bold">return</span> word =&gt; search(nfa, word);
 }
 
 <span style="color:#a2f;font-weight:bold">const</span> match <span style="color:#666">=</span> createMatcher(<span style="color:#b44">&#39;a*b&#39;</span>);
@@ -552,9 +552,9 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
 <p>We started by learning about finite automata and how do they work. We classified them as deterministic and nondeterministic. We also introduced the concept of &epsilon;-NFAs which are a specific type of nondeterministic automata. We&rsquo;ve seen how NFAs and DFAs have the same expressive power and how they can be used for string recognition.</p>
 
-<p>We defined the building blocks of the regular expressions and saw how by applying operators (concatenation, union, and closure) we can construct more complex expressions from smaller ones. Then we learned how to convert a regular expression into its equivalent NFA then implemented an algorithm that processes a string through an NFA to determine whether it is matched or not.</p>
+<p>We defined the building blocks of the regular expressions and learned how by applying operators (concatenation, union, and closure) we can construct more complex expressions from smaller ones. Then we learned how to convert a regular expression into its equivalent NFA then implemented an algorithm that processes a string through an NFA to determine whether it is matched or not.</p>
 
-<p>The complete code reference for this article is available on <a href="https://github.com/deniskyashif/regexjs/">GitHub</a>.</p>
+<p>Thanks for reading! The complete code reference for this article is available on <a href="https://github.com/deniskyashif/regexjs/">GitHub</a>.</p>
 
 <h2 id="references">References</h2>
 
@@ -642,7 +642,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-02-17 15:06:43.6932297 &#43;0200 EET m=&#43;0.192383501">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-02-17 19:12:52.8834064 &#43;0200 EET m=&#43;0.180282601">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
