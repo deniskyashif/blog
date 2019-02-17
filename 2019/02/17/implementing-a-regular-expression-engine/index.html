@@ -453,11 +453,13 @@ For instance, in the arithmetic algebra we start with constants such as integers
 
 <p>The automation in <a href="#fig5.1">Fig. 5.1</a> recognizes either the string <strong>&ldquo;aba&rdquo;</strong> or <strong>&ldquo;abb&rdquo;</strong>. If we want to process <strong>&ldquo;abb&rdquo;</strong>, our simulation with recursive backtracking would process the the input <strong>one state at a time</strong> so we&rsquo;ll first end up reaching <em>q<sub>3</sub></em> after reading <strong>&ldquo;ab&rdquo;</strong> from the input string. The next symbol is <strong>&lsquo;b&rsquo;</strong> but there&rsquo;s no transition from <em>q<sub>3</sub></em> on <strong>&lsquo;b&rsquo;</strong>, therefore, we backtrack to <em>q<sub>0</sub></em> and take the other path which leads us to the accepting state. You can check out my implementation on <a href="https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134">GitHub</a>.</p>
 
-<p>For an NFA with N states where from each state it can transition to at most N possible states, there might be maximum \(2^N\) possible paths, therefore, worst case this algorithm will end up going through all of these paths until it finds a match (or not). Needless to say, <em>O(\(2^N\))</em> is not an feasible performance so we need a more clever solution.</p>
+<p>For the automation on <a href="fig#5.1">Fig 5.1</a> we ended up going through all of the possible two paths. This doesn&rsquo;t seem like a big deal but in a more complex scenario, there might be considerable performance implications.</p>
+
+<p>An NFA with <em>n</em> states where from each state it can transition to at most <em>n</em> possible states, there might be maximum \(2^n\) paths, therefore, worst case this algorithm will end up going through all of these paths until it finds a match (or not). Needless to say, <em>O(\(2^n\))</em> is not scalable because for a string of 10 characters to check whether it&rsquo;s matched or not we might end up doing 1024 operations. We should certainly do better than that.</p>
 
 <h3 id="being-in-multiple-states-at-once">Being in multiple states at once</h3>
 
-<p>We can represent our NFA to be at multiple states at once. This approach is more complex but provides significantly beter performance.</p>
+<p>We can represent an NFA to be at multiple states at once. This approach is more complex but provides significantly beter performance.</p>
 
 <p>When reading a symbol from the input string, instead of transitioning one state at a time we&rsquo;ll transition into all the possible states, reachable from the current set of states. In other words, the current state of the NFA will actually become a set of states. Each turn after reading a symbol, for each state in the current set, we find the states that can be transitioned into using that symbol and mark them as the <strong>next states</strong>. So with this approach our simulation for <strong>&ldquo;abb&rdquo;</strong> would be:</p>
 
@@ -533,7 +535,9 @@ For instance, in the arithmetic algebra we start with constants such as integers
     <span style="color:#a2f;font-weight:bold">return</span> currentStates.find(s =&gt; s.isEnd) <span style="color:#666">?</span> <span style="color:#a2f;font-weight:bold">true</span> <span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">false</span>;
 }
 </code></pre></div>
-<p>The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on <a href="#fig6.1">Fig 6.1</a> the star state <em>q<sub>0</sub></em> is an &epsilon;-transition state, so we follow the transitions recursively until reaching the symbol transition states <em>q<sub>1</sub></em> and <em>q<sub>5</sub></em> which become our initial set of states.</p>
+<p>The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on <a href="#fig5.1">Fig 5.1</a> the star state <em>q<sub>0</sub></em> is an &epsilon;-transition state, so we follow the transitions recursively until reaching the symbol transition states <em>q<sub>1</sub></em> and <em>q<sub>5</sub></em> which become our initial set of states.</p>
+
+<p>Given a string of length <em>n</em>, on each iteration this algorithm keeps two list of states with a length of approximately <em>n</em>. This gives us a time complexity of <em>\(O(n^2)\)</em> which significantly outperforms the recursive backtracking approach.</p>
 
 <h2 id="putting-it-all-together">Putting it all together</h2>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> createMatcher(exp) {
@@ -642,7 +646,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-02-17 19:12:52.8834064 &#43;0200 EET m=&#43;0.180282601">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-02-17 20:33:50.6202216 &#43;0200 EET m=&#43;0.175003501">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
