@@ -1,10 +1,11 @@
 ---
 title: "Implementing a Regular Expression Engine"
-date: 2019-01-28T22:04:55+02:00
-draft: true
+date: 2019-02-17T15:05:00+02:00
+draft: false
 tags: ["regular-expression", "parser", "compiler", "finite-state-machine", "javascript"]
 useMath: true
 summary: "Using the Thompson construction algorithm."
+description: "This article describes how to implement a simple and efficient regular expression engine following the Thompson's construction algorithm."
 ---
     
 Understanding and using regular expressions properly is a valuable skill when it comes to text processing. Due to their declarative yet idiomatic syntax, they have always been a source of confusion (even [anxiety](https://stackoverflow.com/questions/172303/is-there-a-regular-expression-to-detect-a-valid-regular-expression)) amongst software developers. In this article, we'll implement a simple and efficient regular expression engine. We'll define the syntax of our regular expressions, learn how to parse them and build our recognizer. First, we'll briefly cover some theoretical foundations.
@@ -267,7 +268,7 @@ Let's simulate our algorithm on **(a&#8739;b)*c**
 | 5    | ab&#8739;*<u><b>c</b></u>.                           | fromSymbol\(c); push;                                        | { N((a&#8739;b)*), N\(c) } |
 | 6    | ab&#8739;*c<u><b>.</b></u>                           | pop; pop; concat(N((a&#8739;b)*), N\(c)); push; &nbsp;&nbsp; | { N((a&#8739;b)*c) }       |
 
-## Recognizing a string using through an NFA
+## NFA Search Algorithms
 
 ### Recursive Backtracking
 The simplest way to is by computing all the possible paths when processing the string through the NFA until we end up in an accepting state or exhaust all the possibilities. It falls down to a recursive depth first search with backtracking. Let's see an example:
@@ -275,9 +276,9 @@ The simplest way to is by computing all the possible paths when processing the s
 <img id="fig5.1" src="/images/posts/2019-02-20-regex/nfa-search.png" />
 <p class="text-center"><small>Figure 5.1: NFA for the expression _(aba)&#8739;(abb)_</small></p>
 
-The automation in [Fig. 5.1](#fig5.1) recognizes either the string **"aba"** or **"abb"**. If we want to process **"abb"**, our simulation with recursive backtracking would process the the input **one state at a time** so we'll first end up reaching **q<sub>3</sub>** after reading 'a' and 'b' from the input string **"abb"**. The next symbol is 'b' but there's no transition from **q<sub>3</sub>** on 'b', therefore, we backtrack to q<sub>0</sub> and take the other path which leads us to the accepting state. 
+The automation in [Fig. 5.1](#fig5.1) recognizes either the string **"aba"** or **"abb"**. If we want to process **"abb"**, our simulation with recursive backtracking would process the the input **one state at a time** so we'll first end up reaching **q<sub>3</sub>** after reading 'a' and 'b' from the input string. The next symbol is 'b' but there's no transition from **q<sub>3</sub>** on 'b', therefore, we backtrack to q<sub>0</sub> and take the other path which leads us to the accepting state. An implementation of this algorithm can be found [here](https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134)
 
-For an NFA with N states where from each state it can transition to at most N possible states, there might be maximum \\(2^N\\) possible paths, therefore, worst case this procedure will end up going through all of these paths until it finds a match (or not). Obviously this is not an acceptable performance so we need to come up with a more clever solution.
+For an NFA with N states where from each state it can transition to at most N possible states, there might be maximum \\(2^N\\) possible paths, therefore, worst case this procedure will end up going through all of these paths until it finds a match (or not). Needless to say, this is not an acceptable performance so we need to a more clever solution.
 
 ### Being in multiple states at once
 We can represent our NFA to be at multiple states at once. 
@@ -296,7 +297,7 @@ We check if any state in the set of states that we end up with is an accepting s
 As mentioned above, Thompson's construction has two types of states. Ones with &epsilon;-transitions and ones with a transition on a symbol. So each time we end up in a state with an &epsilon;-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is a recursive procedure.
 
 ```javascript
-function addNextStates(state, nextStates, visited) {
+function addNextState(state, nextStates, visited) {
     if (state.epsilonTransitions.length) {
         for (const st of state.epsilonTransitions) {
             if (!visited.find(vs => vs === st)) {
@@ -315,7 +316,7 @@ We also have to mark the &epsilon;-transition states as visited to prevent infin
 ```javascript
 function search(nfa, word) {
     let currentStates = [];
-    addNextStates(nfa.start, currentStates, []);
+    addNextState(nfa.start, currentStates, []);
 
     for (const symbol of word) {
         const nextStates = [];
@@ -323,7 +324,7 @@ function search(nfa, word) {
         for (const state of currentStates) {
             const nextState = state.transition[symbol];
             if (nextState) {
-                addNextStates(nextState, nextStates, []);
+                addNextState(nextState, nextStates, []);
             }
         }
         currentStates = nextStates;
@@ -334,6 +335,24 @@ function search(nfa, word) {
 ```
 
 At the start, the initial set of current states is either the start state itself or the set of states, reachable by epsilon transitions from it. In the example on [Fig 6.1](#fig6.1)
+
+## Putting it all together
+
+```javascript
+function createMatcher(exp) {
+    const postfixExp = toPostfix(insertExplicitConcatOperator(exp));
+    const nfa = toNFA(postfixExp);
+
+    return function(word) {
+        return search(nfa, word);
+    };
+}
+
+const match = createMatcher('a*b');
+match(''); // false
+match('b'); // true
+match('ab'); // true
+```
 
 ## Recap
 We started by learning about finite automata and how do they work. We classified them as deterministic and nondeterministic. We also introduced the concept of &epsilon;-NFAs which are a specific type of nondeterministic automata. We've seen how NFAs and DFAs have the same expressive power and how they can be used for string recognition. 
