@@ -8,17 +8,17 @@ summary: "Using the Thompson construction algorithm."
 description: "This article describes how to implement a simple and efficient regular expression engine following the Thompson's construction algorithm."
 ---
     
-Understanding and using regular expressions properly is a valuable skill when it comes to text processing. Due to their declarative yet idiomatic syntax, regular expressions can sometimes be a source of confusion (even [anxiety](https://stackoverflow.com/questions/172303/is-there-a-regular-expression-to-detect-a-valid-regular-expression)) amongst software developers. In this article, we'll implement a simple and efficient regex. We'll define the syntax of our regular expressions, learn how to parse them and build our recognizer. First, we'll briefly cover some theoretical foundations.
+Understanding and using regular expressions properly is a valuable skill when it comes to text processing. Due to their declarative yet idiomatic syntax, regular expressions can sometimes be a source of confusion (even [anxiety](https://stackoverflow.com/questions/172303/is-there-a-regular-expression-to-detect-a-valid-regular-expression)) amongst software developers. In this article, we'll implement a simple and efficient regex engine. We'll define the syntax of our regular expressions, learn how to parse them and build our recognizer. First, we'll briefly cover some theoretical foundations.
 
 ## Finite Automata
-In informal terms a **finite automation** (or **finite state machine**) an abstract machine that  has states and transitions between the states. It is always in one of its states and while it reads an input it switches from state to state. It has a start state and can have one or more end (accepting) states.
+In informal terms **finite automation** (or **finite state machine**) is an abstract machine that  has states and transitions between these states. It is always in one of its states and while it reads an input it switches from state to state. It has a start state and can have one or more end (accepting) states.
 
 ### Deterministic Finite Automata (DFA)
 
 <img id="fig1.1" src="/images/posts/2019-02-20-regex/dfa.png" />
 <p class="text-center"><small>Figure 1.1: Deterministic Finite Automation (DFA)</small></p>
 
-In [Fig 1.1](#fig1.1) we have automation with four states; _q<sub>0</sub>_ is called the **start state** and _q<sub>3</sub>_ is the **end (accepting)** state. It recognizes all the strings of starting with **"ab"**, followed by an arbitrary number of **'b'**s and ending with an **'a'**.
+In [Fig 1.1](#fig1.1) we have automation with four states; _q<sub>0</sub>_ is called the **start state** and _q<sub>3</sub>_ is the **end (accepting)** state. It recognizes all the strings that start with **"ab"**, followed by an arbitrary number of **'b'**s and ending with an **'a'**.
 
 If we process the string **"abba"** through the machine on [Fig 1.1](#fig1.1) we'll go through the following states:  
 
@@ -29,7 +29,7 @@ If we process the string **"abba"** through the machine on [Fig 1.1](#fig1.1) we
 | 2    | q<sub>2</sub>     | b                 | q<sub>2</sub>         |
 | 3    | q<sub>2</sub>     | a                 | q<sub>3</sub>         |
   
-For the strings **"aba"**, **"abbba"** or **"abbbbba"**, the automation will end up in the accepting state of _q<sub>3</sub>_. If at any point during processing, the machine has no state to follow for a given input symbol - it stops the execution and the string is not recognized. So it won't recognize **"ab"** as it will end up in the non-accepTing State Of _q<sub>2</sub>_ and **"abca"** as there's no transition on the symbol **'c'** from _q<sub>2</sub>_. In the example of [Fig 1.1](#fig1), at each state for a given valid input symbol, we can end up in exactly one state, we say that the machine is **deterministic** (DFA).
+For the strings **"aba"**, **"abbba"** or **"abbbbba"**, the automation will end up in the accepting state of _q<sub>3</sub>_. If at any point during processing, the machine has no state to follow for a given input symbol - it stops the execution and the string is not recognized. So it won't recognize **"ab"** as it will end up in the non-accepting state of _q<sub>2</sub>_ and **"abca"** as there's no transition on the symbol **'c'** from _q<sub>2</sub>_. In the example of [Fig 1.1](#fig1), at each state for a given valid input symbol, we can end up in exactly one state, we say that the machine is **deterministic** (DFA).
 
 ### Nondeterministic Finite Automata (NFA)
 Suppose we have the following automation:
@@ -37,7 +37,7 @@ Suppose we have the following automation:
 <img id="fig1.2" src="/images/posts/2019-02-20-regex/nfa.png" />
 <p class="text-center"><small>Figure 1.2: Nondeterministic Finite Automation (NFA)</small></p>
 
-We can see on [Fig 1.2](#fig1.2) that from _q<sub>1</sub>_ on input **'b'** we can transition to two states - _q<sub>1</sub>_ and _q<sub>2</sub>_. In this case, we say that the machine is **nondeterministic** (NFA). It is easy to see that this machine is equivalent to the one in [Fig 1.1](#fig1.1), that is they recognize the same set of strings. Every NFA can be converted to its corresponding DFA, the proof and the conversion, however, are a subject of another article.
+We can see on [Fig 1.2](#fig1.2) that from _q<sub>1</sub>_ on input **'b'** we can transition to two states - _q<sub>1</sub>_ and _q<sub>2</sub>_. In this case, we say that the machine is **nondeterministic** (NFA). It is easy to see that this machine is equivalent to the one in [Fig 1.1](#fig1.1), i.e. they recognize the same set of strings. Every NFA can be converted to its corresponding DFA, the proof and the conversion, however, are a subject of another article.
 
 ### &epsilon;-NFA
 
@@ -48,19 +48,19 @@ We represent an &epsilon;-NFA exactly as we do an NFA but with one exception. It
 
 On [Fig 1.3](#fig1.3) we can see that we have **&epsilon;-transition** from _q<sub>2</sub>_ to _q<sub>1</sub>_. This &epsilon;-NFA is equivalent to the NFA in [Fig 1.2](#fig1.2).
 
-## From Regular Expressions to Finite Automata
+## Compiling Regular Expressions to Finite Automata
 The set of strings recognized by a finite automation _A_ is called **the language of _A_** and is denoted as _L(A)_. If a language can be recognized by **finite automation** then there's is a corresponding **regular expression** that describes the same language and vice versa ([Kleene's Theorem](http://www.cs.may.ie/staff/jpower/Courses/Previous/parsing/node6.html)). The regular expression, equivalent to the automation in [Fig 1.1](#fig1.1)  would be **abb*a**. In other words, regular expressions can be thought of as a **user-friendly alternative** to finite automata for describing patterns in text.
 
-### The Thompson's Construction
+### Thompson's Construction
 Algebras of all kinds start with some elementary expressions, usually constants and/or variables. Then they allow us to construct more complex expressions by applying a certain set of operations to these elementary expressions. Usually, some method of grouping operators with their operands such as parentheses is required as well.  
 For instance, in the arithmetic algebra we start with constants such as integers and real numbers, we include variables and using arithmetic operators, such as _&plus;_, _&times;_, we build more complex expressions. The regular expressions are in a way no different. Using constants, variables, and operators as building blocks, they denote formal languages (sets of strings).
 
 We'll describe an implementation by [Ken Thompson](https://en.wikipedia.org/wiki/Ken_Thompson) presented in his paper _Regular Expression Search Algorithm_ (1968). 
 
-To convert a regular expression _R_ to an NFA we first need to parse _R_ into its constituent subexpressions. The rules for constructing an NFA can be split into two parts:  
+To compule a regular expression _R_ to an NFA we first need to parse _R_ into its constituent subexpressions. The rules for constructing an NFA can be split into two parts:  
 
 1) **Base** rules for handling subexpressions with no operators.   
-2) **Inductive** rules for constructing larger NFAs from the smaller NFA's by applying the operators.
+2) **Inductive** rules for constructing larger NFAs from the smaller NFAs by applying the operators.
 
 
 #### Basis
@@ -99,7 +99,7 @@ c) **Closure (Kleenee Star)**: _R = S*_
 
 We introduce _i_ as start and _f_ as an accepting state. We add &epsilon;-transitions: from _i_ to _f_, from _i_ to the start state of _N(S)_, then we connect the accepting state of _N(S)_ with _f_ and finally add a transition from the end state of _N(S)_ to its start state. We mark the end state of _N(S)_ as intermediate.
 
-The _closure (*)_ operator has the highest precedence, followed by _union (&#8739;)_. The _concatenation_ is the operation with the lowest precedence. Modern regex implementations have a additional operations like _&plus;_ (one or more), _?_ (zero or one), however, their implementation is analogous to the ones above and we'll skip them forthe sake of brevity.
+The _closure (*)_ operator has the highest precedence, followed by _union (&#8739;)_. The _concatenation_ is the operation with the lowest precedence. Modern regex implementations have additional operators like _&plus;_ (one or more), _?_ (zero or one), their implementation, however, is analogous to the ones above and we'll skip them for the sake of brevity.
 
 #### Example
 Let's go through an example case. We want to construct an NFA for **(a&#8739;b)*c**. The language of this expression contains all the strings that have zero or more **'a'**s or **'b'**s and end with **'c'**. Just like in arithmetic expressions, we use brackets to explicitly specify the operator precedence. We break the expression into its atomic subexpressions and build our way up. By the order of precedence we:
@@ -132,11 +132,11 @@ Let's go through an example case. We want to construct an NFA for **(a&#8739;b)*
 ### Parsing a regular expression
 First, we need to preprocess the string by adding an explicit concatenation operator. We're going to use the dot (.) symbol, as described in the paper. So for example, the expression **abc** would be converted to **a.b.c** and **(a&#8739;b)c** wound turn into **(a&#8739;b).c**  
 
-The modern implementations use the dot character as "any" metacharacter. The modern implementations would also probably build the NFA during parsing instead of creating a postfix expression but doing it this way would let us understand the process more clearly.
+The modern implementations use the dot character as "any" metacharacter. They would also probably build the NFA during parsing instead of creating a postfix expression still doing it this way would let us understand the process more clearly.
 
 There are several ways of parsing a regular expression. We'll follow through Thompson's original paper and that is by converting our expression from **infix** into **postfix** notation. This way we can easily apply the operators in the defined order of precedence.
 
-We won't dwell into the technical details of this algorithm. You can check an implementation in less than 40 lines of javascript [here](https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1) and a neat explanation with more examples [here](https://en.wikipedia.org/wiki/Shunting-yard_algorithm).
+We won't delve into the technical details of this algorithm. You can check my implementation in less than 40 lines of javascript [here](https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1) and a neat explanation with more examples [here](https://en.wikipedia.org/wiki/Shunting-yard_algorithm).
 
 ### Constructing the NFA
 We represent an **NFA state** as an object with the following properties:
@@ -151,7 +151,7 @@ function createState(isEnd) {
 }
 ```
 
-There are **two types of transitions** - by a symbol and by epsilon (empty string). A state in in Thompson's NFA can either have a symbol transition to at most one state or epsilon transitions to up to two states, but it cannot have a symbol and an epsilon transitions at the same time.  
+There are **two types of transitions** - by a symbol and by epsilon (empty string). A state in Thompson's NFA can either have a symbol transition to at most one state or epsilon transitions to up to two states, but it cannot have a symbol and epsilon transitions at the same time.  
 
 ```javascript
 function addEpsilonTransition(from, to) {
@@ -184,7 +184,7 @@ function fromSymbol(symbol) {
 }
 ```
 
-The NFA is simply an object which holds references to its start and end states. By following the **inductive rules**, we build larger NFAs by applying the three operations on smaller NFAs.
+The NFA is simply an object which holds references to its start and end states. By following the **inductive rules** (described above), we build larger NFAs by applying the three operations on smaller NFAs.
 
 ```javascript
 function concat(first, second) {
@@ -200,7 +200,6 @@ function union(first, second) {
     addEpsilonTransition(start, second.start);
 
     const end = createState(true);
-
     addEpsilonTransition(first.end, end);
     first.end.isEnd = false;
     addEpsilonTransition(second.end, end);
@@ -224,7 +223,10 @@ function closure(nfa) {
 }
 ```
 
-Now is time to put it all together. We **scan our postfix expression one symbol at a time** and store the context in a stack. **The stack contains NFAs**. If we scan a character - we construct a character-NFA and push it to the stack. If we scan an operator, we pop from the stack, apply in on the NFA(s) and push the resulting NFA back to the stack.
+Now is time to put it all together. We **scan our postfix expression one symbol at a time** and store the context in a stack. **The stack contains NFAs**. 
+
+1) When we scan a character - we construct a character-NFA and push it to the stack. 
+2) When we scan an operator, we pop from the stack, apply this operation on the NFA(s) and push the resulting NFA back to the stack.
 
 ```javascript
 function toNFA(postfixExp) {
@@ -273,21 +275,21 @@ Let's simulate the algorithm on **(a&#8739;b)*c**
 ## NFA Search Algorithms
 
 ### Recursive Backtracking
-The simplest way to is by computing all the possible paths when processing the string through the NFA until we end up in an accepting state or exhaust all the possibilities. It falls down to a recursive depth first search with backtracking. Let's see an example:
+The simplest way to check if a string is recognized by automation is by computing all the possible paths through the NFA until we end up in an accepting state or exhaust all the possibilities. It falls down to a recursive depth-first search with backtracking. Let's see an example:
 
 <img id="fig5.1" src="/images/posts/2019-02-20-regex/nfa-search.png" />
 <p class="text-center"><small>Figure 5.1: NFA for the expression _(aba)&#8739;(abb)_</small></p>
 
-The automation in [Fig. 5.1](#fig5.1) recognizes either the string **"aba"** or **"abb"**. If we want to process **"abb"**, our simulation with recursive backtracking would process the the input **one state at a time** so we'll first end up reaching _q<sub>3</sub>_ after reading **"ab"** from the input string. The next symbol is **'b'** but there's no transition from _q<sub>3</sub>_ on **'b'**, therefore, we backtrack to _q<sub>0</sub>_ and take the other path which leads us to the accepting state. You can check out my implementation on [GitHub](https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134).
+The automation in [Fig. 5.1](#fig5.1) recognizes either the string **"aba"** or **"abb"**. If we want to process **"abb"**, our simulation with recursive backtracking would process the input **one state at a time** so we'll first end up reaching _q<sub>3</sub>_ after reading **"ab"** from the input string. The next symbol is **'b'** but there's no transition from _q<sub>3</sub>_ on **'b'**, therefore, we backtrack to _q<sub>0</sub>_ and take the other path which leads us to the accepting state. You can check out my implementation on [GitHub](https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134).
 
 For the automation on [Fig 5.1](fig#5.1) we ended up going through all of the possible two paths. This doesn't seem like a big deal but in a more complex scenario, there might be considerable performance implications.
 
-An NFA with _n_ states where from each state it can transition to at most _n_ possible states, there might be maximum \\(2^n\\) paths, therefore, worst case this algorithm will end up going through all of these paths until it finds a match (or not). Needless to say, _O(\\(2^n\\))_ is not scalable because for a string of 10 characters to check whether it's matched or not we might end up doing 1024 operations. We should certainly do better than that.
+Given an NFA with _n_ states, from each of its states, it can transition to at most _n_ possible states. This means there might be a maximum \\(2^n\\) paths, thus in the worst case this algorithm will end up going through all of these paths until it finds a match (or not). Needless to say, _O(\\(2^n\\))_ is not scalable because for a string of 10 characters to check whether it's matched or not we might end up doing 1024 operations. We should certainly do better than that.
 
 ### Being in multiple states at once
-We can represent an NFA to be at multiple states at once. This approach is more complex but provides significantly beter performance.
+We can represent an NFA to be at multiple states at once as described in Thompson's paper. This approach is more complex but produces significantly better performance.
 
-When reading a symbol from the input string, instead of transitioning one state at a time we'll transition into all the possible states, reachable from the current set of states. In other words, the current state of the NFA will actually become a set of states. Each turn after reading a symbol, for each state in the current set, we find the states that can be transitioned into using that symbol and mark them as the **next states**. So with this approach our simulation for **"abb"** would be:
+When reading a symbol from the input string, instead of transitioning one state at a time we'll transition into all the possible states, reachable from the current set of states. In other words, the current state of the NFA will actually become a set of states. Each turn after reading a symbol, for each state in the current set, we find the states that can be transitioned into using that symbol and mark them as the **next states**. So with this approach, our simulation for **"abb"** would be:
 
 | Step | Current                          | Scan             | Next                             |
 |:-----|:---------------------------------|:------------------|:---------------------------------|
@@ -295,7 +297,7 @@ When reading a symbol from the input string, instead of transitioning one state 
 | 2    | { q<sub>2</sub>, q<sub>6</sub> } | a<b><u>b</u></b>b | { q<sub>3</sub>, q<sub>7</sub> } |
 | 3    | { q<sub>3</sub>, q<sub>7</sub> } | ab<b><u>b</u></b> | { q<sub>9</sub> }                |
 
-We check if any state in the set of states that we end up with is an accepting state and if so - the string is recognized by the NFA. In the above case the final set contains only _q<sub>9</sub>_ which is an accepting state.
+We check if any state in the set of states that we end up with is an accepting state and if so - the string is recognized by the NFA. In the above case, the final set contains only _q<sub>9</sub>_ which is an accepting state.
 
 #### Dealing with &epsilon;-transitions
 As mentioned above, Thompson's construction has two types of states. Ones with &epsilon;-transitions and ones with a transition on a symbol. So each time we end up in a state with &epsilon;-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is obvious on step 3 from the example above - on _q<sub>7</sub>_ we read **'b'** and proceed to _q<sub>8</sub>_ which is an epsilon transition state. We follow the &epsilon;-transition and reach _q<sub>9</sub>_ which has no &epsilon;-transitions so we add it to the list of next states. This is a recursive procedure.
@@ -315,7 +317,7 @@ function addNextState(state, nextStates, visited) {
 }
 ```
 
-We also have to mark the &epsilon;-transition states as visited to prevent infinte looping. The bottom of the recurison is when we reach a state with no &epsilon;-transitions. This is the code or the search procedure:
+We also have to mark the &epsilon;-transition states as visited to prevent infinite looping. The bottom of the recursion is when we reach a state with no &epsilon;-transitions. This is the code or the search procedure:
 
 ```javascript
 function search(nfa, word) {
@@ -338,9 +340,9 @@ function search(nfa, word) {
 }
 ```
 
-The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on [Fig 5.1](#fig5.1) the star state _q<sub>0</sub>_ is an &epsilon;-transition state, so we follow the transitions recursively until reaching the symbol transition states _q<sub>1</sub>_ and _q<sub>5</sub>_ which become our initial set of states.
+The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on [Fig 5.1](#fig5.1) the start state _q<sub>0</sub>_ is an &epsilon;-transition state, so we follow the transitions recursively until reaching the symbol transition states _q<sub>1</sub>_ and _q<sub>5</sub>_ which become our initial set of states.
 
-Given a string of length _n_, on each iteration this algorithm keeps two list of states with a length of approximately _n_. This gives us a time complexity of _\\(O(n^2)\\)_ which significantly outperforms the recursive backtracking approach.
+Given a string of length _n_, on each iteration, this algorithm keeps two lists of states with a length of approximately _n_. This gives us a time complexity of _\\(O(n^2)\\)_ which significantly outperforms the recursive backtracking approach.
 
 ## Putting it all together
 
@@ -361,11 +363,11 @@ match('ab'); // true
 ## Recap
 We started by learning about finite automata and how do they work. We classified them as deterministic and nondeterministic. We also introduced the concept of &epsilon;-NFAs which are a specific type of nondeterministic automata. We've seen how NFAs and DFAs have the same expressive power and how they can be used for string recognition. 
 
-We defined the building blocks of the regular expressions and learned how by applying operators (concatenation, union, and closure) we can construct more complex expressions from smaller ones. Then we learned how to convert a regular expression into its equivalent NFA then implemented an algorithm that processes a string through an NFA to determine whether it is matched or not.
+We defined the building blocks of the regular expressions and learned how by applying operators (concatenation, union, and closure) we can construct more complex expressions from smaller ones. Then we learned how to compile a regular expression into its equivalent NFA then implemented an algorithm that processes a string through an NFA to determine whether it is matched or not.
 
-Thanks for reading! The complete code reference for this article is available on [GitHub](https://github.com/deniskyashif/regexjs/).
+The complete code reference for this article is available on [GitHub](https://github.com/deniskyashif/regexjs/).
 
-## References
+## Further Reading and References
 * Hopcroft, Motwani, Ullman (2001) _Introduction to Automata Theory, Languages, and Computation_ - Chapter 3: Regular Expressions and Languages
 * Aho, Lam, Sethi, Ullmann (2007) _Compilers: Principles, Techniques, and Tools_ (The Dragon Book) - Chapter 3: Lexical Analysis
 * Ken Thompson (1968) _Regular Expression Search Algorithm_
