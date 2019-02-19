@@ -7,7 +7,7 @@ main {
 }
 
 main, footer, .nav-container {
-    max-width: 968px;
+    max-width: 768px;
 }
 
 main table {
