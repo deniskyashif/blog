@@ -183,7 +183,7 @@ if (!doNotTrack) {
 
 <p>On <a href="#fig1.3">Fig 1.3</a> we can see that we have <strong>&epsilon;-transition</strong> from <em>q<sub>2</sub></em> to <em>q<sub>1</sub></em>. This &epsilon;-NFA is equivalent to the NFA in <a href="#fig1.2">Fig 1.2</a>.</p>
 
-<h2 id="from-regular-expressions-to-finite-automata">From Regular Expressions to Finite Automata</h2>
+<h2 id="compiling-regular-expressions-to-finite-automata">Compiling Regular Expressions to Finite Automata</h2>
 
 <p>The set of strings recognized by a finite automation <em>A</em> is called <strong>the language of <em>A</em></strong> and is denoted as <em>L(A)</em>. If a language can be recognized by <strong>finite automation</strong> then there&rsquo;s is a corresponding <strong>regular expression</strong> that describes the same language and vice versa (<a href="http://www.cs.may.ie/staff/jpower/Courses/Previous/parsing/node6.html">Kleene&rsquo;s Theorem</a>). The regular expression, equivalent to the automation in <a href="#fig1.1">Fig 1.1</a>  would be <strong>abb*a</strong>. In other words, regular expressions can be thought of as a <strong>user-friendly alternative</strong> to finite automata for describing patterns in text.</p>
 
@@ -194,7 +194,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 
 <p>We&rsquo;ll describe an implementation by <a href="https://en.wikipedia.org/wiki/Ken_Thompson">Ken Thompson</a> presented in his paper <em>Regular Expression Search Algorithm</em> (1968).</p>
 
-<p>To convert a regular expression <em>R</em> to an NFA we first need to parse <em>R</em> into its constituent subexpressions. The rules for constructing an NFA can be split into two parts:</p>
+<p>To compule a regular expression <em>R</em> to an NFA we first need to parse <em>R</em> into its constituent subexpressions. The rules for constructing an NFA can be split into two parts:</p>
 
 <p>1) <strong>Base</strong> rules for handling subexpressions with no operators.<br />
 2) <strong>Inductive</strong> rules for constructing larger NFAs from the smaller NFAs by applying the operators.</p>
@@ -461,7 +461,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 
 <h3 id="being-in-multiple-states-at-once">Being in multiple states at once</h3>
 
-<p>We can represent an NFA to be at multiple states at once. This approach is more complex but produces significantly better performance.</p>
+<p>We can represent an NFA to be at multiple states at once as described in Thompson&rsquo;s paper. This approach is more complex but produces significantly better performance.</p>
 
 <p>When reading a symbol from the input string, instead of transitioning one state at a time we&rsquo;ll transition into all the possible states, reachable from the current set of states. In other words, the current state of the NFA will actually become a set of states. Each turn after reading a symbol, for each state in the current set, we find the states that can be transitioned into using that symbol and mark them as the <strong>next states</strong>. So with this approach, our simulation for <strong>&ldquo;abb&rdquo;</strong> would be:</p>
 
@@ -558,11 +558,11 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
 <p>We started by learning about finite automata and how do they work. We classified them as deterministic and nondeterministic. We also introduced the concept of &epsilon;-NFAs which are a specific type of nondeterministic automata. We&rsquo;ve seen how NFAs and DFAs have the same expressive power and how they can be used for string recognition.</p>
 
-<p>We defined the building blocks of the regular expressions and learned how by applying operators (concatenation, union, and closure) we can construct more complex expressions from smaller ones. Then we learned how to convert a regular expression into its equivalent NFA then implemented an algorithm that processes a string through an NFA to determine whether it is matched or not.</p>
+<p>We defined the building blocks of the regular expressions and learned how by applying operators (concatenation, union, and closure) we can construct more complex expressions from smaller ones. Then we learned how to compile a regular expression into its equivalent NFA then implemented an algorithm that processes a string through an NFA to determine whether it is matched or not.</p>
 
-<p>Thanks for reading! The complete code reference for this article is available on <a href="https://github.com/deniskyashif/regexjs/">GitHub</a>.</p>
+<p>The complete code reference for this article is available on <a href="https://github.com/deniskyashif/regexjs/">GitHub</a>.</p>
 
-<h2 id="references">References</h2>
+<h2 id="further-reading-and-references">Further Reading and References</h2>
 
 <ul>
 <li>Hopcroft, Motwani, Ullman (2001) <em>Introduction to Automata Theory, Languages, and Computation</em> - Chapter 3: Regular Expressions and Languages</li>
@@ -648,7 +648,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-02-18 12:15:24.3144697 &#43;0200 EET m=&#43;0.196000701">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-02-19 10:18:04.4349756 &#43;0200 EET m=&#43;0.199961301">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
