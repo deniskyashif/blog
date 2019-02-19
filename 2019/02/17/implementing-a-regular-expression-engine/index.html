@@ -252,20 +252,20 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p><img id="fig4.2" src="/images/posts/2019-02-20-regex/ex-nfa-b.png" />
 <p class="text-center"><small>Figure 4.2: <em>N(b)</em>: NFA for <strong>&lsquo;b&rsquo;</strong>.</small></p></p>
 
-<p>3) Apply <em>union</em> on <em>N(a)</em> and <em>N(b)</em>.</p>
+<p>3) Apply <em>union</em> on <em>N(a)</em> and <em>N(b)</em> &rarr; <em>N(a&#8739;b)</em></p>
 
 <p><img id="fig4.3" src="/images/posts/2019-02-20-regex/ex-union-na-nb.png" />
-<p class="text-center"><small>Figure 4.3: Union of <em>N(a)</em> and <em>N(b)</em>.</small></p></p>
+<p class="text-center"><small>Figure 4.3: <em>N(a&#8739;b)</em>: Union of <em>N(a)</em> and <em>N(b)</em>.</small></p></p>
 
-<p>4) Apply <em>closure</em> on <em>N(a&#8739;b)</em></p>
+<p>4) Apply <em>closure</em> on <em>N(a&#8739;b)</em> &rarr; <em>N((a&#8739;b)*)</em></p>
 
 <p><img id="fig4.4" src="/images/posts/2019-02-20-regex/ex-closure-nab.png" />
-<p class="text-center"><small>Figure 4.4: Closure of <em>N(a&#8739;b)</em>.</small></p></p>
+<p class="text-center"><small>Figure 4.4: <em>N((a&#8739;b)*)</em>: Closure of <em>N(a&#8739;b)</em>.</small></p></p>
 
-<p>5) Apply <em>concatenation</em> of <em>N((a&#8739;b)*)</em> with <em>N(c)</em></p>
+<p>5) Apply <em>concatenation</em> of <em>N((a&#8739;b)*)</em> with <em>N(c)</em>. The construction of <em>N(c)</em> is analogous to steps 1) and 2).</p>
 
 <p><img id="fig4.5" src="/images/posts/2019-02-20-regex/ex-concat-nabc.png" />
-<p class="text-center"><small>Figure 4.5: NFA for the expression of <em>(a&#8739;b)*c</em>.</small></p></p>
+<p class="text-center"><small>Figure 4.5: <em>N((a&#8739;b)*c)</em>: NFA for the expression of <em>(a&#8739;b)*c</em>.</small></p></p>
 
 <h3 id="parsing-a-regular-expression">Parsing a regular expression</h3>
 
@@ -648,7 +648,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-02-19 10:18:04.4349756 &#43;0200 EET m=&#43;0.199961301">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-02-20 00:00:43.3042927 &#43;0200 EET m=&#43;0.230831901">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
