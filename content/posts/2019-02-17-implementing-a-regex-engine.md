@@ -114,20 +114,20 @@ Let's go through an example case. We want to construct an NFA for **(a&#8739;b)*
 <img id="fig4.2" src="/images/posts/2019-02-20-regex/ex-nfa-b.png" />
 <p class="text-center"><small>Figure 4.2: _N(b)_: NFA for **'b'**.</small></p>
 
-3) Apply _union_ on _N(a)_ and _N(b)_.
+3) Apply _union_ on _N(a)_ and _N(b)_ &rarr; _N(a&#8739;b)_
 
 <img id="fig4.3" src="/images/posts/2019-02-20-regex/ex-union-na-nb.png" />
-<p class="text-center"><small>Figure 4.3: Union of _N(a)_ and _N(b)_.</small></p>
+<p class="text-center"><small>Figure 4.3: _N(a&#8739;b)_: Union of _N(a)_ and _N(b)_.</small></p>
 
-4) Apply _closure_ on _N(a&#8739;b)_
+4) Apply _closure_ on _N(a&#8739;b)_ &rarr; _N((a&#8739;b)*)_
 
 <img id="fig4.4" src="/images/posts/2019-02-20-regex/ex-closure-nab.png" />
-<p class="text-center"><small>Figure 4.4: Closure of _N(a&#8739;b)_.</small></p>
+<p class="text-center"><small>Figure 4.4: _N((a&#8739;b)*)_: Closure of _N(a&#8739;b)_.</small></p>
 
-5) Apply _concatenation_ of _N((a&#8739;b)*)_ with _N\(c\)_
+5) Apply _concatenation_ of _N((a&#8739;b)*)_ with _N\(c\)_. The construction of _N\(c\)_ is analogous to steps 1) and 2).
 
 <img id="fig4.5" src="/images/posts/2019-02-20-regex/ex-concat-nabc.png" />
-<p class="text-center"><small>Figure 4.5: NFA for the expression of _(a&#8739;b)*c_.</small></p>
+<p class="text-center"><small>Figure 4.5: _N((a&#8739;b)*c)_: NFA for the expression of _(a&#8739;b)*c_.</small></p>
 
 ### Parsing a regular expression
 First, we need to preprocess the string by adding an explicit concatenation operator. We're going to use the dot (.) symbol, as described in the paper. So for example, the expression **abc** would be converted to **a.b.c** and **(a&#8739;b)c** wound turn into **(a&#8739;b).c**  
