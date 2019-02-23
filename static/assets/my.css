@@ -128,12 +128,23 @@ main .post .post-title {
 }
 
 .speaking ul {
-    padding-left: 5px;
-    list-style: circle inside;
+    padding-left: 0px;
+    margin: 5px 0 0 0;
+    list-style: none inside;
 }
 
-.speaking ul > li {
-    /* list-style-type: circle; */
+.speaking ul li:before {
+    content: '\FF0A';
+}
+
+.interests {
+
+    margin: 0 0 10px 0;
+    list-style: none inside;
+}
+
+.interests li:before {
+    content: '\FF0A';
 }
 
 .post {
@@ -146,4 +157,8 @@ main .post .post-title {
 
 .post-info .tags > a:last-child::after {
     content: "";
+}
+
+.catalogue .catalogue-item {
+    padding: 1rem 0;
 }
