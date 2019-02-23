@@ -129,11 +129,8 @@ main .post .post-title {
 
 .speaking ul {
     padding-left: 5px;
+    margin: 5px 0 0 0;
     list-style: circle inside;
-}
-
-.speaking ul > li {
-    /* list-style-type: circle; */
 }
 
 .post {
@@ -146,4 +143,8 @@ main .post .post-title {
 
 .post-info .tags > a:last-child::after {
     content: "";
+}
+
+.catalogue .catalogue-item {
+    padding: 1rem 0;
 }
