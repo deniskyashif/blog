@@ -2,16 +2,16 @@
 title: "Implementing a Regular Expression Engine"
 date: 2019-02-17T15:05:00+02:00
 draft: false
-tags: ["regular-expression", "parser", "compiler", "finite-state-machine", "javascript"]
+tags: ["regex", "parser", "compiler", "finite-state-machine", "javascript"]
 useMath: true
-summary: "Using the Thompson construction algorithm."
+summary: "Using the Thompson's construction algorithm."
 description: "This article describes how to implement a simple and efficient regular expression engine following the Thompson's construction algorithm."
 ---
     
 Understanding and using regular expressions properly is a valuable skill when it comes to text processing. Due to their declarative yet idiomatic syntax, regular expressions can sometimes be a source of confusion (even [anxiety](https://stackoverflow.com/questions/172303/is-there-a-regular-expression-to-detect-a-valid-regular-expression)) amongst software developers. In this article, we'll implement a simple and efficient regex engine. We'll define the syntax of our regular expressions, learn how to parse them and build our recognizer. First, we'll briefly cover some theoretical foundations.
 
 ## Finite Automata
-In informal terms **finite automation** (or **finite state machine**) is an abstract machine that  has states and transitions between these states. It is always in one of its states and while it reads an input it switches from state to state. It has a start state and can have one or more end (accepting) states.
+In informal terms **finite automation** (or **finite state machine**) is an abstract machine that  has states and transitions between these states. It is always in one of its states and while it reads an input it switches from state to state. It has a **start state** and can have one or more **end (accepting) states**.
 
 ### Deterministic Finite Automata (DFA)
 

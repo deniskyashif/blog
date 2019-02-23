@@ -7,98 +7,78 @@ layout: page
 I've had the privilege to speak at various conferences and events. This is a list of my topics and some resources:
 
 <dl class="speaking">
-    <div>
-        <dt>
-            <strong>
-                Scalable Angular Applications
-            </strong>
-            <br/>
+    <div class="topic">
+        <div>
+            <h2>Scalable Angular Applications</h2>
             <span>
                 <a href="https://speakerdeck.com/deniskyashif/scalable-angular-applications">[slides]</a>
                 <a href="https://www.youtube.com/watch?v=KM7fbLkliug">[video]</a>
                 <a href="/2019/01/26/scalable-angular-apps-at-devreach-2018/">[post]</a>
                 <a href="https://github.com/deniskyashif/instructor-hub">[demo]</a>
             </span>
-        </dt>
-        <dd>
-            DevReach 2018 - Sofia, Bulgaria
-        </dd>
+        </div>
+        <ul>
+            <li>DevReach 2018 - <img class="country-flag" src="/images/country-flags/Bulgaria24x24.png" /> Sofia, Bulgaria</li>
+        </ul>
     </div>
-    <div>
-        <dt>
-            <strong>
-                Machine Comprehension using Commonsense Knowledge
-            </strong>
-            <br/>
+    <div class="topic">
+        <div>
+            <h2>Machine Comprehension using Commonsense Knowledge</h2>
             <span>
                 <a href="https://docs.google.com/presentation/d/1bGCDwdnw2b8BNyfCX6yDkRkF1pxti8g1Ls4IUJvu4GU/edit?usp=sharing">[slides]</a>
                 <a href="https://github.com/deniskyashif/sweet-reason/blob/master/research/abstract.pdf">[paper]</a>
                 <a href="https://github.com/deniskyashif/sweet-reason">[project]</a> 
             </span>
-        </dt>
-        <dd>
-            European Summer School in Logic, Language and Information (ESSLLI) 2018 - Sofia, BG
-        </dd>
+        </div>
+        <ul>
+            <li>European Summer School in Logic, Language and Information 2018 - <img class="country-flag" src="/images/country-flags/Bulgaria24x24.png" /> Sofia, Bulgaria</li>
+        </ul>
     </div>
-    <div>
-        <dt>
-            <strong>
-                Ensuring a Smooth Sitefinity Upgrade
-            </strong>
-            <br/>
+    <div class="topic">
+        <div>
+            <h2>Ensuring a Smooth Sitefinity Upgrade</h2>
             <span>
                 <a href="https://speakerdeck.com/deniskyashif/make-your-sitefinity-update-seamless-progressnext-2018">[slides]</a>
             </span>
-        </dt>
-        <dd>
-            Progress NEXT 2018 - Boston, MA
-        </dd>
+        </div>
+        <ul>
+            <li>Progress NEXT 2018 - <img class="country-flag" src="/images/country-flags/United-States24x24.png" /> Boston, MA</li>
+        </ul>
     </div>
-    <div>
-        <dt>
-            <strong>
-                Statically Typed JavaScript - TypeScript & Flow
-            </strong>
-            <br/>
+    <div class="topic">
+        <div>
+            <h2>Statically Typed JavaScript - TypeScript & Flow</h2>
             <span>
                 <a href="https://speakerdeck.com/deniskyashif/statically-typed-javascript">[slides]</a>
                 <a href="/2017/11/21/impressions-from-emea-pug-challenge-2017/">[post]</a>
             </span>
-        </dt>
-        <dd>
-            PUG Challenge EMEA 2017 - Prague, Czech Republic
-        </dd>
+        </div>
+        <ul>
+            <li>PUG Challenge EMEA 2017 - <img class="country-flag" src="/images/country-flags/Czech-Republic24x24.png" /> Prague, Czech Republic</li>
+        </ul>
     </div>
-    <div>
-        <dt>
-            <strong>
-                Understanding Kendo UI for JQuery
-            </strong>
-            <br/>
+    <div class="topic">
+        <div>
+            <h2>Understanding Kendo UI for jQuery</h2>
             <span>
                 <a href="https://speakerdeck.com/deniskyashif/understanding-kendo-ui-for-jquery">[slides]</a>
                 <a href="/2017/11/21/impressions-from-emea-pug-challenge-2017/">[post]</a>
             </span>
-        </dt>
-        <dd>
-            PUG Challenge EMEA 2017 - Prague, Czech Republic
-        </dd>
+        </div>
+        <ul>
+            <li>PUG Challenge EMEA 2017 - <img class="country-flag" src="/images/country-flags/Czech-Republic24x24.png" /> Prague, Czech Republic</li>
+        </ul>
     </div>
-    <div>
-        <dt>
-            <strong>
-                Sitefinity 101
-            </strong>
-            <br/>
+    <div class="topic">
+        <div>
+            <h2>Sitefinity 101</h2>
             <span>
                 <a href="https://deniskyashif.com/2016/10/10/impressions-from-emea-pug-challenge-2016/">[post]</a>
             </span>
-        </dt>
-        <dd>
-            PUG Challenge Americas 2016, 2017 - Manchester, NH
-        </dd>
-        <dd>
-            PUG Challenge EMEA 2016 - Noordwijk, The Netherlands
-        </dd>
+        </div>
+        <ul>
+            <li>PUG Challenge Americas 2016, 2017 - <img class="country-flag" src="/images/country-flags/United-States24x24.png" /> Manchester, NH</li>
+            <li>PUG Challenge EMEA 2016 - <img class="country-flag" src="/images/country-flags/Netherlands24x24.png" /> Noordwijk, The Netherlands</li>
+        </ul>
     </div>
 </dl>

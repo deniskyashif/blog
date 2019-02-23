@@ -109,13 +109,31 @@ main .post .post-title {
 .social-share .share-btn.reddit:hover      { background: #e54e00; }
 .social-share .share-btn.email:hover { background: #363636; }
 
-.speaking div {
+.speaking h2 {
+    margin: 5px 0;
+}
+
+.speaking .topic {
     padding: 15px 0;
     border-bottom: 1px solid #e5e5e5;
 }
 
-.speaking div:last-child {
+.speaking .topic:last-child {
     border-bottom: 0;
+}
+
+.speaking img.country-flag {
+    display: inline;
+    margin: 0 0 -5px 0;
+}
+
+.speaking ul {
+    padding-left: 5px;
+    list-style: circle inside;
+}
+
+.speaking ul > li {
+    /* list-style-type: circle; */
 }
 
 .post {
