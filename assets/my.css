@@ -1,3 +1,7 @@
+html, body {
+    overflow: hidden;
+}
+
 .nav {
     box-shadow: none;
 }
