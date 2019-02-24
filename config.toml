@@ -28,4 +28,4 @@ googleAnalytics = "UA-133185625-1"
   tags = "tags"
 
 [permalinks]
-  posts = "/:year/:month/:day/:title/"
+  posts = "/:title/"

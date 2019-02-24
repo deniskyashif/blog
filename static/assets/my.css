@@ -1,3 +1,7 @@
+html, body, h1, h2, h3, h4, h5, .post-title, .post-info, .catalogue-title, nav a, .nav-title {
+    /* font-family: -apple-system,BlinkMacSystemFont,avenir next,avenir,helvetica neue,helvetica,ubuntu,roboto,noto,segoe ui,arial,sans-serif; */
+}
+
 .nav {
     box-shadow: none;
 }
@@ -138,7 +142,6 @@ main .post .post-title {
 }
 
 .interests {
-
     margin: 0 0 10px 0;
     list-style: none inside;
 }

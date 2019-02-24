@@ -4,6 +4,8 @@ date: 2017-01-18
 draft: false
 tags: ["natural language processing", "machine translation", "azure"]
 summary: "Training a machine translation model on an Azure compute optimized VM."
+aliases:
+    - /2017/01/18/statistical-machine-translation-on-azure-vm-using-moses
 ---
 
 Lately I've been working on a side project - a statistical machine translation model (from German to English) using the [Moses SMT toolkit](http://www.statmt.org/moses/index.php?n=Main.HomePage). I've been using laptop to perform even the heavier computations, some of which even took from 6 to 8 hours. It was all manageable until the last stage, where on a reasonable machine with 4 CPU cores it was going to take more than a week to complete. So I decided to check out what Microsoft's Azure Cloud Service can offer and now after the model is complete, let me share my experience with you.
