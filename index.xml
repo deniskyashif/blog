@@ -13,29 +13,29 @@
     
     <item>
       <title>Implementing a Regular Expression Engine</title>
-      <link>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</link>
+      <link>https://deniskyashif.com/implementing-a-regular-expression-engine/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</guid>
+      <guid>https://deniskyashif.com/implementing-a-regular-expression-engine/</guid>
       <description>Understanding and using regular expressions properly is a valuable skill when it comes to text processing. Due to their declarative yet idiomatic syntax, regular expressions can sometimes be a source of confusion (even anxiety) amongst software developers. In this article, we&amp;rsquo;ll implement a simple and efficient regex engine. We&amp;rsquo;ll define the syntax of our regular expressions, learn how to parse them and build our recognizer. First, we&amp;rsquo;ll briefly cover some theoretical foundations.</description>
     </item>
     
     <item>
       <title>Scalable Angular Apps at DevReach 2018</title>
-      <link>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</link>
+      <link>https://deniskyashif.com/scalable-angular-apps-at-devreach-2018/</link>
       <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</guid>
+      <guid>https://deniskyashif.com/scalable-angular-apps-at-devreach-2018/</guid>
       <description>DevReach is one of the largest tech conferences in Eastern Europe with around 800 attendees this year. It is focused primarily on .NET and JavaScript. I had the pleasure to attend the conference as a speaker this time, talking about Scalable Angular Applications.
 I&amp;rsquo;ve been working with the framework for a while and wanted to prepare a session on the topic. It was the largest attendance I ever had on a talk so it was a challenging but also a very rewarding experience for me.</description>
     </item>
     
     <item>
       <title>Setting Up a Project With Telerik UI for ASP.NET MVC</title>
-      <link>https://deniskyashif.com/2018/03/06/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</link>
+      <link>https://deniskyashif.com/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</link>
       <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/2018/03/06/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</guid>
+      <guid>https://deniskyashif.com/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</guid>
       <description>This is a step by step guide on how to setup a project from scratch with the Telerik UI for ASP.NET MVC component suite or integrate it to an existing one.
 Download &amp;amp; Install The easiest way to install the framework is by using the Progress Control Panel which is available at your Telerik Account Page.
 Log in to the Control Panel with your Telerik account credentials and follow the installation steps for Telerik UI for ASP.</description>
@@ -43,49 +43,49 @@ Log in to the Control Panel with your Telerik account credentials and follow the
     
     <item>
       <title>Impressions from EMEA Pug Challenge 2017</title>
-      <link>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</link>
+      <link>https://deniskyashif.com/impressions-from-emea-pug-challenge-2017/</link>
       <pubDate>Tue, 21 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</guid>
+      <guid>https://deniskyashif.com/impressions-from-emea-pug-challenge-2017/</guid>
       <description>I had the pleasure to attend the annual EMEA (Progress User Group) Challenge conference. This is my second visit to this event as a speaker. I was very excited about it because I already had fond memories of the last year&amp;rsquo;s one in the Netherlands.
 The Venue The host of this year&amp;rsquo;s conference was Prague, the capital of the Czech Republic. The city is known for its amazing buildings and rich historical heritage.</description>
     </item>
     
     <item>
       <title>KendoUI TreeList Load on Demand</title>
-      <link>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</link>
+      <link>https://deniskyashif.com/kendoui-treelist-load-on-demand/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</guid>
+      <guid>https://deniskyashif.com/kendoui-treelist-load-on-demand/</guid>
       <description>The TreeList isn&amp;rsquo;t among the most popular KendoUI widgets, yet it&amp;rsquo;s very useful and functional. It displays a hierarchically structured data, where each record has an optional relation to another record. The output is a grid which renders its rows in a tree-like fashion. In this blog post we&amp;rsquo;ll see how to load the descendant items of a record on demand.
 The Problem By default the TreeList expects us to provide the complete data set on initial load.</description>
     </item>
     
     <item>
       <title>Statistical Machine Translation on Azure VM using Moses</title>
-      <link>https://deniskyashif.com/2017/01/18/statistical-machine-translation-on-azure-vm-using-moses/</link>
+      <link>https://deniskyashif.com/statistical-machine-translation-on-azure-vm-using-moses/</link>
       <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/2017/01/18/statistical-machine-translation-on-azure-vm-using-moses/</guid>
+      <guid>https://deniskyashif.com/statistical-machine-translation-on-azure-vm-using-moses/</guid>
       <description>Lately I&amp;rsquo;ve been working on a side project - a statistical machine translation model (from German to English) using the Moses SMT toolkit. I&amp;rsquo;ve been using laptop to perform even the heavier computations, some of which even took from 6 to 8 hours. It was all manageable until the last stage, where on a reasonable machine with 4 CPU cores it was going to take more than a week to complete.</description>
     </item>
     
     <item>
       <title>Impressions from EMEA PUG Challenge 2016</title>
-      <link>https://deniskyashif.com/2016/10/10/impressions-from-emea-pug-challenge-2016/</link>
+      <link>https://deniskyashif.com/impressions-from-emea-pug-challenge-2016/</link>
       <pubDate>Mon, 10 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/2016/10/10/impressions-from-emea-pug-challenge-2016/</guid>
+      <guid>https://deniskyashif.com/impressions-from-emea-pug-challenge-2016/</guid>
       <description>Last week I had the pleasure to speak at the annual EMEA PUG (Progress User Group) Challenge conference. Having my session proposal accepted I&amp;rsquo;ve been eagerly anticipating the event and as now it&amp;rsquo;s over, let me share my impressions with you.
 The three-day event is sponsored by Progress and its partners and is aimed primarily at the Progress developer community. To my delight most of the sessions were technical. Needless to say the emphasis was on established technologies like OpenEdge and 4GL.</description>
     </item>
     
     <item>
       <title>Validate any DOM element with the KendoUI validator</title>
-      <link>https://deniskyashif.com/2016/05/30/validate-any-dom-element-with-the-kendoui-validator/</link>
+      <link>https://deniskyashif.com/validate-any-dom-element-with-the-kendoui-validator/</link>
       <pubDate>Mon, 30 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/2016/05/30/validate-any-dom-element-with-the-kendoui-validator/</guid>
+      <guid>https://deniskyashif.com/validate-any-dom-element-with-the-kendoui-validator/</guid>
       <description>KendoUI&amp;rsquo;s validator allows declaring rules and easily performing client-side validation for input and textarea elements. It offers great flexibility even when it comes to complex cases, when for example input fields are interconnected. Suppose we want to validate an element other than input or textarea, then calling validate() won&amp;rsquo;t be enough.
 The Problem Let&amp;rsquo;s have a form consisting of a textarea and a grid.
 &amp;lt;form id=&amp;#34;form&amp;#34;&amp;gt; &amp;lt;textarea name=&amp;#34;text&amp;#34;&amp;gt; Our world is a magical smoke screen &amp;lt;/textarea&amp;gt; &amp;lt;div id=&amp;#34;grid&amp;#34;&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;button id=&amp;#34;validate&amp;#34;&amp;gt;Validate&amp;lt;/button&amp;gt; &amp;lt;/form&amp;gt; We want to ensure the textarea&amp;rsquo;s value is not longer than 20 characters and the grid contains at least two rows.</description>
@@ -93,10 +93,10 @@ The Problem Let&amp;rsquo;s have a form consisting of a textarea and a grid.
     
     <item>
       <title>Bring .NET Development into your favourite editor with Omnisharp</title>
-      <link>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</link>
+      <link>https://deniskyashif.com/bring-.net-development-into-your-favourite-editor-with-omnisharp/</link>
       <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</guid>
+      <guid>https://deniskyashif.com/bring-.net-development-into-your-favourite-editor-with-omnisharp/</guid>
       <description>This year the .NET ecosystem welcomed DNX (.NET Execution Environment). Now developers are able to compile to and execute MSIL code on any operating system. This led to the increase of the framework&amp;rsquo;s popularity in places where Visual Studio isn&amp;rsquo;t available. Also the emergence of Roslyn, the new .NET compiler platform, which exposes all the compile stages via an API, allowed powerful code analysis tools to be easily written. This unleashed the development of some amazing projects like Omnisharp.</description>
     </item>
     

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<title>
+		Statistical Machine Translation on Azure VM using Moses &middot; Denis Kyashif&#39;s Blog
+	</title>
+	
+	
+  	<link rel="stylesheet" href="/css/style.css" />    
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/my.css">    
+	
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+	
+	
+	<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
+    <meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png"/>
+    <meta property="og:title" content="Statistical Machine Translation on Azure VM using Moses" />
+<meta property="og:description" content="Lately I&rsquo;ve been working on a side project - a statistical machine translation model (from German to English) using the Moses SMT toolkit. I&rsquo;ve been using laptop to perform even the heavier computations, some of which even took from 6 to 8 hours. It was all manageable until the last stage, where on a reasonable machine with 4 CPU cores it was going to take more than a week to complete." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://deniskyashif.com/statistical-machine-translation-on-azure-vm-using-moses/" /><meta property="article:published_time" content="2017-01-18T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2017-01-18T00:00:00&#43;00:00"/>
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-133185625-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+</head>
+
+    <body>
+        <a href="https://github.com/deniskyashif/blog" class="github-corner" target="_blank" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<nav class="nav">
+	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
+		<ul>
+    <li><a href="/">Posts</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/speaking">Speaking</a></li>
+</ul>
+
+	</div>
+</nav>
+
+        
+
+<main>
+	<div class="post">
+		<div class="post-info">
+    <time datetime="2017-01-18 00:00:00 &#43;0000 UTC">January 18, 2017</time>
+
+    
+    <div class="tags">
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/natural-language-processing/" class="tag">natural language processing</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/machine-translation/" class="tag">machine translation</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/azure/" class="tag">azure</a>
+        
+        
+    </div>
+</div>
+
+		<h1 class="post-title">Statistical Machine Translation on Azure VM using Moses</h1>
+<div class="post-line"></div>
+
+		
+
+		
+
+<p>Lately I&rsquo;ve been working on a side project - a statistical machine translation model (from German to English) using the <a href="http://www.statmt.org/moses/index.php?n=Main.HomePage">Moses SMT toolkit</a>. I&rsquo;ve been using laptop to perform even the heavier computations, some of which even took from 6 to 8 hours. It was all manageable until the last stage, where on a reasonable machine with 4 CPU cores it was going to take more than a week to complete. So I decided to check out what Microsoft&rsquo;s Azure Cloud Service can offer and now after the model is complete, let me share my experience with you.</p>
+
+<h2 id="creating-a-machine-translation-model">Creating a Machine Translation Model</h2>
+
+<p>In statistical machine translation (SMT), translation models are trained on large quantities of parallel data, which is a collection of aligned sentences in two different languages, in that each sentence in one language is matched with its corresponding translated sentence in the other language. We can split the implementation of a such model into 4 main stages:</p>
+
+<h3 id="preparing-the-data">Preparing the Data</h3>
+
+<p>The input data has to be split for training (90%), testing (5%) and tuning (5%), also cleaned from bad symbols and tokenized. By tokenizing in this case I mean the process of breaking the text string into words. For example if we have a word which is immediately followed by a punctuation mark - they have to be separated by a whitespace, otherwise they will be considered a single unit which will decrease the translation quality (<em>&ldquo;then,&rdquo;</em> -&gt; <em>&ldquo;then ,&rdquo;</em>). We also have to prepare a <a href="https://en.wikipedia.org/wiki/Language_model">language model</a> of the target language which is going to be used at a later stage when translating.</p>
+
+<h3 id="training">Training</h3>
+
+<p>The training process in <a href="http://http//www.statmt.org/moses/index.php?n=Main.HomePage">Moses</a> takes in the parallel corpus and uses coocurrences of words and segments(phrases) to infer translation correspondences between the two languages of interest. As a result we get a <a href="http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases">phrase table</a>. It may take some time to compute, in my case with 200MB of input data on a laptop I had to wait for 10 hours to complete. More about the inner workings of the decoding mechanism can be found <a href="http://www.statmt.org/moses/?n=moses.background">here</a>.</p>
+
+<h3 id="testing">Testing</h3>
+
+<p>After the model has been trained, we can use the efficient search algorithm implemented in Moses to quickly find the highest probability translation among the exponential number of choices. This is also called decoding. Here we can translate the testing data and check the translation quality score by using a variety of methods. The one I&rsquo;ve used is called <a href="https://en.wikipedia.org/wiki/BLEU">BLEU</a> and is incorporated in Moses.</p>
+
+<h3 id="tuning">Tuning</h3>
+
+<p>The final step in the creation of the machine translation model is the parameter tuning, where the different statistical models are weighted against each other to produce the best possible translations. The part of the corpus allocated for tuning gets translated and the model weights get readjusted. The process repeats until there is a considerable improvement in the translation score. Each iteration takes a lot of time on its own and the task is expected to make around 15 iterations on average until a good local maximum is found. This is the most computationally intensive stage as it can take days even weeks depending on the input data and the hardware.</p>
+
+<h2 id="choosing-a-vm-for-the-tuning-process">Choosing a VM for the Tuning Process</h2>
+
+<p>We can choose from a <a href="https://azure.microsoft.com/en-gb/pricing/details/virtual-machines/linux/">variety</a> of machines depending on the needs. There&rsquo;re &ldquo;General Purpose&rdquo;, &ldquo;Compute Optimized&rdquo;, &ldquo;Memory Optimized&rdquo;, &ldquo;GPU&rdquo; and &ldquo;High Performance Compute&rdquo; configurations so I went for the F Series (Compute Optimized) instance F16s with 16 Core Intel Xeon CPU and 32GB of RAM and Ubuntu as OS. Of course we&rsquo;re provided with the option to change the configuration at any time should we decide that the current one doesn&rsquo;t fit our needs. For those of you who want to geek out Microsoft offers a <a href="https://azure.microsoft.com/en-us/trial/free-trial-virtual-machines/">free trial</a>.</p>
+
+<h2 id="the-tuning">The Tuning</h2>
+
+<p>This was the most satisfying part. Fortunately, the Moses Decoder is highly parallelizable so I was able to utilize all of the 16 cores on the machine. The process was a pleasure to watch :).</p>
+
+<p><img src="/images/posts/2017-01-18-smt-moses-azure/moses-on-azure-16core.jpg" alt="Moses htop" title="htop" /></p>
+
+<p>Luckily, it made 9 iterations and stopped. It took around 27 hours which on my machine would probably have taken more than a week so I was very pleased with the results. I am now able to translate small to medium length German sentences into English fairly accurately, yet there&rsquo;s still a long way to go until it matches the commercial systems in terms of translation quality.</p>
+
+<p><img src="/images/posts/2017-01-18-smt-moses-azure/translation.png" alt="Translation" title="en-de" /></p>
+
+<p>You can check out the scripts for creating the model on <a href="https://github.com/deniskyashif/smt-moses">GitHub</a>.</p>
+
+
+		<section class="social-share">
+    
+    
+    <a href="//twitter.com/share?url=https%3a%2f%2fdeniskyashif.com%2fstatistical-machine-translation-on-azure-vm-using-moses%2f&amp;text=Statistical%20Machine%20Translation%20on%20Azure%20VM%20using%20Moses&amp;via=deniskyashif" target="_blank" class="share-btn twitter">
+        <i class="fa fa-2x fa-twitter"></i>
+    </a>
+    
+    
+    
+    <a href="//reddit.com/submit?url=https%3a%2f%2fdeniskyashif.com%2fstatistical-machine-translation-on-azure-vm-using-moses%2f&amp;title=Statistical%20Machine%20Translation%20on%20Azure%20VM%20using%20Moses" target="_blank" class="share-btn reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    
+    
+    
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdeniskyashif.com%2fstatistical-machine-translation-on-azure-vm-using-moses%2f" target="_blank" class="share-btn facebook">
+        <i class="fa fa-2x fa-facebook"></i>
+    </a>
+    
+    
+    
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fdeniskyashif.com%2fstatistical-machine-translation-on-azure-vm-using-moses%2f&amp;title=Statistical%20Machine%20Translation%20on%20Azure%20VM%20using%20Moses" target="_blank" class="share-btn linkedin">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:?subject=Check out 'Statistical%20Machine%20Translation%20on%20Azure%20VM%20using%20Moses' by Denis%20Kyashif&amp;body=https%3a%2f%2fdeniskyashif.com%2fstatistical-machine-translation-on-azure-vm-using-moses%2f" target="_blank" class="share-btn email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    
+</section>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "deniskyashif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	</div>
+
+	<div class="pagination">
+		<a href="/impressions-from-emea-pug-challenge-2016/" class="left arrow">&#8592;</a>
+		<a href="/kendoui-treelist-load-on-demand/" class="right arrow">&#8594;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+</main>
+
+
+        <footer>
+	<span>
+		&copy; <time datetime="2019-02-24 11:24:14.4015201 &#43;0200 EET m=&#43;0.185065901">2019</time> Denis Kyashif
+	</span>
+    <br/>
+</footer>
+
+    </body>
+</html>

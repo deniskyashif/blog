@@ -13,10 +13,10 @@
     
     <item>
       <title>Setting Up a Project With Telerik UI for ASP.NET MVC</title>
-      <link>https://deniskyashif.com/2018/03/06/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</link>
+      <link>https://deniskyashif.com/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</link>
       <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/2018/03/06/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</guid>
+      <guid>https://deniskyashif.com/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</guid>
       <description>This is a step by step guide on how to setup a project from scratch with the Telerik UI for ASP.NET MVC component suite or integrate it to an existing one.
 Download &amp;amp; Install The easiest way to install the framework is by using the Progress Control Panel which is available at your Telerik Account Page.
 Log in to the Control Panel with your Telerik account credentials and follow the installation steps for Telerik UI for ASP.</description>
@@ -24,10 +24,10 @@ Log in to the Control Panel with your Telerik account credentials and follow the
     
     <item>
       <title>Bring .NET Development into your favourite editor with Omnisharp</title>
-      <link>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</link>
+      <link>https://deniskyashif.com/bring-.net-development-into-your-favourite-editor-with-omnisharp/</link>
       <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</guid>
+      <guid>https://deniskyashif.com/bring-.net-development-into-your-favourite-editor-with-omnisharp/</guid>
       <description>This year the .NET ecosystem welcomed DNX (.NET Execution Environment). Now developers are able to compile to and execute MSIL code on any operating system. This led to the increase of the framework&amp;rsquo;s popularity in places where Visual Studio isn&amp;rsquo;t available. Also the emergence of Roslyn, the new .NET compiler platform, which exposes all the compile stages via an API, allowed powerful code analysis tools to be easily written. This unleashed the development of some amazing projects like Omnisharp.</description>
     </item>
     
