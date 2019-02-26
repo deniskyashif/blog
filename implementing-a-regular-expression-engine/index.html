@@ -236,7 +236,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 
 <p>We introduce <em>i</em> as start and <em>f</em> as an accepting state. We add &epsilon;-transitions: from <em>i</em> to <em>f</em>, from <em>i</em> to the start state of <em>N(S)</em>, then we connect the accepting state of <em>N(S)</em> with <em>f</em> and finally add a transition from the end state of <em>N(S)</em> to its start state. We mark the end state of <em>N(S)</em> as intermediate.</p>
 
-<p>The <em>closure (*)</em> operator has the highest precedence, followed by <em>union (&#8739;)</em>. The <em>concatenation</em> is the operation with the lowest precedence. Modern regex implementations have additional operators like <em>&plus;</em> (one or more), <em>?</em> (zero or one), their implementation, however, is analogous to the ones above and we&rsquo;ll skip them for the sake of brevity.</p>
+<p>The <em>closure (*)</em> operator has the highest precedence, followed by concatenation. The <em>union (&#8739;)</em> is the operation with the lowest precedence. Modern regex implementations have additional operators like <em>&plus;</em> (one or more), <em>?</em> (zero or one), their implementation, however, is analogous to the ones above and we&rsquo;ll skip them for the sake of brevity.</p>
 
 <h4 id="example">Example</h4>
 
@@ -648,7 +648,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-02-24 11:24:14.3985209 &#43;0200 EET m=&#43;0.182066701">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-02-26 15:47:00.4881518 &#43;0200 EET m=&#43;0.236003701">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
