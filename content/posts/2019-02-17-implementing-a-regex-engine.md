@@ -61,7 +61,7 @@ We'll describe an implementation by [Ken Thompson](https://en.wikipedia.org/wiki
 
 To compule a regular expression _R_ to an NFA we first need to parse _R_ into its constituent subexpressions. The rules for constructing an NFA can be split into two parts:  
 
-1) **Base** rules for handling subexpressions with no operators.   
+1) **Base** rules for handling subexpressions with no operators.  
 2) **Inductive** rules for constructing larger NFAs from the smaller NFAs by applying the operators.
 
 
@@ -101,7 +101,7 @@ c) **Closure (Kleenee Star)**: _R = S*_
 
 We introduce _i_ as start and _f_ as an accepting state. We add &epsilon;-transitions: from _i_ to _f_, from _i_ to the start state of _N(S)_, then we connect the accepting state of _N(S)_ with _f_ and finally add a transition from the end state of _N(S)_ to its start state. We mark the end state of _N(S)_ as intermediate.
 
-The _closure (*)_ operator has the highest precedence, followed by _union (&#8739;)_. The _concatenation_ is the operation with the lowest precedence. Modern regex implementations have additional operators like _&plus;_ (one or more), _?_ (zero or one), their implementation, however, is analogous to the ones above and we'll skip them for the sake of brevity.
+The _closure (*)_ operator has the highest precedence, followed by concatenation. The _union (&#8739;)_ is the operation with the lowest precedence. Modern regex implementations have additional operators like _&plus;_ (one or more), _?_ (zero or one), their implementation, however, is analogous to the ones above and we'll skip them for the sake of brevity.
 
 #### Example
 Let's go through an example case. We want to construct an NFA for **(a&#8739;b)*c**. The language of this expression contains all the strings that have zero or more **'a'**s or **'b'**s and end with **'c'**. Just like in arithmetic expressions, we use brackets to explicitly specify the operator precedence. We break the expression into its atomic subexpressions and build our way up. By the order of precedence we:
@@ -132,13 +132,13 @@ Let's go through an example case. We want to construct an NFA for **(a&#8739;b)*
 <p class="text-center"><small>Figure 4.5: _N((a&#8739;b)*c)_: NFA for the expression of _(a&#8739;b)*c_.</small></p>
 
 ### Parsing a regular expression
-First, we need to preprocess the string by adding an explicit concatenation operator. We're going to use the dot (.) symbol, as described in the paper. So for example, the expression **abc** would be converted to **a.b.c** and **(a&#8739;b)c** wound turn into **(a&#8739;b).c**  
+First, we need to preprocess the string by adding an explicit concatenation operator. We're going to use the dot (.) symbol, as described in the paper. So for example, the expression **abc** would be converted to **a.b.c** and **(a&#8739;b)c** wound turn into **(a&#8739;b).c** You can find an implementation [here](https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1).
 
 The modern implementations use the dot character as "any" metacharacter. They would also probably build the NFA during parsing instead of creating a postfix expression still doing it this way would let us understand the process more clearly.
 
 There are several ways of parsing a regular expression. We'll follow through Thompson's original paper and that is by converting our expression from **infix** into **postfix** notation. This way we can easily apply the operators in the defined order of precedence.
 
-We won't delve into the technical details of this algorithm. You can check my implementation in less than 40 lines of javascript [here](https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1) and a neat explanation with more examples [here](https://en.wikipedia.org/wiki/Shunting-yard_algorithm).
+We won't delve into the technical details of this algorithm. You can check my implementation in less than 40 lines of javascript [here](https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L36) and a neat explanation with more examples [here](https://en.wikipedia.org/wiki/Shunting-yard_algorithm).
 
 ### Constructing the NFA
 We represent an **NFA state** as an object with the following properties:
