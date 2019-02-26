@@ -269,13 +269,13 @@ For instance, in the arithmetic algebra we start with constants such as integers
 
 <h3 id="parsing-a-regular-expression">Parsing a regular expression</h3>
 
-<p>First, we need to preprocess the string by adding an explicit concatenation operator. We&rsquo;re going to use the dot (.) symbol, as described in the paper. So for example, the expression <strong>abc</strong> would be converted to <strong>a.b.c</strong> and <strong>(a&#8739;b)c</strong> wound turn into <strong>(a&#8739;b).c</strong></p>
+<p>First, we need to preprocess the string by adding an explicit concatenation operator. We&rsquo;re going to use the dot (.) symbol, as described in the paper. So for example, the expression <strong>abc</strong> would be converted to <strong>a.b.c</strong> and <strong>(a&#8739;b)c</strong> wound turn into <strong>(a&#8739;b).c</strong> You can find an implementation <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1">here</a>.</p>
 
 <p>The modern implementations use the dot character as &ldquo;any&rdquo; metacharacter. They would also probably build the NFA during parsing instead of creating a postfix expression still doing it this way would let us understand the process more clearly.</p>
 
 <p>There are several ways of parsing a regular expression. We&rsquo;ll follow through Thompson&rsquo;s original paper and that is by converting our expression from <strong>infix</strong> into <strong>postfix</strong> notation. This way we can easily apply the operators in the defined order of precedence.</p>
 
-<p>We won&rsquo;t delve into the technical details of this algorithm. You can check my implementation in less than 40 lines of javascript <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1">here</a> and a neat explanation with more examples <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">here</a>.</p>
+<p>We won&rsquo;t delve into the technical details of this algorithm. You can check my implementation in less than 40 lines of javascript <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L36">here</a> and a neat explanation with more examples <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">here</a>.</p>
 
 <h3 id="constructing-the-nfa">Constructing the NFA</h3>
 
@@ -648,7 +648,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-02-26 15:47:00.4881518 &#43;0200 EET m=&#43;0.236003701">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-02-26 16:03:47.5649473 &#43;0200 EET m=&#43;0.198999401">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
