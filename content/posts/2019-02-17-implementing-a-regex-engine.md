@@ -59,7 +59,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 
 We'll describe an implementation by [Ken Thompson](https://en.wikipedia.org/wiki/Ken_Thompson) presented in his paper _Regular Expression Search Algorithm_ (1968). 
 
-To compule a regular expression _R_ to an NFA we first need to parse _R_ into its constituent subexpressions. The rules for constructing an NFA can be split into two parts:  
+To compile a regular expression _R_ to an NFA we first need to parse _R_ into its constituent subexpressions. The rules for constructing an NFA can be split into two parts:  
 
 1) **Base** rules for handling subexpressions with no operators.  
 2) **Inductive** rules for constructing larger NFAs from the smaller NFAs by applying the operators.
