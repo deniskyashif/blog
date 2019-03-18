@@ -94,7 +94,7 @@ b) **Concatenation**: _R = ST_
 
 We mark the accepting state of _N(S)_ as not accepting and add a transition from it to the start state of _N(T)_. Here _i_ denotes the start state of _N(S)_ and _f_ denotes the accepting state of _N(T)_. This would result in an NFA that recognizes all the string concatenations _vw_ where _v_ belongs to _L(S)_ and _w_ belongs to _L(T)_.
 
-c) **Closure (Kleenee Star)**: _R = S*_
+c) **Closure (Kleene Star)**: _R = S*_
 
 <img id="fig3.3" src="/images/posts/2019-02-20-regex/closure.png" />
 <p class="text-center"><small>Figure 3.3: NFA for the closure of a regular expression.</small></p>
