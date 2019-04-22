@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Kendoui on Denis Kyashif&#39;s Blog</title>
+    <title>kendoui on Denis Kyashif&#39;s Blog</title>
     <link>https://deniskyashif.com/tags/kendoui/</link>
-    <description>Recent content in Kendoui on Denis Kyashif&#39;s Blog</description>
+    <description>Recent content in kendoui on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 20 Jun 2017 00:00:00 +0000</lastBuildDate>
@@ -17,8 +17,7 @@
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/kendoui-treelist-load-on-demand/</guid>
-      <description>The TreeList isn&amp;rsquo;t among the most popular KendoUI widgets, yet it&amp;rsquo;s very useful and functional. It displays a hierarchically structured data, where each record has an optional relation to another record. The output is a grid which renders its rows in a tree-like fashion. In this blog post we&amp;rsquo;ll see how to load the descendant items of a record on demand.
-The Problem By default the TreeList expects us to provide the complete data set on initial load.</description>
+      <description>How to lazily load the descendant items of a record in a TreeList.</description>
     </item>
     
     <item>
@@ -27,9 +26,7 @@ The Problem By default the TreeList expects us to provide the complete data set 
       <pubDate>Mon, 30 May 2016 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/validate-any-dom-element-with-the-kendoui-validator/</guid>
-      <description>KendoUI&amp;rsquo;s validator allows declaring rules and easily performing client-side validation for input and textarea elements. It offers great flexibility even when it comes to complex cases, when for example input fields are interconnected. Suppose we want to validate an element other than input or textarea, then calling validate() won&amp;rsquo;t be enough.
-The Problem Let&amp;rsquo;s have a form consisting of a textarea and a grid.
-&amp;lt;form id=&amp;#34;form&amp;#34;&amp;gt; &amp;lt;textarea name=&amp;#34;text&amp;#34;&amp;gt; Our world is a magical smoke screen &amp;lt;/textarea&amp;gt; &amp;lt;div id=&amp;#34;grid&amp;#34;&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;button id=&amp;#34;validate&amp;#34;&amp;gt;Validate&amp;lt;/button&amp;gt; &amp;lt;/form&amp;gt; We want to ensure the textarea&amp;rsquo;s value is not longer than 20 characters and the grid contains at least two rows.</description>
+      <description>Not only inputs.</description>
     </item>
     
   </channel>

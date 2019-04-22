@@ -6,58 +6,13 @@
     <description>Recent content in Tags on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 17 Feb 2019 15:05:00 +0200</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>.Net</title>
-      <link>https://deniskyashif.com/tags/.net/</link>
-      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/.net/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Angular</title>
-      <link>https://deniskyashif.com/tags/angular/</link>
-      <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/angular/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Aspnet</title>
-      <link>https://deniskyashif.com/tags/aspnet/</link>
-      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/aspnet/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Azure</title>
-      <link>https://deniskyashif.com/tags/azure/</link>
-      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/azure/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>C#</title>
-      <link>https://deniskyashif.com/tags/c#/</link>
-      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/c#/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Compiler</title>
+      <title>compiler</title>
       <link>https://deniskyashif.com/tags/compiler/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
@@ -66,16 +21,7 @@
     </item>
     
     <item>
-      <title>Conference</title>
-      <link>https://deniskyashif.com/tags/conference/</link>
-      <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/conference/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Finite State Machine</title>
+      <title>finite-state-machine</title>
       <link>https://deniskyashif.com/tags/finite-state-machine/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
@@ -84,7 +30,7 @@
     </item>
     
     <item>
-      <title>Javascript</title>
+      <title>javascript</title>
       <link>https://deniskyashif.com/tags/javascript/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
@@ -93,43 +39,7 @@
     </item>
     
     <item>
-      <title>Kendoui</title>
-      <link>https://deniskyashif.com/tags/kendoui/</link>
-      <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/kendoui/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Machine Translation</title>
-      <link>https://deniskyashif.com/tags/machine-translation/</link>
-      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/machine-translation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Natural Language Processing</title>
-      <link>https://deniskyashif.com/tags/natural-language-processing/</link>
-      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/natural-language-processing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Omnisharp</title>
-      <link>https://deniskyashif.com/tags/omnisharp/</link>
-      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/omnisharp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Parser</title>
+      <title>parser</title>
       <link>https://deniskyashif.com/tags/parser/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
@@ -138,7 +48,7 @@
     </item>
     
     <item>
-      <title>Regex</title>
+      <title>regex</title>
       <link>https://deniskyashif.com/tags/regex/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
@@ -147,16 +57,25 @@
     </item>
     
     <item>
-      <title>Roslyn</title>
-      <link>https://deniskyashif.com/tags/roslyn/</link>
-      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      <title>angular</title>
+      <link>https://deniskyashif.com/tags/angular/</link>
+      <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/tags/roslyn/</guid>
+      <guid>https://deniskyashif.com/tags/angular/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Speaking</title>
+      <title>conference</title>
+      <link>https://deniskyashif.com/tags/conference/</link>
+      <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/conference/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>speaking</title>
       <link>https://deniskyashif.com/tags/speaking/</link>
       <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
       
@@ -165,11 +84,92 @@
     </item>
     
     <item>
-      <title>Telerik</title>
+      <title>.net</title>
+      <link>https://deniskyashif.com/tags/.net/</link>
+      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/.net/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>aspnet</title>
+      <link>https://deniskyashif.com/tags/aspnet/</link>
+      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/aspnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>telerik</title>
       <link>https://deniskyashif.com/tags/telerik/</link>
       <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/tags/telerik/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kendoui</title>
+      <link>https://deniskyashif.com/tags/kendoui/</link>
+      <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/kendoui/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>azure</title>
+      <link>https://deniskyashif.com/tags/azure/</link>
+      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/azure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>machine translation</title>
+      <link>https://deniskyashif.com/tags/machine-translation/</link>
+      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/machine-translation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>natural language processing</title>
+      <link>https://deniskyashif.com/tags/natural-language-processing/</link>
+      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/natural-language-processing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>c#</title>
+      <link>https://deniskyashif.com/tags/c#/</link>
+      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/c#/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>omnisharp</title>
+      <link>https://deniskyashif.com/tags/omnisharp/</link>
+      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/omnisharp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>roslyn</title>
+      <link>https://deniskyashif.com/tags/roslyn/</link>
+      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/roslyn/</guid>
       <description></description>
     </item>
     

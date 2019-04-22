@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Aspnet on Denis Kyashif&#39;s Blog</title>
+    <title>aspnet on Denis Kyashif&#39;s Blog</title>
     <link>https://deniskyashif.com/tags/aspnet/</link>
-    <description>Recent content in Aspnet on Denis Kyashif&#39;s Blog</description>
+    <description>Recent content in aspnet on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 06 Mar 2018 00:00:00 +0000</lastBuildDate>
@@ -17,9 +17,7 @@
       <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</guid>
-      <description>This is a step by step guide on how to setup a project from scratch with the Telerik UI for ASP.NET MVC component suite or integrate it to an existing one.
-Download &amp;amp; Install The easiest way to install the framework is by using the Progress Control Panel which is available at your Telerik Account Page.
-Log in to the Control Panel with your Telerik account credentials and follow the installation steps for Telerik UI for ASP.</description>
+      <description>This is a step by step guide on how to setup a project from scratch with the Telerik UI for ASP.NET MVC component suite or integrate it to an existing one.</description>
     </item>
     
   </channel>

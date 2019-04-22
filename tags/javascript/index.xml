@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Javascript on Denis Kyashif&#39;s Blog</title>
+    <title>javascript on Denis Kyashif&#39;s Blog</title>
     <link>https://deniskyashif.com/tags/javascript/</link>
-    <description>Recent content in Javascript on Denis Kyashif&#39;s Blog</description>
+    <description>Recent content in javascript on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 17 Feb 2019 15:05:00 +0200</lastBuildDate>
@@ -17,7 +17,7 @@
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
       <guid>https://deniskyashif.com/implementing-a-regular-expression-engine/</guid>
-      <description>Understanding and using regular expressions properly is a valuable skill when it comes to text processing. Due to their declarative yet idiomatic syntax, regular expressions can sometimes be a source of confusion (even anxiety) amongst software developers. In this article, we&amp;rsquo;ll implement a simple and efficient regex engine. We&amp;rsquo;ll define the syntax of our regular expressions, learn how to parse them and build our recognizer. First, we&amp;rsquo;ll briefly cover some theoretical foundations.</description>
+      <description>Using the Thompson&amp;rsquo;s construction algorithm.</description>
     </item>
     
     <item>
@@ -26,8 +26,7 @@
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/kendoui-treelist-load-on-demand/</guid>
-      <description>The TreeList isn&amp;rsquo;t among the most popular KendoUI widgets, yet it&amp;rsquo;s very useful and functional. It displays a hierarchically structured data, where each record has an optional relation to another record. The output is a grid which renders its rows in a tree-like fashion. In this blog post we&amp;rsquo;ll see how to load the descendant items of a record on demand.
-The Problem By default the TreeList expects us to provide the complete data set on initial load.</description>
+      <description>How to lazily load the descendant items of a record in a TreeList.</description>
     </item>
     
     <item>
@@ -36,9 +35,7 @@ The Problem By default the TreeList expects us to provide the complete data set 
       <pubDate>Mon, 30 May 2016 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/validate-any-dom-element-with-the-kendoui-validator/</guid>
-      <description>KendoUI&amp;rsquo;s validator allows declaring rules and easily performing client-side validation for input and textarea elements. It offers great flexibility even when it comes to complex cases, when for example input fields are interconnected. Suppose we want to validate an element other than input or textarea, then calling validate() won&amp;rsquo;t be enough.
-The Problem Let&amp;rsquo;s have a form consisting of a textarea and a grid.
-&amp;lt;form id=&amp;#34;form&amp;#34;&amp;gt; &amp;lt;textarea name=&amp;#34;text&amp;#34;&amp;gt; Our world is a magical smoke screen &amp;lt;/textarea&amp;gt; &amp;lt;div id=&amp;#34;grid&amp;#34;&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;button id=&amp;#34;validate&amp;#34;&amp;gt;Validate&amp;lt;/button&amp;gt; &amp;lt;/form&amp;gt; We want to ensure the textarea&amp;rsquo;s value is not longer than 20 characters and the grid contains at least two rows.</description>
+      <description>Not only inputs.</description>
     </item>
     
   </channel>
