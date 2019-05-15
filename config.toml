@@ -29,3 +29,5 @@ googleAnalytics = "UA-133185625-1"
 
 [permalinks]
   posts = "/:title/"
+
+enableEmoji = true
