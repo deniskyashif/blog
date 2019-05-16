@@ -1,4 +1,4 @@
-# Personal Website
+# deniskyashif.com
 
 Built with [Hugo](https://gohugo.io/) using the [Tale](https://github.com/EmielH/tale-hugo) theme.
 

@@ -4,15 +4,15 @@ date: 2019-05-15T15:16:00+03:00
 draft: false
 tags: ["lambda-calculus", "functional-programming", "y-combinator", "javascript"]
 useMath: true
-summary: "Lambda Calculus and the Y-Combinator in JavaScript."
+summary: "Lambda Calculus and the Y combinator in JavaScript."
 images: 
 - "/images/posts/2019-05-15-on-recursion/matryoshka1200x1200.jpg"
-description: "How to define a recursive function in a language which doesn't support recursion using the Y-combinator."
+description: "How to define a recursive function in a language which doesn't support recursion using the Y combinator."
 ---
 
-In this article, we'll explore one of the most fascinating concepts of computer science, namely the **Y-combinator**. It let us simulate recursion in a language that doesn't support it.  
+In this article, we'll explore one of the most fascinating concepts in computer science, namely the **Y combinator**. It can simulate recursion in a language that doesn't support it.  
 
-We're going to use use the _Factorial_ function as an example. _Factorial_ gives us the product of an integer and all the integers below it. For example \\(4! = 4*3*2*1 = 24\\). In JavaScript, we can implement it as follows:
+We're going to use the _Factorial_ function as an example. _Factorial_ gives us the product of an integer and all the integers below it. For example \\(4! = 4*3*2*1 = 24\\). In JavaScript, we can implement it as follows:
 
 ```js
 const fact = n => {
@@ -38,7 +38,7 @@ fact(4)
 24
 ```
 
-What if, however, our language **does not** support recursion. That means we're not allowed to call `fact` within itself. Actually, let's make it even more challenging - our language supports **only** 
+What if our language **does not** support recursion. That means we're not allowed to call `fact` within itself. Actually, let's make it even more challenging - our language supports **only** 
 **function definition** and **function application**. No `goto` or any kind of looping constructs whatsoever. Also, our functions are allowed to take **exactly** one argument; no more, no less. How would we solve this problem?
 
 ## The Lambda Calculus
@@ -52,7 +52,7 @@ In &lambda;-calculus we have two basic operations:
 Where this \\(x\\) is an argument and \\(M\\) is some lambda term (think of it as the body of this anonymous function).  
 * **Application**: 
 \\[M \space N\\]
-Apply \\(N\\) as an arugment to \\(M\\). \\(M\\) and  \\(N\\) are both lambda terms.
+Apply \\(N\\) as an argument to \\(M\\). \\(M\\) and  \\(N\\) are both lambda terms.
 
 For example, let's define the _Identity_ function:  
 \\[I \equiv \lambda x.x \\]
@@ -62,7 +62,7 @@ Which in JavaScript we can define like:
 const id = x => x;
 ```
 
-It returns the argument that it has been provided. To apply the function we can simply write  
+It returns the argument that it has been provided. To pass an argument to the function, we can simply write  
 \\[ I \space N \\] 
 or  
 \\[ (\lambda x.x)N  \\]
@@ -103,8 +103,8 @@ So if we try reducing \\(\Omega\\) we'll end up in an infinite reduction sequenc
 
 This construction is useful because it encodes an **infinite loop**.
 
-### The Y-Combinator
-So to simulate recursion, we looking for a combinator that given an argument some function \\(F\\) would not only reproduce itself but also pass \\(F\\) on itself. We already saw the self-reproducing term \\(\Omega\\) so using it as our basis we can define:
+### The Y Combinator
+So to simulate recursion, we are looking for a combinator that, given an argument some function \\(F\\), would not only reproduce itself but also pass \\(F\\) on itself. We already saw the self-reproducing term \\(\Omega\\) so using it as our basis we can define:
 
 \\[ \omega_F := \lambda x.F(x x) \\]
 
@@ -120,7 +120,7 @@ or in more general terms:
 
 \\[ Y := \lambda f. (\lambda x.f(x x))(\lambda x.f(x x)) \\]
 
-Let's implement the Y-Combinator in JavaScript:
+Let's implement the Y combinator in JavaScript:
 
 ```js
 const Y = f => {
@@ -129,7 +129,7 @@ const Y = f => {
 };
 ```
 
-So if we pass a function \\(F\\) to the Y-combinator, we're going to end up with the following reduction sequence:
+So if we pass a function \\(F\\) to the Y combinator, we're going to end up with the following reduction sequence:
 
 \\[ Y F \\] 
 \\[ \equiv (\lambda f. (\lambda x.f(x x))(\lambda x.f(x x))) \space F \\]
@@ -169,7 +169,7 @@ So if &lambda;-calculus supported recursion, we'd write _Factorial_ in the follo
 
 \\[fact := \lambda n.(if \space (iszero \space n) \space 1 \space (mult \space n \space (fact \space (pred \space n)))) \\]
 
-This is the same as the JavaScript definition that we made above. Remember though - in &lambda;-calculus we **cannot make recursive calls**. So the definition above is not valid. That's where we're going to apply the Y-combinator, therefore, we have to define our \\(F\\) by slightly tweaking the above definition:
+This is the same as the JavaScript definition that we made above. Remember though - in &lambda;-calculus we **cannot make recursive calls**. So the definition above is not valid. That's where we're going to apply the Y combinator, therefore, we have to define our \\(F\\) by slightly tweaking the above definition:
 
 \\[ factStep := \lambda f.\lambda n. \space (iszero \space n) \space 1 \space (mult \space n \space (f \space (pred \space n))) \\]
 
@@ -189,7 +189,7 @@ const factStep = nextStep /* f */ => {
     }
 }
 ```
-We cannot reference a function from itself, that's why it makes sense to **pass it to itself**. Now we are ready to define _Factorial_ using the Y-combinator. Let's compute _Factorial_ of 2 by going through its reduction sequence. 
+We cannot reference a function from itself, that's why it makes sense to **pass it to itself**. Now we are ready to define _Factorial_ using the Y combinator. Let's compute _Factorial_ of 2 by going through its reduction sequence. 
 
 The sequence might seem rather tedious but by going through it one line at a time I hope it should be easy to understand. I'd also suggest writing it down, as that helped me a grasp the concept when I was learning about it. 
 I've put parentheses when the precedence of the operations is not obvious. The **application** in &lambda;-calculus is **left associative** so that the expression: \\(M \space N \space P \\) is equivalent to \\( ((M \space N) \space P) \\) meaning that \\(N\\) will be passed to \\(M\\) and \\(P\\) will be passed to the result of \\(M \space N\\).
@@ -228,7 +228,7 @@ But not so fast! The code above will result in:
 
 <pre><code style="color: red">RangeError: Maximum call stack size exceeded</code></pre>
 
-This is due to the fact that JavaScript and Lambda Calculus have different [models of evaluation](https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-27.html#%_sec_4.2.1). In fact, JavaScript uses **applicative order** (call by value) evaluation which means that the function's arguments are evaluated before calling the function. This causes the Y-combinator to expand infinitely (I found this out the hard way {{< emoji ":man_facepalming:" >}} ). Let's recall:
+This is due to the fact that JavaScript and Lambda Calculus have different [models of evaluation](https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-27.html#%_sec_4.2.1). In fact, JavaScript uses **applicative order** (call by value) evaluation which means that the function's arguments are evaluated before calling the function. This causes the Y combinator to expand infinitely (I found this out the hard way {{< emoji ":man_facepalming:" >}} ). Let's recall:
 
 \\[ Y \space factStep \space 2  \\]
 \\[ \to factStep \space (Y \space factStep) \space 2 \\]
@@ -237,11 +237,11 @@ So instead of passing \\((Y \space factStep)\\) to \\(factStep\\) as it is, Java
 
 \\[ \to factStep \space (factStep \space ... \space (factStep \space (Y \space factStep))) \space 2 \\]
 
-So the Y-combinator is suited for languages with **normal order** (call by name) evaluation. Normal order evaluates the function first, before evaluating its arguments. In order to adapt it for an applicative order language we have to do a slight modification to our fixed-point combinator:
+So the Y combinator is suited for languages with **normal order** (call by name) evaluation. Normal order evaluates the function first, before evaluating its arguments. In order to adapt it for an applicative order language we have to do a slight modification to our fixed-point combinator:
 
 ```diff
 - λf.(λx.f (x x)) (λx.f (x x))
-+ λf.(λx.f (x x) y) (λx.f (x x) y) 
++ λf.(λx.λy.f (x x) y) (λx.λy.f (x x) y)
 ```
 
 ```diff
@@ -266,7 +266,7 @@ There're other fixed-point combinators like the **Z combinator** which is suited
 
 \\[ Z := \lambda f.(\lambda x.f \space (\lambda v.((x \space x) \space v))) \space (\lambda x.f \space (\lambda v.((x \space x) \space v))) \\]
 
-If you want to play some more with this stuff I'd recommend implementing the **Z combinator** and writing down its reduction sequence. You can also try defining recursive functions with multiple arguments, for example, the [Ackermann function](https://en.wikipedia.org/wiki/Ackermann_function).
+If you want to play some more with this stuff, I'd recommend implementing the **Z combinator** and writing down its reduction sequence. You can also try defining recursive functions with multiple arguments, for example, the [Ackermann function](https://en.wikipedia.org/wiki/Ackermann_function).
 
 
 
