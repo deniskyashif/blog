@@ -3,7 +3,7 @@
     <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="How to define a recursive function in a language which doesn&#39;t support recursion using the Y-combinator.">
+	<meta name="description" content="How to define a recursive function in a language which doesn&#39;t support recursion using the Y combinator.">
 	
 	<title>
 		On Recursive Functions &middot; Denis Kyashif&#39;s Blog
@@ -23,7 +23,7 @@
 	
 	<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
     <meta property="og:title" content="On Recursive Functions" />
-<meta property="og:description" content="How to define a recursive function in a language which doesn&#39;t support recursion using the Y-combinator." />
+<meta property="og:description" content="How to define a recursive function in a language which doesn&#39;t support recursion using the Y combinator." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/on-recursive-functions/" />
 
@@ -104,9 +104,9 @@ if (!doNotTrack) {
 
 		
 
-<p>In this article, we&rsquo;ll explore one of the most fascinating concepts of computer science, namely the <strong>Y-combinator</strong>. It let us simulate recursion in a language that doesn&rsquo;t support it.</p>
+<p>In this article, we&rsquo;ll explore one of the most fascinating concepts in computer science, namely the <strong>Y combinator</strong>. It can simulate recursion in a language that doesn&rsquo;t support it.</p>
 
-<p>We&rsquo;re going to use use the <em>Factorial</em> function as an example. <em>Factorial</em> gives us the product of an integer and all the integers below it. For example \(4! = 4*3*2*1 = 24\). In JavaScript, we can implement it as follows:</p>
+<p>We&rsquo;re going to use the <em>Factorial</em> function as an example. <em>Factorial</em> gives us the product of an integer and all the integers below it. For example \(4! = 4*3*2*1 = 24\). In JavaScript, we can implement it as follows:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a2f;font-weight:bold">const</span> fact <span style="color:#666">=</span> n =&gt; {
     <span style="color:#a2f;font-weight:bold">if</span> (n <span style="color:#666">===</span> <span style="color:#666">0</span>) {
         <span style="color:#a2f;font-weight:bold">return</span> <span style="color:#666">1</span>;
@@ -128,7 +128,7 @@ if (!doNotTrack) {
 24
 </code></pre>
 
-<p>What if, however, our language <strong>does not</strong> support recursion. That means we&rsquo;re not allowed to call <code>fact</code> within itself. Actually, let&rsquo;s make it even more challenging - our language supports <strong>only</strong>
+<p>What if our language <strong>does not</strong> support recursion. That means we&rsquo;re not allowed to call <code>fact</code> within itself. Actually, let&rsquo;s make it even more challenging - our language supports <strong>only</strong>
 <strong>function definition</strong> and <strong>function application</strong>. No <code>goto</code> or any kind of looping constructs whatsoever. Also, our functions are allowed to take <strong>exactly</strong> one argument; no more, no less. How would we solve this problem?</p>
 
 <h2 id="the-lambda-calculus">The Lambda Calculus</h2>
@@ -144,7 +144,7 @@ Lambda calculus is a minimalistic, <a href="https://en.wikipedia.org/wiki/Turing
 Where this \(x\) is an argument and \(M\) is some lambda term (think of it as the body of this anonymous function).<br /></li>
 <li><strong>Application</strong>:
 \[M \space N\]
-Apply \(N\) as an arugment to \(M\). \(M\) and  \(N\) are both lambda terms.</li>
+Apply \(N\) as an argument to \(M\). \(M\) and  \(N\) are both lambda terms.</li>
 </ul>
 
 <p>For example, let&rsquo;s define the <em>Identity</em> function:<br />
@@ -153,7 +153,7 @@ Apply \(N\) as an arugment to \(M\). \(M\) and  \(N\) are both lambda terms.</li
 <p>Which in JavaScript we can define like:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a2f;font-weight:bold">const</span> id <span style="color:#666">=</span> x =&gt; x;
 </code></pre></div>
-<p>It returns the argument that it has been provided. To apply the function we can simply write<br />
+<p>It returns the argument that it has been provided. To pass an argument to the function, we can simply write<br />
 \[ I \space N \]
 or<br />
 \[ (\lambda x.x)N  \]
@@ -189,9 +189,9 @@ In &lambda;-calculus, we refer to \(I\) as a <a href="https://en.wikipedia.org/w
 
 <p>This construction is useful because it encodes an <strong>infinite loop</strong>.</p>
 
-<h3 id="the-y-combinator">The Y-Combinator</h3>
+<h3 id="the-y-combinator">The Y Combinator</h3>
 
-<p>So to simulate recursion, we looking for a combinator that given an argument some function \(F\) would not only reproduce itself but also pass \(F\) on itself. We already saw the self-reproducing term \(\Omega\) so using it as our basis we can define:</p>
+<p>So to simulate recursion, we are looking for a combinator that, given an argument some function \(F\), would not only reproduce itself but also pass \(F\) on itself. We already saw the self-reproducing term \(\Omega\) so using it as our basis we can define:</p>
 
 <p>\[ \omega_F := \lambda x.F(x x) \]</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a2f;font-weight:bold">const</span> wF <span style="color:#666">=</span> x =&gt; F(x(x));
@@ -204,13 +204,13 @@ In &lambda;-calculus, we refer to \(I\) as a <a href="https://en.wikipedia.org/w
 
 <p>\[ Y := \lambda f. (\lambda x.f(x x))(\lambda x.f(x x)) \]</p>
 
-<p>Let&rsquo;s implement the Y-Combinator in JavaScript:</p>
+<p>Let&rsquo;s implement the Y combinator in JavaScript:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a2f;font-weight:bold">const</span> Y <span style="color:#666">=</span> f =&gt; {
     <span style="color:#a2f;font-weight:bold">const</span> g <span style="color:#666">=</span> x =&gt; f(x(x));
     <span style="color:#a2f;font-weight:bold">return</span> g(g);
 };
 </code></pre></div>
-<p>So if we pass a function \(F\) to the Y-combinator, we&rsquo;re going to end up with the following reduction sequence:</p>
+<p>So if we pass a function \(F\) to the Y combinator, we&rsquo;re going to end up with the following reduction sequence:</p>
 
 <p>\[ Y F \]
 \[ \equiv (\lambda f. (\lambda x.f(x x))(\lambda x.f(x x))) \space F \]
@@ -253,7 +253,7 @@ In &lambda;-calculus, we refer to \(I\) as a <a href="https://en.wikipedia.org/w
 
 <p>\[fact := \lambda n.(if \space (iszero \space n) \space 1 \space (mult \space n \space (fact \space (pred \space n)))) \]</p>
 
-<p>This is the same as the JavaScript definition that we made above. Remember though - in &lambda;-calculus we <strong>cannot make recursive calls</strong>. So the definition above is not valid. That&rsquo;s where we&rsquo;re going to apply the Y-combinator, therefore, we have to define our \(F\) by slightly tweaking the above definition:</p>
+<p>This is the same as the JavaScript definition that we made above. Remember though - in &lambda;-calculus we <strong>cannot make recursive calls</strong>. So the definition above is not valid. That&rsquo;s where we&rsquo;re going to apply the Y combinator, therefore, we have to define our \(F\) by slightly tweaking the above definition:</p>
 
 <p>\[ factStep := \lambda f.\lambda n. \space (iszero \space n) \space 1 \space (mult \space n \space (f \space (pred \space n))) \]</p>
 
@@ -271,7 +271,7 @@ In &lambda;-calculus, we refer to \(I\) as a <a href="https://en.wikipedia.org/w
     }
 }
 </code></pre></div>
-<p>We cannot reference a function from itself, that&rsquo;s why it makes sense to <strong>pass it to itself</strong>. Now we are ready to define <em>Factorial</em> using the Y-combinator. Let&rsquo;s compute <em>Factorial</em> of 2 by going through its reduction sequence.</p>
+<p>We cannot reference a function from itself, that&rsquo;s why it makes sense to <strong>pass it to itself</strong>. Now we are ready to define <em>Factorial</em> using the Y combinator. Let&rsquo;s compute <em>Factorial</em> of 2 by going through its reduction sequence.</p>
 
 <p>The sequence might seem rather tedious but by going through it one line at a time I hope it should be easy to understand. I&rsquo;d also suggest writing it down, as that helped me a grasp the concept when I was learning about it.
 I&rsquo;ve put parentheses when the precedence of the operations is not obvious. The <strong>application</strong> in &lambda;-calculus is <strong>left associative</strong> so that the expression: \(M \space N \space P \) is equivalent to \( ((M \space N) \space P) \) meaning that \(N\) will be passed to \(M\) and \(P\) will be passed to the result of \(M \space N\).</p>
@@ -307,7 +307,7 @@ I&rsquo;ve put parentheses when the precedence of the operations is not obvious.
 
 <pre><code style="color: red">RangeError: Maximum call stack size exceeded</code></pre>
 
-<p>This is due to the fact that JavaScript and Lambda Calculus have different <a href="https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-27.html#%_sec_4.2.1">models of evaluation</a>. In fact, JavaScript uses <strong>applicative order</strong> (call by value) evaluation which means that the function&rsquo;s arguments are evaluated before calling the function. This causes the Y-combinator to expand infinitely (I found this out the hard way 🤦‍♂
+<p>This is due to the fact that JavaScript and Lambda Calculus have different <a href="https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-27.html#%_sec_4.2.1">models of evaluation</a>. In fact, JavaScript uses <strong>applicative order</strong> (call by value) evaluation which means that the function&rsquo;s arguments are evaluated before calling the function. This causes the Y combinator to expand infinitely (I found this out the hard way 🤦‍♂
  ). Let&rsquo;s recall:</p>
 
 <p>\[ Y \space factStep \space 2  \]
@@ -317,7 +317,7 @@ I&rsquo;ve put parentheses when the precedence of the operations is not obvious.
 
 <p>\[ \to factStep \space (factStep \space &hellip; \space (factStep \space (Y \space factStep))) \space 2 \]</p>
 
-<p>So the Y-combinator is suited for languages with <strong>normal order</strong> (call by name) evaluation. Normal order evaluates the function first, before evaluating its arguments. In order to adapt it for an applicative order language we have to do a slight modification to our fixed-point combinator:</p>
+<p>So the Y combinator is suited for languages with <strong>normal order</strong> (call by name) evaluation. Normal order evaluates the function first, before evaluating its arguments. In order to adapt it for an applicative order language we have to do a slight modification to our fixed-point combinator:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#a00000">- λf.(λx.f (x x)) (λx.f (x x))
 </span><span style="color:#a00000"></span><span style="color:#00a000">+ λf.(λx.f (x x) y) (λx.f (x x) y) 
 </span></code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">function Y1(f) {
@@ -338,7 +338,7 @@ fact(<span style="color:#666">5</span>); <span style="color:#080;font-style:ital
 
 <p>\[ Z := \lambda f.(\lambda x.f \space (\lambda v.((x \space x) \space v))) \space (\lambda x.f \space (\lambda v.((x \space x) \space v))) \]</p>
 
-<p>If you want to play some more with this stuff I&rsquo;d recommend implementing the <strong>Z combinator</strong> and writing down its reduction sequence. You can also try defining recursive functions with multiple arguments, for example, the <a href="https://en.wikipedia.org/wiki/Ackermann_function">Ackermann function</a>.</p>
+<p>If you want to play some more with this stuff, I&rsquo;d recommend implementing the <strong>Z combinator</strong> and writing down its reduction sequence. You can also try defining recursive functions with multiple arguments, for example, the <a href="https://en.wikipedia.org/wiki/Ackermann_function">Ackermann function</a>.</p>
 
 <h2 id="further-reading-and-references">Further Reading and References</h2>
 
@@ -425,7 +425,7 @@ fact(<span style="color:#666">5</span>); <span style="color:#080;font-style:ital
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-05-15 17:07:49.531098 &#43;0300 EEST m=&#43;0.131331649">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-05-16 08:11:02.8536 &#43;0300 EEST m=&#43;0.159834346">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
