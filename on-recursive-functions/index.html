@@ -319,7 +319,7 @@ I&rsquo;ve put parentheses when the precedence of the operations is not obvious.
 
 <p>So the Y combinator is suited for languages with <strong>normal order</strong> (call by name) evaluation. Normal order evaluates the function first, before evaluating its arguments. In order to adapt it for an applicative order language we have to do a slight modification to our fixed-point combinator:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#a00000">- λf.(λx.f (x x)) (λx.f (x x))
-</span><span style="color:#a00000"></span><span style="color:#00a000">+ λf.(λx.f (x x) y) (λx.f (x x) y) 
+</span><span style="color:#a00000"></span><span style="color:#00a000">+ λf.(λx.λy.f (x x) y) (λx.λy.f (x x) y)
 </span></code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">function Y1(f) {
     const g = x =&gt; {
 <span style="color:#a00000">-       return f(x(x));
@@ -425,7 +425,7 @@ fact(<span style="color:#666">5</span>); <span style="color:#080;font-style:ital
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-05-16 08:11:02.8536 &#43;0300 EEST m=&#43;0.159834346">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-05-17 18:50:42.14345 &#43;0300 EEST m=&#43;0.193958850">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
