@@ -4,7 +4,7 @@ author: deniskyashif
 layout: page
 ---
 
-I've had the privilege to speak at various conferences and events. This is a list of my topics and some resources:
+I've had the privilege to deliver talks at various conferences. This is a list of my topics and some resources:
 
 <dl class="speaking">
     <div class="topic">
