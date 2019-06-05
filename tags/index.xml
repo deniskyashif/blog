@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 May 2019 15:16:00 +0300</lastBuildDate>
+    <lastBuildDate>Wed, 05 Jun 2019 17:31:07 +0300</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>functional-programming</title>
       <link>https://deniskyashif.com/tags/functional-programming/</link>
-      <pubDate>Wed, 15 May 2019 15:16:00 +0300</pubDate>
+      <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
       
       <guid>https://deniskyashif.com/tags/functional-programming/</guid>
       <description></description>
@@ -23,7 +23,7 @@
     <item>
       <title>javascript</title>
       <link>https://deniskyashif.com/tags/javascript/</link>
-      <pubDate>Wed, 15 May 2019 15:16:00 +0300</pubDate>
+      <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
       
       <guid>https://deniskyashif.com/tags/javascript/</guid>
       <description></description>
@@ -32,9 +32,27 @@
     <item>
       <title>lambda-calculus</title>
       <link>https://deniskyashif.com/tags/lambda-calculus/</link>
-      <pubDate>Wed, 15 May 2019 15:16:00 +0300</pubDate>
+      <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
       
       <guid>https://deniskyashif.com/tags/lambda-calculus/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>type-systems</title>
+      <link>https://deniskyashif.com/tags/type-systems/</link>
+      <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/type-systems/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>typescript</title>
+      <link>https://deniskyashif.com/tags/typescript/</link>
+      <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/typescript/</guid>
       <description></description>
     </item>
     
