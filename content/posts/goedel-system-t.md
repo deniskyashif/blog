@@ -1,7 +1,7 @@
 ---
 title: "Gödel's System T in TypeScript"
 date: 2019-06-03T21:31:07+03:00
-draft: true
+draft: false
 tags: ["lambda-calculus", "functional-programming", "type-systems", "typescript", "javascript"]
 summary: "Experimenting with a more restrictive type system which ensures that the programs always terminate."
 description: "Experimenting with a more restrictive type system which ensures that the programs always terminate."
@@ -29,7 +29,7 @@ In the paper, the authors give definitions of the primitives and some operators 
 
 * `Bool`: this is quite trivial as we can use TypeScript's `boolean` type.
 
-* `Nat`: natural numbers. This is a tricky as the definition for `Nat` in System T is: `Nat: zero | Succ`. So it can be either zero or the successor function. To give an intuition - `zero == 0`, `succ(zero) == 1`, `succ(succ(zero)) == 2` etc. For the sake of simplicity I decided to use TypeScript's `number` type but only for the representating the numbers. We're not allowed to use their built-in properties, like arithmetic operations, because we're going to construct them from the ground up using the predefined primitives.
+* `Nat`: natural numbers. This is a tricky as the definition for `Nat` in System T is: `Nat: zero | Succ`. So it can be either zero or the successor function. To give an intuition - `Zero == 0`, `Succ(Zero) == 1`, `Succ(Succ(Zero)) == 2` etc. For the sake of simplicity I decided to use TypeScript's `number` type but only for the representating the numbers. We're not allowed to use their built-in properties, like arithmetic operations, because we're going to construct them from the ground up using the predefined primitives.
 
 * `Succ: Nat -> Nat` we define as:
 
@@ -37,7 +37,7 @@ In the paper, the authors give definitions of the primitives and some operators 
 const Succ = (x: number): number => x + 1;
 ```
 
-* `Cases<T>: Bool -> T -> T -> T` - think of it as a generic conditional (if-then-else).
+* `Cases<T>: Bool -> T -> T -> T` - think of it as a generic conditional (if-then-else). The polymorphism in System T can be achieved using TypeScript's generics.
 
 ```ts
 function Cases<T>(cond: boolean, a: T, b: T): T {
@@ -56,11 +56,13 @@ function Rec<T>(sn: number, s: T, t: (z: number, w: T) => T): T {
 ```
 
 It might seem confusing at first but its reduction is straightforward:
+
 ```
-Rec 0 s t = s
-Rec sn s t = t n (R n s t)
+Rec 0 s t -> s
+Rec sn s t -> t n (R n s t)
 ```
-`Rec` is a higher-order function that takes three arguments (or 4 if we count the type). `sn` is the natural number on which we perform the recursion, think of `sn` as _the successor of n_. `s` is the element returned from the base, whereas `t` is the function called on each recursive step. 
+
+`Rec` is a polymorphic higher-order function that takes three arguments (or 4 if we count the type). `sn` is the natural number on which we perform the recursion, think of `sn` as _the successor of n_. `s` is the element returned from the base, whereas `t` is the function called on each recursive step. 
 
 ## Arithmetic Operators
 
@@ -152,9 +154,12 @@ function or(x: boolean, y: boolean): boolean {
 }
 ```
 
-Now it's time to compare numbers. I struggled with implementing the `IsZero` operator, I guess I'd have to dive deeper in the lambda calculus for a suitable definition. It remians the only primitive I'm using which is outside the System T itself.
-
+Now it's time to compare numbers. For that we're going to reuse some of the functions we implemented so far and give definition to `isZero: Nat -> Bool`.
 ```ts
+const isZero = (x: number): boolean => {
+    return Rec<boolean>(x, true, (z, w) => false);
+}
+
 function eq(x: number, y: number): boolean {
     return and(IsZero(subtract(x, y)), IsZero(subtract(y, x)));
 }
@@ -176,7 +181,53 @@ function lte(x: number, y: number): boolean {
 }
 ```
 
-## Ackermann
+## Beyond Primitive Recursion
+Now to our last and most interesting example. In System T we can express the **total computable functions** using primitive recursion, but can we express the ones that are not primitive recursive?
+
+
+### Ackermann
+
+The [Ackermann function](http://mathworld.wolfram.com/AckermannFunction.html) is one of the earliest discovered examples of a total computable function that is **not primitive recursive**. All primitive recursive functions are total and computable, but the Ackermann function illustrates that not all total computable functions are primitive recursive.
+
+<img src="/images/posts/2019-06-05-godel-t/ackermann.png" alt="Ackermann Definition" width="450" style="margin-left: 0" />
+
+[Here](https://www.wolframalpha.com/input/?i=ackerman(2,3)) you can find some neat visual example of how it runs.
+
+Let's try to implement it within our type system! We'll start by definig an operator for function composition:
+
+```ts
+type OneArityFn<T, K> = (x: T) => K;
+
+function compose<T, K, V>(f: OneArityFn<K, V>, g: OneArityFn<T, K>)
+    : OneArityFn<T, V> {
+    return x => f(g(x));
+}
+```
+
+Observe that `compose` is a higher order function. Now using the Godel's recursor, let's an iterator function:
+
+```ts
+function iterate<T>(f: OneArityFn<T, T>, n: number)
+    : OneArityFn<T, T> {
+    return Rec<OneArityFn<T, T>>(
+        n,
+        x => x,
+        (z, acc) => compose(f, acc));
+}
+```
+
+Simply put given a function `f` and a number `n`, `iterate` will invoke `f` on it's output `n` number of times. Think of it as composing it with itself. For example `iterate(f, 3)` will result in `x => f(f(f(x)))`. And now we're ready to define `ackermann`.
+
+```ts
+function ackermann(x: number): OneArityFn<number, number> {
+    return Rec<OneArityFn<number, number>>(
+        x,
+        Succ,
+        (z, acc) => y => iterate(acc, y)(acc(Succ(Zero))));
+}
+
+ackermann(1)(1); // => 3
+```
 
 ## References
 
