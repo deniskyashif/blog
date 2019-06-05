@@ -1,22 +1,24 @@
 ---
 title: "Gödel's System T in TypeScript"
 date: 2019-06-05T17:31:07+03:00
-draft: true
+draft: false
 tags: ["lambda-calculus", "functional-programming", "type-systems", "typescript", "javascript"]
 summary: "Experimenting with a rudimentary type system that ensures the programs always terminate."
 description: "Experimenting with a rudimentary type system that ensures the programs always terminate."
 useMath: true
+aliases:
+    - /godels-system-t-in-typescript
 ---
 
-Recently, I've been reading Bove and Dybjer’s paper on [_"Dependent Types at Work"_](http://www.cse.chalmers.se/~peterd/papers/DependentTypesAtWork.pdf) where Kurt Gödel's **System T** is briefly described. It is a type system based on the [Simply Typed Lambda Calculus](https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus) and includes **booleans** and **natural numbers**. The unusual thing about it is that it allows us to perform **only** [primitive recursion](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&cad=rja&uact=8&ved=2ahUKEwiBqeT41M_iAhUK4aQKHeBYDowQFjACegQICxAG&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FPrimitive_recursive_function&usg=AOvVaw293_OtMzAukv1lsqcq0V4H), which considerably limits the amount of possible programs we can write but on the other hand it guarantees that these programs **always terminate**. This means that **System T** is **not Turing complete** as we can express only the set of **total computable functions**.
+Recently, I've been reading Bove and Dybjer’s paper on [_"Dependent Types at Work"_](http://www.cse.chalmers.se/~peterd/papers/DependentTypesAtWork.pdf) where Kurt Gödel's **System T** is briefly described. It is a type system based on the [Simply Typed Lambda Calculus](https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus) and includes **booleans** and **natural numbers**. The unusual thing about it is that it allows us to perform **only** [primitive recursion](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&cad=rja&uact=8&ved=2ahUKEwiBqeT41M_iAhUK4aQKHeBYDowQFjACegQICxAG&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FPrimitive_recursive_function&usg=AOvVaw293_OtMzAukv1lsqcq0V4H), which considerably limits the number of possible programs we can write but on the other hand it guarantees that these programs **always terminate**. This means that **System T** is **not Turing complete** as we can express only the set of **total computable functions**.
 
 ### How come we only have primitive recursion?
 
-In Untyped Lambda Calculus we can define fixed point combinators which allow us to simulate recursion. So if **System T** is based lambda calculus, how come we can't have non-primitive recursion? The reason is the type system. Let's recall from the [article _"On Recursive Functions"_](/on-recursive-functions) - and the \\(\omega\\) combinator which applies a term to itself:
+In Untyped Lambda Calculus we can define fixed point combinators which allow us to simulate recursion. So if **System T** is based lambda calculus, how come we can't have non-primitive recursion? The reason is - the type system. Let's recall from the [article _"On Recursive Functions"_](/on-recursive-functions) - and the \\(\omega\\) combinator which applies a term to itself:
 
 \\[\omega := \lambda x.xx\\]
 
-However, here we're dealing with types. What would the type of this term be? Let's assume the second \\(x\\) in \\(xx\\) be of type \\(\alpha\\). That means the first \\(x\\) should also be of type \\(\alpha\\). Here we arrive at a contradiction because the first \\(x\\) is a function so it should have a type \\(\alpha \to \beta\\) for some \\(\beta\\). Both terms should have the same type, hence the contradiction. Every fixed point combinator involves some kind of self application, therefore, it cannot be expressed in Simply Typed Lambda Calculus thus making our language **less powerful** but on the other hand - **more predictable**.
+However, here we're dealing with types. What would the type of this term be? Let's assume the second \\(x\\) in \\(xx\\) be of type \\(\alpha\\). That means the first \\(x\\) should also be of type \\(\alpha\\). Here we arrive at a contradiction because the first \\(x\\) is a function so it should have a type \\(\alpha \to \beta\\) for some \\(\beta\\). Both terms should have the same type, hence the contradiction. Every fixed point combinator involves some kind of self-application, therefore, it cannot be expressed in Simply Typed Lambda Calculus thus making our language **less powerful** but on the other hand - **more predictable**.
 
 ## Building Blocks
 
@@ -27,7 +29,7 @@ In the paper, the authors define the primitives and some operators in Agda and l
 
 * `Bool`: this is quite trivial as we can use TypeScript's `boolean` type.
 
-* `Nat`: the set of natural numbers. This is a tricky as the definition for `Nat` in **System T** is: `Nat: Zero | Succ`. So it can be either zero or the successor function, iterated n number of times. To give an intuition `Zero == 0`, `Succ(Zero) == 1`, `Succ(Succ(Zero)) == 2` etc. For the sake of simplicity I decided to use TypeScript's `number` type but only for representating the numbers. We're not allowed to use their built-in properties, like arithmetic operations, comparison etc. We're going to construct them from the ground up using the predefined primitives.
+* `Nat`: the set of natural numbers. This is tricky as the definition for `Nat` in **System T** is `Nat: Zero | Succ`. So it can be either zero or the successor function, iterated n number of times. To give an intuition `Zero == 0`, `Succ(Zero) == 1`, `Succ(Succ(Zero)) == 2` etc. For the sake of simplicity, I decided to use TypeScript's `number` type but only for representing the numbers. We're not allowed to use their built-in properties, like arithmetic operations, comparison, etc. We're going to construct them from the ground up using the predefined primitives.
 
 * `Succ: Nat → Nat` we define as:
 
@@ -60,11 +62,11 @@ Rec 0 s t → s
 Rec sn s t → t n (R n s t)
 ```
 
-`Rec<T>` is a polymorphic function that takes three arguments (or four if we count the type). `sn` is the natural number on which we perform the recursion, think of `sn` as _the successor of n_. `s` is the element returned from the base case, whereas `t` is the function called on each recursive step. `z` enumerates each recursive step, and `acc` is the value which we "accumulate" over the recursion. Later in the examples we'll see that we can use `Rec<T>` as a higher order function to.
+`Rec<T>` is a polymorphic function that takes three arguments (or four if we count the type). `sn` is the natural number on which we perform the recursion, think of `sn` as _the successor of n_. `s` is the element returned from the base case, whereas `t` is the function called on each recursive step. `z` enumerates each recursive step, and `acc` is the value which we "accumulate" over the recursion. Later in the examples, we'll see that we can use `Rec<T>` as a higher order function too.
 
 ## Arithmetic Operators
 
-This is where it gets interesting. We construct **addition** the following way:
+This is where it gets interesting. We construct the **addition** operator in the following way:
 
 ```typescript
 function add(x: number, y: number): number {
@@ -168,7 +170,7 @@ function lt(x: number, y: number): boolean {
 }
 ```
 
-Now reusing the operators above it is straightforward to define "greater than or equal to" `>=` and "less than or equal to" `<=`.
+Now reusing the operators above it is straightforward to define "greater than or equal to" `≥` and "less than or equal to" `≤`.
 
 ## Beyond Primitive Recursion
 Now to our last and most interesting example. In **System T** we can express the **total computable functions** using primitive recursion, but can we express the ones that are not primitive recursive?
@@ -181,7 +183,7 @@ The [Ackermann function](http://mathworld.wolfram.com/AckermannFunction.html) is
 
 You can find [this](https://www.wolframalpha.com/input/?i=ackerman(1,1)) neat visual example of its execution.
 
-Let's try to implement it within our type system! We'll start by definig an operator for function composition:
+Let's try to implement it within our type system! We'll start by defining an operator for function composition:
 
 ```typescript
 type OneArityFn<T, K> = (x: T) => K;
@@ -204,7 +206,7 @@ function repeat<T>(f: OneArityFn<T, T>, n: number)
 }
 ```
 
-Simply put, given a function `f` and a number `n`, `repeat` will invoke `f` on it's output `n` number of times. Think of it as composing it with itself `n` number of times. For example `repeat(f, 3)` will result in `x => f(f(f(x)))`. This is all we need to define `ackermann`:
+Simply put, given a function `f` and a number `n`, `repeat` will invoke `f` on its output `n` number of times. Think of it as composing it with itself `n` number of times. For example `repeat(f, 3)` will result in `x => f(f(f(x)))`. This is all we need to define `ackermann`:
 
 ```typescript
 function ackermann(x: number): OneArityFn<number, number> {
@@ -217,18 +219,18 @@ function ackermann(x: number): OneArityFn<number, number> {
 ackermann(1)(1); // => 3
 ```
 
-Turns out `ackermann` is in fact a higher-order primitive recursive function, hence the partial application. We can see in its definition that we decrement the first argument on each step (which guarantees that it'll terminate), and based on its value we compose a new execution branch. The result is constructed via finite composition of the successor `Succ` function. Think of `acc` as an accumulated composition of the successor function `Succ`.
+Turns out `ackermann` is, in fact, a higher-order primitive recursive function, hence the partial application. We can see in its definition that we decrement the first argument on each step (which guarantees that it'll terminate), and based on its value we compose a new execution branch which involves a seperate primitive recursor. The result is constructed via finite composition of the successor `Succ` function. Think of `acc` as an accumulated composition of the successor function.
 
 ## Conclusion
 
-Gödel's **System T** has been influential defining the [Curry-Howard isomorphism](https://en.wikipedia.org/wiki/Curry–Howard_correspondence) or in other words - for **establishing the relationship between computer programs and mathematical proofs**. We can think of a **type system as a set of axioms** and **type checkers as automatic theorem provers** based on these axioms. 
-We have seen that using a language with a particular type system always comes with its tradeoffs. Type systems with less expressive power reduce the amount of possible programs we can write but on the other hand provide additional safety and potential performance benefits.  
+Gödel's **System T** has been influential in defining the [Curry-Howard isomorphism](https://en.wikipedia.org/wiki/Curry–Howard_correspondence) or in other words - for **establishing the relationship between computer programs and mathematical proofs**. We can think of a **type system as a set of axioms** and **type checkers as automatic theorem provers** based on these axioms. 
+We have seen that using a language with a particular type system always comes with its tradeoffs. Type systems with less expressive power reduce the number of possible programs we can write but on the other hand provide additional safety and potential performance benefits.  
 
-In some cases a strongly typed language can be detrimental to our project's long term success, in other cases it might provide little to no additional value. That's why when picking a language for a specific task, we have to carefully consider what's going to best serve our needs.
+In some cases, a strongly typed language can be detrimental to our project's long term success, in other cases, it might provide little to no additional value. That's why when picking a language for a specific task, we have to carefully consider what's going to best serve our needs.
 
 ## Further Reading and References
 
 * [Full Code Reference on GitHub](https://github.com/deniskyashif/fmi-lcpt/blob/master/src/godel.ts)
 * [Bove, Dybjer, _"Dependent Types at Work"_](http://www.cse.chalmers.se/~peterd/papers/DependentTypesAtWork.pdf)
-* [Dowek, _"Gödel’s System T as a precursor of modern type theory"](http://www.lsv.fr/~dowek/Philo/godel.pdf)
+* [Dowek, _"Gödel’s System T as a precursor of modern type theory"_](http://www.lsv.fr/~dowek/Philo/godel.pdf)
 * [Gödel's System T in Agda](http://gregorulm.com/godels-system-t-in-agda/)
