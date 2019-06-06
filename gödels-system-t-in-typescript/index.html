@@ -274,7 +274,7 @@ pred 3
 }
 
 ackermann(<span style="color:#666">1</span>)(<span style="color:#666">1</span>); <span style="">// =&gt; 3</span></code></pre></div>
-<p>Turns out <code>ackermann</code> is, in fact, a higher-order primitive recursive function, hence the partial application. We can see in its definition that we decrement the first argument on each step (which guarantees that it&rsquo;ll terminate), and based on its value we compose a new execution branch. The result is constructed via finite composition of the successor <code>Succ</code> function. Think of <code>acc</code> as an accumulated composition of the successor function <code>Succ</code>.</p>
+<p>Turns out <code>ackermann</code> is, in fact, a higher-order primitive recursive function, hence the partial application. We can see in its definition that we decrement the first argument on each step (which guarantees that it&rsquo;ll terminate), and based on its value we compose a new execution branch which involves a seperate primitive recursor. The result is constructed via finite composition of the successor <code>Succ</code> function. Think of <code>acc</code> as an accumulated composition of the successor function.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
@@ -367,7 +367,7 @@ We have seen that using a language with a particular type system always comes wi
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-06-06 18:26:31.992452 &#43;0300 EEST m=&#43;0.089244034">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-06-06 22:45:30.129954 &#43;0300 EEST m=&#43;0.139520423">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
