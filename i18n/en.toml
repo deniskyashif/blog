@@ -4,8 +4,8 @@ other = "Posts"
 [about]
 other = "About"
 
-[speaking]
-other = "Speaking"
+[talks]
+other = "Talks"
 
 [writtenBy]
 other = "Written by"

@@ -1,12 +1,13 @@
 ---
-title: "Speaking"
+title: "Talks"
 author: deniskyashif
 layout: page
+aliases: ["/speaking"]
 ---
 
 I've had the pleasure to deliver talks at various conferences. This is a list of my topics and some resources:
 
-<dl class="speaking">
+<dl class="talks">
     <div class="topic">
         <div>
             <h2>Scalable Angular Applications</h2>
