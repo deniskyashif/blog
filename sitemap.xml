@@ -119,6 +119,12 @@
   </url>
   
   <url>
+    <loc>https://deniskyashif.com/tags/talks/</loc>
+    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://deniskyashif.com/tags/.net/</loc>
     <lastmod>2018-03-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -218,7 +224,7 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/speaking/</loc>
+    <loc>https://deniskyashif.com/talks/</loc>
   </url>
   
 </urlset>
