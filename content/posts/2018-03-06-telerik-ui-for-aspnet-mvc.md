@@ -8,6 +8,8 @@ aliases:
     - /2018/03/06/setting-up-a-project-with-telerik-ui-for-asp.net-mvc
 ---
 
+_// This article covers Telerik UI for .NET Framerwork 4.*_
+
 This is a step by step guide on how to setup a project from scratch with the [Telerik UI for ASP.NET MVC](https://www.telerik.com/aspnet-mvc) component suite or integrate it to an existing one.
 
 ## Download & Install
