@@ -230,7 +230,7 @@ In some cases, a strongly typed language can be detrimental to our project's lon
 
 ## Further Reading and References
 
-* [Full Code Reference on GitHub](https://github.com/deniskyashif/fmi-lcpt/blob/master/src/godel.ts)
+* [Full Code Reference on GitHub](https://github.com/deniskyashif/fmi-lcpt/blob/master/src/godel-t.ts)
 * [Bove, Dybjer, _"Dependent Types at Work"_](http://www.cse.chalmers.se/~peterd/papers/DependentTypesAtWork.pdf)
 * [Dowek, _"Gödel’s System T as a precursor of modern type theory"_](http://www.lsv.fr/~dowek/Philo/godel.pdf)
 * [Gödel's System T in Agda](http://gregorulm.com/godels-system-t-in-agda/)
