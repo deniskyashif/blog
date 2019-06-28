@@ -1,17 +1,17 @@
 ---
 title: "Computing Ranges in Constant Time"
-date: 2019-06-25T16:44:25+03:00
-draft: true
+date: 2019-06-28T13:26:25+03:00
+draft: false
 useMath: true
-summary: "With Sparse Tables and Dynamic Programming."
+summary: "Range Minimum Query with Sparse Tables and Dynamic Programming."
 ---
 
 Suppose have some sequence of elements. We want to be able to answer questions about any of its ranges in constant time \\(O(1)\\). For example we have the following sequence:
 
 \\[ A = \\{ 5, 2, 4, 7, 6, 3, 1, 2 \\} \\]
 
+* What is the minimum/maximum element in the range from index 0 to 3? (known as [RMQ](https://en.wikipedia.org/wiki/Range_minimum_query))
 * What is the sum of the elements in the range from index 1 to 4?
-* What is the minimum/maximum element in the range from index 0 to 3?
 
 A naive approach would simply iterate over the range and determine the result (\\(O(n)\\) search and \\(O(n)\\) space), or precalculate all of the possible queries (\\(O(1)\\) search and \\(O(n^2)\\) space). When speed and efficiency are essential, however, in cases when we're dealing with large datasets, we'll have to come up with something more clever.
 
@@ -19,7 +19,7 @@ In this article we'll introduce the **Sparse Table** data structure and see how 
 
 ## Intuition
 
-The main idea is to precompute all of the answers for the range queries and store them in a data structure. The challenge is how to do it in an efficient way. We want to save as much space as we can thus retaining the ability to retreive answers in constant time. Our target is \\(O(1)\\) search and \\(O(n*log_2n)\\) space and we can achieve it with **[dynamic programming](https://en.wikipedia.org/wiki/Dynamic_programming)** and some basic **arithmetic**.
+The main idea is to precompute all of the answers for the range queries and store them in a data structure. The challenge is how to do it in an efficient way. We want to save as much space as we can thus retaining the ability to retreive answers in constant time. Our target is \\(O(1)\\) search and \\(O(nlog_2n)\\) space and we can achieve it with **[dynamic programming](https://en.wikipedia.org/wiki/Dynamic_programming)** and some basic **arithmetic**.
 
 We know that we can represent natural numbers as a unique decreasing sum of powers of two (yes we've just described binary). For example:
 
@@ -42,7 +42,7 @@ var K = (int)Math.Floor(Math.Log(N, 2)) + 1;
 var M = new int[N, K];
 ```
 
-### Base
+### Basis
 
 A range of length \\(1\\) is still a valid range. So the minimum of \\(A[1,1]\\) is exactly A[1] = 2, therefore, filling the first row of the table is trivial.
 
@@ -51,11 +51,11 @@ for (int i = 0; i < N; i++)
     M[i, 0] = i;
 ```
 
-In other words, we have computed the minima of all the ranges starting at index \\(i\\) with length \\(2^0 = 1\\).
+In other words, we have computed the minima of all the ranges starting at index \\(i\\) with length \\(1 = 2^0\\).
 
-### Step
+### Iteration
 
-This is where things get interesting. We introduce a general procedure for determining the minimum of a range of size \\(2^j\\), where \\( 1 \le j \le log_2N  \\). Assuming that we've already found the minima for each range of size \\(2^{j-1}\\), we're going to reuse those solutions to find the minima for \\(2^j\\). This is dynamic programming in its essense. We break down a problem into smaller sub-problems, solve the simplest case and work our way up.  
+This is where things get interesting. We introduce a general procedure for determining the minimum of a range of size \\(2^j\\), where \\( 1 \le j \le log_2N  \\). Assuming that we've already found the minima for all ranges of size \\(2^{j-1}\\), we're going to reuse those solutions to find the minima for \\(2^j\\). This is dynamic programming in its essense. We break down a problem into smaller sub-problems, solve the simplest case and work our way up.  
 
 Before diving into the mathematics of this procedure, let's go through an example. This is our sequence:
 
@@ -63,7 +63,7 @@ Before diving into the mathematics of this procedure, let's go through an exampl
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | 5 | 2 | 4 | 7 | 6 | 3 | 1 | 2 |
 
-So our table stores the indices of the minima in a certain range. The base case looks like this.
+So our table stores the indices of the minima in a certain range. After computing the basis, we end up with the following table:
 
 | j\i   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |:-----:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -76,9 +76,9 @@ Note that this is not a 1 to 1 representation of the way we store the data. Here
 | **0** | 5 | 2 | 4 | 7 | 6 | 3 | 1 | 2 |
 | **1** | 2 | 2 | 4 | 6 | 3 | 1 | 1 |   |
 
-Now we build our way up. We compute the ranges of length \\(2^1 = 2\\). The way we interpret the values, \\(M[i, j]\\) is the minimum in the range from index \\(i\\) to \\(i + 2^j - 1\\) in \\(A\\). So at \\(M[0, 1]\\) we need to insert the minimum in range from \\(0\\) to \\(1\\). We can split the range into two equal subranges. Looking at the table above, we've already computed them, so we take the smaller value. \\(M[0, 1] = Min(M[0, 0], M[1, 0]) \\).
+Now we build our way up. We compute the ranges of length \\(2 = 2^1 \\). The way we interpret the values, \\(M[i, j]\\) is the minimum in the range from index \\(i\\) to \\(i + 2^j - 1\\) in \\(A\\). So at \\(M[0, 1]\\) we need to insert the minimum in the range from \\(0\\) to \\(1\\). We can split the range into two equal subranges. Looking at the table above, we've already computed them, so we take the smaller value. \\(M[0, 1] = Min(M[0, 0], M[1, 0]) \\).
 
-The step should be more representative of the power of dynamic programming. Now \\(j = 2\\) so we find the minima of the ranges of length \\(2^2 = 4\\).
+The next step should be more representative of the power of dynamic programming. Now \\(j = 2\\) so we find the minima of the ranges of length \\(2^2 = 4\\).
 
 | j\i   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |:-----:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -107,7 +107,7 @@ Formally we can describe the procedure as:
     \end{cases}
 \\]
 
-The index calculation might seem a bit unintuitive but it's actually pretty straightforward.
+The range index calculation might seem a bit unintuitive at first but it's actually pretty straightforward.
 
 \\[
 [i, i + 2^j - 1] = [i, i + 2^{j-1} - 1] \cup [i + 2^{j-1}, i + 2^j - 1]
@@ -119,18 +119,20 @@ Both sub-ranges have length of \\(2^{j-1}\\). This is how we turn this formal no
 for (int j = 1; j < K; j++) {
     // 1 << j = 2^j
     for (int i = 0; i + (1 << j) <= N; i++) {
-        int leftMin = M[i, j - 1];
-        int rightMin = M[i + (1 << (j - 1)), j - 1];
+        int left = M[i, j - 1];
+        int right = M[i + (1 << (j - 1)), j - 1];
         M[i, j] = A[leftMin] <= A[rightMin] ? leftMin : rightMin;
     }
 }
 ```
 
-## Range Queries
+## The Range Query
 
 Now our **sparse table** is constructed, we are ready to process queries. We've stored the minima for the ranges that are a power of two, but how do we compute minimum for arbitrary ranges?
 
-The idea is to select two blocks that entirely cover this range. Suppose we have an arbitrary block \\([p, q], \text{where } p < q \\) and we need to find the minimum. Let \\(k = \lfloor log_2(q - p + 1)]\rfloor \\). \\(2^k\\) is the size of the largest block in the table that fits into the range \\([p, q]\\). Then we can compute the minumum by comparing the minima of the following blocks: \\( [p, p + 2^k] \text{and } [q - 2^k + 1, k] \\). More formally:
+The idea is to select two blocks that entirely cover this range. Suppose we have an arbitrary block \\([p, q], \text{where } p < q \\) and we need to find the minimum. 
+
+Let \\(k = \lfloor log_2(q - p + 1)]\rfloor \\), \\(2^k\\) is **the size of the largest block in the table that fits into the range** \\([p, q]\\). Then we can compute the minumum by comparing the minima of the following blocks: \\( [p, p + 2^k] \text{and } [q - 2^k + 1, k] \\). Formally
 
 \\[
   RangeMinimum(p, q) = Min(M[p, k], M[q - 2^k + 1, k])
@@ -160,19 +162,18 @@ The block \\([1, 5] = { 2, 4, 7, 6, 3 }\\) so we got a correct answer in constan
 1. We found the size of the largest block in [1, 5], with size power of 2 by calculating \\(k\\). The size of this block is 4.
 2. We already know the minima of all blocks with sizes of 4. 
 
-Therefore we pick two **overlapping** ranges of this length. The one starts at \\(p\\) and the other ends at \\(q\\). The whole range includes:
+Therefore we pick two **overlapping** ranges of this length. The first **starts at \\(p\\)** and the other **ends at \\(q\\)**. The whole range includes:
 
 ```
-A[1 ... 5] = { 2, 4, 7, 6, 3 }
+A[1, 5] = { 2, 4, 7, 6, 3 }
 left = { 2, 4, 7, 6 }
 right = { 4, 7, 6, 3 }
 ```
 
-Now we have converted the question from something we don't know, to something we know and thus can easily determine the result of the query.
+We have converted the question from something we don't know, to something we know and thus can easily determine the result of the query in \\(O(1)\\).
 
 ```csharp
-public int RangeMinimum(int[] A, int[,] M, int p, int q)
-{
+public int RangeMinimum(int[] A, int[,] M, int p, int q) {
     var k = (int)Math.Floor(Math.Log((q - p + 1), 2));
     var leftMin = M[p, k];
     var rightMin = M[q - (1 << k) + 1, k];
@@ -181,13 +182,62 @@ public int RangeMinimum(int[] A, int[,] M, int p, int q)
 }
 ```
 
-This algorighm can be easily tweaked so it computes some other property like maximum or sum for example.
+This algorighm can be easily tweaked so it computes some other property like maximum for example.
+
+## Range Sums
+Let's see how to compute range sums in constant time using a sparse table. We need to slightly modify our precomputation procedure. The main difference is that instad of storing indexes to elements in the array, we store sums.
+
+```diff
+for (int i = 0; i < N; i++)
+-    M[i, 0] = i;
++    M[i, 0] = A[i];
+```
+
+```diff
+for (int j = 1; j < K; j++) {
+    // 1 << j = 2^j
+    for (int i = 0; i + (1 << j) <= N; i++) {
+        int left = M[i, j - 1];
+        int right = M[i + (1 << (j - 1)), j - 1];
+-       M[i, j] = A[leftMin] <= A[rightMin] ? leftMin : rightMin;
++       M[i, j] = left + right;
+    }
+}
+```
+
+For computing a sum of an arbitrary range \\([p, q]\\), we're going to use the observation that any range is a union of subranges with lengths of powers of \\(2\\). We start with the largest such subrange contained in \\([p, q]\\) and continue by adding the sums of the subsequent smaller ones, but only if they they are within the bounds of \\([p, q]\\).
+
+```csharp
+public int RSQ(int[,] M, int p, int q) {
+    var sum = 0;
+    // The size of the second dimension
+    var K = M.GetLength(1);
+
+    for (int j = K; j >= 0; j--)
+    {
+        if ((1 << j) <= (q - p + 1))
+        {
+            sum += this.M[p, j];
+            p += 1 << j;
+        }
+    }
+    return sum;
+}
+```
+
+Note that the sum query will run in \\(O(log_2N)\\) so it is not constant time, but still pretty good.
 
 ## Conclusion
 
-One can go a long way with some preprocessing. We've got constant speed with just a little bit of an overhead in terms of memory due to the logarihms. There's another price we pay for the \\(O(1)\\) speed though and that is - if we modify our sequence, we'd have to run the precalculation prodecure all over again.
+One can go a long way with some preprocessing. We've got constant speed with just a little bit of an overhead in terms of memory due to the logarihms. There's another price we pay for \\(O(1)\\) time though and that's immutablity. If we modify our sequence, we'd have to run the precomputation prodecure all over again.
 
-## References and Future Reading
+To speed things up a bit more we can precalculate the logarithms. For a sequence of size \\(N\\) for all queries we'll have \\(N\\) different log values. This can also be done with simple dynamic programming. You can check the complete implementations in the references below.
 
-* [CP-Algorithms](https://cp-algorithms.com/data_structures/sparse-table.html#toc-tgt-2)
+There's an \\(O(n)\\) space with \\(O(1)\\) time solution for the **RMQ** problem introduced by Farach-Colton and Bender in their [_"The LCA Problem Revisited"_](https://www.ics.uci.edu/~eppstein/261/BenFar-LCA-00.pdf) which builds on top of the one in this article, but is quite a bit more complex. If space efficiency is critial, then I'd recommend checking it out. The idea behind it is very clever.
+
+## References and Further Reading
+
+* Code reference for [RMQ](https://gist.github.com/deniskyashif/22c115a073742f93919d85e23fc56a9e) and [RSQ](https://gist.github.com/deniskyashif/25d366de77e6914beba8c9bc939d5328)
+* [Sparse Tables on CP-Algorithms](https://cp-algorithms.com/data_structures/sparse-table.html#toc-tgt-2)
 * [Range Minimum Query (Wikipedia)](https://en.wikipedia.org/wiki/Range_minimum_query)
+* [Farch-Colton, Bender, _"The LCA Problem Revisited"_](https://www.ics.uci.edu/~eppstein/261/BenFar-LCA-00.pdf) - linear space, constant time solution
