@@ -2,7 +2,7 @@
 title: "Bring .NET Development into your favourite editor with Omnisharp"
 date: 2015-12-09
 draft: false
-tags: [".net", "c#", "omnisharp", "roslyn"]
+tags: ["dotnet", "c-sharp", "omnisharp", "roslyn"]
 summary: "IntelliSense as a service."
 aliases: 
     - /2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp
