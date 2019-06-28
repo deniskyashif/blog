@@ -104,22 +104,22 @@ tr > th:first-child, td:first-child {
 }
 </style>
 
-<p>Suppose have some sequence of elements. We want to be able to answer questions about any of its ranges in time \(O(1)\). For example we have the following sequence:</p>
+<p>Suppose have some sequence of elements. We want to be able to answer questions about any of its ranges in time \(O(1)\). For example, we have the following sequence:</p>
 
 <p>\[ A = \{ 5, 2, 4, 7, 6, 3, 1, 2 \} \]</p>
 
 <ul>
-<li>What is the minimum/maximum element in the range from index 0 to 3? (known as <a href="https://en.wikipedia.org/wiki/Range_minimum_query">RMQ</a>)</li>
+<li>What is the minimum/maximum element in the range from index 0 to 3?</li>
 <li>What is the sum of the elements in the range from index 1 to 4?</li>
 </ul>
 
 <p>A naive approach would simply iterate over the range and determine the result (\(O(n)\) search and space), or precalculate all of the possible queries (\(O(1)\) search and \(O(n^2)\) space). When speed and efficiency are essential, however, in cases when we&rsquo;re dealing with large datasets, we&rsquo;ll have to come up with something more clever.</p>
 
-<p>In this article we&rsquo;ll introduce the <strong>Sparse Table</strong> data structure and see how it, with a little bit of a preprocessing, lets us answer range queries in constant time.</p>
+<p>In this article, we&rsquo;ll introduce the <strong>Sparse Table</strong> data structure and see how it, with a little bit of a preprocessing, lets us answer range queries in constant time.</p>
 
 <h2 id="intuition">Intuition</h2>
 
-<p>The main idea is to precompute all of the answers for the range queries and store them in a data structure. The challenge is how to do it in an efficient way. We want to save as much space as we can thus retaining the ability to retreive answers in constant time. Our target is \(O(1)\) search and \(O(nlog_2n)\) space and we can achieve it with <strong><a href="https://en.wikipedia.org/wiki/Dynamic_programming">dynamic programming</a></strong> and some basic <strong>arithmetic</strong>.</p>
+<p>The main idea is to precompute all of the answers for the range queries and store them in a data structure. The challenge is how to do it in an efficient way. We want to save as much space as we can thus retaining the ability to retrieve answers in constant time. Our target is \(O(1)\) search and \(O(nlog_2n)\) space and we can achieve it with <strong><a href="https://en.wikipedia.org/wiki/Dynamic_programming">dynamic programming</a></strong> and some basic <strong>arithmetic</strong>.</p>
 
 <p>We know that we can represent natural numbers as a unique decreasing sum of powers of two (yes we&rsquo;ve just described binary). For example:</p>
 
@@ -149,7 +149,7 @@ tr > th:first-child, td:first-child {
 
 <h3 id="iteration">Iteration</h3>
 
-<p>This is where things get interesting. We introduce a general procedure for determining the minimum of a range of size \(2^j\), where \( 1 \le j \le log_2N  \). Assuming that we&rsquo;ve already found the minima for all ranges of size \(2^{j-1}\), we&rsquo;re going to reuse those solutions to find the minima for \(2^j\). This is dynamic programming in its essense. We break down a problem into smaller sub-problems, solve the simplest case and work our way up.</p>
+<p>This is where things get interesting. We introduce a general procedure for determining the minimum of a range of size \(2^j\), where \( 1 \le j \le log_2N  \). Assuming that we&rsquo;ve already found the minima for all ranges of size \(2^{j-1}\), we&rsquo;re going to reuse those solutions to find the minima for \(2^j\). This is dynamic programming in its essence. We break down a problem into smaller sub-problems, solve the simplest case and work our way up.</p>
 
 <p>Before diving into the mathematics of this procedure, let&rsquo;s go through an example. This is our sequence:</p>
 
@@ -187,7 +187,7 @@ tr > th:first-child, td:first-child {
 </tbody>
 </table>
 
-<p>Note that this is not a 1 to 1 representation of the way we actually store the data. Here for the sake of readability in the cells I&rsquo;m showing the actual values whereas in the implementation we store indices. Above are the already computed ranges of length 1. Let&rsquo;s see the next step.</p>
+<p>Note that this is not a 1 to 1 representation of the way we actually store the data. Here for the sake of readability, I&rsquo;m showing the actual values in the cells whereas in the implementation we store indices. Above are the already computed ranges of length 1. Let&rsquo;s see the next step.</p>
 
 <table>
 <thead>
@@ -375,7 +375,7 @@ tr > th:first-child, td:first-child {
 [i, i + 2^j - 1] = [i, i + 2^{j-1} - 1] \cup [i + 2^{j-1}, i + 2^j - 1]
 \]</p>
 
-<p>Both sub-ranges have length of \(2^{j-1}\). This is how we turn this formal notation into code:</p>
+<p>Both sub-ranges have a length of \(2^{j-1}\). This is how we turn this formal notation into code:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#0b0;font-weight:bold">int</span> j = <span style="color:#666">1</span>; j &lt; K; j++) {
     <span style="color:#080;font-style:italic">// 1 &lt;&lt; j = 2^j
 </span><span style="color:#080;font-style:italic"></span>    <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#0b0;font-weight:bold">int</span> i = <span style="color:#666">0</span>; i + (<span style="color:#666">1</span> &lt;&lt; j) &lt;= N; i++) {
@@ -391,7 +391,7 @@ tr > th:first-child, td:first-child {
 
 <p>The idea is to select two blocks that entirely cover this range. Suppose we have an arbitrary block \([p, q], \text{where } p &lt; q \) and we need to find the minimum.</p>
 
-<p>Let \(k = \lfloor log_2(q - p + 1)]\rfloor \), \(2^k\) is <strong>the size of the largest block in the table that fits into the range</strong> \([p, q]\). Then we can compute the minumum by comparing the minima of the following blocks: \( [p, p + 2^k] \text{and } [q - 2^k + 1, k] \). Formally</p>
+<p>Let \(k = \lfloor log_2(q - p + 1)]\rfloor \), \(2^k\) is <strong>the size of the largest block in the table that fits into the range</strong> \([p, q]\). Then we can compute the minimum by comparing the minima of the following blocks: \( [p, p + 2^k] \text{ and } [q - 2^k + 1, k] \). Formally</p>
 
 <p>\[
   RangeMinimum(p, q) = Min(M[p, k], M[q - 2^k + 1, k])
@@ -474,7 +474,7 @@ M[5 - 2^2 + 1, 2] = M[2, 2] = 3
 return 2 
 </code></pre>
 
-<p>The block \([1, 5] = { 2, 4, 7, 6, 3 }\) so we got a correct answer in constant time! But what do these calculations actually mean?</p>
+<p>The block \([1, 5] \) contains \( { 2, 4, 7, 6, 3 }\) so we got a correct answer in constant time! But what do these calculations actually mean?</p>
 
 <ol>
 <li>We found the size of the largest block in [1, 5], with size power of 2 by calculating \(k\). The size of this block is 4.</li>
@@ -488,7 +488,7 @@ left = { 2, 4, 7, 6 }
 right = { 4, 7, 6, 3 }
 </code></pre>
 
-<p>We have converted the question from something we don&rsquo;t know, to something we know and thus can easily determine the result of the query in \(O(1)\).</p>
+<p>We have converted the question from something we don&rsquo;t know to something we know and thus can easily determine the result of the query in \(O(1)\).</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">int</span> RangeMinimum(<span style="color:#0b0;font-weight:bold">int</span><span style="color:#b44">[]</span> A, <span style="color:#0b0;font-weight:bold">int</span><span style="color:#b44">[,]</span> M, <span style="color:#0b0;font-weight:bold">int</span> p, <span style="color:#0b0;font-weight:bold">int</span> q) {
     <span style="color:#0b0;font-weight:bold">var</span> k = (<span style="color:#0b0;font-weight:bold">int</span>)Math.Floor(Math.Log((q - p + <span style="color:#666">1</span>), <span style="color:#666">2</span>));
     <span style="color:#0b0;font-weight:bold">var</span> left = M<span style="color:#b44">[p, k]</span>;
@@ -501,7 +501,7 @@ right = { 4, 7, 6, 3 }
 
 <h2 id="range-sums">Range Sums</h2>
 
-<p>Let&rsquo;s see how to compute range sums in constant time using a sparse table. We need to slightly modify our precomputation procedure. The main difference is that instad of storing indexes to elements in the array, we store sums.</p>
+<p>Let&rsquo;s see how to compute range sums in constant time using a sparse table. We need to slightly modify our precomputation procedure. The main difference is that instead of storing indexes to elements in the array, we store sums.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">for (int i = 0; i &lt; N; i++)
 <span style="color:#a00000">-    M[i, 0] = i;
 </span><span style="color:#a00000"></span><span style="color:#00a000">+    M[i, 0] = A[i];
@@ -515,7 +515,7 @@ right = { 4, 7, 6, 3 }
 </span><span style="color:#00a000"></span>    }
 }
 </code></pre></div>
-<p>For computing a sum of an arbitrary range \([p, q]\), we&rsquo;re going to use the observation that any range is a union of subranges with lengths of powers of \(2\). We start with the largest such subrange contained in \([p, q]\) and continue by adding the sums of the subsequent smaller ones, but only if they they are within the bounds of \([p, q]\).</p>
+<p>For computing a sum of an arbitrary range \([p, q]\), we&rsquo;re going to use the observation that any range is a union of subranges with lengths of powers of \(2\). We start with the largest such subrange contained in \([p, q]\) and continue by adding the sums of the subsequent smaller ones, but only if they are within the bounds of \([p, q]\).</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">int</span> RSQ(<span style="color:#0b0;font-weight:bold">int</span><span style="color:#b44">[,]</span> M, <span style="color:#0b0;font-weight:bold">int</span> p, <span style="color:#0b0;font-weight:bold">int</span> q) {
     <span style="color:#0b0;font-weight:bold">var</span> sum = <span style="color:#666">0</span>;
     <span style="color:#080;font-style:italic">// The size of the table&#39;s second dimension
@@ -536,11 +536,11 @@ right = { 4, 7, 6, 3 }
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>One can go a long way with some preprocessing. We&rsquo;ve got constant speed with just a little bit of an overhead in terms of memory due to the logarihms. There&rsquo;s another price we pay for \(O(1)\) time though and that&rsquo;s immutablity. If we modify our sequence, we&rsquo;d have to run the precomputation prodecure all over again.</p>
+<p>One can go a long way with some preprocessing. We&rsquo;ve got a constant speed with just a little bit of overhead in terms of memory due to the logarithms. There&rsquo;s another price we pay for \(O(1)\) time though and that&rsquo;s immutability. If we modify our sequence, we&rsquo;d have to run the precomputation procedure all over again.</p>
 
-<p>To speed things up a bit more we can precalculate the logarithms. For a sequence of size \(N\) for all queries we&rsquo;ll have \(N\) different log values. This can also be done with simple dynamic programming. You can check the complete implementations in the references below.</p>
+<p>To speed things up a bit more we can precalculate the logarithms. For a sequence of size \(N\) for all queries, we&rsquo;ll have \(N\) different log values. This can also be done with simple dynamic programming. You can check the complete implementations in the references below.</p>
 
-<p>There&rsquo;s an \(O(n)\) space with \(O(1)\) time solution for the <strong>RMQ</strong> problem introduced by Farach-Colton and Bender in their <a href="https://www.ics.uci.edu/~eppstein/261/BenFar-LCA-00.pdf"><em>&ldquo;The LCA Problem Revisited&rdquo;</em></a> paper which builds on top of the one in this article, but is quite a bit more complex. If space efficiency is critial, then I&rsquo;d recommend checking it out. The idea behind it is very clever too.</p>
+<p>There&rsquo;s an \(O(n)\) space with \(O(1)\) time solution for the <strong>RMQ</strong> problem introduced by Farach-Colton and Bender in their <a href="https://www.ics.uci.edu/~eppstein/261/BenFar-LCA-00.pdf"><em>&ldquo;The LCA Problem Revisited&rdquo;</em></a> paper which builds on top of the one in this article, but is quite a bit more complex. If space efficiency is critical, then I&rsquo;d recommend checking it out. The idea behind it is very clever too.</p>
 
 <h2 id="references-and-further-reading">References and Further Reading</h2>
 
@@ -626,7 +626,7 @@ right = { 4, 7, 6, 3 }
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-06-28 15:45:33.156348 &#43;0300 EEST m=&#43;0.104757365">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-06-28 16:01:51.447833 &#43;0300 EEST m=&#43;0.076788157">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
