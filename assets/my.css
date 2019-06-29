@@ -134,7 +134,8 @@ main .post .post-title {
 .talks ul {
     padding-left: 0px;
     margin: 5px 0 0 0;
-    list-style: none inside;
+    list-style: inside;
+    list-style-type: none;
 }
 
 .talks ul li:before {
@@ -146,8 +147,12 @@ main .post .post-title {
     list-style: none inside;
 }
 
+.interests {
+    list-style-type: none;
+}
+
 .interests li:before {
-    content: '\FF0A';
+    content: '\FF0A  ';
 }
 
 .post {
