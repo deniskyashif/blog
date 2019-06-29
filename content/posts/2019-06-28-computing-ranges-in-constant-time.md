@@ -35,9 +35,9 @@ We know that we can represent natural numbers as a unique decreasing sum of powe
 
 We can use the same reasoning to represent a sequence as a finite union of ranges. Consider the sequence of natural numbers from 2 to 13. It can be represented in the following way:
 
-\\[ [2, 12] = [2, 9] \cup [10, 11] \cup [12, 12] \\]
+\\[ [2 ... 12] = [2 ... 9] \cup [10 ... 11] \cup [12 ... 12] \\]
 
-\\([2, 12]\\) has \\(11\\) elements and we broke it down to ranges of \\(8\\), \\(2\\) and \\(1\\) elements respectively. We can also observe that such union can consist of **at most** \\(log_2N\\) ranges where \\(N\\) is the length of the original sequence.
+\\([2 ... 12]\\) has \\(11\\) elements and we broke it down to ranges of \\(8\\), \\(2\\) and \\(1\\) elements respectively. We can also observe that such union can consist of **at most** \\(log_2N\\) ranges where \\(N\\) is the length of the original sequence.
 
 ## Efficiently precomputing the results
 
@@ -52,7 +52,7 @@ var M = new int[N, K]; // The Sparse Table
 
 ### Basis
 
-A range of length \\(1\\) is still a valid range. So the minimum of \\(A[1,1]\\) is exactly A[1] = 2, therefore, filling the first row of the table is trivial.
+A range of length \\(1\\) is still a valid range. So the minimum of \\(A[1...1]\\) is exactly A[1] = 2, therefore, filling the first row of the table is trivial.
 
 ```csharp
 for (int i = 0; i < N; i++)
@@ -75,7 +75,7 @@ So our sparse table stores the indices of the minima in a certain range. After c
 |:-----:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | **0** | 5 | 2 | 4 | 7 | 6 | 3 | 1 | 2 |
 
-Note that this is not a 1 to 1 representation of the way we actually store the data. Here for the sake of readability, I'm showing the actual values in the cells whereas in the implementation we store indices. Above are the already computed ranges of length 1. Let's see the next step.
+Note that **this is not a 1 to 1 representation of the way we actually store the data**. Here for the sake of readability, I'm showing the actual values in the cells whereas in the implementation we store indices. Above are the already computed ranges of length 1. Let's see the next step.
 
 | j\i   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |:-----:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -92,7 +92,7 @@ The next step should be more representative of the power of dynamic programming.
 | **1** | 2 | 2 | 4 | 6 | 3 | 1 | 1 |   |
 | **2** | 2 | 2 | 3 | 1 | 1 |   |   |   |
 
-So \\(M[i = 0, j = 2]\\) represents the smallest element in the range from 0 to 3 (the first four), which is indeed 2. We came up with the result by only looking at the row above. We can represent \\([0, 3] = [0, 1] \cup [2, 3]\\). We already know the minima of \\([0, 1]\\) and \\([2, 3]\\). They are located at \\(M[0, 1] = 2\\) and \\(M[2, 1] = 4\\) so we simply picked the smaller number. 
+So \\(M[i = 0, j = 2]\\) represents the smallest element in the range from 0 to 3 (the first four), which is indeed 2. We came up with the result by only looking at the row above. We can represent \\(A[0 ... 3] = A[0 ... 1] \cup A[2 ... 3]\\). We already know the minima of \\(A[0 ... 1]\\) and \\(A[2 ... 3]\\). They are located at \\(M[0, 1] = 2\\) and \\(M[2, 1] = 4\\) so we simply picked the smaller number. 
 
 | j\i   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 |:-----:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -116,7 +116,7 @@ Formally we can describe the procedure as:
 The range index calculation might seem a bit unintuitive at first but it's actually pretty straightforward.
 
 \\[
-[i, i + 2^j - 1] = [i, i + 2^{j-1} - 1] \cup [i + 2^{j-1}, i + 2^j - 1]
+A[i ... i + 2^j - 1] = A[i ... i + 2^{j-1} - 1] \cup A[i + 2^{j-1} ... i + 2^j - 1]
 \\]
 
 Both sub-ranges have a length of \\(2^{j-1}\\). This is how we turn this formal notation into code:
@@ -136,9 +136,9 @@ for (int j = 1; j < K; j++) {
 
 Now our **sparse table** is constructed, we are ready to process queries. We've stored the minima for the ranges that are a power of two, but how do we compute minimum for arbitrary ranges?
 
-The idea is to select two blocks that entirely cover this range. Suppose we have an arbitrary block \\([p, q], \text{where } p < q \\) and we need to find the minimum. 
+The idea is to select two blocks that entirely cover this range. Suppose we have an arbitrary block \\(A[p ... q], \text{where } p < q \\) and we need to find the minimum. 
 
-Let \\(k = \lfloor log_2(q - p + 1)]\rfloor \\), \\(2^k\\) is **the size of the largest block in the table that fits into the range** \\([p, q]\\). Then we can compute the minimum by comparing the minima of the following blocks: \\( [p, p + 2^k] \text{ and } [q - 2^k + 1, k] \\). Formally
+Let \\(k = \lfloor log_2(q - p + 1)]\rfloor \\), \\(2^k\\) is **the size of the largest block in the table that fits into the range** \\(A[p ... q]\\). Then we can compute the minimum by comparing the minima of the following blocks: \\( A[p ... p + 2^k] \text{ and } A[q - 2^k + 1 ... k] \\). Formally
 
 \\[
   RangeMinimum(p, q) = Min(M[p, k], M[q - 2^k + 1, k])
@@ -163,15 +163,15 @@ M[5 - 2^2 + 1, 2] = M[2, 2] = 3
 return 2 
 ```
 
-The block \\([1, 5] \\) contains \\( { 2, 4, 7, 6, 3 }\\) so we got a correct answer in constant time! But what do these calculations actually mean?
+The block \\(A[1 ... 5] \\) contains \\( { 2, 4, 7, 6, 3 }\\) so we got a correct answer in constant time! But what do these calculations actually mean?
 
-1. We found the size of the largest block in [1, 5], with size power of 2 by calculating \\(k\\). The size of this block is 4.
+1. We found the size of the largest block in A[1 ... 5], with size power of 2 by calculating \\(k\\). The size of this block is 4.
 2. We already know the minima of all blocks with sizes of 4. 
 
 Therefore we pick two **overlapping** ranges of this length. The first **starts at \\(p\\)** and the other **ends at \\(q\\)**. The whole range includes:
 
 ```
-A[1, 5] = { 2, 4, 7, 6, 3 }
+A[1 ... 5] = { 2, 4, 7, 6, 3 }
 left = { 2, 4, 7, 6 }
 right = { 4, 7, 6, 3 }
 ```
@@ -211,7 +211,7 @@ for (int j = 1; j < K; j++) {
 }
 ```
 
-For computing a sum of an arbitrary range \\([p, q]\\), we're going to use the observation that any range is a union of subranges with lengths of powers of \\(2\\). We start with the largest such subrange contained in \\([p, q]\\) and continue by adding the sums of the subsequent smaller ones, but only if they are within the bounds of \\([p, q]\\).
+For computing a sum of an arbitrary range \\(A[p ... q]\\), we're going to use the observation that any range is a union of subranges with lengths of powers of \\(2\\). We start with the largest such subrange contained in \\(A[p ... q]\\) and continue by adding the sums of the subsequent smaller ones, but only if they are within the bounds of \\(A[p ... q]\\).
 
 ```csharp
 public int RSQ(int[,] M, int p, int q) {
