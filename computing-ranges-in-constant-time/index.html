@@ -129,9 +129,9 @@ tr > th:first-child, td:first-child {
 
 <p>We can use the same reasoning to represent a sequence as a finite union of ranges. Consider the sequence of natural numbers from 2 to 13. It can be represented in the following way:</p>
 
-<p>\[ [2, 12] = [2, 9] \cup [10, 11] \cup [12, 12] \]</p>
+<p>\[ [2 &hellip; 12] = [2 &hellip; 9] \cup [10 &hellip; 11] \cup [12 &hellip; 12] \]</p>
 
-<p>\([2, 12]\) has \(11\) elements and we broke it down to ranges of \(8\), \(2\) and \(1\) elements respectively. We can also observe that such union can consist of <strong>at most</strong> \(log_2N\) ranges where \(N\) is the length of the original sequence.</p>
+<p>\([2 &hellip; 12]\) has \(11\) elements and we broke it down to ranges of \(8\), \(2\) and \(1\) elements respectively. We can also observe that such union can consist of <strong>at most</strong> \(log_2N\) ranges where \(N\) is the length of the original sequence.</p>
 
 <h2 id="efficiently-precomputing-the-results">Efficiently precomputing the results</h2>
 
@@ -143,7 +143,7 @@ tr > th:first-child, td:first-child {
 </span></code></pre></div>
 <h3 id="basis">Basis</h3>
 
-<p>A range of length \(1\) is still a valid range. So the minimum of \(A[1,1]\) is exactly A[1] = 2, therefore, filling the first row of the table is trivial.</p>
+<p>A range of length \(1\) is still a valid range. So the minimum of \(A[1&hellip;1]\) is exactly A[1] = 2, therefore, filling the first row of the table is trivial.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#0b0;font-weight:bold">int</span> i = <span style="color:#666">0</span>; i &lt; N; i++)
     M<span style="color:#b44">[i, 0]</span> = i;
 </code></pre></div>
@@ -189,7 +189,7 @@ tr > th:first-child, td:first-child {
 </tbody>
 </table>
 
-<p>Note that this is not a 1 to 1 representation of the way we actually store the data. Here for the sake of readability, I&rsquo;m showing the actual values in the cells whereas in the implementation we store indices. Above are the already computed ranges of length 1. Let&rsquo;s see the next step.</p>
+<p>Note that <strong>this is not a 1 to 1 representation of the way we actually store the data</strong>. Here for the sake of readability, I&rsquo;m showing the actual values in the cells whereas in the implementation we store indices. Above are the already computed ranges of length 1. Let&rsquo;s see the next step.</p>
 
 <table>
 <thead>
@@ -291,7 +291,7 @@ tr > th:first-child, td:first-child {
 </tbody>
 </table>
 
-<p>So \(M[i = 0, j = 2]\) represents the smallest element in the range from 0 to 3 (the first four), which is indeed 2. We came up with the result by only looking at the row above. We can represent \([0, 3] = [0, 1] \cup [2, 3]\). We already know the minima of \([0, 1]\) and \([2, 3]\). They are located at \(M[0, 1] = 2\) and \(M[2, 1] = 4\) so we simply picked the smaller number.</p>
+<p>So \(M[i = 0, j = 2]\) represents the smallest element in the range from 0 to 3 (the first four), which is indeed 2. We came up with the result by only looking at the row above. We can represent \(A[0 &hellip; 3] = A[0 &hellip; 1] \cup A[2 &hellip; 3]\). We already know the minima of \(A[0 &hellip; 1]\) and \(A[2 &hellip; 3]\). They are located at \(M[0, 1] = 2\) and \(M[2, 1] = 4\) so we simply picked the smaller number.</p>
 
 <table>
 <thead>
@@ -374,7 +374,7 @@ tr > th:first-child, td:first-child {
 <p>The range index calculation might seem a bit unintuitive at first but it&rsquo;s actually pretty straightforward.</p>
 
 <p>\[
-[i, i + 2^j - 1] = [i, i + 2^{j-1} - 1] \cup [i + 2^{j-1}, i + 2^j - 1]
+A[i &hellip; i + 2^j - 1] = A[i &hellip; i + 2^{j-1} - 1] \cup A[i + 2^{j-1} &hellip; i + 2^j - 1]
 \]</p>
 
 <p>Both sub-ranges have a length of \(2^{j-1}\). This is how we turn this formal notation into code:</p>
@@ -391,9 +391,9 @@ tr > th:first-child, td:first-child {
 
 <p>Now our <strong>sparse table</strong> is constructed, we are ready to process queries. We&rsquo;ve stored the minima for the ranges that are a power of two, but how do we compute minimum for arbitrary ranges?</p>
 
-<p>The idea is to select two blocks that entirely cover this range. Suppose we have an arbitrary block \([p, q], \text{where } p &lt; q \) and we need to find the minimum.</p>
+<p>The idea is to select two blocks that entirely cover this range. Suppose we have an arbitrary block \(A[p &hellip; q], \text{where } p &lt; q \) and we need to find the minimum.</p>
 
-<p>Let \(k = \lfloor log_2(q - p + 1)]\rfloor \), \(2^k\) is <strong>the size of the largest block in the table that fits into the range</strong> \([p, q]\). Then we can compute the minimum by comparing the minima of the following blocks: \( [p, p + 2^k] \text{ and } [q - 2^k + 1, k] \). Formally</p>
+<p>Let \(k = \lfloor log_2(q - p + 1)]\rfloor \), \(2^k\) is <strong>the size of the largest block in the table that fits into the range</strong> \(A[p &hellip; q]\). Then we can compute the minimum by comparing the minima of the following blocks: \( A[p &hellip; p + 2^k] \text{ and } A[q - 2^k + 1 &hellip; k] \). Formally</p>
 
 <p>\[
   RangeMinimum(p, q) = Min(M[p, k], M[q - 2^k + 1, k])
@@ -476,16 +476,16 @@ M[5 - 2^2 + 1, 2] = M[2, 2] = 3
 return 2 
 </code></pre>
 
-<p>The block \([1, 5] \) contains \( { 2, 4, 7, 6, 3 }\) so we got a correct answer in constant time! But what do these calculations actually mean?</p>
+<p>The block \(A[1 &hellip; 5] \) contains \( { 2, 4, 7, 6, 3 }\) so we got a correct answer in constant time! But what do these calculations actually mean?</p>
 
 <ol>
-<li>We found the size of the largest block in [1, 5], with size power of 2 by calculating \(k\). The size of this block is 4.</li>
+<li>We found the size of the largest block in A[1 &hellip; 5], with size power of 2 by calculating \(k\). The size of this block is 4.</li>
 <li>We already know the minima of all blocks with sizes of 4.</li>
 </ol>
 
 <p>Therefore we pick two <strong>overlapping</strong> ranges of this length. The first <strong>starts at \(p\)</strong> and the other <strong>ends at \(q\)</strong>. The whole range includes:</p>
 
-<pre><code>A[1, 5] = { 2, 4, 7, 6, 3 }
+<pre><code>A[1 ... 5] = { 2, 4, 7, 6, 3 }
 left = { 2, 4, 7, 6 }
 right = { 4, 7, 6, 3 }
 </code></pre>
@@ -517,7 +517,7 @@ right = { 4, 7, 6, 3 }
 </span><span style="color:#00a000"></span>    }
 }
 </code></pre></div>
-<p>For computing a sum of an arbitrary range \([p, q]\), we&rsquo;re going to use the observation that any range is a union of subranges with lengths of powers of \(2\). We start with the largest such subrange contained in \([p, q]\) and continue by adding the sums of the subsequent smaller ones, but only if they are within the bounds of \([p, q]\).</p>
+<p>For computing a sum of an arbitrary range \(A[p &hellip; q]\), we&rsquo;re going to use the observation that any range is a union of subranges with lengths of powers of \(2\). We start with the largest such subrange contained in \(A[p &hellip; q]\) and continue by adding the sums of the subsequent smaller ones, but only if they are within the bounds of \(A[p &hellip; q]\).</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">public</span> <span style="color:#0b0;font-weight:bold">int</span> RSQ(<span style="color:#0b0;font-weight:bold">int</span><span style="color:#b44">[,]</span> M, <span style="color:#0b0;font-weight:bold">int</span> p, <span style="color:#0b0;font-weight:bold">int</span> q) {
     <span style="color:#0b0;font-weight:bold">var</span> sum = <span style="color:#666">0</span>;
     <span style="color:#080;font-style:italic">// The size of the table&#39;s second dimension
@@ -626,7 +626,7 @@ right = { 4, 7, 6, 3 }
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-06-29 10:03:09.993844 &#43;0300 EEST m=&#43;0.071997970">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-06-29 13:35:26.354649 &#43;0300 EEST m=&#43;0.072230001">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
