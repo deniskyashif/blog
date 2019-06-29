@@ -244,4 +244,4 @@ There's an \\(O(n)\\) space with \\(O(1)\\) time solution for the **RMQ** proble
 * Code reference for [RMQ](https://gist.github.com/deniskyashif/bcdd96f1652f2f404c528886f104fee5) and [RSQ](https://gist.github.com/deniskyashif/53b17532aae120fcc1a2345f617a102b)
 * [Sparse Tables on CP-Algorithms](https://cp-algorithms.com/data_structures/sparse-table.html)
 * [Range Minimum Query (Wikipedia)](https://en.wikipedia.org/wiki/Range_minimum_query)
-* [Farch-Colton, Bender, _"The LCA Problem Revisited"_](https://www.ics.uci.edu/~eppstein/261/BenFar-LCA-00.pdf) - linear space, constant time solution
+* [Farch-Colton, Bender, _"The LCA Problem Revisited"_](https://www.ics.uci.edu/~eppstein/261/BenFar-LCA-00.pdf) - linear space, constant time solution.
