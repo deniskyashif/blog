@@ -29,7 +29,7 @@ In this article, we'll introduce the **Sparse Table** data structure and see how
 
 The main idea is to precompute all of the answers for the range queries and store them in a data structure. The challenge is how to do it in an efficient way. We want to save as much space as we can thus retaining the ability to retrieve answers in constant time. Our target is \\(O(1)\\) search and \\(O(nlog_2n)\\) space and we can achieve it with **[dynamic programming](https://en.wikipedia.org/wiki/Dynamic_programming)** and some basic **arithmetic**.
 
-We know that we can represent natural numbers as a unique decreasing sum of powers of two (yes we've just described binary). For example:
+We know that we can represent any natural number as a unique decreasing sum of powers of two (yes we've just described binary). For example:
 
 \\[ 11 = (1011)_2 = 1*2^3 + 0*2^2 + 1*2^1 + 1*2^0 = 8 + 0 + 2 + 1 \\]
 
@@ -37,7 +37,7 @@ We can use the same reasoning to represent a sequence as a finite union of range
 
 \\[ [2 ... 12] = [2 ... 9] \cup [10 ... 11] \cup [12 ... 12] \\]
 
-\\([2 ... 12]\\) has \\(11\\) elements and we broke it down to ranges of \\(8\\), \\(2\\) and \\(1\\) elements respectively. We can also observe that such union can consist of **at most** \\(log_2N\\) ranges where \\(N\\) is the length of the original sequence.
+\\([2 ... 12]\\) has \\(11\\) elements and we broke it down to ranges of \\(8\\), \\(2\\) and \\(1\\) elements (all powers of 2) respectively. We can also observe that such union can consist of **at most** \\(log_2N\\) ranges where \\(N\\) is the length of the original sequence.
 
 ## Efficiently precomputing the results
 
@@ -229,7 +229,7 @@ public int RSQ(int[,] M, int p, int q) {
 }
 ```
 
-Note that the sum query will run in \\(O(log_2N)\\) so it is not constant time, but it's still pretty good.
+Note that the sum query will run in \\(O(log_2N)\\) so it is not constant time, but it's still pretty good. The sum problem can as well be solved in an even more efficient way (e.g. [Prefix Sum](https://en.wikipedia.org/wiki/Prefix_sum)), however, I wanted to show an example of a different usage of this construction.
 
 ## Conclusion
 
