@@ -20,5 +20,14 @@
       <description>Range Minimum Query with Sparse Table and Dynamic Programming.</description>
     </item>
     
+    <item>
+      <title>Implementing a Regular Expression Engine</title>
+      <link>https://deniskyashif.com/implementing-a-regular-expression-engine/</link>
+      <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/implementing-a-regular-expression-engine/</guid>
+      <description>Using the Thompson&amp;rsquo;s construction algorithm.</description>
+    </item>
+    
   </channel>
 </rss>
