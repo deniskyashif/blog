@@ -217,9 +217,9 @@ For computing a sum of an arbitrary range \\(A[p ... q]\\), we're going to use t
 public int RSQ(int[,] M, int p, int q) {
     var sum = 0;
     // The size of the table's second dimension
-    var K = M.GetLength(1);
+    int k = (int)Math.Floor(Math.Log((q - p + 1), 2))
 
-    for (int j = K; j >= 0; j--) {
+    for (int j = k; j >= 0; j--) {
         if ((1 << j) <= (q - p + 1)) {
             sum += M[p, j];
             p += 1 << j;
