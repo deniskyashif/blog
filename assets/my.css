@@ -6,6 +6,15 @@ html, body, h1, h2, h3, h4, h5, .post-title, .post-info, .catalogue-title, nav a
     box-shadow: none;
 }
 
+.nav .rss {
+    color: #ee802f;
+    opacity: 1;
+}
+
+.nav .rss:hover {
+    color: #d36311;
+}
+
 main {
     border-top: 1px solid #aaa;
 }
@@ -35,7 +44,31 @@ main .social {
 }
 
 main .social > a {
-    margin-right: 5px;
+    margin-right: 10px;
+}
+
+main .social .fa-github {
+    color: #211F1F;
+}
+
+main .social .fa-github:hover {
+    color: #555;
+}
+
+main .social .fa-envelope-o {
+    color: #D44638;
+}
+
+main .social .fa-envelope-o:hover {
+    color: #B23121;
+}
+
+main .social .fa-linkedin {
+    color: #0077B5;
+}
+
+main .social .fa-linkedin:hover {
+    color: #00A0DC;
 }
 
 main > .intro {
