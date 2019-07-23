@@ -5,7 +5,7 @@
         <a href="{{ "/" | relURL }}">
 			<h2 class="nav-title">{{ .Site.Title }}</h2>
 		</a>
-        <a class="rss" href="{{ .RSSLink }}" type="application/rss+xml" target="_blank" title="RSS Feed">
+        <a class="rss" href="{{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}" type="application/rss+xml" target="_blank" title="RSS Feed">
             <i class="fa fa-2x fa-rss" aria-hidden="true"></i>
         </a>
 		{{ partial "header-menu.html" . }}
