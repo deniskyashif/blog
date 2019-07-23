@@ -47,6 +47,14 @@ main .social > a {
     margin-right: 10px;
 }
 
+main .social .fa-twitter {
+    color: #55ACEE;
+}
+
+main .social .fa-twitter:hover {
+    color: #4B98D2;
+}
+
 main .social .fa-github {
     color: #211F1F;
 }
