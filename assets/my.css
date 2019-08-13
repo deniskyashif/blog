@@ -9,6 +9,7 @@ html, body, h1, h2, h3, h4, h5, .post-title, .post-info, .catalogue-title, nav a
 .nav .rss {
     color: #ee802f;
     opacity: 1;
+    display: none;
 }
 
 .nav .rss:hover {
@@ -45,38 +46,6 @@ main .social {
 
 main .social > a {
     margin-right: 10px;
-}
-
-main .social .fa-twitter {
-    color: #55ACEE;
-}
-
-main .social .fa-twitter:hover {
-    color: #4B98D2;
-}
-
-main .social .fa-github {
-    color: #211F1F;
-}
-
-main .social .fa-github:hover {
-    color: #555;
-}
-
-main .social .fa-envelope-o {
-    color: #D44638;
-}
-
-main .social .fa-envelope-o:hover {
-    color: #B23121;
-}
-
-main .social .fa-linkedin {
-    color: #0077B5;
-}
-
-main .social .fa-linkedin:hover {
-    color: #00A0DC;
 }
 
 main > .intro {
