@@ -5,7 +5,7 @@ layout: page
 aliases: ["/speaking"]
 ---
 
-I've had the pleasure to deliver talks at various conferences. This is a list of my topics and some resources:
+I've had the pleasure to speak at various conferences and events. This is a list of some of my talks:
 
 <dl class="talks">
     <div class="topic">
