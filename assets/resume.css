@@ -3,7 +3,6 @@
     font-size: 14.5px;
     margin: 0.5rem auto;
     max-width: 768px;
-    padding: 1rem 0;
     position: relative;
 }
 
@@ -45,7 +44,7 @@ a {
 .export {
     position: absolute;
     left: -3rem;
-    top: 2.5rem;
+    top: 1.5rem;
 }
 
 .export .fa-file-pdf-o {
@@ -153,9 +152,14 @@ section > div:last-child {
 }
 
 @media print {
+    .wrapper {
+        padding: 1rem 0;
+    }
+
     .export {
         display: none;
     }
+
     .erasmus {
         margin-top: 5rem;
     }
