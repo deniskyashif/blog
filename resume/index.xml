@@ -3,6 +3,7 @@
 
 <head>
     <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Denis Kyashif's Resume</title>
     <link rel="stylesheet" href="/assets/resume.css">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
