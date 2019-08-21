@@ -28,8 +28,8 @@
 <meta property="og:url" content="https://deniskyashif.com/g%C3%B6dels-system-t-in-typescript/" />
 
 <meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png" />
-<meta property="article:published_time" content="2019-06-05T17:31:07&#43;03:00"/>
-<meta property="article:modified_time" content="2019-06-05T17:31:07&#43;03:00"/>
+<meta property="article:published_time" content="2019-06-05T17:31:07+03:00" />
+<meta property="article:modified_time" content="2019-06-05T17:31:07+03:00" />
 
     
 <script type="application/javascript">
@@ -134,23 +134,24 @@ In the paper, the authors define the primitives and some operators in Agda and l
 
 <li><p><code>Nat</code>: the set of natural numbers. This is tricky as the definition for <code>Nat</code> in <strong>System T</strong> is <code>Nat: Zero | Succ</code>. So it can be either zero or the successor function, iterated n number of times. To give an intuition <code>Zero == 0</code>, <code>Succ(Zero) == 1</code>, <code>Succ(Succ(Zero)) == 2</code> etc. For the sake of simplicity, I decided to use TypeScript&rsquo;s <code>number</code> type but only for representing the numbers. We&rsquo;re not allowed to use their built-in properties, like arithmetic operations, comparison, etc. We&rsquo;re going to construct them from the ground up using the predefined primitives.</p></li>
 
-<li><p><code>Succ: Nat → Nat</code> we define as:</p></li>
-</ul>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#a2f;font-weight:bold">const</span> Succ <span style="color:#666">=</span> (x: <span style="color:#0b0;font-weight:bold">number</span>)<span style="color:#666">:</span> <span style="color:#0b0;font-weight:bold">number</span> <span style="color:#666">=&gt;</span> x <span style="color:#666">+</span> <span style="color:#666">1</span>;</code></pre></div>
-<ul>
-<li><code>Cases&lt;T&gt;: Bool → T → T → T</code> - think of it as a conditional (if-then-else) expression. <strong>System T</strong> allows polymorphic functions which we implement using TypeScript&rsquo;s generics.</li>
-</ul>
+<li><p><code>Succ: Nat → Nat</code> we define as:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#a2f;font-weight:bold">const</span> Succ <span style="color:#666">=</span> (x: <span style="color:#0b0;font-weight:bold">number</span>)<span style="color:#666">:</span> <span style="color:#0b0;font-weight:bold">number</span> <span style="color:#666">=&gt;</span> x <span style="color:#666">+</span> <span style="color:#666">1</span>;</code></pre></div></li>
+
+<li><p><code>Cases&lt;T&gt;: Bool → T → T → T</code> - think of it as a conditional (if-then-else) expression. <strong>System T</strong> allows polymorphic functions which we implement using TypeScript&rsquo;s generics.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#a2f;font-weight:bold">function</span> Cases<span style="color:#666">&lt;</span>T<span style="color:#666">&gt;</span>(cond: <span style="color:#0b0;font-weight:bold">boolean</span>, a: <span style="color:#0b0;font-weight:bold">T</span>, b: <span style="color:#0b0;font-weight:bold">T</span>)<span style="color:#666">:</span> T {
-    <span style="color:#a2f;font-weight:bold">return</span> cond <span style="color:#666">?</span> a : <span style="color:#0b0;font-weight:bold">b</span>;
-}</code></pre></div>
+<span style="color:#a2f;font-weight:bold">return</span> cond <span style="color:#666">?</span> a : <span style="color:#0b0;font-weight:bold">b</span>;
+}</code></pre></div></li>
+</ul>
+
 <p>It&rsquo;s easy to see that <code>Cases&lt;number&gt;(true, 1, 2) == 1</code> and <code>Cases&lt;number&gt;(false, 1, 2) == 2</code>.</p>
 
 <ul>
-<li><code>Rec&lt;T&gt;: Nat → T → (Nat → T → T) → T</code> - this is called  <strong>Gödel&rsquo;s Recursor</strong>.</li>
-</ul>
+<li><p><code>Rec&lt;T&gt;: Nat → T → (Nat → T → T) → T</code> - this is called  <strong>Gödel&rsquo;s Recursor</strong>.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#a2f;font-weight:bold">function</span> Rec<span style="color:#666">&lt;</span>T<span style="color:#666">&gt;</span>(sn: <span style="color:#0b0;font-weight:bold">number</span>, s: <span style="color:#0b0;font-weight:bold">T</span>, t<span style="color:#666">:</span> (z: <span style="color:#0b0;font-weight:bold">number</span>, acc: <span style="color:#0b0;font-weight:bold">T</span>) <span style="color:#666">=&gt;</span> T)<span style="color:#666">:</span> T {
-    <span style="color:#a2f;font-weight:bold">return</span> sn <span style="color:#666">===</span> Zero <span style="color:#666">?</span> s : <span style="color:#0b0;font-weight:bold">t</span>(sn <span style="color:#666">-</span> <span style="color:#666">1</span>, Rec(sn <span style="color:#666">-</span> <span style="color:#666">1</span>, s, t));
-}</code></pre></div>
+<span style="color:#a2f;font-weight:bold">return</span> sn <span style="color:#666">===</span> Zero <span style="color:#666">?</span> s : <span style="color:#0b0;font-weight:bold">t</span>(sn <span style="color:#666">-</span> <span style="color:#666">1</span>, Rec(sn <span style="color:#666">-</span> <span style="color:#666">1</span>, s, t));
+}</code></pre></div></li>
+</ul>
+
 <p>It might seem confusing at first but its reduction is straightforward:</p>
 
 <pre><code>Rec 0 s t → s
@@ -371,7 +372,7 @@ We have seen that using a language with a particular type system always comes wi
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-08-15 12:44:28.765051 -0700 MST m=&#43;0.089523893">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-08-21 10:55:35.013849 -0700 MST m=&#43;0.092687085">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
