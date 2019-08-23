@@ -72,7 +72,7 @@
                                 <li>Develop and test features. Perform code reviews and onboard fellow team members.</li>
                                 <li>Integrate the app with external platforms.</li>
                             </ul>
-                            <p>Tools: SQL Server, ASP.NET Core, Angular, SASS, Azure</p>
+                            <p>Tools: SQL Server, ASP.NET Core, Angular, Azure</p>
                         </div>
                         <div>
                             <h3>Software Engineer</h3>
@@ -86,8 +86,8 @@
                                 Prevalent provides third party risk management solutions that help companies meet compliance requirements and reduce risk.
                             </p>
                             <ul>
-                                <li>Implemented features and tests for Prevalent's SaaS vendor risk management platform.</li>
-                                <li>Performed code reviews, mentored and onboarded fellow team members.</li>
+                                <li>Implement features and tests for Prevalent's SaaS vendor risk management platform.</li>
+                                <li>Perform code reviews, mentor and onboard fellow team members.</li>
                             </ul>
                             <p>Tools: PostgreSQL, ASP.NET Core, NodeJS, React, Docker</p>
                         </div>
@@ -104,13 +104,13 @@
                                 New Venture Software is a high-quality development and consulting company, specializing in Web, Mobile and UX.
                             </p>
                             <ul>
-                                <li>Designed and implemented web applications for companies from various industries.</li>
-                                <li>Consulted engineering teams remote and on-site.</li>
-                                <li>Performed code reviews and mentored fellow team members.</li>
-                                <li>Made project estimations and communicated closely with customers
+                                <li>Design and implement web applications for companies from various industries.</li>
+                                <li>Consult engineering teams remote and on-site.</li>
+                                <li>Perform code reviews and mentored fellow team members.</li>
+                                <li>Make project estimations and communicate closely with customers
                                     on status, proposals and technical issues.</li>
-                                <li>Prepared and led onsite and virtual technical trainings.</li>
-                                <li>Represented the company as a speaker on various international
+                                <li>Prepare and lead onsite and virtual technical trainings.</li>
+                                <li>Represent the company as a speaker on various international
                                     conferences in Europe and North America.</li>
                             </ul>
                             <p>
@@ -125,7 +125,7 @@
                                 <a href="https://www.grafixoft.com/" target="_blank">grafixoft.com</a></small>
                             <small><i class="fa fa-map-marker" aria-hidden="true"></i>
                                 Sofia, Bulgaria</small>
-                            <p>Implemented modules, features and tests for the "Retain" resource planning and scheduling system.</p>
+                            <p>Implement, features and tests for the "Retain" resource planning and scheduling software.</p>
                             <p>
                                 Tools: AngularJS, Delphi
                             </p>
@@ -143,7 +143,7 @@
                             I love writing code, exploring new paradigms and languages. As a software engineer, I've always been committed to building robust and maintainable software. 
                         </p>
                         <p>
-                            I've spoken at many international conferences, consulted engineering teams from North America and Europe and led technical trainings.
+                            I've spoken at international conferences, consulted teams from North America and Europe and led technical trainings.
                         </p>
                     </section>
                     <section class="tools">
@@ -233,7 +233,6 @@
                                 Tools: NodeJS, Jasmine
                             </p>
                         </div>
-                        
                     </section>
                 </div>
                 <div class="right">
@@ -276,7 +275,8 @@
             </div>
         </main>
         <div class="export">
-            <a href="https://drive.google.com/file/d/1nchhjkDPprS09A49fSR0Qc2CCW6-QlG8/view?usp=sharing" target="_blank">
+            <a href="https://drive.google.com/file/d/1e3M5s-68WC52v8lJsgUwJ1uRhqclNeqR/view"
+                target="_blank">
                 <i class="fa fa-3x fa-file-pdf-o" title="Open as PDF"></i>
             </a>
         </div>
