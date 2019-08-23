@@ -72,7 +72,7 @@
                                 <li>Develop and test features. Perform code reviews and onboard fellow team members.</li>
                                 <li>Integrate the app with external platforms.</li>
                             </ul>
-                            <p>Tools: SQL Server, ASP.NET Core, Angular, Azure</p>
+                            <div class="tools-list"><span>SQL Server</span><span>ASP.NET Core</span><span>Entity Framework</span><span>Angular</span><span>Azure</span></div>
                         </div>
                         <div>
                             <h3>Software Engineer</h3>
@@ -89,7 +89,7 @@
                                 <li>Implement features and tests for Prevalent's SaaS vendor risk management platform.</li>
                                 <li>Perform code reviews, mentor and onboard fellow team members.</li>
                             </ul>
-                            <p>Tools: PostgreSQL, ASP.NET Core, NodeJS, React, Docker</p>
+                            <div class="tools-list"><span>PostgreSQL</span><span>ASP.NET Core</span><span>NodeJS</span><span>React</span><span>Docker</span></div>
                         </div>
                         <div>
                             <h3>Senior Software Engineer and Consultant</h3>
@@ -97,7 +97,7 @@
                             <small><i class="fa fa-calendar" aria-hidden="true"></i> 11/2015 - 08/2018</small>
                             <small><i class="fa fa-link" aria-hidden="true"></i>
                                 <a href="https://www.newventuresoftware.com/"
-                                    target="_blank">newventuresoftware.com</a></small>
+                                   target="_blank">newventuresoftware.com</a></small>
                             <small><i class="fa fa-map-marker" aria-hidden="true"></i>
                                 Sofia, Bulgaria</small>
                             <p>
@@ -113,9 +113,7 @@
                                 <li>Represent the company as a speaker on various international
                                     conferences in Europe and North America.</li>
                             </ul>
-                            <p>
-                                Tools: .NET, Angular, Kendo UI, NativeScript, Azure
-                            </p>
+                            <div class="tools-list"><span>.NET/Core</span><span>Angular</span><span>Kendo UI</span><span>NativeScript</span><span>Azure</span></div>
                         </div>
                         <div>
                             <h3>Software Developer</h3>
@@ -126,9 +124,7 @@
                             <small><i class="fa fa-map-marker" aria-hidden="true"></i>
                                 Sofia, Bulgaria</small>
                             <p>Implement, features and tests for the "Retain" resource planning and scheduling software.</p>
-                            <p>
-                                Tools: AngularJS, Delphi
-                            </p>
+                            <div class="tools-list"><span>AngularJS</span><span>Delphi</span></div>
                         </div>
                     </section>
                 </div>
@@ -211,7 +207,7 @@
                             <h3>Machine Comprehension Using Commonsense Knowledge</h3>
                             <small><i class="fa fa-link" aria-hidden="true"></i>
                                 <a target="_blank"
-                                    href="https://github.com/deniskyashif/sweet-reason/blob/master/research/abstract.pdf">
+                                   href="https://github.com/deniskyashif/sweet-reason/blob/master/research/abstract.pdf">
                                     https://github.com/deniskyashif/sweet-reason
                                 </a>
                             </small>
@@ -220,6 +216,9 @@
                                 Participated in the "International Workshop on Semantic Evaluation 2018" being one of
                                 the few teams worldwide that solved the problem.
                             </p>
+                            <div class="tools-list">
+                                <span>Python</span>
+                            </div>
                         </div>
                         <div>
                             <h3>SSFST</h3>
@@ -230,7 +229,9 @@
                             </small>
                             <p>
                                 An efficient dictionary-based text rewriter. <br>
-                                Tools: NodeJS, Jasmine
+                                <div class="tools-list">
+                                    <span>NodeJS</span><span>Jasmine</span>
+                                </div>
                             </p>
                         </div>
                     </section>
@@ -275,8 +276,8 @@
             </div>
         </main>
         <div class="export">
-            <a href="https://drive.google.com/file/d/1e3M5s-68WC52v8lJsgUwJ1uRhqclNeqR/view"
-                target="_blank">
+            <a href="https://drive.google.com/file/d/1yf1C4mhe26abieWhe1lONN3d7D5HLEsp/view"
+               target="_blank">
                 <i class="fa fa-3x fa-file-pdf-o" title="Open as PDF"></i>
             </a>
         </div>

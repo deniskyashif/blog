@@ -91,6 +91,19 @@ section > div:last-child {
     border-bottom: none;
 }
 
+.tools-list {
+    margin: 0.5rem 0 0.2rem 0;
+}
+
+.tools-list span {
+    background: #4a9ae1;
+    color: #fff;
+    display: inline-block;
+    padding: 0.1rem 0.2rem;
+    margin-right: 0.2rem;
+    margin-bottom: 0.2rem;
+}
+
 .intro h1 {
     font-size: 2.5rem;
     text-transform: uppercase;
