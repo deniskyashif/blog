@@ -148,10 +148,9 @@
                             <li>C#</li>
                             <li>JavaScript</li>
                             <li>TypeScript</li>
-                            <li>Go</li>
                             <li>ASP.NET Core</li>
-                            <li>Angular</li>
                             <li>NodeJS</li>
+                            <li>Angular</li>
                             <li>HTML</li>
                             <li>CSS/SCSS</li>
                             <li>SQL</li>
@@ -230,7 +229,7 @@
                             <p>
                                 An efficient dictionary-based text rewriter. <br>
                                 <div class="tools-list">
-                                    <span>NodeJS</span><span>Jasmine</span>
+                                    <span>NodeJS</span>
                                 </div>
                             </p>
                         </div>

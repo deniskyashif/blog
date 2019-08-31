@@ -139,7 +139,7 @@ In the paper, the authors define the primitives and some operators in Agda and l
 
 <li><p><code>Cases&lt;T&gt;: Bool → T → T → T</code> - think of it as a conditional (if-then-else) expression. <strong>System T</strong> allows polymorphic functions which we implement using TypeScript&rsquo;s generics.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#a2f;font-weight:bold">function</span> Cases<span style="color:#666">&lt;</span>T<span style="color:#666">&gt;</span>(cond: <span style="color:#0b0;font-weight:bold">boolean</span>, a: <span style="color:#0b0;font-weight:bold">T</span>, b: <span style="color:#0b0;font-weight:bold">T</span>)<span style="color:#666">:</span> T {
-<span style="color:#a2f;font-weight:bold">return</span> cond <span style="color:#666">?</span> a : <span style="color:#0b0;font-weight:bold">b</span>;
+	<span style="color:#a2f;font-weight:bold">return</span> cond <span style="color:#666">?</span> a : <span style="color:#0b0;font-weight:bold">b</span>;
 }</code></pre></div></li>
 </ul>
 
@@ -148,7 +148,7 @@ In the paper, the authors define the primitives and some operators in Agda and l
 <ul>
 <li><p><code>Rec&lt;T&gt;: Nat → T → (Nat → T → T) → T</code> - this is called  <strong>Gödel&rsquo;s Recursor</strong>.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#a2f;font-weight:bold">function</span> Rec<span style="color:#666">&lt;</span>T<span style="color:#666">&gt;</span>(sn: <span style="color:#0b0;font-weight:bold">number</span>, s: <span style="color:#0b0;font-weight:bold">T</span>, t<span style="color:#666">:</span> (z: <span style="color:#0b0;font-weight:bold">number</span>, acc: <span style="color:#0b0;font-weight:bold">T</span>) <span style="color:#666">=&gt;</span> T)<span style="color:#666">:</span> T {
-<span style="color:#a2f;font-weight:bold">return</span> sn <span style="color:#666">===</span> Zero <span style="color:#666">?</span> s : <span style="color:#0b0;font-weight:bold">t</span>(sn <span style="color:#666">-</span> <span style="color:#666">1</span>, Rec(sn <span style="color:#666">-</span> <span style="color:#666">1</span>, s, t));
+	<span style="color:#a2f;font-weight:bold">return</span> sn <span style="color:#666">===</span> Zero <span style="color:#666">?</span> s : <span style="color:#0b0;font-weight:bold">t</span>(sn <span style="color:#666">-</span> <span style="color:#666">1</span>, Rec(sn <span style="color:#666">-</span> <span style="color:#666">1</span>, s, t));
 }</code></pre></div></li>
 </ul>
 
@@ -372,7 +372,7 @@ We have seen that using a language with a particular type system always comes wi
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-08-23 15:02:09.989646 -0700 MST m=&#43;0.090387062">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-08-30 18:30:47.086306 -0700 MST m=&#43;0.088068918">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>

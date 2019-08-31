@@ -368,29 +368,29 @@ For instance, in the arithmetic algebra we start with constants such as integers
 
 <li><p>When we scan an operator, we pop from the stack, apply this operation on the NFA(s) and push the resulting NFA back to the stack.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> toNFA(postfixExp) {
-<span style="color:#a2f;font-weight:bold">if</span>(postfixExp <span style="color:#666">===</span> <span style="color:#b44">&#39;&#39;</span>) {
-    <span style="color:#a2f;font-weight:bold">return</span> fromEpsilon();
-}
-
-<span style="color:#a2f;font-weight:bold">const</span> stack <span style="color:#666">=</span> [];
-
-<span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#a2f;font-weight:bold">const</span> token <span style="color:#a2f;font-weight:bold">of</span> postfixExp) {
-    <span style="color:#a2f;font-weight:bold">if</span>(token <span style="color:#666">===</span> <span style="color:#b44">&#39;*&#39;</span>) {
-        stack.push(closure(stack.pop()));
-    } <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#a2f;font-weight:bold">if</span> (token <span style="color:#666">===</span> <span style="color:#b44">&#39;|&#39;</span>) {
-        <span style="color:#a2f;font-weight:bold">const</span> right <span style="color:#666">=</span> stack.pop();
-        <span style="color:#a2f;font-weight:bold">const</span> left <span style="color:#666">=</span> stack.pop();
-        stack.push(union(left, right));
-    } <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#a2f;font-weight:bold">if</span> (token <span style="color:#666">===</span> <span style="color:#b44">&#39;.&#39;</span>) {
-        <span style="color:#a2f;font-weight:bold">const</span> right <span style="color:#666">=</span> stack.pop();
-        <span style="color:#a2f;font-weight:bold">const</span> left <span style="color:#666">=</span> stack.pop();
-        stack.push(concat(left, right));
-    } <span style="color:#a2f;font-weight:bold">else</span> {
-        stack.push(fromSymbol(token));
-    }
-}
-
-<span style="color:#a2f;font-weight:bold">return</span> stack.pop();
+	<span style="color:#a2f;font-weight:bold">if</span>(postfixExp <span style="color:#666">===</span> <span style="color:#b44">&#39;&#39;</span>) {
+	    <span style="color:#a2f;font-weight:bold">return</span> fromEpsilon();
+	}
+	
+	<span style="color:#a2f;font-weight:bold">const</span> stack <span style="color:#666">=</span> [];
+    
+	<span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#a2f;font-weight:bold">const</span> token <span style="color:#a2f;font-weight:bold">of</span> postfixExp) {
+		<span style="color:#a2f;font-weight:bold">if</span>(token <span style="color:#666">===</span> <span style="color:#b44">&#39;*&#39;</span>) {
+		    stack.push(closure(stack.pop()));
+		} <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#a2f;font-weight:bold">if</span> (token <span style="color:#666">===</span> <span style="color:#b44">&#39;|&#39;</span>) {
+		    <span style="color:#a2f;font-weight:bold">const</span> right <span style="color:#666">=</span> stack.pop();
+		    <span style="color:#a2f;font-weight:bold">const</span> left <span style="color:#666">=</span> stack.pop();
+		    stack.push(union(left, right));
+		} <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#a2f;font-weight:bold">if</span> (token <span style="color:#666">===</span> <span style="color:#b44">&#39;.&#39;</span>) {
+		    <span style="color:#a2f;font-weight:bold">const</span> right <span style="color:#666">=</span> stack.pop();
+		    <span style="color:#a2f;font-weight:bold">const</span> left <span style="color:#666">=</span> stack.pop();
+		    stack.push(concat(left, right));
+		} <span style="color:#a2f;font-weight:bold">else</span> {
+		    stack.push(fromSymbol(token));
+		}
+	}
+    
+	<span style="color:#a2f;font-weight:bold">return</span> stack.pop();
 }
 </code></pre></div></li>
 </ul>
@@ -663,7 +663,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-08-23 15:02:10.041373 -0700 MST m=&#43;0.142115367">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-08-30 18:30:47.142195 -0700 MST m=&#43;0.143960005">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
