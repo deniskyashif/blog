@@ -41,7 +41,7 @@ const Succ = (x: number): number => x + 1;
 
 ```typescript
 function Cases<T>(cond: boolean, a: T, b: T): T {
-    return cond ? a : b;
+	return cond ? a : b;
 }
 ```
 
@@ -51,7 +51,7 @@ It's easy to see that `Cases<number>(true, 1, 2) == 1` and `Cases<number>(false,
 
 ```typescript
 function Rec<T>(sn: number, s: T, t: (z: number, acc: T) => T): T {
-    return sn === Zero ? s : t(sn - 1, Rec(sn - 1, s, t));
+	return sn === Zero ? s : t(sn - 1, Rec(sn - 1, s, t));
 }
 ```
 
