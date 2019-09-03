@@ -92,7 +92,7 @@
                                 <li>Implement features and tests for Prevalent's SaaS vendor risk management platform.</li>
                                 <li>Perform code reviews, mentor and onboard fellow team members.</li>
                             </ul>
-                            <div class="tools-list"><span>PostgreSQL</span><span>ASP.NET Core</span><span>NodeJS</span><span>ReactJS</span><span>Docker</span></div>
+                            <div class="tools-list"><span>PostgreSQL</span><span>ASP.NET Core</span><span>Node.js</span><span>ReactJS</span><span>Docker</span></div>
                         </div>
                         <div>
                             <h3>Senior Software Engineer and Consultant</h3>
@@ -152,7 +152,7 @@
                             <li>JavaScript</li>
                             <li>TypeScript</li>
                             <li>ASP.NET Core</li>
-                            <li>NodeJS</li>
+                            <li>Node.js</li>
                             <li>Angular</li>
                             <li>HTML</li>
                             <li>CSS/SCSS</li>
@@ -231,7 +231,7 @@
                             <p>
                                 An efficient dictionary-based text rewriter. <br>
                                 <div class="tools-list">
-                                    <span>NodeJS</span>
+                                    <span>Node.js</span>
                                 </div>
                             </p>
                         </div>
