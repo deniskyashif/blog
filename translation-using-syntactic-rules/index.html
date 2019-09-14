@@ -106,10 +106,10 @@ if (!doNotTrack) {
 
 		
 
-<p>Oftentimes, when we build applications we have to deal with some kind of a non-trivial input or come up with a standardized way of passing information between the components of a system. In cases like this, a rudimentary approach like using regular expressoins, combined with control flow statements can quickly turn out to be messy, error prone and leave little to no room for extension.</p>
+<p>Oftentimes, when we build applications we have to deal with some kind of a non-trivial input or come up with a standardized way of passing information between the components of a system. In cases like this, a rudimentary approach like using regular expressions, combined with control flow statements can quickly turn out to be messy, error-prone and leave little to no room for extension.</p>
 
-<p>In this article we&rsquo;ll explore a formalism, widely used for describing computer languages, namely the <strong>Context-Free Grammars</strong>. We&rsquo;ll learn how to define the syntax of a language using a grammar, parse a strings of this language and generate the corresponding output - be it another string, or an in-memory data structure.<br />
-For the hands-on part of we&rsquo;ll use <a href="https://www.antlr.org/">ANTLR</a> (ANother Tool for Language Recognition) to implement a CSV parser sethus seeing how an abstract formalism can be turned into code.</p>
+<p>In this article, we&rsquo;ll explore a formalism, widely used for describing computer languages, namely the <strong>Context-Free Grammars</strong>. We&rsquo;ll learn how to define the syntax of a language using a grammar, parse strings of this language and generate the corresponding output - be it another string, or an in-memory data structure.<br />
+For the hands-on part of we&rsquo;ll use <a href="https://www.antlr.org/">ANTLR</a> (ANother Tool for Language Recognition) to implement a CSV parser thus seeing how an abstract formalism can be turned into code.</p>
 
 <h2 id="definition">Definition</h2>
 
@@ -134,7 +134,7 @@ Productions consist of two types of lexical elements, namely <strong>terminals</
 
 <ul>
 <li>Set of <strong>terminals</strong> \( \Sigma \).</li>
-<li>Set of <strong>nonterminas</strong> \(N\). Each nonterminal represents sets of terminal
+<li>Set of <strong>nonterminals</strong> \(N\). Each nonterminal represents sets of terminal
 strings.</li>
 <li>Set of <strong>productions</strong> (rewrite rules) \(P\) in the form \(N \to (N \cup \Sigma)* \). The head (left side) consists of a single nonterminal and the body (right side) is a sequence of terminals and nonterminals.</li>
 <li>An <strong>axiom</strong> (start nonterminal), usually denoted with \(S\).</li>
@@ -142,7 +142,7 @@ strings.</li>
 
 <h3 id="grammar-notation">Grammar Notation</h3>
 
-<p>We write grammars by listing their production rules with the start symbol listed first. There&rsquo;re several ways to describe a grammar but for the remainder of this article we&rsquo;ll use ANTLR&rsquo;s <a href="https://en.wikipedia.org/wiki/Extended_Backus–Naur_Form">EBNF</a>-style format.</p>
+<p>We write grammars by listing their production rules with the start symbol listed first. There&rsquo;re several ways to describe a grammar but for the remainder of this article, we&rsquo;ll use ANTLR&rsquo;s <a href="https://en.wikipedia.org/wiki/Extended_Backus–Naur_Form">EBNF</a>-style format.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#a0a000">start</span>:<span style="color:#bbb"> </span><span style="color:#b8860b">expr</span>;<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#a0a000">expr</span>:<span style="color:#bbb"> </span><span style="color:#b8860b">expr</span><span style="color:#bbb"> </span><span style="color:#b44">&#39;+&#39;</span><span style="color:#bbb"> </span><span style="color:#800">DIGIT</span>;<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#a0a000">expr</span>:<span style="color:#bbb"> </span><span style="color:#b8860b">expr</span><span style="color:#bbb"> </span><span style="color:#b44">&#39;-&#39;</span><span style="color:#bbb"> </span><span style="color:#800">DIGIT</span>;<span style="color:#bbb">
@@ -155,12 +155,12 @@ strings.</li>
 
 <p>We can also define our <code>DIGIT</code> lexer rule (token) using a regular expression:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#a0a000">DIGIT</span>:<span style="color:#bbb"> </span>[0-9];</code></pre></div>
-<p>You might be wondering why <code>expr</code> and <code>DIGIT</code> nonterminals are denoted differently. Although both are on the left hand side of some productions, they represent different types of rules - namely <strong>lexer rules</strong> and <strong>parser rules</strong> (more on that in the next section). ANTLR imposes <strong>the convention that lexer rules start with an uppercase letter and parser rules with a lowercase letter</strong>.<br />
-Lexer rules contain only either literals (along the use of EBNF symbols; literals can be both single characters and longer strings) or references to other lexer rules. Parser rules may reference parser and lexer rules as they wish and even include literals, but never only literals.</p>
+<p>You might be wondering why <code>expr</code> and <code>DIGIT</code> nonterminals are denoted differently. Although both are on the left-hand side of some productions, they represent different types of rules - namely <strong>lexer rules</strong> and <strong>parser rules</strong> (more on that in the next section). ANTLR imposes <strong>the convention that lexer rules start with an uppercase letter and parser rules with a lowercase letter</strong>.<br />
+Lexer rules contain only either literals (along with the use of EBNF symbols; literals can be both single characters and longer strings) or references to other lexer rules. Parser rules may reference parser and lexer rules as they wish and even include literals, but never only literals.</p>
 
 <h2 id="derivations">Derivations</h2>
 
-<p>The way we <strong>derive a string</strong> by a given grammar is by beggining with the start symbol&rsquo;s production and replacing each of the nonterminals in its body with a corresponding production. We say that <strong>the language of a grammar is the set of all strings that can be derived from its start symbol</strong>.</p>
+<p>The way we <strong>derive a string</strong> by a given grammar is by beginning with the start symbol&rsquo;s production and replacing each of the nonterminals in its body with a corresponding production. We say that <strong>the language of grammar is the set of all strings that can be derived from its start symbol</strong>.</p>
 
 <h3 id="lexical-analysis-tokenization">Lexical Analysis (Tokenization)</h3>
 
@@ -199,15 +199,15 @@ Lexer rules contain only either literals (along the use of EBNF symbols; literal
 <li>Each interior node and the rood are labeled by a nonterminal.</li>
 </ul>
 
-<p><img src="/images/posts/2019-09-15-syntax-translation/lex-parse.png" /></p>
+<p><img src="/images/posts/2019-09-13-syntax-directed-translation/lex-parse.png" /></p>
 
 <p>&ldquo;5+1&rdquo; has the following parse tree:</p>
 
-<p><img src="/images/posts/2019-09-15-syntax-translation/calc1.png" /></p>
+<p><img src="/images/posts/2019-09-13-syntax-directed-translation/calc1.png" /></p>
 
 <p>The leaves of the tree from left to right yield the string. <strong>Finding the tree for a given sequence of tokens is called parsing.</strong> Let&rsquo;s see another example. The parse tree of &ldquo;15+1.4-.2&rdquo;:</p>
 
-<p><img src="/images/posts/2019-09-15-syntax-translation/calc2.png" /></p>
+<p><img src="/images/posts/2019-09-13-syntax-directed-translation/calc2.png" /></p>
 
 <p>We can generate &ldquo;15+1.4-.2&rdquo; by applying the production rules in the following order:</p>
 
@@ -261,15 +261,15 @@ Grammars can also be <strong>ambiguous</strong> - that is we can have <strong>mo
 }</code></pre></div>
 <p>It would result in the following parse tree:</p>
 
-<p><img src="/images/posts/2019-09-15-syntax-translation/json.png" /></p>
+<p><img src="/images/posts/2019-09-13-syntax-directed-translation/json.png" /></p>
 
 <p>Generating a parse tree is a form of validation as well. If a parse tree cannot be generated from a given input - the input is invalid.</p>
 
-<p><img src="/images/posts/2019-09-15-syntax-translation/js-syntax-error.png" width="325" /></p>
+<p><img src="/images/posts/2019-09-13-syntax-directed-translation/js-syntax-error.png" width="325" /></p>
 
 <h2 id="syntax-directed-translation">Syntax-directed translation</h2>
 
-<p><strong>Syntax-directed translation</strong> is a compiler implementation technique where <strong>the translation is completely driven by the parser</strong>. In other words, the parse tree is used to perform the semantic analysis and the translation of the source program. Once we&rsquo;ve generated the parse tree, we have to visit each node and perform a specific action (think of it as a piece of code to be executed). As each node in a parse tree corresponds to a grammar rule, we can say that the action, attached to this rule carries its semantics. Keep in mind:</p>
+<p><strong>The syntax-directed translation</strong> is a compiler implementation technique where <strong>the translation is completely driven by the parser</strong>. In other words, the parse tree is used to perform the semantic analysis and the translation of the source program. Once we&rsquo;ve generated the parse tree, we have to visit each node and perform a specific action (think of it as a piece of code to be executed). As each node in a parse tree corresponds to a grammar rule, we can say that the action, attached to this rule carries its semantics. Keep in mind:</p>
 
 <ul>
 <li>Syntax deals the structure of a sentence.</li>
@@ -278,9 +278,9 @@ Grammars can also be <strong>ambiguous</strong> - that is we can have <strong>mo
 
 <p>So far we&rsquo;ve learned how to describe a structure of a language. Now is time to define its semantics.</p>
 
-<p>Let&rsquo;s go back to the arithmetic expression example and see how to calculate a result by performing a <strong>depth-first traversal</strong> of the parse tree. Consider the follwing expression &ldquo;5+3-1&rdquo;:</p>
+<p>Let&rsquo;s go back to the arithmetic expression example and see how to calculate a result by performing a <strong>depth-first traversal</strong> of the parse tree. Consider the following expression &ldquo;5+3-1&rdquo;:</p>
 
-<p><img src="/images/posts/2019-09-15-syntax-translation/calc3.1.png" width="225" /></p>
+<p><img src="/images/posts/2019-09-13-syntax-directed-translation/calc3.1.png" width="225" /></p>
 
 <p>Knowing that the phrase structure is specified by a set of rules:</p>
 
@@ -289,7 +289,7 @@ Grammars can also be <strong>ambiguous</strong> - that is we can have <strong>mo
 <li>The leaf nodes correspond to terminals.</li>
 </ul>
 
-<p>So in our tree walk, according to the grammar, we can either be in a node of type <code>start</code>, <code>expr</code> or in a leaf node which can repreresent the <code>NUMBER, '+' or '-'</code> tokens. The calculation procedure might look like this:</p>
+<p>So in our tree walk, according to the grammar, we can either be in a node of type <code>start</code>, <code>expr</code> or in a leaf node which can represent the <code>NUMBER, '+' or '-'</code> tokens. The calculation procedure might look like this:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a2f;font-weight:bold">function</span> visit(node) {
     <span style="color:#a2f;font-weight:bold">if</span> (node.isTerminal) {
         <span style="color:#080;font-style:italic">// Action &#34;attached&#34; to a terminal node
@@ -327,9 +327,9 @@ visit(root); <span style="color:#080;font-style:italic">// &#39;5+3-1&#39; =&gt;
 }
 visit(root); <span style="color:#080;font-style:italic">// &#39;5+3-1&#39; =&gt; &#39;5 3 + 1 -&#39;
 </span></code></pre></div>
-<p>We would take the same approach if we are to implement a JSON to XML converter, or JSON to an in-memory data structure for example. This is also a very rudimentary and impractical way to attach actions to rules. In the next section we&rsquo;ll see how to do it better.</p>
+<p>We would take the same approach if we are to implement a JSON to XML converter, or JSON to an in-memory data structure for example. This is also a very rudimentary and impractical way to attach actions to rules. In the next section, we&rsquo;ll see a cleaner approach.</p>
 
-<h2 id="hands-on-parsing-csv">Hands On: Parsing CSV</h2>
+<h2 id="hands-on-parsing-csv">Hands-On: Parsing CSV</h2>
 
 <p>Everything so far was more or less abstract. Now is time to go through a real-world example and put what we&rsquo;ve learned to practice. We&rsquo;re going to implement a program that translates a <a href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a> string to JSON. To generate our parser, we&rsquo;re going to use <a href="https://www.antlr.org">ANTLR</a>. Provided a grammar, ANTLR can emit the parser code in several languages (Java, C#, JavaScript and others). Check <a href="https://github.com/antlr/antlr4/blob/master/doc/getting-started.md">this guide</a> for the installation details. We&rsquo;re going to generate our parser in JavaScript.</p>
 
@@ -361,13 +361,13 @@ STRING : &#39;&#34;&#39; (&#39;&#34;&#34;&#39;|~&#39;&#34;&#39;)* &#39;&#34;&#39
 <p>Let&rsquo;s also create <code>employees.csv</code>.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csv" data-lang="csv">EmployeeNumber, Name, Location, BirthDate
 12420, John Smith, USA, 1988/04/29</code></pre></div>
-<p>We can now proceed to visualizing the parse tree. Running</p>
+<p>We can now proceed to visualize the parse tree. Running</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">antlr CSV.g4
 javac ./CSV*.java
 grun CSV csvFile -gui -tokens ./employees.csv</code></pre></div>
 <p>would result in</p>
 
-<p><img src="/images/posts/2019-09-15-syntax-translation/employees-pt.png" /></p>
+<p><img src="/images/posts/2019-09-13-syntax-directed-translation/employees-pt.png" /></p>
 
 <p>This is a useful tool for debugging our grammars, but now we&rsquo;ll see how to programatically construct and access the parse tree.<br />
 First we need to install the <a href="https://www.npmjs.com/package/antlr4">JavaScript target for ANTLR4</a>.</p>
@@ -400,8 +400,8 @@ CSV.tokens      CSVLexer.js     CSVListener.js  CSVVisitor.js</code></pre></div>
 
 <h3 id="translation">Translation</h3>
 
-<p>ANTLR also generates a &ldquo;parse tree walker&rdquo; interface for us. That means we can easily hook into events during the parse tree traversal. For our translator we&rsquo;re going to use the visitor mechanism which is an implementation
-of the <a href="https://en.wikipedia.org/wiki/Visitor_pattern">Visitor patter</a>. In ANTLR, the visitors and listeners are both used for traversing the tree but they are slightly different (more on that <a href="https://github.com/antlr/antlr4/blob/master/doc/listeners.md">here</a>).</p>
+<p>ANTLR also generates a &ldquo;parse tree walker&rdquo; interface for us. That means we can easily hook into events during the parse tree traversal. For our translator, we&rsquo;re going to use the visitor mechanism which is an implementation
+of the <a href="https://en.wikipedia.org/wiki/Visitor_pattern">Visitor pattern</a>. In ANTLR, the visitors and listeners are both used for traversing the tree but they are slightly different (more on that <a href="https://github.com/antlr/antlr4/blob/master/doc/listeners.md">here</a>).</p>
 
 <p>Let&rsquo;s take a look at the generated <code>CSVVisitor.js</code>:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#080;font-style:italic">// Generated from CSV.g4 by ANTLR 4.7.2
@@ -482,7 +482,7 @@ CSVVisitor.prototype.constructor <span style="color:#666">=</span> CSVVisitor;
     }
 }
 </code></pre></div>
-<p>Now we&rsquo;ve specified how to &ldquo;walk the tree&rdquo; using our custom visior.</p>
+<p>Now we&rsquo;ve specified how to &ldquo;walk the tree&rdquo; using our custom visitor.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a2f;font-weight:bold">const</span> result <span style="color:#666">=</span> tree.accept(<span style="color:#a2f;font-weight:bold">new</span> CsvToJsonConverter());
 </code></pre></div>
 <p>is going to produce:</p>
@@ -497,9 +497,9 @@ CSVVisitor.prototype.constructor <span style="color:#666">=</span> CSVVisitor;
 </code></pre></div>
 <h2 id="conclusion">Conclusion</h2>
 
-<p>In this article we&rsquo;ve learned an approach for formal language recognition and translation. We&rsquo;ve introduced the context-free grammars and learned how to describe a language syntax using a grammar. Then we saw how to denote the structure of a string using a parse tree and work with this tree to derive the desired output. We also learned how to use ANTLR to generate parser for a language and use its API to define its semantics.</p>
+<p>In this article, we&rsquo;ve learned an approach for formal language recognition and translation. We&rsquo;ve introduced the context-free grammars and learned how to describe a language syntax using a grammar. Then we saw how to denote the structure of a string using a parse tree and work with this tree to derive the desired output. We also learned how to use ANTLR to generate a parser for a language and use its API to define its semantics.</p>
 
-<p>Syntax-directed translation is not a new concept and has many practical applications. You can use the approach for processing query languages, protocols, connection strings, configuration files and all kinds of domain-specific and general purpose languages. You can also build a custom language that suits your application&rsquo;s domain, all you need is to know how to write a grammars and write them well (see the <a href="#references-further-reading">references</a> for more on the topic).</p>
+<p>The syntax-directed translation is not a new concept and has many practical applications. You can use the approach for processing query languages, protocols, connection strings, configuration files and all kinds of domain-specific and general-purpose languages. You can also build a custom language that suits your application&rsquo;s domain, all you need is to know how to write grammars and write them well (see the <a href="#references-further-reading">references</a> for more on the topic).</p>
 
 <h2 id="references-further-reading">References &amp; Further Reading</h2>
 
@@ -586,7 +586,7 @@ CSVVisitor.prototype.constructor <span style="color:#666">=</span> CSVVisitor;
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-09-13 23:21:31.04872 -0700 MST m=&#43;0.147805871">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-09-13 23:40:32.390357 -0700 MST m=&#43;0.158096168">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
