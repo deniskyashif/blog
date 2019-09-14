@@ -2,9 +2,9 @@
 title: "Implementing a Regular Expression Engine"
 date: 2019-02-17T15:05:00+02:00
 draft: false
-tags: ["regex", "parser", "compiler", "finite-state-machine", "algorithms", "javascript", "compsci"]
+tags: ["compsci", "regex", "parsing", "compilers", "finite-state-machines", "algorithms", "javascript"]
 useMath: true
-summary: "Using the Thompson's construction algorithm."
+summary: "Using Ken Thompson's construction algorithm."
 description: "This article describes how to implement a simple and efficient regular expression engine following the Thompson's construction algorithm."
 aliases: 
     - /2019/02/17/implementing-a-regular-expression-engine/
