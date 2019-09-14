@@ -3,6 +3,46 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://deniskyashif.com/tags/antlr/</loc>
+    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/compilers/</loc>
+    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/compsci/</loc>
+    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/</loc>
+    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/parsing/</loc>
+    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/posts/</loc>
+    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/</loc>
+    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/translation-using-syntactic-rules/</loc>
+    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://deniskyashif.com/tags/algorithms/</loc>
     <lastmod>2019-06-28T13:26:25+03:00</lastmod>
   </url>
@@ -18,22 +58,7 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/</loc>
-    <lastmod>2019-06-28T13:26:25+03:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://deniskyashif.com/tags/dynamic-programming/</loc>
-    <lastmod>2019-06-28T13:26:25+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/posts/</loc>
-    <lastmod>2019-06-28T13:26:25+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/</loc>
     <lastmod>2019-06-28T13:26:25+03:00</lastmod>
   </url>
   
@@ -78,22 +103,12 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/tags/compiler/</loc>
-    <lastmod>2019-02-17T15:05:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/finite-state-machine/</loc>
+    <loc>https://deniskyashif.com/tags/finite-state-machines/</loc>
     <lastmod>2019-02-17T15:05:00+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://deniskyashif.com/implementing-a-regular-expression-engine/</loc>
-    <lastmod>2019-02-17T15:05:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/parser/</loc>
     <lastmod>2019-02-17T15:05:00+02:00</lastmod>
   </url>
   

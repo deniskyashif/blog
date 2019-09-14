@@ -6,10 +6,19 @@
     <description>Recent content on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 28 Jun 2019 13:26:25 +0300</lastBuildDate>
+    <lastBuildDate>Fri, 13 Sep 2019 17:14:58 -0700</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Translation using Syntactic Rules</title>
+      <link>https://deniskyashif.com/translation-using-syntactic-rules/</link>
+      <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
+      
+      <guid>https://deniskyashif.com/translation-using-syntactic-rules/</guid>
+      <description>How to describe a formal language and build a translator with ANTLR and JavaScript.</description>
+    </item>
     
     <item>
       <title>Computing Ranges in Constant Time</title>
@@ -44,7 +53,7 @@
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
       <guid>https://deniskyashif.com/implementing-a-regular-expression-engine/</guid>
-      <description>Using the Thompson&amp;rsquo;s construction algorithm.</description>
+      <description>Using Ken Thompson&amp;rsquo;s construction algorithm.</description>
     </item>
     
     <item>

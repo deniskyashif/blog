@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>antlr on Denis Kyashif&#39;s Blog</title>
+    <link>https://deniskyashif.com/tags/antlr/</link>
+    <description>Recent content in antlr on Denis Kyashif&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 13 Sep 2019 17:14:58 -0700</lastBuildDate>
+    
+	<atom:link href="https://deniskyashif.com/tags/antlr/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Translation using Syntactic Rules</title>
+      <link>https://deniskyashif.com/translation-using-syntactic-rules/</link>
+      <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
+      
+      <guid>https://deniskyashif.com/translation-using-syntactic-rules/</guid>
+      <description>How to describe a formal language and build a translator with ANTLR and JavaScript.</description>
+    </item>
+    
+  </channel>
+</rss>
