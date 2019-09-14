@@ -2,7 +2,7 @@
 title: "Computing Ranges in Constant Time"
 date: 2019-06-28T13:26:25+03:00
 draft: false
-tags: ["algorithms", "dynamic-programming", "c-sharp"]
+tags: ["algorithms", "dynamic-programming", "compsci", "c-sharp"]
 useMath: true
 summary: "Range Minimum Query with Sparse Table and Dynamic Programming."
 description: "Solution for the Range Minimum Query problem with Sparse Tables and Dynamic Programming."
