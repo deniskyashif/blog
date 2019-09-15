@@ -106,7 +106,7 @@ if (!doNotTrack) {
 
 		
 
-<p>Oftentimes, when we build applications we have to deal with some kind of a non-trivial input or come up with a standardized way of passing information between the components of a system. In cases like this, a rudimentary approach like using regular expressions, combined with control flow statements can quickly turn out to be messy, error-prone and leave little to no room for extension.</p>
+<p>Often, when we build applications we have to deal with some kind of a non-trivial input or come up with a standardized way of passing information between the components of a system. In cases like this, a rudimentary approach like using regular expressions, combined with control flow statements can quickly turn out messy, error-prone and leave little to no room for extension.</p>
 
 <p>In this article, we&rsquo;ll explore a formalism, widely used for describing computer languages, namely the <strong>Context-Free Grammars</strong>. We&rsquo;ll learn how to define the syntax of a language using a grammar, parse strings of this language and generate the corresponding output - be it another string, or an in-memory data structure.<br />
 For the hands-on part of we&rsquo;ll use <a href="https://www.antlr.org/">ANTLR</a> (ANother Tool for Language Recognition) to implement a CSV parser thus seeing how an abstract formalism can be turned into code.</p>
@@ -142,7 +142,7 @@ strings.</li>
 
 <h3 id="grammar-notation">Grammar Notation</h3>
 
-<p>We write grammars by listing their production rules with the start symbol listed first. There&rsquo;re several ways to describe a grammar but for the remainder of this article, we&rsquo;ll use ANTLR&rsquo;s <a href="https://en.wikipedia.org/wiki/Extended_Backus–Naur_Form">EBNF</a>-style format.</p>
+<p>We write grammars by listing their production rules with the start symbol listed first. There are several ways to describe a grammar but for the remainder of this article, we&rsquo;ll use ANTLR&rsquo;s <a href="https://en.wikipedia.org/wiki/Extended_Backus–Naur_Form">EBNF</a>-style format.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#a0a000">start</span>:<span style="color:#bbb"> </span><span style="color:#b8860b">expr</span>;<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#a0a000">expr</span>:<span style="color:#bbb"> </span><span style="color:#b8860b">expr</span><span style="color:#bbb"> </span><span style="color:#b44">&#39;+&#39;</span><span style="color:#bbb"> </span><span style="color:#800">DIGIT</span>;<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#a0a000">expr</span>:<span style="color:#bbb"> </span><span style="color:#b8860b">expr</span><span style="color:#bbb"> </span><span style="color:#b44">&#39;-&#39;</span><span style="color:#bbb"> </span><span style="color:#800">DIGIT</span>;<span style="color:#bbb">
@@ -278,7 +278,7 @@ Grammars can also be <strong>ambiguous</strong> - that is we can have <strong>mo
 
 <p>So far we&rsquo;ve learned how to describe a structure of a language. Now is time to define its semantics.</p>
 
-<p>Let&rsquo;s go back to the arithmetic expression example and see how to calculate a result by performing a <strong>depth-first traversal</strong> of the parse tree. Consider the following expression &ldquo;5+3-1&rdquo;:</p>
+<p>Let&rsquo;s go back to the arithmetic expression example and see how to calculate a result by performing a <strong>depth-first traversal</strong> of the parse tree. Consider the following input &ldquo;5+3-1&rdquo;:</p>
 
 <p><img src="/images/posts/2019-09-13-syntax-directed-translation/calc3.1.png" width="225" /></p>
 
@@ -310,7 +310,9 @@ Grammars can also be <strong>ambiguous</strong> - that is we can have <strong>mo
 }
 visit(root); <span style="color:#080;font-style:italic">// &#39;5+3-1&#39; =&gt; 7
 </span></code></pre></div>
-<p>So calling <code>visit(root)</code> is going to return the result of the evaluation. Another example would be to convert the expression which is in infix notation into postfix notation.</p>
+<p>So calling <code>visit(root)</code> is going to return the result of the evaluation. An <code>expr</code> subtree has the following semantics - it can either have a single child which subtree evaluates to a number or three child nodes where the first and the third evaluate to a number and the second is an operator symbol. Depending on the operator, the node&rsquo;s value is calculated.</p>
+
+<p>Another example would be to convert the expression which is in infix notation into postfix notation.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a2f;font-weight:bold">function</span> visit(node) {
     <span style="color:#a2f;font-weight:bold">if</span> (node.isTerminal) {
         <span style="color:#a2f;font-weight:bold">return</span> node.getText();
@@ -369,7 +371,7 @@ grun CSV csvFile -gui -tokens ./employees.csv</code></pre></div>
 
 <p><img src="/images/posts/2019-09-13-syntax-directed-translation/employees-pt.png" /></p>
 
-<p>This is a useful tool for debugging our grammars, but now we&rsquo;ll see how to programatically construct and access the parse tree.<br />
+<p>This is a useful tool for debugging our grammars, but now we&rsquo;ll see how to programmatically construct and access the parse tree.<br />
 First we need to install the <a href="https://www.npmjs.com/package/antlr4">JavaScript target for ANTLR4</a>.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm i antlr4</code></pre></div>
 <p>Generate the parser, this time in JavaScript:</p>
@@ -396,7 +398,7 @@ CSV.tokens      CSVLexer.js     CSVListener.js  CSVVisitor.js</code></pre></div>
 <span style="color:#a2f;font-weight:bold">const</span> parser <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> CsvParser(tokens);
 <span style="color:#a2f;font-weight:bold">const</span> tree <span style="color:#666">=</span> parser.csvFile(); <span style="color:#080;font-style:italic">// parse from the start rule (the axiom)
 </span></code></pre></div>
-<p>We&rsquo;ve generated a parse tree, its time to go ahead with the translation.</p>
+<p>We&rsquo;ve generated a parse tree, it&rsquo;s time to go ahead with the translation.</p>
 
 <h3 id="translation">Translation</h3>
 
@@ -587,7 +589,7 @@ query languages, protocols, connection strings, configuration files and all kind
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-09-14 09:56:18.202936 -0700 MST m=&#43;0.147965196">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-09-14 17:27:04.298621 -0700 MST m=&#43;0.156708715">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
