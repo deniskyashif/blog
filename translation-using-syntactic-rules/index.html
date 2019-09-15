@@ -497,6 +497,26 @@ CSVVisitor.prototype.constructor <span style="color:#666">=</span> CSVVisitor;
     ISBN<span style="color:#666">:</span> <span style="color:#b44">&#39;0465026567&#39;</span>,
     DISCOUNTED_PRICE<span style="color:#666">:</span> <span style="color:#b44">&#39;9.95&#39;</span> } ]
 </code></pre></div>
+<h2 id="parsing-regular-expressions">Parsing Regular Expressions</h2>
+
+<p>Another example is using syntax-directed translation for <a href="/implementing-a-regular-expression-engine">compiling regular expressions to finite automata</a>. The article shows a stack-based approach, but we can also perform the compilation by writing a grammar and constructing a parse tree. A grammar that replicates the regex syntax as shown in the article would be:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#a2f;font-weight:bold">grammar</span><span style="color:#bbb"> </span><span style="color:#00f">Regex</span>;<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#a0a000">start</span>:<span style="color:#bbb"> </span><span style="color:#b8860b">expr</span>;<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#a0a000">expr</span>:<span style="color:#bbb"> 
+</span><span style="color:#bbb">    </span><span style="color:#b44">&#39;(&#39;</span><span style="color:#b8860b">expr</span><span style="color:#b44">&#39;)&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#666">|</span><span style="color:#bbb"> </span><span style="color:#b8860b">expr</span><span style="color:#b44">&#39;*&#39;</span><span style="color:#bbb">      </span><span style="color:#080;font-style:italic">// closure</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#666">|</span><span style="color:#bbb"> </span><span style="color:#b8860b">expr</span><span style="color:#b44">&#39;.&#39;</span><span style="color:#b8860b">expr</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic">// concatenation</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#666">|</span><span style="color:#bbb"> </span><span style="color:#b8860b">expr</span><span style="color:#b44">&#39;|&#39;</span><span style="color:#b8860b">expr</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic">// union (or)</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#666">|</span><span style="color:#bbb"> </span><span style="color:#800">SYMBOL</span>;<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#a0a000">SYMBOL</span>:<span style="color:#bbb"> </span>[a-zA-Z0-9];</code></pre></div>
+<p>The operator precedence is specified by ordering the <code>expr</code> productions from the highest (top) to the lowest (bottom). Here&rsquo;s the parse tree of &ldquo;(a|b)*.c&rdquo;:</p>
+
+<p><img src="/images/posts/2019-09-13-syntax-directed-translation/regex.png" /></p>
+
+<p>You can check out the compilation procedure <a href="https://github.com/deniskyashif/regexjs/commit/c3fabedea1ff53b0a1b12e8647df95e81aea739f#diff-48e611c3706c9fdff05b92dfc5b98cd9L127">here</a>, however, for better understanding I&rsquo;d recommend reading the <a href="/implementing-a-regular-expression-engine">regex article</a> first.</p>
+
 <h2 id="conclusion">Conclusion</h2>
 
 <p>In this article, we&rsquo;ve learned an approach for formal language recognition and translation. We&rsquo;ve introduced the context-free grammars and learned how to describe a language syntax using a grammar. Then we saw how to denote the structure of a string using a parse tree and work with this tree to derive the desired output. We also learned how to use ANTLR to generate a parser for a language and use its API to define its semantics.</p>
@@ -508,7 +528,7 @@ query languages, protocols, connection strings, configuration files and all kind
 
 <ol>
 <li>Aho, Lam, Sethi, Ullmann (2007) <strong><em>Compilers: Principles, Techniques, and Tools</em></strong> (The Dragon Book) - Chapter 2: A Simple Syntax-Directed Translator, Chapter 4: Syntax Analysis</li>
-<li>Terence Parr (2012) <strong><em>The Definitive ANTLR 4 Referece</em></strong> - Chapter 5: Designing Grammars, Chapter 6: Exploring Some Real Grammars</li>
+<li>Terence Parr (2012) <strong><em>The Definitive ANTLR 4 Referece</em></strong> - Chapter 5: Designing Grammars (5.4 Dealing with Precedence, Left Recursion and Associativity), Chapter 6: Exploring Some Real Grammars</li>
 <li>Guido van Rossum, <a href="https://medium.com/@gvanrossum_83706/peg-parsing-series-de5d41b2ed60"><strong><em>PEG Parsing Series Overview</em></strong></a> - A series of articles on parsing expression grammars</li>
 <li><a href="https://www.antlr.org">ANTLR Website</a></li>
 <li><a href="https://github.com/antlr/grammars-v4">A collection of ANTLR4 grammars</a></li>
@@ -589,7 +609,7 @@ query languages, protocols, connection strings, configuration files and all kind
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-09-14 23:04:09.636376 -0700 MST m=&#43;0.148884175">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-09-15 13:14:00.072851 -0700 MST m=&#43;0.157439064">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
