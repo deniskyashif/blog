@@ -3,14 +3,14 @@ title: "Translation using Syntactic Rules"
 date: 2019-09-13T17:14:58-07:00
 draft: false
 useMath: true
-tags: ["compsci", "compilers", "parsing", "antlr" ]
+tags: ["compsci", "compilers", "parsing", "antlr", "javascript"]
 summary: "How to describe a formal language and build a translator with ANTLR and JavaScript."
 ---
 
 Often, when we build applications we have to deal with some kind of a non-trivial input or come up with a standardized way of passing information between the components of a system. In cases like this, a rudimentary approach like using regular expressions, combined with control flow statements can quickly turn out messy, error-prone and leave little to no room for extension.
 
 In this article, we'll explore a formalism, widely used for describing computer languages, namely the **Context-Free Grammars**. We'll learn how to define the syntax of a language using a grammar, parse strings of this language and generate the corresponding output - be it another string, or an in-memory data structure.  
-For the hands-on part of we'll use [ANTLR](https://www.antlr.org/) (ANother Tool for Language Recognition) to implement a CSV parser thus seeing how an abstract formalism can be turned into code.
+For the hands-on part, we'll use [ANTLR](https://www.antlr.org/) (ANother Tool for Language Recognition) to implement a CSV parser thus seeing how an abstract formalism can be turned into code.
 
 ## Definition
 
@@ -188,7 +188,7 @@ Generating a parse tree is a form of validation as well. If a parse tree cannot 
 
 ## Syntax-directed translation
 
-**The syntax-directed translation** is a compiler implementation technique where **the translation is completely driven by the parser**. In other words, the parse tree is used to perform the semantic analysis and the translation of the source program. Once we've generated the parse tree, we have to visit each node and perform a specific action (think of it as a piece of code to be executed). As each node in a parse tree corresponds to a grammar rule, we can say that the action, attached to this rule carries its semantics. Keep in mind:
+**The syntax-directed translation** is a compiler implementation technique where **the translation is completely driven by the parser**. In other words, the parse tree is used to perform the semantic analysis and the translation of the source. Once we've generated the parse tree, we have to visit each node and perform a specific action (think of it as a piece of code to be executed). As each node in a parse tree corresponds to a grammar rule, we can say that the action, attached to this rule carries its semantics. Keep in mind:
 
 * Syntax deals the structure of a sentence.
 * Semantics deals with its meaning.
@@ -452,6 +452,30 @@ is going to produce:
     DISCOUNTED_PRICE: '9.95' } ]
 ```
 
+## Parsing Regular Expressions
+
+Another example is using syntax-directed translation for [compiling regular expressions to finite automata](/implementing-a-regular-expression-engine). The article shows a stack-based approach, but we can also perform the compilation by writing a grammar and constructing a parse tree. A grammar that replicates the regex syntax as shown in the article would be:
+
+```antlr
+grammar Regex;
+
+start: expr;
+expr: 
+    '('expr')'
+    | expr'*'      // closure
+    | expr'.'expr  // concatenation
+    | expr'|'expr  // union (or)
+    | SYMBOL;
+
+SYMBOL: [a-zA-Z0-9];
+```
+
+The operator precedence is specified by ordering the `expr` productions from the highest (top) to the lowest (bottom). Here's the parse tree of "(a|b)*.c":
+
+<img src="/images/posts/2019-09-13-syntax-directed-translation/regex.png" />
+
+You can check out the compilation procedure [here](https://github.com/deniskyashif/regexjs/commit/c3fabedea1ff53b0a1b12e8647df95e81aea739f#diff-48e611c3706c9fdff05b92dfc5b98cd9L127), however, for better understanding I recommend reading the [regex article](/implementing-a-regular-expression-engine) first.
+
 ## Conclusion
 In this article, we've learned an approach for formal language recognition and translation. We've introduced the context-free grammars and learned how to describe a language syntax using a grammar. Then we saw how to denote the structure of a string using a parse tree and work with this tree to derive the desired output. We also learned how to use ANTLR to generate a parser for a language and use its API to define its semantics.
 
@@ -460,7 +484,7 @@ query languages, protocols, connection strings, configuration files and all kind
 
 ## References & Further Reading
 1. Aho, Lam, Sethi, Ullmann (2007) **_Compilers: Principles, Techniques, and Tools_** (The Dragon Book) - Chapter 2: A Simple Syntax-Directed Translator, Chapter 4: Syntax Analysis
-2. Terence Parr (2012) **_The Definitive ANTLR 4 Referece_** - Chapter 5: Designing Grammars, Chapter 6: Exploring Some Real Grammars
+2. Terence Parr (2012) **_The Definitive ANTLR 4 Referece_** - Chapter 5: Designing Grammars (5.4 Dealing with Precedence, Left Recursion and Associativity), Chapter 6: Exploring Some Real Grammars
 3. Guido van Rossum, [**_PEG Parsing Series Overview_**](https://medium.com/@gvanrossum_83706/peg-parsing-series-de5d41b2ed60) - A series of articles on parsing expression grammars
 4. [ANTLR Website](https://www.antlr.org)
 5. [A collection of ANTLR4 grammars](https://github.com/antlr/grammars-v4)
