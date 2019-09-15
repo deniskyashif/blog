@@ -6,10 +6,19 @@
     <description>Recent content in javascript on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 05 Jun 2019 17:31:07 +0300</lastBuildDate>
+    <lastBuildDate>Fri, 13 Sep 2019 17:14:58 -0700</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Translation using Syntactic Rules</title>
+      <link>https://deniskyashif.com/translation-using-syntactic-rules/</link>
+      <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
+      
+      <guid>https://deniskyashif.com/translation-using-syntactic-rules/</guid>
+      <description>How to describe a formal language and build a translator with ANTLR and JavaScript.</description>
+    </item>
     
     <item>
       <title>Gödel&#39;s System T in TypeScript</title>
