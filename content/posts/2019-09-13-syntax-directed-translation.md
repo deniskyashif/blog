@@ -7,7 +7,7 @@ tags: ["compsci", "compilers", "parsing", "antlr" ]
 summary: "How to describe a formal language and build a translator with ANTLR and JavaScript."
 ---
 
-Oftentimes, when we build applications we have to deal with some kind of a non-trivial input or come up with a standardized way of passing information between the components of a system. In cases like this, a rudimentary approach like using regular expressions, combined with control flow statements can quickly turn out to be messy, error-prone and leave little to no room for extension.
+Often, when we build applications we have to deal with some kind of a non-trivial input or come up with a standardized way of passing information between the components of a system. In cases like this, a rudimentary approach like using regular expressions, combined with control flow statements can quickly turn out messy, error-prone and leave little to no room for extension.
 
 In this article, we'll explore a formalism, widely used for describing computer languages, namely the **Context-Free Grammars**. We'll learn how to define the syntax of a language using a grammar, parse strings of this language and generate the corresponding output - be it another string, or an in-memory data structure.  
 For the hands-on part of we'll use [ANTLR](https://www.antlr.org/) (ANother Tool for Language Recognition) to implement a CSV parser thus seeing how an abstract formalism can be turned into code.
@@ -40,7 +40,7 @@ strings.
 
 ### Grammar Notation
 
-We write grammars by listing their production rules with the start symbol listed first. There're several ways to describe a grammar but for the remainder of this article, we'll use ANTLR's [EBNF](https://en.wikipedia.org/wiki/Extended_Backus–Naur_Form)-style format.
+We write grammars by listing their production rules with the start symbol listed first. There are several ways to describe a grammar but for the remainder of this article, we'll use ANTLR's [EBNF](https://en.wikipedia.org/wiki/Extended_Backus–Naur_Form)-style format.
 
 ```antlr
 start: expr;
@@ -195,7 +195,7 @@ Generating a parse tree is a form of validation as well. If a parse tree cannot 
 
 So far we've learned how to describe a structure of a language. Now is time to define its semantics.
 
-Let's go back to the arithmetic expression example and see how to calculate a result by performing a **depth-first traversal** of the parse tree. Consider the following expression "5+3-1":
+Let's go back to the arithmetic expression example and see how to calculate a result by performing a **depth-first traversal** of the parse tree. Consider the following input "5+3-1":
 
 <img src="/images/posts/2019-09-13-syntax-directed-translation/calc3.1.png" width="225" />
 
@@ -228,7 +228,9 @@ function visit(node) {
 visit(root); // '5+3-1' => 7
 ```
 
-So calling `visit(root)` is going to return the result of the evaluation. Another example would be to convert the expression which is in infix notation into postfix notation.
+So calling `visit(root)` is going to return the result of the evaluation. An `expr` subtree has the following semantics - it can either have a single child which subtree evaluates to a number or three child nodes where the first and the third evaluate to a number and the second is an operator symbol. Depending on the operator, the node's value is calculated.
+
+Another example would be to convert the expression which is in infix notation into postfix notation.
 
 ```js
 function visit(node) {
@@ -298,7 +300,7 @@ would result in
 
 <img src="/images/posts/2019-09-13-syntax-directed-translation/employees-pt.png" />
 
-This is a useful tool for debugging our grammars, but now we'll see how to programatically construct and access the parse tree.  
+This is a useful tool for debugging our grammars, but now we'll see how to programmatically construct and access the parse tree.  
 First we need to install the [JavaScript target for ANTLR4](https://www.npmjs.com/package/antlr4).
 
 ```bash
@@ -340,7 +342,7 @@ const parser = new CsvParser(tokens);
 const tree = parser.csvFile(); // parse from the start rule (the axiom)
 ```
 
-We've generated a parse tree, its time to go ahead with the translation.
+We've generated a parse tree, it's time to go ahead with the translation.
 
 ### Translation
 ANTLR also generates a "parse tree walker" interface for us. That means we can easily hook into events during the parse tree traversal. For our translator, we're going to use the visitor mechanism which is an implementation 
