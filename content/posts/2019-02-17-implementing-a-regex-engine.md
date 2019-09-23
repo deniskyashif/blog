@@ -48,7 +48,7 @@ We represent an &epsilon;-NFA exactly as we do an NFA but with one exception. It
 <img id="fig1.3" src="/images/posts/2019-02-20-regex/enfa.png" />
 <p class="text-center"><small>Figure 1.3: epsilon-NFA</small></p>
 
-On [Fig 1.3](#fig1.3) we can see that we have **&epsilon;-transition** from \\(q_2\\) to \\(q_0\\). This &epsilon;-NFA is equivalent to the NFA in [Fig 1.2](#fig1.2).
+On [Fig 1.3](#fig1.3) we can see that we have **&epsilon;-transition** from \\(q_2\\) to \\(q_1\\). This &epsilon;-NFA is equivalent to the NFA in [Fig 1.2](#fig1.2).
 
 ## Compiling Regular Expressions to Finite Automata
 The set of strings recognized by a finite automation \\(A\\) is called **the language of \\(A\\)** and is denoted as \\(L(A)\\). If a language can be recognized by **finite automation** then there's is a corresponding **regular expression** that describes the same language and vice versa ([Kleene's Theorem](http://www.cs.may.ie/staff/jpower/Courses/Previous/parsing/node6.html)). The regular expression, equivalent to the automation in [Fig 1.1](#fig1.1)  would be **abb*a**. In other words, regular expressions can be thought of as a **user-friendly alternative** to finite automata for describing patterns in text.
