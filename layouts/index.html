@@ -3,21 +3,22 @@
 <main>
 	{{ partial "index/introduction.html" . }}
 
+    {{ $paginator := .Paginate (.Site.RegularPages) }}
 	<div class="catalogue">
-		{{ range .Site.RegularPages }}
+		{{ range $paginator.Pages }}
 			{{ .Render "summary" }}
 		{{ end }}
 	</div>
-	
+
 	<div class="pagination">
-		{{ if .Paginator.HasPrev }}
-		<a href="{{ .Paginator.Prev.URL }}" class="left arrow">&#8592;</a>
+		{{ if $paginator.HasPrev }}
+		<a href="{{ $paginator.Prev.URL }}" class="left arrow">&#8592;</a>
 		{{ end }}
-		{{ if .Paginator.HasNext }}
-		<a href="{{ .Paginator.Next.URL }}" class="right arrow">&#8594;</a>
+		{{ if $paginator.HasNext }}
+		<a href="{{ $paginator.Next.URL }}" class="right arrow">&#8594;</a>
 		{{ end }}
 	    
-		<span>{{ .Paginator.PageNumber }}</span>
+		<span>{{ $paginator.PageNumber }}</span>
 	</div>
 </main>
 
