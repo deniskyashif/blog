@@ -6,6 +6,7 @@ tags: ["dotnet", "c-sharp", "omnisharp", "roslyn"]
 summary: "IntelliSense as a service."
 aliases: 
     - /2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp
+editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2015-12-09-bring-dotnet-into-your-editor-omnisharp.md"
 ---
 
 This year the .NET ecosystem welcomed DNX (.NET Execution Environment). Now developers are able to compile to and execute MSIL code on any operating system. This led to the increase of the framework's popularity in places where Visual Studio isn't available. Also the emergence of Roslyn, the new .NET compiler platform, which exposes all the compile stages via an API, allowed powerful code analysis tools to be easily written. This unleashed the development of some amazing projects like Omnisharp. 

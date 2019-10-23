@@ -6,6 +6,7 @@ tags: ["javascript", "kendoui" ]
 summary: "Not only inputs."
 aliases:
     - /2016/05/30/validate-any-dom-element-with-the-kendoui-validator
+editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2016-05-30-validate-any-dom-element-kendoui.md"
 ---
 
 KendoUI's validator allows declaring rules and easily performing client-side validation for input and textarea elements. It offers great flexibility even when it comes to complex cases, when for example input fields are interconnected. Suppose we want to validate an element other than input or textarea, then calling ```validate()``` won't be enough.  

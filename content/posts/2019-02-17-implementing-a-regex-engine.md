@@ -8,6 +8,7 @@ summary: "Using Ken Thompson's construction algorithm."
 description: "This article describes how to implement a simple and efficient regular expression engine following the Thompson's construction algorithm."
 aliases: 
     - /2019/02/17/implementing-a-regular-expression-engine/
+editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-02-17-implementing-a-regex-engine.md"
 ---
     
 Understanding and using regular expressions properly is a valuable skill when it comes to text processing. Due to their declarative yet idiomatic syntax, regular expressions can sometimes be a source of confusion (even [anxiety](https://stackoverflow.com/questions/172303/is-there-a-regular-expression-to-detect-a-valid-regular-expression)) amongst software developers. In this article, we'll implement a simple and efficient regex engine. We'll define the syntax of our regular expressions, learn how to parse them and build our recognizer. First, we'll briefly cover some theoretical foundations.

@@ -1,6 +1,15 @@
 <div class="post-info">
+
+    
     {{- if .PublishDate }}
     <time datetime="{{ .PublishDate }}">{{ i18n "publishdate" . }}</time>
+    {{- end }}
+
+    {{- if .Params.EditLink }}
+    |
+    <a href="{{ .Params.EditLink }}" target="_blank">
+        <i class="fa fa-edit"></i>&nbsp;Edit
+    </a>
     {{- end }}
 
     {{ $taxo := "tags" }}

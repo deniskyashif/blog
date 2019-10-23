@@ -6,6 +6,7 @@ tags: ["algorithms", "dynamic-programming", "compsci", "c-sharp"]
 useMath: true
 summary: "Range Minimum Query with Sparse Table and Dynamic Programming."
 description: "Solution for the Range Minimum Query problem with Sparse Tables and Dynamic Programming."
+editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-06-28-computing-ranges-in-constant-time.md"
 ---
 <style>
 tr > th:first-child, td:first-child {
