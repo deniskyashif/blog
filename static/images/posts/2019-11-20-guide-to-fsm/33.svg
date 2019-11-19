@@ -1,0 +1,8 @@
+<svg width="800" height="80" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="268.5" cy="48.5" rx="30" ry="30"/>
+	<path stroke="black" stroke-width="1" fill="none" d="M 295.297,35.275 A 22.5,22.5 0 1 1 295.297,61.725"/>
+	<text x="341.5" y="54.5" font-family="Times New Roman" font-size="20">pay, cancel</text>
+	<polygon fill="black" stroke-width="1" points="295.297,61.725 298.83,70.473 304.708,62.382"/>
+</svg>
+
+

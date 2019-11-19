@@ -1,0 +1,40 @@
+<svg width="800" height="200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="125.5" cy="41.5" rx="30" ry="30"/>
+	<text x="121.5" y="47.5" font-family="Times New Roman" font-size="20">a</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="258.5" cy="41.5" rx="30" ry="30"/>
+	<text x="253.5" y="47.5" font-family="Times New Roman" font-size="20">b</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="258.5" cy="164.5" rx="30" ry="30"/>
+	<text x="254.5" y="170.5" font-family="Times New Roman" font-size="20">c</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="402.5" cy="41.5" rx="30" ry="30"/>
+	<text x="397.5" y="47.5" font-family="Times New Roman" font-size="20">d</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="402.5" cy="164.5" rx="30" ry="30"/>
+	<text x="398.5" y="170.5" font-family="Times New Roman" font-size="20">e</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="551.5" cy="41.5" rx="30" ry="30"/>
+	<text x="548.5" y="47.5" font-family="Times New Roman" font-size="20">f</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="551.5" cy="164.5" rx="30" ry="30"/>
+	<text x="546.5" y="170.5" font-family="Times New Roman" font-size="20">g</text>
+	<polygon stroke="black" stroke-width="1" points="155.5,41.5 228.5,41.5"/>
+	<polygon fill="black" stroke-width="1" points="228.5,41.5 220.5,36.5 220.5,46.5"/>
+	<text x="177.5" y="32.5" font-family="Times New Roman" font-size="20">pay</text>
+	<polygon stroke="black" stroke-width="1" points="288.5,41.5 372.5,41.5"/>
+	<polygon fill="black" stroke-width="1" points="372.5,41.5 364.5,36.5 364.5,46.5"/>
+	<text x="301.5" y="32.5" font-family="Times New Roman" font-size="20">redeem</text>
+	<polygon stroke="black" stroke-width="1" points="432.5,41.5 521.5,41.5"/>
+	<polygon fill="black" stroke-width="1" points="521.5,41.5 513.5,36.5 513.5,46.5"/>
+	<text x="446.5" y="32.5" font-family="Times New Roman" font-size="20">transfer</text>
+	<polygon stroke="black" stroke-width="1" points="551.5,71.5 551.5,134.5"/>
+	<polygon fill="black" stroke-width="1" points="551.5,134.5 556.5,126.5 546.5,126.5"/>
+	<text x="556.5" y="109.5" font-family="Times New Roman" font-size="20">ship</text>
+	<polygon stroke="black" stroke-width="1" points="402.5,71.5 402.5,134.5"/>
+	<polygon fill="black" stroke-width="1" points="402.5,134.5 407.5,126.5 397.5,126.5"/>
+	<text x="407.5" y="109.5" font-family="Times New Roman" font-size="20">ship</text>
+	<polygon stroke="black" stroke-width="1" points="258.5,71.5 258.5,134.5"/>
+	<polygon fill="black" stroke-width="1" points="258.5,134.5 263.5,126.5 253.5,126.5"/>
+	<text x="263.5" y="109.5" font-family="Times New Roman" font-size="20">ship</text>
+	<polygon stroke="black" stroke-width="1" points="288.5,164.5 372.5,164.5"/>
+	<polygon fill="black" stroke-width="1" points="372.5,164.5 364.5,159.5 364.5,169.5"/>
+	<text x="301.5" y="185.5" font-family="Times New Roman" font-size="20">redeem</text>
+	<polygon stroke="black" stroke-width="1" points="432.5,164.5 521.5,164.5"/>
+	<polygon fill="black" stroke-width="1" points="521.5,164.5 513.5,159.5 513.5,169.5"/>
+	<text x="446.5" y="185.5" font-family="Times New Roman" font-size="20">transfer</text>
+</svg>

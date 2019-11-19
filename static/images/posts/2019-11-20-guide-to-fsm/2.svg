@@ -1,0 +1,30 @@
+<svg width="800" height="275" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="142.5" cy="42.5" rx="30" ry="30"/>
+	<text x="114" y="48.5" font-family="Times New Roman" font-size="18">Created</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="228.5" cy="109.5" rx="30" ry="30"/>
+	<text x="204.5" y="115.5" font-family="Times New Roman" font-size="18">Ready</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="451.5" cy="117.5" rx="30" ry="30"/>
+	<text x="423" y="123.5" font-family="Times New Roman" font-size="16">Running</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="339.5" cy="226.5" rx="30" ry="30"/>
+	<text x="310.5" y="232.5" font-family="Times New Roman" font-size="18">Waiting</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="559.5" cy="42.5" rx="40" ry="40"/>
+	<text x="522.5" y="48.5" font-family="Times New Roman" font-size="16">Terminated</text>
+	<polygon stroke="black" stroke-width="1" points="166.166,60.937 204.834,91.063"/>
+	<polygon fill="black" stroke-width="1" points="204.834,91.063 201.596,82.202 195.451,90.09"/>
+	<text x="134.5" y="96.5" font-family="Times New Roman" font-size="20">admit</text>
+	<path stroke="black" stroke-width="1" fill="none" d="M 249.315,87.979 A 137.456,137.456 0 0 1 432.28,94.543"/>
+	<polygon fill="black" stroke-width="1" points="432.28,94.543 429.969,85.396 423.046,92.613"/>
+	<text x="273.5" y="44.5" font-family="Times New Roman" font-size="20">schedule dispatch</text>
+	<path stroke="black" stroke-width="1" fill="none" d="M 426.252,133.634 A 175.265,175.265 0 0 1 252.527,127.402"/>
+	<polygon fill="black" stroke-width="1" points="252.527,127.402 256.694,135.866 261.961,127.366"/>
+	<text x="303.5" y="175.5" font-family="Times New Roman" font-size="20">interrupt</text>
+    <path stroke="black" stroke-width="1" fill="none" d="M 449.645,147.332 A 100.929,100.929 0 0 1 369.371,225.456"/>
+	<polygon fill="black" stroke-width="1" points="369.371,225.456 378.15,228.911 376.324,219.079"/>
+	<text x="426.5" y="219.5" font-family="Times New Roman" font-size="20">I/O or event wait</text>
+	<path stroke="black" stroke-width="1" fill="none" d="M 309.779,223.198 A 108.337,108.337 0 0 1 230.234,139.354"/>
+	<polygon fill="black" stroke-width="1" points="230.234,139.354 226.892,148.176 236.7,146.224"/>
+	<text x="77.5" y="213.5" font-family="Times New Roman" font-size="20">I/O or event complete</text>
+	<polygon stroke="black" stroke-width="1" points="475.233,99.15 524.767,60.85"/>
+	<polygon fill="black" stroke-width="1" points="524.767,60.85 515.38,61.788 521.496,69.699"/>
+	<text x="464.5" y="71.5" font-family="Times New Roman" font-size="20">exit</text>
+</svg>

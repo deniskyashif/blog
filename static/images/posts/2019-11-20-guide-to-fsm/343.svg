@@ -1,0 +1,7 @@
+<svg width="800" height="105" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <text x="100" y="100" text-decoration="underline" font-weight="bold" font-family="Times New Roman" font-size="20">The Customer</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="170.5" cy="44.5" rx="30" ry="30"/>
+	<path stroke="black" stroke-width="1" fill="none" d="M 197.297,31.275 A 22.5,22.5 0 1 1 197.297,57.725"/>
+	<text x="243.5" y="50.5" font-family="Times New Roman" font-size="20">pay, cancel, ship, redeem, transfer</text>
+	<polygon fill="black" stroke-width="1" points="197.297,57.725 200.83,66.473 206.708,58.382"/>
+</svg>
