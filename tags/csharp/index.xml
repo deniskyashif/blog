@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>csharp on Denis Kyashif&#39;s Blog</title>
+    <link>https://deniskyashif.com/tags/csharp/</link>
+    <description>Recent content in csharp on Denis Kyashif&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 Nov 2019 16:28:47 +0200</lastBuildDate>
+    
+	<atom:link href="https://deniskyashif.com/tags/csharp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>A Practical Guide to  State Machines</title>
+      <link>https://deniskyashif.com/a-practical-guide-to-state-machines/</link>
+      <pubDate>Tue, 19 Nov 2019 16:28:47 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/a-practical-guide-to-state-machines/</guid>
+      <description>Express complex application logic in an elegant and concise way using C#&amp;rsquo;s pattern matching.</description>
+    </item>
+    
+  </channel>
+</rss>

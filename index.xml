@@ -6,10 +6,19 @@
     <description>Recent content on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 13 Sep 2019 17:14:58 -0700</lastBuildDate>
+    <lastBuildDate>Tue, 19 Nov 2019 16:28:47 +0200</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>A Practical Guide to  State Machines</title>
+      <link>https://deniskyashif.com/a-practical-guide-to-state-machines/</link>
+      <pubDate>Tue, 19 Nov 2019 16:28:47 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/a-practical-guide-to-state-machines/</guid>
+      <description>Express complex application logic in an elegant and concise way using C#&amp;rsquo;s pattern matching.</description>
+    </item>
     
     <item>
       <title>Translation using Syntactic Rules</title>
