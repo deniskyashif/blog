@@ -17,7 +17,7 @@
       <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
       
       <guid>https://deniskyashif.com/a-practical-guide-to-state-machines/</guid>
-      <description>Express complex application logic in an elegant and concise way using C#&amp;rsquo;s pattern matching.</description>
+      <description>Express application logic in a concise and declarative way using state machines and C#&amp;rsquo;s pattern matching.</description>
     </item>
     
   </channel>
