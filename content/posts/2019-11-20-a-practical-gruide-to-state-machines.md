@@ -3,7 +3,7 @@ title: "A Practical Guide to  State Machines"
 date: 2019-11-20T07:28:47+02:00
 draft: false
 summary: "Express application logic in a concise and declarative way using state machines and C#'s pattern matching."
-tags: ["state-machines", "software-design", "csharp"]
+tags: ["state-machines", "software-design", "csharp", "compsci"]
 images: 
 - "/images/posts/2019-11-20-guide-to-fsm/smiling-fsm.jpeg"
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-11-20-a-practical-gruide-to-state-machines.md"
@@ -32,7 +32,7 @@ Besides, state machines have an **initial state** (we can pick an arbitrary one 
 
 State machines are simply directed graphs and there're various ways to construct one. We can use an [adjacency matrix](https://en.wikipedia.org/wiki/Adjacency_matrix), or go with an object-oriented approach via [the state pattern](https://en.wikipedia.org/wiki/State_pattern) or encode the state and the transitions in a map structure such as C#'s `Dictionary<TKey, TValue>` where the keys are the states and their values are the sets of transitions from these states.
 
-The recent developments in v. 8 of C# added significant improvements in its pattern matching capabilities and the **switch expressions** in particular  (which provided some inspiration for this article). If you haven't checked them out, I recommend [this article](https://devblogs.microsoft.com/dotnet/do-more-with-patterns-in-c-8-0/) by Mads Torgersen.
+The recent developments in v. 8 of C# added significant improvements in its pattern matching capabilities and the **switch expressions** in particular  (which provided some inspiration for this article). If you haven't checked them out, I recommend [this article](https://devblogs.microsoft.com/dotnet/do-more-with-patterns-in-c-8-0/) by Mads Torgersen, but long story short - we can now return values from switches, thus using it for conditional assignment.
 
 We implement the state machine in Figure 1 as:
 
@@ -41,7 +41,7 @@ enum State { Open, Closed, Locked }
 enum Input { Open, Close, Lock, Unlock }
 
 State ChangeState(State current, Input input) => 
-    (current, action) switch
+    (current, input) switch
 	{
         (State.Closed, Input.Open) => State.Open,
         (State.Open, Input.Close) => State.Closed,
@@ -72,7 +72,7 @@ Let's take a look at another example. This time we'll implement a process schedu
 In Figure 2 we have the following sets of states and inputs:
 
 ```csharp
-enum State { New, Ready, Running, Waiting, Terminated }
+enum State { Created, Ready, Running, Waiting, Terminated }
 enum Input { 
     Admit, ScheduleDispatch, Interrupt,
     IOorEventWait, IOorEventComplete, Exit 
