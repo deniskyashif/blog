@@ -1,0 +1,20 @@
+<svg width="800" height="170" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="218.5" cy="89.5" rx="30" ry="30"/>
+	<text x="196.5" y="95.5" font-family="Times New Roman" font-size="20">Open</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="365.5" cy="89.5" rx="30" ry="30"/>
+	<text x="337.5" y="95.5" font-family="Times New Roman" font-size="20">Closed</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="498.5" cy="89.5" rx="30" ry="30"/>
+	<text x="468.5" y="95.5" font-family="Times New Roman" font-size="20">Locked</text>
+	<path stroke="black" stroke-width="1" fill="none" d="M 234.842,64.554 A 79.509,79.509 0 0 1 349.158,64.554"/>
+	<polygon fill="black" stroke-width="1" points="349.158,64.554 347.192,55.327 340.003,62.278"/>
+	<text x="271.5" y="31.5" font-family="Times New Roman" font-size="20">close</text>
+	<path stroke="black" stroke-width="1" fill="none" d="M 346.918,112.846 A 83.41,83.41 0 0 1 237.082,112.846"/>
+	<polygon fill="black" stroke-width="1" points="237.082,112.846 239.811,121.877 246.395,114.35"/>
+	<text x="272.5" y="154.5" font-family="Times New Roman" font-size="20">open</text>
+	<path stroke="black" stroke-width="1" fill="none" d="M 378.187,62.582 A 68.147,68.147 0 0 1 485.813,62.582"/>
+	<polygon fill="black" stroke-width="1" points="485.813,62.582 484.853,53.197 476.956,59.332"/>
+	<text x="414.5" y="27.5" font-family="Times New Roman" font-size="20">lock</text>
+	<path stroke="black" stroke-width="1" fill="none" d="M 483.841,115.409 A 69.595,69.595 0 0 1 380.159,115.409"/>
+	<polygon fill="black" stroke-width="1" points="380.159,115.409 381.771,124.704 389.22,118.032"/>
+	<text x="404.5" y="159.5" font-family="Times New Roman" font-size="20">unlock</text>
+</svg>

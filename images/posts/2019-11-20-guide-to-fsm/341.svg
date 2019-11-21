@@ -1,0 +1,32 @@
+<svg width="800" height="260" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <text x="100" y="230" text-decoration="underline" font-weight="bold" font-family="Times New Roman" font-size="20">The Bank</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="242.5" cy="160.5" rx="30" ry="30"/>
+	<text x="237.5" y="166.5" font-family="Times New Roman" font-size="20">1</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="242.5" cy="33.5" rx="30" ry="30"/>
+	<text x="237.5" y="39.5" font-family="Times New Roman" font-size="20">2</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="384.5" cy="160.5" rx="30" ry="30"/>
+	<text x="379.5" y="166.5" font-family="Times New Roman" font-size="20">3</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="525.5" cy="160.5" rx="30" ry="30"/>
+	<text x="520.5" y="166.5" font-family="Times New Roman" font-size="20">4</text>
+	<polygon stroke="black" stroke-width="1" points="242.5,130.5 242.5,63.5"/>
+	<polygon fill="black" stroke-width="1" points="242.5,63.5 237.5,71.5 247.5,71.5"/>
+	<text x="186.5" y="103.5" font-family="Times New Roman" font-size="20">cancel</text>
+	<polygon stroke="black" stroke-width="1" points="272.5,160.5 354.5,160.5"/>
+	<polygon fill="black" stroke-width="1" points="354.5,160.5 346.5,155.5 346.5,165.5"/>
+	<text x="284.5" y="181.5" font-family="Times New Roman" font-size="20">redeem</text>
+	<polygon stroke="black" stroke-width="1" points="414.5,160.5 495.5,160.5"/>
+	<polygon fill="black" stroke-width="1" points="495.5,160.5 487.5,155.5 487.5,165.5"/>
+	<text x="424.5" y="181.5" font-family="Times New Roman" font-size="20">transfer</text>
+	<path stroke="black" stroke-width="1" fill="none" d="M 215.703,173.725 A 22.5,22.5 0 1 1 215.703,147.275"/>
+	<text x="99.5" y="166.5" font-family="Times New Roman" font-size="20">pay, ship</text>
+	<polygon fill="black" stroke-width="1" points="215.703,147.275 212.17,138.527 206.292,146.618"/>
+	<path stroke="black" stroke-width="1" fill="none" d="M 217.469,49.824 A 22.5,22.5 0 1 1 214.318,23.562"/>
+	<text x="97.5" y="48.5" font-family="Times New Roman" font-size="20">pay, ship</text>
+	<polygon fill="black" stroke-width="1" points="214.318,23.562 209.768,15.298 204.896,24.031"/>
+	<path stroke="black" stroke-width="1" fill="none" d="M 371.275,133.703 A 22.5,22.5 0 1 1 397.725,133.703"/>
+	<text x="284.5" y="84.5" font-family="Times New Roman" font-size="20">pay, redeem, cancel, ship</text>
+	<polygon fill="black" stroke-width="1" points="397.725,133.703 406.473,130.17 398.382,124.292"/>
+	<path stroke="black" stroke-width="1" fill="none" d="M 538.725,187.297 A 22.5,22.5 0 1 1 512.275,187.297"/>
+	<text x="425.5" y="249.5" font-family="Times New Roman" font-size="20">pay, redeem, cancel, ship</text>
+	<polygon fill="black" stroke-width="1" points="512.275,187.297 503.527,190.83 511.618,196.708"/>
+</svg>

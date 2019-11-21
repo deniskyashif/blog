@@ -1,0 +1,19 @@
+<svg width="800" height="200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="242.5" cy="160.5" rx="30" ry="30"/>
+	<text x="237.5" y="166.5" font-family="Times New Roman" font-size="20">1</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="242.5" cy="35.5" rx="30" ry="30"/>
+	<text x="237.5" y="41.5" font-family="Times New Roman" font-size="20">2</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="384.5" cy="160.5" rx="30" ry="30"/>
+	<text x="379.5" y="166.5" font-family="Times New Roman" font-size="20">3</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="525.5" cy="160.5" rx="30" ry="30"/>
+	<text x="520.5" y="166.5" font-family="Times New Roman" font-size="20">4</text>
+	<polygon stroke="black" stroke-width="1" points="242.5,130.5 242.5,65.5"/>
+	<polygon fill="black" stroke-width="1" points="242.5,65.5 237.5,73.5 247.5,73.5"/>
+	<text x="247.5" y="104.5" font-family="Times New Roman" font-size="20">cancel</text>
+	<polygon stroke="black" stroke-width="1" points="272.5,160.5 354.5,160.5"/>
+	<polygon fill="black" stroke-width="1" points="354.5,160.5 346.5,155.5 346.5,165.5"/>
+	<text x="284.5" y="181.5" font-family="Times New Roman" font-size="20">redeem</text>
+	<polygon stroke="black" stroke-width="1" points="414.5,160.5 495.5,160.5"/>
+	<polygon fill="black" stroke-width="1" points="495.5,160.5 487.5,155.5 487.5,165.5"/>
+	<text x="424.5" y="181.5" font-family="Times New Roman" font-size="20">transfer</text>
+</svg>
