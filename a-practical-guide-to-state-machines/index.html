@@ -95,6 +95,11 @@ if (!doNotTrack) {
         <a href="https://deniskyashif.com/tags/csharp/" class="tag">csharp</a>
         
         
+        
+        
+        <a href="https://deniskyashif.com/tags/compsci/" class="tag">compsci</a>
+        
+        
     </div>
 </div>
 
@@ -136,7 +141,7 @@ For a state machine to be deterministic means that on each input there is one an
 <span style="color:#a2f;font-weight:bold">enum</span> Input { Open, Close, Lock, Unlock }
 
 State ChangeState(State current, Input input) =&gt; 
-    (current, action) <span style="color:#a2f;font-weight:bold">switch</span>
+    (current, input) <span style="color:#a2f;font-weight:bold">switch</span>
 	{
         (State.Closed, Input.Open) =&gt; State.Open,
         (State.Open, Input.Close) =&gt; State.Closed,
@@ -383,7 +388,7 @@ They are no silver bullet though. Not every domain is suitable to be modeled in 
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-11-21 21:16:26.445225 &#43;0200 EET m=&#43;0.089009607">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-11-21 22:01:15.174972 &#43;0200 EET m=&#43;0.079270140">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
