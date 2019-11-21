@@ -6,6 +6,7 @@ summary: "Express application logic in a concise and declarative way using state
 tags: ["state-machines", "software-design", "csharp"]
 images: 
 - "/images/posts/2019-11-20-guide-to-fsm/smiling-fsm.jpeg"
+editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-11-20-a-practical-gruide-to-state-machines.md"
 ---
 
 In this article, we'll examine some examples of real-world problems that can be expressed and solved using finite state machines. We'll take the opportunity to explore some of the C#'s pattern matching capabilities an see how they come handy for implementing them. In the second part, we'll see how to combine multiple state machines to form a cohesive workflow.
