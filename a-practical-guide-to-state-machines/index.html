@@ -161,7 +161,7 @@ State ChangeState(State current, Input input) =&gt;
 <p class="text-center"><small>Figure 2: The states of a process</small></p></p>
 
 <p>In Figure 2 we have the following sets of states and inputs:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">enum</span> State { New, Ready, Running, Waiting, Terminated }
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">enum</span> State { Created, Ready, Running, Waiting, Terminated }
 <span style="color:#a2f;font-weight:bold">enum</span> Input { 
     Admit, ScheduleDispatch, Interrupt,
     IOorEventWait, IOorEventComplete, Exit 
@@ -383,7 +383,7 @@ They are no silver bullet though. Not every domain is suitable to be modeled in 
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-11-21 16:39:01.76258 &#43;0200 EET m=&#43;0.091399783">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-11-21 21:16:26.445225 &#43;0200 EET m=&#43;0.089009607">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
