@@ -93,15 +93,6 @@
     </item>
     
     <item>
-      <title>c-sharp</title>
-      <link>https://deniskyashif.com/tags/c-sharp/</link>
-      <pubDate>Fri, 28 Jun 2019 13:26:25 +0300</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/c-sharp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>dynamic-programming</title>
       <link>https://deniskyashif.com/tags/dynamic-programming/</link>
       <pubDate>Fri, 28 Jun 2019 13:26:25 +0300</pubDate>
@@ -125,15 +116,6 @@
       <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
       
       <guid>https://deniskyashif.com/tags/lambda-calculus/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>type-systems</title>
-      <link>https://deniskyashif.com/tags/type-systems/</link>
-      <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/type-systems/</guid>
       <description></description>
     </item>
     
@@ -269,6 +251,15 @@
       <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/tags/natural-language-processing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>c-sharp</title>
+      <link>https://deniskyashif.com/tags/c-sharp/</link>
+      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/c-sharp/</guid>
       <description></description>
     </item>
     

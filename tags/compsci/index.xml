@@ -39,6 +39,15 @@
     </item>
     
     <item>
+      <title>Gödel&#39;s System T in TypeScript</title>
+      <link>https://deniskyashif.com/g%C3%B6dels-system-t-in-typescript/</link>
+      <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
+      
+      <guid>https://deniskyashif.com/g%C3%B6dels-system-t-in-typescript/</guid>
+      <description>Experimenting with a rudimentary type system that ensures the programs always terminate.</description>
+    </item>
+    
+    <item>
       <title>On Recursive Functions</title>
       <link>https://deniskyashif.com/on-recursive-functions/</link>
       <pubDate>Wed, 15 May 2019 15:16:00 +0300</pubDate>

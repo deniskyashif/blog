@@ -20,5 +20,14 @@
       <description>Express application logic in a concise and declarative way using state machines and C#&amp;rsquo;s pattern matching.</description>
     </item>
     
+    <item>
+      <title>Computing Ranges in Constant Time</title>
+      <link>https://deniskyashif.com/computing-ranges-in-constant-time/</link>
+      <pubDate>Fri, 28 Jun 2019 13:26:25 +0300</pubDate>
+      
+      <guid>https://deniskyashif.com/computing-ranges-in-constant-time/</guid>
+      <description>Range Minimum Query with Sparse Table and Dynamic Programming.</description>
+    </item>
+    
   </channel>
 </rss>

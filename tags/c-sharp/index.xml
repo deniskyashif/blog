@@ -6,19 +6,10 @@
     <description>Recent content in c-sharp on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 28 Jun 2019 13:26:25 +0300</lastBuildDate>
+    <lastBuildDate>Wed, 09 Dec 2015 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/tags/c-sharp/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Computing Ranges in Constant Time</title>
-      <link>https://deniskyashif.com/computing-ranges-in-constant-time/</link>
-      <pubDate>Fri, 28 Jun 2019 13:26:25 +0300</pubDate>
-      
-      <guid>https://deniskyashif.com/computing-ranges-in-constant-time/</guid>
-      <description>Range Minimum Query with Sparse Table and Dynamic Programming.</description>
-    </item>
     
     <item>
       <title>Bring .NET Development into your favourite editor with Omnisharp</title>

@@ -73,11 +73,6 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/tags/c-sharp/</loc>
-    <lastmod>2019-06-28T13:26:25+03:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://deniskyashif.com/computing-ranges-in-constant-time/</loc>
     <lastmod>2019-06-28T13:26:25+03:00</lastmod>
   </url>
@@ -99,11 +94,6 @@
   
   <url>
     <loc>https://deniskyashif.com/tags/lambda-calculus/</loc>
-    <lastmod>2019-06-05T17:31:07+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/type-systems/</loc>
     <lastmod>2019-06-05T17:31:07+03:00</lastmod>
   </url>
   
@@ -229,6 +219,11 @@
   
   <url>
     <loc>https://deniskyashif.com/bring-.net-development-into-your-favourite-editor-with-omnisharp/</loc>
+    <lastmod>2015-12-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/c-sharp/</loc>
     <lastmod>2015-12-09T00:00:00+00:00</lastmod>
   </url>
   
