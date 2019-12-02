@@ -3,6 +3,7 @@ title: "C# Concurrency Patterns using Channels"
 date: 2019-12-01T13:28:09+02:00
 draft: true
 summary: "Working with channels and async data streams."
+url: "csharp-concurrency-patterns-using-channels"
 ---
 
 Recently, I watched Rob Pike's [talk on "Go Concurrency Patterns"](https://www.youtube.com/watch?v=f6kdp27TYZs) where he explains Go's approach to concurrency and demonstrates some of its features for building concurrent programs. I found its simplicity and 
@@ -34,7 +35,7 @@ A channel is a data structure which allows one thread to communicate with anothe
 Channel<string> ch = Channel.CreateUnbounded<string>();
 ```
 
-`Channel` is a static class which exposes several factory methods for creating channels. `Channel<T>` is a data structure that supports reading and writing. That's how we write to a channel:
+`Channel` is a static class which exposes several factory methods for creating channels. `Channel<T>` or `Channel<TWrite, TRead>` is a data structure that supports reading and writing. That's how we write to a channel:
 
 ```csharp
 await ch.Writer.WriteAsync("My first message");
@@ -51,37 +52,45 @@ while (await ch.Reader.WaitToReadAsync())
 
 The reader's `WaitToReadAsync()` will complete with `true` when data is available to read, or with `false` when no further data will ever be read, that is, after the writer invokes `Complete()`. The reader also provides an option to read the data as an async stream by exposing a method returning `IAsyncEnumerable<T>`:
 
-```csharp
+```cs
 await foreach (var item in ch.Reader.ReadAllAsync())
     Console.WriteLine(item);
 ```
 
 ### Using Channels
 
-Here's a typical case when we read and write asynchronously from separate threads.
+Here's a basic example when we have a separate producer and consumer threads which commucate through a channel.
 
-```csharp
-static async Task Main()
+```cs
+var ch = Channel.CreateUnbounded<string>();
+var rnd = new Random();
+
+var producer = Task.Run(async () =>
 {
-    var ch = Channel.CreateUnbounded<string>();
-    var rnd = new Random();
-
-    Task.Run(async () => 
+    for (int i = 0; i < 5; i++)
     {
-        for (int i = 0; i < 5; i++)
-        {
-            await Task.Delay(TimeSpan.FromSeconds(rnd.Next(3)));
-            await ch.Writer.WriteAsync($"message #{i}");
-        }
-        ch.Writer.Complete();
-    });
-
-    while (await ch.Reader.WaitToReadAsync()) 
+        await Task.Delay(TimeSpan.FromSeconds(rnd.Next(3)));
+        await ch.Writer.WriteAsync($"Message {i}");
+    }
+    ch.Writer.Complete();
+});
+var consumer = Task.Run(async () =>
+{
+    while (await ch.Reader.WaitToReadAsync())
         Console.WriteLine(await ch.Reader.ReadAsync());
-}
+});
+
+await Task.WhenAll(producer, consumer);
+```
+```sh
+[12:27:16 PM] Message 0
+[12:27:18 PM] Message 1
+[12:27:19 PM] Message 2
+[12:27:20 PM] Message 3
+[12:27:22 PM] Message 4
 ```
 
-When the `Main()` method executes, the reader waits for a value to be sent. On the other hand, the writer waits until it's able to send a value, hence, we say that **channels both communicate and synchronize**. Both operations are non-blocking, that is, while we wait, the thread is available to do some other work.  
+The consumer (reader) waits for a value to be sent. On the other hand, the producer (writer) waits until it's able to send a value, hence, we say that **channels both communicate and synchronize**. Both operations are non-blocking, that is, while we wait, the thread is available to do some other work.  
 Notice that we have created an **unbounded** channel, meaning that it accepts as many messages as it can with regards to the available memory. With **bounded** channels, however, we can limit the amount of messages that can processed at a time. So when this limit is reached, `WriteAsync()` won't be able to write, until there's an available slot. In the references below, I've provided some resources that compare and demonstrate the usage of both types.
 
 ## Concurrency Patterns
@@ -118,8 +127,8 @@ By returning a `ChannelReader` we ensure that our consumers won't be able to wri
 static async Task Main()
 {
     var joe = CreateMessenger("Joe", 5);
-    await foreach (var item in joe.Reader.ReadAllAsync())
-        Console.WriteLine($"[{DateTime.UtcNow.ToLongTimeString()}] {item}");
+    await foreach (var item in joe.ReadAllAsync())
+        Console.WriteLine(item);
 }
 ```
 ```sh
@@ -139,11 +148,9 @@ var ann = CreateMessenger("Ann", 3);
 while (await joe.WaitToReadAsync() || await ann.WaitToReadAsync())
 {
     var messageFromJoe = await joe.ReadAsync();
-    Console.WriteLine(
-        $"[{DateTime.UtcNow.ToLongTimeString()}] {messageFromJoe}");
+    Console.WriteLine("messageFromJoe");
     var messageFromAnn = await ann.ReadAsync();
-    Console.WriteLine(
-        $"[{DateTime.UtcNow.ToLongTimeString()}] {messageFromAnn}");
+    Console.WriteLine("messageFromAnn");
 }
 ```
 ```sh
@@ -178,10 +185,8 @@ A quick and dirty solution would be to wrap it in a try/catch block.
 ```csharp
 try
 {
-    Console.WriteLine(
-        $"[{DateTime.UtcNow.ToLongTimeString()}] {await joe.ReadAsync()}");
-    Console.WriteLine(
-        $"[{DateTime.UtcNow.ToLongTimeString()}] {await ann.ReadAsync()}");
+    Console.WriteLine("await joe.ReadAsync()");
+    Console.WriteLine("await ann.ReadAsync()");
 }
 catch (ChannelClosedException) { }
 ```
@@ -190,10 +195,10 @@ Our code is concurrent, but not optimal. Suppose, Ann is more talkative than Joe
 
 ### Multiplexing
 
-We want to read from both Joe and Ann and process whoever's message arrives first, so we're going to consolidate their messages into a single channel. Let's define our fan-in method.
+We want to read from both Joe and Ann and process whoever's message arrives first, so we're going to consolidate their messages into a single channel. Let's define our merge method.
 
 ```csharp
-static ChannelReader<T> FanIn<T>(
+static ChannelReader<T> Merge<T>(
     ChannelReader<T> first, 
     ChannelReader<T> second)
 {
@@ -214,17 +219,17 @@ static ChannelReader<T> FanIn<T>(
 }
 ```
 
-`FanIn<T>()` takes two channels and starts reading from them simultaneously. It creates and immediately returns a new channel which consolidates the outputs from the input channels. The reading procedures are run asynchronously on separate threads. Think of it like this:
+`Merge<T>()` takes two channels and starts reading from them simultaneously. It creates and immediately returns a new channel which consolidates the outputs from the input channels. The reading procedures are run asynchronously on separate threads. Think of it like this:
 
-<img src="/images/posts/channels-csharp/fan-in.png" />
+<img src="/images/posts/channels-csharp/merge.png" />
 
 That's how we use it.
 
 ```csharp
-var ch = FanIn(CreateMessenger("Joe", 3), CreateMessenger("Ann", 5));
+var ch = Merge(CreateMessenger("Joe", 3), CreateMessenger("Ann", 5));
 
 await foreach (var item in ch.ReadAllAsync())
-    Console.WriteLine($"[{DateTime.UtcNow.ToLongTimeString()}] {item}");
+    Console.WriteLine(item);
 ```
 
 ```sh
@@ -238,10 +243,10 @@ await foreach (var item in ch.ReadAllAsync())
 [8:39:36 AM] Joe 2
 ```
 
-We have simplified our code and solved the problem with Ann sending more messages than Joe while also doing it more often. However, you might have noticed that `FanIn<T>()` has a defect - the output channel's writer never closes which leads us to continue waiting to read, even when Joe and Ann have finished sending messages. Also, there's no way for us to handle a potential failure of any of the readers. We have to modify `FanIn<T>()`
+We have simplified our code and solved the problem with Ann sending more messages than Joe while also doing it more often. However, you might have noticed that `Merge<T>()` has a defect - the output channel's writer never closes which leads us to continue waiting to read, even when Joe and Ann have finished sending messages. Also, there's no way for us to handle a potential failure of any of the readers. We have to modify `Merge<T>()`
 
 ```csharp
-static ChannelReader<T> FanIn<T>(params ChannelReader<T>[] inputs)
+static ChannelReader<T> Merge<T>(params ChannelReader<T>[] inputs)
 {
     var output = Channel.CreateUnbounded<T>();
 
@@ -261,9 +266,79 @@ static ChannelReader<T> FanIn<T>(params ChannelReader<T>[] inputs)
 }
 ```
 
-We've created the local asynchronous `Redirect()` function which takes a channel as an input writes its messages to the consolidated output. Our `FanIn<T>` now also works with an arbitrary number of inputs. It returns a `Task` so we can run it concurrently with `WhenAll()` for all of our input channels and also wait until they complete. This allows us to also capture potential exceptions. In the end, we know that there's nothing left to be read, so we can safely close the writer.  
+We've created the local asynchronous `Redirect()` function which takes a channel as an input writes its messages to the consolidated output. Our `Merge<T>()` now also works with an arbitrary number of inputs. It returns a `Task` so we can run it concurrently with `WhenAll()` for all of our input channels and also wait until they complete. This allows us to also capture potential exceptions. In the end, we know that there's nothing left to be read, so we can safely close the writer.  
 
-Now, our code is concurrent and non-blocking. The messages are being processed at the time of arrival. While we're waiting, the thread is free to perform other work. We also don't have to handle the case when one of the writers complete (as you can see Ann has sent all of her messages before Joe). 
+Now, our code is concurrent and non-blocking. The messages are being processed at the time of arrival. While we're waiting, the thread is free to perform other work. We also don't have to handle the case when one of the writers complete (as you can see Ann has sent all of her messages before Joe).
+
+### Demultiplexing
+
+Joe talks too much and we cannot handle all of his messages. We want to distribute the work amongst several consumers, therefore we define `Split<T>()`.
+
+<img src="/images/posts/channels-csharp/split.png" />
+
+```cs
+static IList<ChannelReader<T>> Split<T>(ChannelReader<T> ch, int n)
+{
+    var outputs = new List<Channel<T>>(n);
+
+    for (int i = 0; i < n; i++)
+        outputs.Add(Channel.CreateUnbounded<T>());
+
+    Task.Run(async () =>
+    {
+        var index = 0;
+        await foreach (var item in ch.ReadAllAsync())
+        {
+            await outputs[index].Writer.WriteAsync(item);
+            index = (index + 1) % n;
+        }
+
+    	foreach (var chan in outputs)
+            chan.Writer.Complete();
+    });
+
+    return outputs.Select(c => c.Reader).ToList();
+}
+```
+
+`Split<T>` takes a channel and redirects its messages to `n` newly created channels in a round-robin fashion. It returns a list of these channels. Here's how we use it:
+
+```cs
+var joe = CreateMessenger("Joe", 10);
+var readers = Split(joe, 3);
+var tasks = new List<Task>();
+
+for (int i = 0; i < readers.Count; i++)
+{
+    var reader = readers[i];
+    var index = i;
+    tasks.Add(Task.Run(async () =>
+    {
+        await foreach (var item in reader.ReadAllAsync())
+        {
+            Console.WriteLine($"Reader {index}: {item}");
+        }
+    }));
+}
+
+await Task.WhenAll(tasks);
+```
+
+Joe sends 10 messages which we distribute amongst 3 channels. Below is a possible output we can get. Some channels may take 
+longer to process a message, therefore, we have no guarantee that the order of emission is going to be preserved. Our code is structured so that we process (in this case log) a message as soon as it arrives.
+
+```
+Reader 0: Joe 0
+Reader 1: Joe 1
+Reader 0: Joe 3
+Reader 2: Joe 2
+Reader 1: Joe 4
+Reader 2: Joe 5
+Reader 0: Joe 6
+Reader 1: Joe 7
+Reader 2: Joe 8
+Reader 0: Joe 9
+```
 
 ### Timeout
 
@@ -357,16 +432,16 @@ We're given the task to query several data sources and mix the results. The quer
 var term = "Jupyter";
 var ch = Channel.CreateUnbounded<string>();
 
-async Task SearchDataSource(string source, string term, CancellationToken token)
+async Task Search(string source, string term, CancellationToken token)
 {
     await Task.Delay(TimeSpan.FromSeconds(new Random().Next(5)), token);
     await ch.Writer.WriteAsync($"Result from {source} for {term}", token);
 }
 
 var token = new CancellationTokenSource(TimeSpan.FromSeconds(3)).Token;
-var search1 = SearchDataSource("Wikipedia", term, token);
-var search2 = SearchDataSource("Quora", term, token);
-var search3 = SearchDataSource("Everything2", term, token);
+var search1 = Search("Wikipedia", term, token);
+var search2 = Search("Quora", term, token);
+var search3 = Search("Everything2", term, token);
 
 try
 {
@@ -387,16 +462,16 @@ ch.Writer.Complete();
 Depending on the timeout interval we might end up processing all the queries
 
 ```sh
-Result from Wikipedia for Jupyter
-Result from Everything2 for Jupyter
-Result from Quora for Jupyter
+[9:09:14 AM] Result from Everything2 for Jupyter
+[9:09:14 AM] Result from Wikipedia for Jupyter
+[9:09:16 AM] Result from Quora for Jupyter
 All searches have completed.
 ```
 
 or cut off the ones that are too slow
 
 ```csharp
-Result from Quora for Jupyter
+[9:09:19 AM] Result from Quora for Jupyter
 Timeout.
 ```
 
