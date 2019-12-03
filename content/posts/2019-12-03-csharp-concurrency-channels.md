@@ -2,8 +2,12 @@
 title: "C# Concurrency Patterns using Channels"
 date: 2019-12-03T08:02:09+02:00
 draft: false
-summary: "Working with channels and async data streams."
+summary: "Build flexible and performant publish/subscribe workflows."
 url: "csharp-concurrency-patterns-using-channels"
+images: 
+- "/images/posts/2019-12-03-channels-csharp/featured-image.jpg"
+editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-12-03-csharp-concurrency-channels.md"
+tags: ["software-design", "csharp", "concurrency"]
 ---
 
 Recently, I watched Rob Pike's [talk on "Go Concurrency Patterns"](https://www.youtube.com/watch?v=f6kdp27TYZs) where he explains Go's approach to concurrency and demonstrates some of its features for building concurrent programs. I found its simplicity and ease of use fascinating and went on to implement some of these techniques in C#.
@@ -495,4 +499,4 @@ The underlying concept behind the concurrency model, described in this article, 
 - [GitHub Repo] (https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
 - [Exploring System.Threading.Channels](https://ndportmann.com/system-threading-channels/) - goes into detail about the Channels' API and does a performance benchmark
 - [C# Job Queues with Reactive Extensions and Channels](https://michaelscodingspot.com/c-job-queues-with-reactive-extensions-and-channels/) - a comprehensive series of articles comparing several job queue implementations by Michael Shpilt
-- [Concurrency in C# Cookbook](https://stephencleary.com/book/) by Stephen Cleary - my go to resource for concurrent C#, highly recommended
+- [Concurrency in C# Cookbook](https://stephencleary.com/book/) by Stephen Cleary - my highly recommended go-to reference for concurrent C#
