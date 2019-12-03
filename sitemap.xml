@@ -3,6 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://deniskyashif.com/csharp-concurrency-patterns-using-channels/</loc>
+    <lastmod>2019-12-03T08:02:09+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/</loc>
+    <lastmod>2019-12-03T08:02:09+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/posts/</loc>
+    <lastmod>2019-12-03T08:02:09+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://deniskyashif.com/a-practical-guide-to-state-machines/</loc>
     <lastmod>2019-11-20T07:28:47+02:00</lastmod>
   </url>
@@ -14,16 +29,6 @@
   
   <url>
     <loc>https://deniskyashif.com/tags/csharp/</loc>
-    <lastmod>2019-11-20T07:28:47+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/</loc>
-    <lastmod>2019-11-20T07:28:47+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/posts/</loc>
     <lastmod>2019-11-20T07:28:47+02:00</lastmod>
   </url>
   
