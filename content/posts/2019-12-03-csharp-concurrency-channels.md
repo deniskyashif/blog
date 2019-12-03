@@ -1,12 +1,12 @@
 ---
 title: "C# Concurrency Patterns using Channels"
-date: 2019-12-02T23:02:09+02:00
-draft: true
+date: 2019-12-03T08:02:09+02:00
+draft: false
 summary: "Working with channels and async data streams."
 url: "csharp-concurrency-patterns-using-channels"
 ---
 
-Recently, I watched Rob Pike's [talk on "Go Concurrency Patterns"](https://www.youtube.com/watch?v=f6kdp27TYZs) where he explains Go's approach to concurrency and demonstrates some of its features for building concurrent programs. I found its simplicity and ease of use fascinating, and decided to implement some of these techniques in C#.
+Recently, I watched Rob Pike's [talk on "Go Concurrency Patterns"](https://www.youtube.com/watch?v=f6kdp27TYZs) where he explains Go's approach to concurrency and demonstrates some of its features for building concurrent programs. I found its simplicity and ease of use fascinating and went on to implement some of these techniques in C#.
 
 In this article, we'll explore the synchronization data structures in .NET's `System.Threading.Channels` namespace and learn some techniques for implementing concurrent workflows. It would be helpful to have some basic understanding of .NET's [Task Parallel Library
 (TPL)](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/task-parallel-library-tpl), but it's in no means necessary.
@@ -26,15 +26,15 @@ Think of it this way - concurrency is about **structure** and parallelism is abo
 
 ## Channels
 
-A concurrent program is structured into independent pieces that we have to coordinate. To make that work, we need some form of communication. There're several ways to achieve that with C#. In this article, we'll explore the `System.Threading.Channels` (currently a [NuGet package](https://www.nuget.org/packages/System.Threading.Channels/)) which provides an API, analogous to Go's built in channel primitive.
+A concurrent program is structured into independent pieces that we have to coordinate. To make that work, we need some form of communication. There're several ways to achieve that with C#. In this article, we'll explore the `System.Threading.Channels` (currently a [NuGet package](https://www.nuget.org/packages/System.Threading.Channels/)) which provides an API, analogous to Go's built-in channel primitive.
 
-A channel is a data structure which allows one thread to communicate with another thread. By commucate, we mean sending and receiving data in a first in first out (FIFO) order. This is how we create a channel:
+A channel is a data structure that allows one thread to communicate with another thread. By communicate, we mean sending and receiving data in a first in first out (FIFO) order. That's how we create a channel:
 
 ```csharp
 Channel<string> ch = Channel.CreateUnbounded<string>();
 ```
 
-`Channel` is a static class which exposes several factory methods for creating channels. `Channel<T>` is a data structure that supports reading and writing. That's how we write asynchronously to a channel:
+`Channel` is a static class that exposes several factory methods for creating channels. `Channel<T>` is a data structure that supports reading and writing. That's how we write asynchronously to a channel:
 
 ```csharp
 await ch.Writer.WriteAsync("My first message");
@@ -58,7 +58,7 @@ await foreach (var item in ch.Reader.ReadAllAsync())
 
 ### Using Channels
 
-Here's a basic example when we have a separate producer and consumer threads which commucate through a channel.
+Here's a basic example when we have a separate producer and consumer threads which communicate through a channel.
 
 ```cs
 var ch = Channel.CreateUnbounded<string>();
@@ -90,7 +90,7 @@ await Task.WhenAll(producer, consumer);
 ```
 
 The consumer (reader) waits until there's an available message to read. On the other hand, the producer (writer) waits until it's able to send a message, hence, we say that **channels both communicate and synchronize**. Both operations are non-blocking, that is, while we wait, the thread is free to do some other work.  
-Notice that we have created an **unbounded** channel, meaning that it accepts as many messages as it can with regards to the available memory. With **bounded** channels, however, we can limit the amount of messages that can processed at a time. 
+Notice that we have created an **unbounded** channel, meaning that it accepts as many messages as it can with regards to the available memory. With **bounded** channels, however, we can limit the number of messages that can be processed at a time. 
 
 ```cs
 var ch = Channel.CreateBounded<string>(capacity: 10);
@@ -100,11 +100,11 @@ So when this limit is reached, `WriteAsync()` won't be able to write, until ther
 
 ## Concurrency Patterns
 
-Now it's time to explore a few concurrenct programming techniques for working with channels. This part consists of several examples that are independent of each other. You can also find the interactive version of them on [GitHub](https://github.com/deniskyashif/trydotnet-channels) (feel free to add your own {{< emoji ":slightly_smiling_face:" >}}).
+Now it's time to explore a few concurrent programming techniques for working with channels. This part consists of several examples that are independent of each other. You can also find the interactive version of them on [GitHub](https://github.com/deniskyashif/trydotnet-channels) (feel free to add your own {{< emoji ":slightly_smiling_face:" >}}).
 
 ### The Generator
 
-A generator is a just a method that returns a channel. The one below creates a channel and writes a given number of messages asynchronously from a separate thread.
+A generator is a method that returns a channel. The one below creates a channel and writes a given number of messages asynchronously from a separate thread.
 
 ```csharp
 static ChannelReader<string> CreateMessenger(string msg, int count)
@@ -193,9 +193,9 @@ try
 catch (ChannelClosedException) { }
 ```
 
-Our code is concurrent, but not optimal because it executes in a lockstep. Suppose, Ann is more talkative than Joe, so her messages have an up to 3 seconds delay, whereas Joe sends messages on up to every 10 seconds. This will force us to wait for Joe, even though we might have several messages waiting ready to be read from Ann. Currently, we cannot read from Ann before reading from Joe. We should be doing better!
+Our code is concurrent, but not optimal because it executes in lockstep. Suppose, Ann is more talkative than Joe, so her messages have an up to 3 seconds delay, whereas Joe sends messages on up to every 10 seconds. This will force us to wait for Joe, even though we might have several messages waiting ready to be read from Ann. Currently, we cannot read from Ann before reading from Joe. We should be doing better!
 
-### Multiplexing
+### Multiplexer
 
 We want to read from both Joe and Ann and process whoever's message arrives first. We're going to solve this by consolidating their messages into a single channel. Let's define our `Merge<T>()` method.
 
@@ -223,7 +223,7 @@ static ChannelReader<T> Merge<T>(
 
 `Merge<T>()` takes two channels and starts reading from them simultaneously. It creates and immediately returns a new channel which consolidates the outputs from the input channels. The reading procedures are run asynchronously on separate threads. Think of it like this:
 
-<img src="/images/posts/channels-csharp/merge.png" />
+<img src="/images/posts/2019-12-03-channels-csharp/merge.png" />
 
 That's how we use it.
 
@@ -273,11 +273,11 @@ We've created the local asynchronous `Redirect()` function which takes a channel
 
 Our code is concurrent and non-blocking. The messages are being processed at the time of arrival and there's no need to use locks or any kind of conditional logic. While we're waiting, the thread is free to perform other work. We also don't have to handle the case when one of the writers complete (as you can see Ann has sent all of her messages before Joe).
 
-### Demultiplexing
+### Demultiplexer
 
 Joe talks too much and we cannot handle all of his messages. We want to distribute the work amongst several consumers. Let's define `Split<T>()`:
 
-<img src="/images/posts/channels-csharp/split.png" />
+<img src="/images/posts/2019-12-03-channels-csharp/split.png" />
 
 ```cs
 static IList<ChannelReader<T>> Split<T>(ChannelReader<T> ch, int n)
@@ -327,8 +327,7 @@ for (int i = 0; i < readers.Count; i++)
 await Task.WhenAll(tasks);
 ```
 
-Joe sends 10 messages which we distribute amongst 3 channels. Below is a possible output we can get. Some channels may take 
-longer to process a message, therefore, we have no guarantee that the order of emission is going to be preserved. Our code is structured so that we process (in this case log) a message as soon as it arrives.
+Joe sends 10 messages which we distribute amongst 3 channels. Below is a possible output we can get. Some channels may take longer to process a message, therefore, we have no guarantee that the order of emission is going to be preserved. Our code is structured so that we process (in this case log) a message as soon as it arrives.
 
 ```
 Reader 0: Joe 0
@@ -372,7 +371,7 @@ Joe 3
 Joe, you are too slow!
 ```
 
-In this example, Joe was set to send 10 messages but over the course of 5 seconds, we received only 4 and then cancelled the reading operation. If we reduce the amount of messages Joe sends or sufficiently increase the timeout duration, we'll read everything and thus avoid ending up in the `catch` block.
+In this example, Joe was set to send 10 messages but over 5 seconds, we received only 4 and then cancelled the reading operation. If we reduce the amount of messages Joe sends or sufficiently increase the timeout duration, we'll read everything and thus avoid ending up in the `catch` block.
 
 ### Quit Channel
 
@@ -429,7 +428,7 @@ Joe says bye!
 
 ### Web Search
 
-We're given the task to query several data sources and mix the results. The queries should be concurrent and we should disregard the ones taking too long. Also, we should handle a query response at the time of arrival, instead of waiting for all of them to complete.
+We're given the task to query several data sources and mix the results. The queries should run concurrently and we should disregard the ones taking too long. Also, we should handle a query response at the time of arrival, instead of waiting for all of them to complete.
 
 ```csharp
 var ch = Channel.CreateUnbounded<string>();
@@ -471,7 +470,7 @@ Depending on the timeout interval we might end up receiving responses for all of
 All searches have completed.
 ```
 
-or cut off the ones that are too slow
+or cut off the ones that are too slow.
 
 ```sh
 [9:09:19 AM] Result from Quora for Jupyter
@@ -483,7 +482,7 @@ Again - our code is concurrent, non-blocking. We don't use locks, callbacks or a
 
 ## Conclusion
 
-In this article we defined the term concurrency and discussed how it relates to parallelism. We explained why the two terms should not be confused. Then we explored the channel data structure in C# and learned how to use it for implementing concurrent workflows. We also went through a couple of examples of common scenarios for working with channels.
+In this article, we defined the term concurrency and discussed how it relates to parallelism. We explained why the two terms should not be confused. Then we explored the channel data structure in C# and learned how to use it for implementing concurrent workflows. We also went through a couple of examples of common scenarios for working with channels.
 
 The underlying concept behind the concurrency model, described in this article, can be summarized as:
 
@@ -493,6 +492,7 @@ The underlying concept behind the concurrency model, described in this article, 
 
 ## References & Further Reading
 
-- [GitHub Repository] (https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
+- [GitHub Repo] (https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
 - [Exploring System.Threading.Channels](https://ndportmann.com/system-threading-channels/) - goes into detail about the Channels' API and does a performance benchmark
 - [C# Job Queues with Reactive Extensions and Channels](https://michaelscodingspot.com/c-job-queues-with-reactive-extensions-and-channels/) - a comprehensive series of articles comparing several job queue implementations by Michael Shpilt
+- [Concurrency in C# Cookbook](https://stephencleary.com/book/) by Stephen Cleary - my go to resource for concurrent C#, highly recommended
