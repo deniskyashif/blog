@@ -6,24 +6,24 @@
     <description>Recent content in Tags on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 20 Nov 2019 07:28:47 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 03 Dec 2019 08:02:09 +0200</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>compsci</title>
-      <link>https://deniskyashif.com/tags/compsci/</link>
-      <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
+      <title>concurrency</title>
+      <link>https://deniskyashif.com/tags/concurrency/</link>
+      <pubDate>Tue, 03 Dec 2019 08:02:09 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/tags/compsci/</guid>
+      <guid>https://deniskyashif.com/tags/concurrency/</guid>
       <description></description>
     </item>
     
     <item>
       <title>csharp</title>
       <link>https://deniskyashif.com/tags/csharp/</link>
-      <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
+      <pubDate>Tue, 03 Dec 2019 08:02:09 +0200</pubDate>
       
       <guid>https://deniskyashif.com/tags/csharp/</guid>
       <description></description>
@@ -32,9 +32,18 @@
     <item>
       <title>software-design</title>
       <link>https://deniskyashif.com/tags/software-design/</link>
-      <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
+      <pubDate>Tue, 03 Dec 2019 08:02:09 +0200</pubDate>
       
       <guid>https://deniskyashif.com/tags/software-design/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>compsci</title>
+      <link>https://deniskyashif.com/tags/compsci/</link>
+      <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/compsci/</guid>
       <description></description>
     </item>
     
