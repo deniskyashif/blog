@@ -257,7 +257,7 @@ Unhandled exception. System.Threading.Channels.ChannelClosedException:
 </code></pre></div>
 <p><code>Merge&lt;T&gt;()</code> takes two channels and starts reading from them simultaneously. It creates and immediately returns a new channel which consolidates the outputs from the input channels. The reading procedures are run asynchronously on separate threads. Think of it like this:</p>
 
-<p><img src="/images/posts/channels-csharp/merge.png" /></p>
+<p><img src="/images/posts/2019-12-03-channels-csharp/merge.png" /></p>
 
 <p>That&rsquo;s how we use it.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#0b0;font-weight:bold">var</span> ch = Merge(CreateMessenger(<span style="color:#b44">&#34;Joe&#34;</span>, <span style="color:#666">3</span>), CreateMessenger(<span style="color:#b44">&#34;Ann&#34;</span>, <span style="color:#666">5</span>));
@@ -301,7 +301,7 @@ We&rsquo;ve created the local asynchronous <code>Redirect()</code> function whic
 
 <p>Joe talks too much and we cannot handle all of his messages. We want to distribute the work amongst several consumers. Let&rsquo;s define <code>Split&lt;T&gt;()</code>:</p>
 
-<p><img src="/images/posts/channels-csharp/split.png" /></p>
+<p><img src="/images/posts/2019-12-03-channels-csharp/split.png" /></p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#a2f;font-weight:bold">static</span> IList&lt;ChannelReader&lt;T&gt;&gt; Split&lt;T&gt;(ChannelReader&lt;T&gt; ch, <span style="color:#0b0;font-weight:bold">int</span> n)
 {
     <span style="color:#080;font-style:italic">// Initialize the output channels
@@ -563,7 +563,7 @@ Timeout.</code></pre></div>
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-03 08:11:23.090769 &#43;0200 EET m=&#43;0.131985348">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-03 08:17:22.340188 &#43;0200 EET m=&#43;0.119357290">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
