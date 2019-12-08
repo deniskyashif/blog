@@ -31,3 +31,6 @@ googleAnalytics = "UA-133185625-1"
   posts = "/:title/"
 
 enableEmoji = true
+
+[markup.goldmark.renderer]
+unsafe= true
