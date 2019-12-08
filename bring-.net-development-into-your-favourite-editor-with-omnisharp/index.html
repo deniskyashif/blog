@@ -25,8 +25,7 @@
 <meta property="og:description" content="IntelliSense as a service." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/bring-.net-development-into-your-favourite-editor-with-omnisharp/" />
-
-<meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png" />
+<meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png"/>
 <meta property="article:published_time" content="2015-12-09T00:00:00+00:00" />
 <meta property="article:modified_time" content="2015-12-09T00:00:00+00:00" />
 
@@ -87,7 +86,7 @@ if (!doNotTrack) {
         
         
         
-        <a href="https://deniskyashif.com/tags/c-sharp/" class="tag">c-sharp</a>
+        <a href="https://deniskyashif.com/tags/csharp/" class="tag">csharp</a>
         
         
         
@@ -108,46 +107,39 @@ if (!doNotTrack) {
 
 		
 
-		
-
-<p>This year the .NET ecosystem welcomed DNX (.NET Execution Environment). Now developers are able to compile to and execute MSIL code on any operating system. This led to the increase of the framework&rsquo;s popularity in places where Visual Studio isn&rsquo;t available. Also the emergence of Roslyn, the new .NET compiler platform, which exposes all the compile stages via an API, allowed powerful code analysis tools to be easily written. This unleashed the development of some amazing projects like Omnisharp.</p>
-
+		<p>This year the .NET ecosystem welcomed DNX (.NET Execution Environment). Now developers are able to compile to and execute MSIL code on any operating system. This led to the increase of the framework's popularity in places where Visual Studio isn't available. Also the emergence of Roslyn, the new .NET compiler platform, which exposes all the compile stages via an API, allowed powerful code analysis tools to be easily written. This unleashed the development of some amazing projects like Omnisharp.</p>
 <h2 id="what-is-omnisharp">What is Omnisharp?</h2>
-
 <p>Omnisharp is a series of tools and extensions, which include editor integrations and libraries, that together help developers work with C# in any editor under any operating system. It offers wide set of features like smart completion, refactoring, semantic highlighting and even shorthands for building and executing .NET applications. It was initially created back in 2011 by <a href="https://twitter.com/JasonImison">Jason Imison</a>, as a vim extension. However it kicked off big time in 2014, when Roslyn was released. The project is community driven and fully <a href="https://github.com/OmniSharp/omnisharp-roslyn">open source</a>, meanwhile there are some notable Microsoft folks involved, like David Fowler.</p>
-
 <h2 id="how-does-it-work">How does it work?</h2>
-
 <p>Omnisharp is basically a web server which exposes services via HTTP endpoints. It receives information about the workspace and its state, and has the intelligence to understand the code and return the appropriate information. There are two versions of the server. The initial one, <a href="https://github.com/OmniSharp/omnisharp-server">OmnisharpServer</a>, written in 2011, using NRefactory (C# static analysis library) and Nancy, and the new one <a href="https://github.com/OmniSharp/omnisharp-roslyn">OmnisharpRoslyn</a>, started in 2014, which utilizes Roslyn and uses WebAPI for its HTTP layer. OmnisharpServer tends to be a bit shaky and its development has stopped in favor of the Roslyn-based version. The latter also supports ASP.NET 5 (vNext) projects.</p>
-
-<p><img src="/images/posts/2015-12-09-omnisharp/client-server.png" alt="client-server" title="Client-Server" /></p>
-
+<p><img src="/images/posts/2015-12-09-omnisharp/client-server.png" alt="client-server" title="Client-Server"></p>
 <p>Then comes the client (editor plugin), which communicates with the server. Currently there are plugins for Emacs, Vim, Sublime Text, Atom and Brackets. Visual Studio Code comes with its built-in Omnisharp plugin. Integration instructions for each plugin are provided on the <a href="http://www.omnisharp.net/#integrations">project website</a>.</p>
-
 <h2 id="features">Features</h2>
-
 <p>Below you can take a look at some of the features with Emacs as my editor of choice:</p>
-
 <ul>
-<li><p>Smart completion<br />
-<video alt="Smart completion" src="/images/posts/2015-12-09-omnisharp/intellisense.mp4" controls="controls" width="650px"></video></p></li>
-
-<li><p>Find definition<br />
-<video alt="Smart completion" src="/images/posts/2015-12-09-omnisharp/goto-definition.mp4" controls="controls" width="650px"></video></p></li>
-
-<li><p>Find implementation<br />
-<video alt="Smart completion" src="/images/posts/2015-12-09-omnisharp/goto-implementation.mp4" controls="controls" width="650px"></video></p></li>
-
-<li><p>Fix usings<br />
-<video alt="Smart completion" src="/images/posts/2015-12-09-omnisharp/fix-usings.mp4" controls="controls" width="650px"></video></p></li>
-
-<li><p>Format code<br />
-<video alt="Smart completion" src="/images/posts/2015-12-09-omnisharp/code-formatting.mp4" controls="controls" width="650px"></video></p></li>
+<li>
+<p>Smart completion<br>
+<video alt="Smart completion" src="/images/posts/2015-12-09-omnisharp/intellisense.mp4" controls="controls" width="650px"></video></p>
+</li>
+<li>
+<p>Find definition<br>
+<video alt="Smart completion" src="/images/posts/2015-12-09-omnisharp/goto-definition.mp4" controls="controls" width="650px"></video></p>
+</li>
+<li>
+<p>Find implementation<br>
+<video alt="Smart completion" src="/images/posts/2015-12-09-omnisharp/goto-implementation.mp4" controls="controls" width="650px"></video></p>
+</li>
+<li>
+<p>Fix usings<br>
+<video alt="Smart completion" src="/images/posts/2015-12-09-omnisharp/fix-usings.mp4" controls="controls" width="650px"></video></p>
+</li>
+<li>
+<p>Format code<br>
+<video alt="Smart completion" src="/images/posts/2015-12-09-omnisharp/code-formatting.mp4" controls="controls" width="650px"></video></p>
+</li>
 </ul>
-
 <h2 id="looking-forward">Looking forward</h2>
-
-<p>Omnisharp is still a young project and currently works only with C#. Even though it started in 2011, it hasn&rsquo;t progressed much until a year ago, so there is a lot more to come. This June at the NDC Conference in Oslo Mathew McLoughlin, an Omnisharp team member, said that they continue to add new features to the server in terms of refactoring and code navigation. With the ability to pull in more libraries, the refactoring support is going to get even better. He also announced that the team works on adding <a href="http://scriptcs.net/">scriptcs</a> support and more editor extensions. Apart from Razor view support, probably the biggest feature still missing is the debugging, but the project is being actively developed and the community is constantly growing, so we should see them coming in some time as well.</p>
+<p>Omnisharp is still a young project and currently works only with C#. Even though it started in 2011, it hasn't progressed much until a year ago, so there is a lot more to come. This June at the NDC Conference in Oslo Mathew McLoughlin, an Omnisharp team member, said that they continue to add new features to the server in terms of refactoring and code navigation. With the ability to pull in more libraries, the refactoring support is going to get even better. He also announced that the team works on adding <a href="http://scriptcs.net/">scriptcs</a> support and more editor extensions. Apart from Razor view support, probably the biggest feature still missing is the debugging, but the project is being actively developed and the community is constantly growing, so we should see them coming in some time as well.</p>
 
 
 		<section class="social-share">
@@ -221,7 +213,7 @@ if (!doNotTrack) {
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-03 16:23:14.458581 &#43;0200 EET m=&#43;0.161665436">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-08 19:04:35.446217 &#43;0200 EET m=&#43;0.108614261">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>

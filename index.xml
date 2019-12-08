@@ -6,18 +6,18 @@
     <description>Recent content on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Dec 2019 08:02:09 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 08 Dec 2019 08:02:09 +0200</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>C# Concurrency Patterns using Channels</title>
-      <link>https://deniskyashif.com/csharp-concurrency-patterns-using-channels/</link>
-      <pubDate>Tue, 03 Dec 2019 08:02:09 +0200</pubDate>
+      <title>C# Channels - Publish / Subscribe Workflows</title>
+      <link>https://deniskyashif.com/csharp-channels-part-1/</link>
+      <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/csharp-concurrency-patterns-using-channels/</guid>
-      <description>Build flexible and performant publish/subscribe workflows.</description>
+      <guid>https://deniskyashif.com/csharp-channels-part-1/</guid>
+      <description>Concurrency patterns using channels in C#.</description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
       
       <guid>https://deniskyashif.com/a-practical-guide-to-state-machines/</guid>
-      <description>Express application logic in a concise and declarative way using state machines and C#&amp;rsquo;s pattern matching.</description>
+      <description>Express application logic in a concise and declarative way using state machines and C#&amp;lsquo;s pattern matching.</description>
     </item>
     
     <item>
@@ -71,7 +71,7 @@
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
       <guid>https://deniskyashif.com/implementing-a-regular-expression-engine/</guid>
-      <description>Using Ken Thompson&amp;rsquo;s construction algorithm.</description>
+      <description>Using Ken Thompson&#39;s construction algorithm.</description>
     </item>
     
     <item>
@@ -98,7 +98,7 @@
       <pubDate>Tue, 21 Nov 2017 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/impressions-from-emea-pug-challenge-2017/</guid>
-      <description>I had the pleasure to speak at the annual EMEA PUG Challenge conference in Prague. This is my second visit to this event. I was very excited about it because I already had fond memories of the last year&amp;rsquo;s one in the Netherlands.</description>
+      <description>I had the pleasure to speak at the annual EMEA PUG Challenge conference in Prague. This is my second visit to this event. I was very excited about it because I already had fond memories of the last year&#39;s one in the Netherlands.</description>
     </item>
     
     <item>

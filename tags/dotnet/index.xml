@@ -6,10 +6,37 @@
     <description>Recent content in dotnet on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Dec 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 08 Dec 2019 08:02:09 +0200</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/tags/dotnet/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>C# Channels - Publish / Subscribe Workflows</title>
+      <link>https://deniskyashif.com/csharp-channels-part-1/</link>
+      <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/csharp-channels-part-1/</guid>
+      <description>Concurrency patterns using channels in C#.</description>
+    </item>
+    
+    <item>
+      <title>A Practical Guide to  State Machines</title>
+      <link>https://deniskyashif.com/a-practical-guide-to-state-machines/</link>
+      <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/a-practical-guide-to-state-machines/</guid>
+      <description>Express application logic in a concise and declarative way using state machines and C#&amp;lsquo;s pattern matching.</description>
+    </item>
+    
+    <item>
+      <title>Setting Up a Project With Telerik UI for ASP.NET MVC</title>
+      <link>https://deniskyashif.com/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</link>
+      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://deniskyashif.com/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</guid>
+      <description>This is a step by step guide on how to setup a project from scratch with the Telerik UI for ASP.NET MVC component suite or integrate it to an existing one.</description>
+    </item>
     
     <item>
       <title>Bring .NET Development into your favourite editor with Omnisharp</title>

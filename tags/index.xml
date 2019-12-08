@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Dec 2019 08:02:09 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 08 Dec 2019 08:02:09 +0200</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>concurrency</title>
       <link>https://deniskyashif.com/tags/concurrency/</link>
-      <pubDate>Tue, 03 Dec 2019 08:02:09 +0200</pubDate>
+      <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
       
       <guid>https://deniskyashif.com/tags/concurrency/</guid>
       <description></description>
@@ -23,16 +23,25 @@
     <item>
       <title>csharp</title>
       <link>https://deniskyashif.com/tags/csharp/</link>
-      <pubDate>Tue, 03 Dec 2019 08:02:09 +0200</pubDate>
+      <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
       
       <guid>https://deniskyashif.com/tags/csharp/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>dotnet</title>
+      <link>https://deniskyashif.com/tags/dotnet/</link>
+      <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/dotnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>software-design</title>
       <link>https://deniskyashif.com/tags/software-design/</link>
-      <pubDate>Tue, 03 Dec 2019 08:02:09 +0200</pubDate>
+      <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
       
       <guid>https://deniskyashif.com/tags/software-design/</guid>
       <description></description>
@@ -201,15 +210,6 @@
     </item>
     
     <item>
-      <title>.net</title>
-      <link>https://deniskyashif.com/tags/.net/</link>
-      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/.net/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>aspnet</title>
       <link>https://deniskyashif.com/tags/aspnet/</link>
       <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
@@ -260,24 +260,6 @@
       <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/tags/natural-language-processing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>c-sharp</title>
-      <link>https://deniskyashif.com/tags/c-sharp/</link>
-      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/c-sharp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dotnet</title>
-      <link>https://deniskyashif.com/tags/dotnet/</link>
-      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/dotnet/</guid>
       <description></description>
     </item>
     

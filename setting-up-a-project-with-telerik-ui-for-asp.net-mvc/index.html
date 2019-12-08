@@ -25,8 +25,7 @@
 <meta property="og:description" content="This is a step by step guide on how to setup a project from scratch with the Telerik UI for ASP.NET MVC component suite or integrate it to an existing one." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/" />
-
-<meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png" />
+<meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png"/>
 <meta property="article:published_time" content="2018-03-06T00:00:00+00:00" />
 <meta property="article:modified_time" content="2018-03-06T00:00:00+00:00" />
 
@@ -82,7 +81,7 @@ if (!doNotTrack) {
         
         
         
-        <a href="https://deniskyashif.com/tags/.net/" class="tag">.net</a>
+        <a href="https://deniskyashif.com/tags/dotnet/" class="tag">dotnet</a>
         
         
         
@@ -103,20 +102,12 @@ if (!doNotTrack) {
 
 		
 
-		
-
-<p><em>// This article covers Telerik UI for .NET Framerwork 4.*</em></p>
-
+		<p><em>// This article covers Telerik UI for .NET Framerwork 4.*</em></p>
 <p>This is a step by step guide on how to setup a project from scratch with the <a href="https://www.telerik.com/aspnet-mvc">Telerik UI for ASP.NET MVC</a> component suite or integrate it to an existing one.</p>
-
-<h2 id="download-install">Download &amp; Install</h2>
-
+<h2 id="download--install">Download &amp; Install</h2>
 <p>The easiest way to install the framework is by using the <strong>Progress Control Panel</strong> which is available at your <a href="https://www.telerik.com/account/">Telerik Account Page</a>.</p>
-
 <p>Log in to the Control Panel with your Telerik account credentials and follow the installation steps for <strong>Telerik UI for ASP.NET MVC</strong>. After the app has completed downloading the files you can find them in <code>C:\Program Files (x86)\Progress\Telerik UI for ASP.NET MVC &lt;VERSION&gt;\</code></p>
-
-<h2 id="what-s-in-the-box">What&rsquo;s in the box</h2>
-
+<h2 id="whats-in-the-box">What's in the box</h2>
 <ul>
 <li>Component Assemblies - Kendo.Mvc.dll</li>
 <li>Exporting API Assemblies</li>
@@ -124,54 +115,43 @@ if (!doNotTrack) {
 <li>Visual Studio Extension - Project Templates, Configure and Upgrade Wizards</li>
 <li>Demo Projects</li>
 </ul>
-
 <h2 id="project-setup">Project Setup</h2>
-
 <p>When we open the menu for creating a new web project we see that the Visual Studio Extension has added three project templates:</p>
-
-<p><img src="/images/posts/2018-03-06-telerik-ui-for-aspnet/kendo-vs-project.png" alt="Visual Studio" title="Project Wizard" /></p>
-
+<p><img src="/images/posts/2018-03-06-telerik-ui-for-aspnet/kendo-vs-project.png" alt="Visual Studio" title="Project Wizard"></p>
 <ul>
 <li>Kendo UI ASP.NET MVC 5 Application - MVC 5 project using pure Kendo UI jQuery plugins.</li>
 <li>Telerik ASP.NET MVC Application - MVC 5 project using Razor Html Helper components.</li>
 <li>Telerik ASP.NET Core MVC Application - MVC 6 project based on ASP.NET Core using Razor Tag Helper components.</li>
 </ul>
-
-<p>In this guide we&rsquo;ll see how to set up our project manually thus having <strong>full control</strong> over what&rsquo;s being included and used.</p>
-
-<h3 id="add-reference-to-kendo-mvc-dll">Add Reference to Kendo.Mvc.dll</h3>
-
+<p>In this guide we'll see how to set up our project manually thus having <strong>full control</strong> over what's being included and used.</p>
+<h3 id="add-reference-to-kendomvcdll">Add Reference to Kendo.Mvc.dll</h3>
 <p>The file is located in <code>C:\Program Files (x86)\Progress\Telerik UI for ASP.NET MVC &lt;VERSION&gt;\wrappers\aspnetmvc\Binaries\Mvc5</code></p>
-
 <h3 id="include-the-kendo-namespace-globally-to-the-razor-templates">Include the Kendo Namespace globally to the Razor Templates</h3>
-
-<p>Add `<code>&lt;add namespace=&quot;Kendo.Mvc.UI&quot; /&gt;</code> to Views/Web.config</p>
-
+<p>Add ```<add namespace="Kendo.Mvc.UI" />`` to Views/Web.config</p>
 <h3 id="include-kendo-ui-to-your-bundles">Include Kendo UI to your bundles</h3>
-
 <p>Bundling is a feature in ASP.NET 4.5 and above that makes it easy to combine or bundle multiple files into a single file. We can create CSS, JavaScript and other bundles. Fewer files means fewer HTTP requests and that can improve first page load performance. The framework provides an API which allows us to easily manage our front-end assets from a single place. Check out this <a href="https://docs.microsoft.com/en-us/aspnet/mvc/overview/performance/bundling-and-minification">article</a> for more information about bundling and minification.</p>
-
-<p>First, we should add Kendo UI source files and assets to our project. We do not need everything that is provided in the source folder. As a best practice I&rsquo;d recommend creating separate folders (named <code>kendo/</code>) inside <code>Scripts/`` and</code>Content/``` folders in your project.</p>
-
-<p>From <code>/Telerik UI For ASP.NET MVC &lt;VERSION&gt;/js</code> we copy to <code>/Scripts/kendo/</code>
-* kendo.all.min.js
-* kendo.aspnetmvc.min.js
-* jszip.min.js
-* cultures/
-* messages/</p>
-
-<p>From <code>Telerik UI For ASP.NET MVC &lt;VERSION&gt;/styles</code> we copy to <code>/Content/kendo/</code>:
-* images/
-* textures/
-* fonts/
-* <THEME_NAME>/
-* kendo.common.min.css
-* kendo.<THEME_NAME>.min.css</p>
-
+<p>First, we should add Kendo UI source files and assets to our project. We do not need everything that is provided in the source folder. As a best practice I'd recommend creating separate folders (named <code>kendo/</code>) inside <code>Scripts/`` and </code>Content/``` folders in your project.</p>
+<p>From <code>/Telerik UI For ASP.NET MVC &lt;VERSION&gt;/js</code> we copy to <code>/Scripts/kendo/</code></p>
+<ul>
+<li>kendo.all.min.js</li>
+<li>kendo.aspnetmvc.min.js</li>
+<li>jszip.min.js</li>
+<li>cultures/</li>
+<li>messages/</li>
+</ul>
+<p>From <code>Telerik UI For ASP.NET MVC &lt;VERSION&gt;/styles</code> we copy to <code>/Content/kendo/</code>:</p>
+<ul>
+<li>images/</li>
+<li>textures/</li>
+<li>fonts/</li>
+<li>&lt;THEME_NAME&gt;/</li>
+<li>kendo.common.min.css</li>
+<li>kendo.&lt;THEME_NAME&gt;.min.css</li>
+</ul>
 <p>Kendo UI depends on jQuery so we should rather use the one distributed with the framework instead of the one provided in the MVC template.</p>
-
 <p>Now add the follwing code to <code>App_Start/BundleConfig.cs</code>:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">static</span> <span style="color:#a2f;font-weight:bold">void</span> RegisterBundles(BundleCollection bundles)
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">
+<span style="color:#a2f;font-weight:bold">public</span> <span style="color:#a2f;font-weight:bold">static</span> <span style="color:#a2f;font-weight:bold">void</span> RegisterBundles(BundleCollection bundles)
 {     
     <span style="color:#080;font-style:italic">/* other bundles */</span>
     
@@ -184,11 +164,13 @@ if (!doNotTrack) {
         <span style="color:#b44">&#34;~/Content/kendo/kendo.common.min.css&#34;</span>,
         <span style="color:#b44">&#34;~/Content/kendo/kendo.&lt;THEME_NAME&gt;.min.css&#34;</span>));       
 }
-</code></pre></div>
-<p>The only thing left is to render these bundles inside our layout file. Keep in mind that Kendo UI&rsquo;s JavaScript files should be loaded after jQuery. Inside our <code>_Layout.cshtml</code> we add:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cshtml" data-lang="cshtml">@Styles.Render(&#34;~/Content/kendo&#34;)
-@Scripts.Render(&#34;~/bundles/kendo&#34;)</code></pre></div>
-<p>If we have rendered our script bundles inside the <code>&lt;head&gt;</code> tag we can directly use the components inside our Razor views. On the other hand if we render them before the closing <code>&lt;/body&gt;</code> tag we should make sure defer the initialization of our components. More the topic <a href="https://docs.telerik.com/aspnet-mvc/getting-started/fundamentals#configuration-Deferring">here</a>. Now we&rsquo;re ready to get started with the Telerik UI components our MVC web app.</p>
+
+</code></pre></div><p>The only thing left is to render these bundles inside our layout file. Keep in mind that Kendo UI's JavaScript files should be loaded after jQuery. Inside our <code>_Layout.cshtml</code> we add:</p>
+<pre><code class="language-cshtml" data-lang="cshtml">
+@Styles.Render(&quot;~/Content/kendo&quot;)
+@Scripts.Render(&quot;~/bundles/kendo&quot;)
+
+</code></pre><p>If we have rendered our script bundles inside the <code>&lt;head&gt;</code> tag we can directly use the components inside our Razor views. On the other hand if we render them before the closing <code>&lt;/body&gt;</code> tag we should make sure defer the initialization of our components. More the topic <a href="https://docs.telerik.com/aspnet-mvc/getting-started/fundamentals#configuration-Deferring">here</a>. Now we're ready to get started with the Telerik UI components our MVC web app.</p>
 
 
 		<section class="social-share">
@@ -263,7 +245,7 @@ if (!doNotTrack) {
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-03 16:23:14.453603 &#43;0200 EET m=&#43;0.156687064">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-08 19:04:35.440919 &#43;0200 EET m=&#43;0.103316126">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
