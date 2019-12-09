@@ -202,7 +202,7 @@ For example, the state `(3,d)` represents the situation where the bank is in sta
 
 <img src="/images/posts/2019-11-20-guide-to-fsm/35.svg" />
 <p class="text-center"><small>Figure 3.5: The product of the bank's and the store's state machines; the reachable states are marked in green. <br />
-P - _pay_, C - _cancel_, R - _redeem_, S - _ship_, T - _transfer_
+P - <em>pay</em>, C - <em>cancel</em>, R - <em>redeem</em>, S - <em>ship</em>, T - <em>transfer</em>
 </small></p>
 
 We've drawn all of the state pairs and the transitions amongst them. We can now clearly see how the inputs affect the system as a whole. For instance, on _pay_, the store goes from `a` to `b`, whereas the bank stays put, therefore, `change_state((1,a), "pay") -> (1,b)`. From state `(1,b)`, on _redeem_, the store goes from state `b` to `d` and the bank from `1` to `3`, therefore, we end up in `change_state((1,b), "redeem") -> (3,d)`.
@@ -214,7 +214,7 @@ We observe that not all states are reachable from the initial state `(1,a)`. For
 <img src="/images/posts/2019-11-20-guide-to-fsm/36.svg" />
 <p class="text-center"><small>Figure 3.6: The combined state machine for the bank and the store.
 <br />
-P - _pay_, C - _cancel_, R - _redeem_, S - _ship_, T - _transfer_</small>
+P - <em>pay</em>, C - <em>cancel</em>, R - <em>redeem</em>, S - <em>ship</em>, T - <em>transfer</em></small>
 </p>
 
 After discarding the unreachable states and all of their outgoing transitions, we end up with a much clearer picture, that is, a state machine that is easy to understand yet encodes complex business logic.
