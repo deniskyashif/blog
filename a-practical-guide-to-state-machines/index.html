@@ -242,7 +242,7 @@ Another potential problem would be when the customer executes <em>pay</em> for a
 For example, the state <code>(3,d)</code> represents the situation where the bank is in state <code>3</code> and the store is in state <code>d</code>. The total amount of states is 4x7=28. We group them in a table where the row corresponds to the state of the bank and the column to the state of the store. The initial state is the pair, both items of which are initial states of their respective machines - in our case <code>(1,a)</code>.</p>
 <p><img src="/images/posts/2019-11-20-guide-to-fsm/35.svg" /></p>
 <p class="text-center"><small>Figure 3.5: The product of the bank's and the store's state machines; the reachable states are marked in green. <br />
-P - _pay_, C - _cancel_, R - _redeem_, S - _ship_, T - _transfer_
+P - <em>pay</em>, C - <em>cancel</em>, R - <em>redeem</em>, S - <em>ship</em>, T - <em>transfer</em>
 </small></p>
 <p>We've drawn all of the state pairs and the transitions amongst them. We can now clearly see how the inputs affect the system as a whole. For instance, on <em>pay</em>, the store goes from <code>a</code> to <code>b</code>, whereas the bank stays put, therefore, <code>change_state((1,a), &quot;pay&quot;) -&gt; (1,b)</code>. From state <code>(1,b)</code>, on <em>redeem</em>, the store goes from state <code>b</code> to <code>d</code> and the bank from <code>1</code> to <code>3</code>, therefore, we end up in <code>change_state((1,b), &quot;redeem&quot;) -&gt; (3,d)</code>.</p>
 <h3 id="eliminating-the-unreachable-states">Eliminating the Unreachable States</h3>
@@ -250,7 +250,7 @@ P - _pay_, C - _cancel_, R - _redeem_, S - _ship_, T - _transfer_
 <p><img src="/images/posts/2019-11-20-guide-to-fsm/36.svg" /></p>
 <p class="text-center"><small>Figure 3.6: The combined state machine for the bank and the store.
 <br />
-P - _pay_, C - _cancel_, R - _redeem_, S - _ship_, T - _transfer_</small>
+P - <em>pay</em>, C - <em>cancel</em>, R - <em>redeem</em>, S - <em>ship</em>, T - <em>transfer</em></small>
 </p>
 <p>After discarding the unreachable states and all of their outgoing transitions, we end up with a much clearer picture, that is, a state machine that is easy to understand yet encodes complex business logic.</p>
 <h2 id="conclusion">Conclusion</h2>
@@ -340,7 +340,7 @@ They are no silver bullet though. Not every domain is suitable to be modeled in 
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-09 16:20:55.17488 &#43;0200 EET m=&#43;0.109869829">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-09 18:50:23.249726 &#43;0200 EET m=&#43;0.101839514">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
