@@ -2,7 +2,7 @@
 title: "C# Channels - Publish / Subscribe Workflows"
 date: 2019-12-08T08:02:09+02:00
 draft: false
-summary: "Concurrency patterns using channels in C#"
+summary: "Concurrency patterns using channels."
 url: "csharp-channels-part-1"
 aliases: 
     - /csharp-concurrency-patterns-using-channels
@@ -358,6 +358,8 @@ The underlying concept behind the concurrency model, described in this article, 
 > Don't communicate by sharing memory, share memory by communicating.
 >
 > -- Rob Pike "Go Concurrency Patterns"
+
+_Stay tuned for part 2 where we'll learn about cancellation and put what we've learned in practice._
 
 ## References & Further Reading
 

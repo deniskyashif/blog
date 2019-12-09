@@ -2,7 +2,7 @@
 title: "On Recursive Functions"
 date: 2019-05-15T15:16:00+03:00
 draft: false
-tags: ["lambda-calculus", "functional-programming", "y-combinator", "compsci", "javascript"]
+tags: ["functional-programming", "compsci", "javascript"]
 useMath: true
 summary: "Lambda Calculus and the Y combinator in JavaScript."
 images: 
