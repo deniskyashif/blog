@@ -1,7 +1,7 @@
 ---
 title: "C# Channels - Timeout and Cancellation"
-date: 2019-12-11T08:50:01+02:00
-draft: true
+date: 2019-12-11T15:01:01+02:00
+draft: false
 summary: "Explore cancellation and timeout techniques with channels."
 url: "csharp-channels-part-2"
 images: 
@@ -10,7 +10,7 @@ editLink: ""
 tags: ["software-design", "csharp", "concurrency", "dotnet"]
 ---
 
-This is a continuation of the article on [how to build publish/subscribe workflows in C#](/csharp-channels-part-1) where we learned how to use channels in C#. We also went through several techniques about distributing computations among several workers to make use of the modern-day, multi-core CPUs.
+This is a continuation of the article on [how to build publish/subscribe workflows in C#](/csharp-channels-part-1) where we learned how to use channels in C#. We also went through some techniques about distributing computations among several workers to make use of the modern-day, multi-core CPUs.
 
 In this article, we'll build on top of that by exploring some cases where we have to "exit" a channel. In the last example, we'll put what we've covered so far in practice. You can check out the interactive version of the demos on [GitHub](https://github.com/deniskyashif/trydotnet-channels).
 
@@ -151,7 +151,7 @@ ch.Writer.Complete();
 Depending on the timeout interval we might end up receiving responses for all of the queries,
 
 ```sh
-[9:09:14 AM] Result from Everything2 for Milky Way
+[9:09:14 AM] Result from Google for Milky Way
 [9:09:14 AM] Result from Wikipedia for Milky Way
 [9:09:16 AM] Result from Quora for Milky Way
 All searches have completed.
@@ -169,7 +169,7 @@ Again - our code is non-blocking concurrent, thus there's no need to use locks, 
 
 ## References
 - [GitHub Repo](https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
-- [C# Channels Part 1 - Publish / Subscribe workflows](/csharp-channels-part-1)
+- Part 1: [C# Channels - Publish / Subscribe workflows](/csharp-channels-part-1)
 - [Exploring System.Threading.Channels](https://ndportmann.com/system-threading-channels/) - goes into detail about the Channels' API and does a performance benchmark
 - [C# Job Queues with Reactive Extensions and Channels](https://michaelscodingspot.com/c-job-queues-with-reactive-extensions-and-channels/) - a comprehensive series of articles comparing several job queue implementations by Michael Shpilt
 - [Concurrency in C# Cookbook](https://stephencleary.com/book/) by Stephen Cleary - my highly recommended go-to reference for concurrent C#

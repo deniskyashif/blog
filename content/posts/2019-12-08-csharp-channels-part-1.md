@@ -359,7 +359,7 @@ The underlying concept behind the concurrency model, described in this article, 
 >
 > -- Rob Pike "Go Concurrency Patterns"
 
-_Stay tuned for part 2 where we'll learn about cancellation and put what we've learned in practice._
+_Check out [part 2](/csharp-channels-part-2) where we discuss some cancellation techniques and put what we've learned into practice_
 
 ## References & Further Reading
 
