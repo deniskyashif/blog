@@ -6,10 +6,19 @@
     <description>Recent content in concurrency on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 08 Dec 2019 08:02:09 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 11 Dec 2019 15:01:01 +0200</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/tags/concurrency/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>C# Channels - Timeout and Cancellation</title>
+      <link>https://deniskyashif.com/csharp-channels-part-2/</link>
+      <pubDate>Wed, 11 Dec 2019 15:01:01 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/csharp-channels-part-2/</guid>
+      <description>Explore cancellation and timeout techniques with channels.</description>
+    </item>
     
     <item>
       <title>C# Channels - Publish / Subscribe Workflows</title>
