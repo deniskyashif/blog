@@ -30,7 +30,7 @@ Think of it this way - concurrency is about **structure** and parallelism is abo
 
 ## Channels
 
-A concurrent program is structured into independent pieces that we have to coordinate. To make that work, we need some form of communication. There're several ways to achieve that in .NET. In this article, we'll explore the `System.Threading.Channels` (currently a [NuGet package](https://www.nuget.org/packages/System.Threading.Channels/)) which provides an API, analogous to Go's built-in channel primitive.
+A concurrent program is structured into independent pieces that we have to coordinate. To make that work, we need some form of communication. There're several ways to achieve that in .NET. In this article, we'll explore the `System.Threading.Channels` (ships with .NET Core 3.1 SDK or available as a [NuGet package](https://www.nuget.org/packages/System.Threading.Channels/)) which provides an API, analogous to Go's built-in channel primitive.
 
 <img src="/images/posts/2019-12-08-csharp-channels-part1/channel-sketch.png" width="600">
 
