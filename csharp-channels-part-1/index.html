@@ -119,7 +119,7 @@ if (!doNotTrack) {
 <p>Concurrency is something that <strong>enables parallelism</strong>. On a single processor, two procedures can be concurrent, yet they won't run in parallel. A concurrent program <strong>deals</strong> with a lot of things at once, whereas a parallel program <strong>does</strong> a lot of things at once.<br>
 Think of it this way - concurrency is about <strong>structure</strong> and parallelism is about <strong>execution</strong>. A concurrent program may benefit from parallelism, but that's not its goal. The goal of concurrency is a good structure.</p>
 <h2 id="channels">Channels</h2>
-<p>A concurrent program is structured into independent pieces that we have to coordinate. To make that work, we need some form of communication. There're several ways to achieve that in .NET. In this article, we'll explore the <code>System.Threading.Channels</code> (currently a <a href="https://www.nuget.org/packages/System.Threading.Channels/">NuGet package</a>) which provides an API, analogous to Go's built-in channel primitive.</p>
+<p>A concurrent program is structured into independent pieces that we have to coordinate. To make that work, we need some form of communication. There're several ways to achieve that in .NET. In this article, we'll explore the <code>System.Threading.Channels</code> (ships with .NET Core 3.1 SDK or available as a <a href="https://www.nuget.org/packages/System.Threading.Channels/">NuGet package</a>) which provides an API, analogous to Go's built-in channel primitive.</p>
 <img src="/images/posts/2019-12-08-csharp-channels-part1/channel-sketch.png" width="600">
 <p>A channel is a data structure that allows one thread to communicate with another thread. In .NET, this was usually done by using a shared variable that supports concurrency (by implementing some synchronization/locking mechanism). Channels, on the other hand, can be used to send messages directly between threads without any external synchronization or locking required. These messages are sent in FIFO (first in first out) order. Here's how we create a channel:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Channel&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt; ch = Channel.CreateUnbounded&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt;();
@@ -431,7 +431,7 @@ Reader 0: Joe 9
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-13 08:11:20.429979 &#43;0200 EET m=&#43;0.128355078">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-13 09:49:49.565185 &#43;0200 EET m=&#43;0.108233756">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
