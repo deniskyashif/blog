@@ -125,7 +125,7 @@ tr > th:first-child, td:first-child {
 <h2 id="intuition">Intuition</h2>
 <p>The main idea is to precompute all of the answers for the range queries and store them in a data structure. The challenge is how to do it in an efficient way. We want to save as much space as we can thus retaining the ability to retrieve answers in constant time. Our target is \(O(1)\) search and \(O(nlog_2n)\) space and we can achieve it with <strong><a href="https://en.wikipedia.org/wiki/Dynamic_programming">dynamic programming</a></strong> and some basic <strong>arithmetic</strong>.</p>
 <p>We know that we can represent any natural number as a unique decreasing sum of powers of two (yes we've just described binary). For example:</p>
-<p>\[ 11 = (1011)_2 = 1<em>2^3 + 0</em>2^2 + 1<em>2^1 + 1</em>2^0 = 8 + 0 + 2 + 1 \]</p>
+<p>\[ 11 = (1011)_2 = 1*2^3 + 0*2^2 + 1*2^1 + 1*2^0 = 8 + 0 + 2 + 1 \]</p>
 <p>We can use the same reasoning to represent a sequence as a finite union of ranges. Consider the sequence of natural numbers from 2 to 13. It can be represented in the following way:</p>
 <p>\[ [2 &hellip; 12] = [2 &hellip; 9] \cup [10 &hellip; 11] \cup [12 &hellip; 12] \]</p>
 <p>\([2 &hellip; 12]\) has \(11\) elements and we broke it down to ranges of \(8\), \(2\) and \(1\) elements (all powers of 2) respectively. We can also observe that such union can consist of <strong>at most</strong> \(log_2N\) ranges where \(N\) is the length of the original sequence.</p>
@@ -559,7 +559,7 @@ right = { 4, 7, 6, 3 }
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-12 07:57:19.641683 &#43;0200 EET m=&#43;0.176816194">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-13 08:11:20.418006 &#43;0200 EET m=&#43;0.116382240">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>

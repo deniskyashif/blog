@@ -169,8 +169,9 @@ if (!doNotTrack) {
 RESPONSE: [{ employeeId: 1, name: 'Montgomery Burns', reportsTo: null, hasSubordinates: true }]
 </code></pre><p>thus retrieving and populating the widget with the top-level records, namely the ones the <code>parentId</code> of which is null or not defined. After that when a record is expanded and its <code>hasChildren</code> property is ```true`` the data source will perform an API call but this time by also providing an additional id query parameter, e.g.</p>
 <pre><code>GET 'api/employees?id=1'
-RESPONSE: [{ employeeId: 2, name: &quot;Homer Simpson&quot;, reportsTo: 1, hasSubordinates: false },
-           { employeeId: 3, name: &quot;Lenford Leonard&quot;, reportsTo: 1, hasSubordinates: false }]
+RESPONSE: [
+    { employeeId: 2, name: &quot;Homer Simpson&quot;, reportsTo: 1, hasSubordinates: false },
+    { employeeId: 3, name: &quot;Lenford Leonard&quot;, reportsTo: 1, hasSubordinates: false }]
 </code></pre><p>In this case the endpoint should return only the descendands of the record with id of 1. Once they are loaded, the DataSource caches them in memory and does not send a request for the same record. If the default url format is not suitable to the remote service, we can use the <a href="http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-transport.parameterMap">transport.parameterMap</a> to convert it.
 You can find the complete example <a href="https://jsfiddle.net/8xwhv0Le/1/">here</a>.</p>
 
@@ -247,7 +248,7 @@ You can find the complete example <a href="https://jsfiddle.net/8xwhv0Le/1/">her
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-12 07:57:19.72562 &#43;0200 EET m=&#43;0.260764313">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-13 08:11:20.496221 &#43;0200 EET m=&#43;0.194599454">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
