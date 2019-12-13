@@ -118,8 +118,9 @@ thus retrieving and populating the widget with the top-level records, namely the
 
 ```
 GET 'api/employees?id=1'
-RESPONSE: [{ employeeId: 2, name: "Homer Simpson", reportsTo: 1, hasSubordinates: false },
-           { employeeId: 3, name: "Lenford Leonard", reportsTo: 1, hasSubordinates: false }]
+RESPONSE: [
+    { employeeId: 2, name: "Homer Simpson", reportsTo: 1, hasSubordinates: false },
+    { employeeId: 3, name: "Lenford Leonard", reportsTo: 1, hasSubordinates: false }]
 ```
 
 In this case the endpoint should return only the descendands of the record with id of 1. Once they are loaded, the DataSource caches them in memory and does not send a request for the same record. If the default url format is not suitable to the remote service, we can use the [transport.parameterMap](http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-transport.parameterMap) to convert it.

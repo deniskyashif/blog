@@ -47,13 +47,13 @@ The file is located in ```C:\Program Files (x86)\Progress\Telerik UI for ASP.NET
  
 ### Include the Kendo Namespace globally to the Razor Templates
 
-Add ```<add namespace="Kendo.Mvc.UI" />`` to Views/Web.config
+Add `<add namespace="Kendo.Mvc.UI" />` to Views/Web.config
 
 ### Include Kendo UI to your bundles
 
 Bundling is a feature in ASP.NET 4.5 and above that makes it easy to combine or bundle multiple files into a single file. We can create CSS, JavaScript and other bundles. Fewer files means fewer HTTP requests and that can improve first page load performance. The framework provides an API which allows us to easily manage our front-end assets from a single place. Check out this [article](https://docs.microsoft.com/en-us/aspnet/mvc/overview/performance/bundling-and-minification) for more information about bundling and minification.
 
-First, we should add Kendo UI source files and assets to our project. We do not need everything that is provided in the source folder. As a best practice I'd recommend creating separate folders (named ```kendo/```) inside ```Scripts/`` and ```Content/``` folders in your project.  
+First, we should add Kendo UI source files and assets to our project. We do not need everything that is provided in the source folder. As a best practice I'd recommend creating separate folders (named `kendo/`) inside `Scripts/` and `Content/` folders in your project.  
 
 
 From ```/Telerik UI For ASP.NET MVC <VERSION>/js``` we copy to ```/Scripts/kendo/```

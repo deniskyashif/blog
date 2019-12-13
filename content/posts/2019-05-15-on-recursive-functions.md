@@ -13,7 +13,7 @@ editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-0
 
 In this article, we'll explore one of the most fascinating concepts in computer science, namely the **Y combinator**. It can simulate recursion in a language that doesn't support it.  
 
-We're going to use the _Factorial_ function as an example. _Factorial_ gives us the product of an integer and all the integers below it. For example \\(4! = 4*3*2*1 = 24\\). In JavaScript, we can implement it as follows:
+We're going to use the _Factorial_ function as an example. _Factorial_ gives us the product of an integer and all the integers below it. For example \\(4! = 4\*3\*2\*1 = 24\\). In JavaScript, we can implement it as follows:
 
 ```js
 const fact = n => {

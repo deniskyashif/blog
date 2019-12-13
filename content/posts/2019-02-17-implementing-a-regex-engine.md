@@ -287,7 +287,7 @@ The automation in [Fig. 5.1](#fig5.1) recognizes either the string **"aba"** or 
 
 For the automation on [Fig 5.1](fig#5.1) we ended up going through all of the possible two paths. This doesn't seem like a big deal but in a more complex scenario, there might be considerable performance implications.
 
-Given an NFA with _n_ states, from each of its states, it can transition to at most _n_ possible states. This means there might be a maximum \\(2^n\\) paths, thus in the worst case this algorithm will end up going through all of these paths until it finds a match (or not). Needless to say, _O(\\(2^n\\))_ is not scalable because for a string of 10 characters to check whether it's matched or not we might end up doing 1024 operations. We should certainly do better than that.
+Given an NFA with _n_ states, from each of its states, it can transition to at most _n_ possible states. This means there might be a maximum \\(2^n\\) paths, thus in the worst case this algorithm will end up going through all of these paths until it finds a match (or not). Needless to say, O(\\(2^n\\)) is not scalable because for a string of 10 characters to check whether it's matched or not we might end up doing 1024 operations. We should certainly do better than that.
 
 ### Being in multiple states at once
 We can represent an NFA to be at multiple states at once as described in Thompson's paper. This approach is more complex but produces significantly better performance.
@@ -345,7 +345,7 @@ function search(nfa, word) {
 
 The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on [Fig 5.1](#fig5.1) the start state \\(q_0\\) is an &epsilon;-transition state, so we follow the transitions recursively until reaching the symbol transition states \\(q_1\\) and \\(q_5\\) which become our initial set of states.
 
-Given a string of length _n_, on each iteration, this algorithm keeps two lists of states with a length of approximately _n_. This gives us a time complexity of _\\(O(n^2)\\)_ which significantly outperforms the recursive backtracking approach.
+Given a string of length _n_, on each iteration, this algorithm keeps two lists of states with a length of approximately _n_. This gives us a time complexity of \\(O(n^2)\\) which significantly outperforms the recursive backtracking approach.
 
 ## Putting it all together
 
@@ -370,7 +370,7 @@ We defined the building blocks of the regular expressions and learned how by app
 
 The complete code reference for this article is available on [GitHub](https://github.com/deniskyashif/regexjs/).
 
-<u>**Update:**</u> You can also check out the article on ["Syntax Directed Translation"](/translation-using-syntactic-rules#parsing-regular-expressions) which presents a different approach to compiling. At the end of the article, you can find an example of converting a regex to an NFA by creating a **parse tree**.  [Here](https://github.com/deniskyashif/regexjs/commit/c3fabedea1ff53b0a1b12e8647df95e81aea739f#diff-48e611c3706c9fdff05b92dfc5b98cd9L127) is the implementation of the alternative compiler.
+<u><b>Update:</b></u> You can also check out the article on ["Syntax Directed Translation"](/translation-using-syntactic-rules#parsing-regular-expressions) which presents a different approach to compiling. At the end of the article, you can find an example of converting a regex to an NFA by creating a **parse tree**.  [Here](https://github.com/deniskyashif/regexjs/commit/c3fabedea1ff53b0a1b12e8647df95e81aea739f#diff-48e611c3706c9fdff05b92dfc5b98cd9L127) is the implementation of the alternative compiler.
 
 ## References & Further Reading
 * Hopcroft, Motwani, Ullman (2001) _Introduction to Automata Theory, Languages, and Computation_ - Chapter 3: Regular Expressions and Languages

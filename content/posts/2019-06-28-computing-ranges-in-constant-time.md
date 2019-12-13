@@ -32,7 +32,7 @@ The main idea is to precompute all of the answers for the range queries and stor
 
 We know that we can represent any natural number as a unique decreasing sum of powers of two (yes we've just described binary). For example:
 
-\\[ 11 = (1011)_2 = 1*2^3 + 0*2^2 + 1*2^1 + 1*2^0 = 8 + 0 + 2 + 1 \\]
+\\[ 11 = (1011)_2 = 1\*2^3 + 0\*2^2 + 1\*2^1 + 1\*2^0 = 8 + 0 + 2 + 1 \\]
 
 We can use the same reasoning to represent a sequence as a finite union of ranges. Consider the sequence of natural numbers from 2 to 13. It can be represented in the following way:
 
