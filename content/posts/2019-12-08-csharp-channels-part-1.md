@@ -364,7 +364,6 @@ _Check out [part 2](/csharp-channels-part-2) where we discuss some cancellation 
 ## References & Further Reading
 
 - [GitHub Repo](https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
-- [Exploring System.Threading.Channels](https://ndportmann.com/system-threading-channels/) - goes into detail about the Channels' API and does a performance benchmark
-- [C# Job Queues with Reactive Extensions and Channels](https://michaelscodingspot.com/c-job-queues-with-reactive-extensions-and-channels/) - a comprehensive series of articles comparing several job queue implementations by Michael Shpilt
+- [An Introduction to System.Threading.Channels](https://devblogs.microsoft.com/dotnet/an-introduction-to-system-threading-channels/)
 - [Concurrency in C# Cookbook](https://stephencleary.com/book/) by Stephen Cleary - my highly recommended go-to reference for concurrent C#
 - The graphics are implemented using [sketch.io](https://sketch.io/sketchpad/)
