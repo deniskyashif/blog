@@ -12,10 +12,10 @@ editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-1
 tags: ["software-design", "csharp", "concurrency", "dotnet"]
 ---
 
-Recently, I watched Rob Pike's [talk on "Go Concurrency Patterns"](https://www.youtube.com/watch?v=f6kdp27TYZs) where he explains Go's approach to concurrency and demonstrates some of its features for building concurrent programs. I found its simplicity and ease of use fascinating and went on to implement some of these techniques in C#.
-
 In this article, we'll explore the synchronization data structures in .NET's `System.Threading.Channels` namespace and learn how to use them for designing concurrent workflows. It would be helpful to have some basic understanding of .NET's [Task Parallel Library
-(TPL)](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/task-parallel-library-tpl), but it's in no means necessary. Let's start by introducing some definitions.
+(TPL)](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/task-parallel-library-tpl), but it's in no means necessary. 
+
+Recently, I watched Rob Pike's [talk on "Go Concurrency Patterns"](https://www.youtube.com/watch?v=f6kdp27TYZs) where he explains Go's approach to concurrency and demonstrates some of its features for building concurrent programs. I found its simplicity and ease of use fascinating and went on to implement some of these techniques in C#. Let's start by introducing some definitions.
 
 ## Concurrency
 
