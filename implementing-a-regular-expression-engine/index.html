@@ -237,7 +237,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <li>Apply <em>concatenation</em> to \(N((a \vert b)*)\) with \(N(c)\). The construction of \(N(c)\) is analogous to steps 1) and 2).</li>
 </ol>
 <p><img id="fig4.5" src="/images/posts/2019-02-20-regex/ex-concat-nabc.png" /></p>
-<p class="text-center"><small>Figure 4.5: N((a|b)*c): NFA for the expression of (a|b)*c</small></p>
+<p class="text-center"><small>Figure 4.5: N((a&#8739;b)*c): NFA for the expression of (a&#8739;b)*c</small></p>
 <h3 id="parsing-a-regular-expression">Parsing a regular expression</h3>
 <p>First, we need to preprocess the string by adding an explicit concatenation operator. We're going to use the dot (.) symbol, as described in the paper. So for example, the regular expression \(abc\) would be converted to \(a \cdot b \cdot c\) and \((a \vert b)c\) wound turn into \((a \vert b)\cdot c\) You can check the implementation <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1">here</a>.</p>
 <p>The modern implementations use the dot character as &ldquo;any&rdquo; metacharacter. They would also probably build the NFA during parsing instead of creating a postfix expression still doing it this way would let us understand the process more clearly.</p>
@@ -576,7 +576,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-16 20:34:27.949602 &#43;0200 EET m=&#43;0.197382853">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-16 20:41:04.613587 &#43;0200 EET m=&#43;0.190545551">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
