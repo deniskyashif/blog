@@ -212,7 +212,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p>We introduce \(i\) as start and \(f\) as an accepting state. We add ε-transitions: from \(i\) to \(f\), from \(i\) to the start state of \(N(S)\), then we connect the accepting state of \(N(S)\) with \(f\) and finally add a transition from the end state of \(N(S)\) to its start state. We mark the end state of \(N(S)\) as intermediate.</p>
 <p>The <em>closure (*)</em> operator has the highest precedence, followed by concatenation \((\cdot)\). The <em>union</em> \((\vert)\) is the operation with the lowest precedence. Modern regex implementations have additional operators like <em>+</em> (one or more), <em>?</em> (zero or one), their implementation, however, is analogous to the ones above and we'll skip them for the sake of brevity.</p>
 <h4 id="example">Example</h4>
-<p>Let's go through an example case. We want to construct an NFA for *<em>(a|b)<em>c</em></em>. The language of this expression contains all the strings that have zero or more <strong>&lsquo;a&rsquo;</strong> s or <strong>&lsquo;b&rsquo;</strong> s and end with <strong>&lsquo;c&rsquo;</strong>. Just like in arithmetic expressions, we use brackets to explicitly specify the operator precedence. We break the expression into its atomic subexpressions and build our way up. By the order of precedence we:</p>
+<p>Let's go through an example case. We want to construct an NFA for <strong>(a∣b)*c</strong>. The language of this expression contains all the strings that have zero or more <strong>&lsquo;a&rsquo;</strong> s or <strong>&lsquo;b&rsquo;</strong> s and end with <strong>&lsquo;c&rsquo;</strong>. Just like in arithmetic expressions, we use brackets to explicitly specify the operator precedence. We break the expression into its atomic subexpressions and build our way up. By the order of precedence we:</p>
 <ol>
 <li>Construct \(N(a)\): NFA for <strong>&lsquo;a&rsquo;</strong>.</li>
 </ol>
@@ -227,12 +227,12 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <li>Apply <em>union</em> on \(N(a)\) and \(N(b)\) → \(N(a \vert b)\)</li>
 </ol>
 <p><img id="fig4.3" src="/images/posts/2019-02-20-regex/ex-union-na-nb.png" /></p>
-<p class="text-center"><small>Figure 4.3: N(a|b): Union of N(a) and N(b)</small></p>
+<p class="text-center"><small>Figure 4.3: N(a&#8739;b): Union of N(a) and N(b)</small></p>
 <ol start="4">
 <li>Apply <em>closure</em> on \(N(a|b)\) → \(N((a \vert b)\ast)\)</li>
 </ol>
 <p><img id="fig4.4" src="/images/posts/2019-02-20-regex/ex-closure-nab.png" /></p>
-<p class="text-center"><small>Figure 4.4: N((a|b)*): Closure of N(a|b)</small></p>
+<p class="text-center"><small>Figure 4.4: N((a&#8739;b)*): Closure of N(a&#8739;b)</small></p>
 <ol start="5">
 <li>Apply <em>concatenation</em> to \(N((a \vert b)*)\) with \(N(c)\). The construction of \(N(c)\) is analogous to steps 1) and 2).</li>
 </ol>
@@ -268,7 +268,6 @@ For instance, in the arithmetic algebra we start with constants such as integers
     
     <span style="color:#a2f;font-weight:bold">return</span> { start, end };
 }
-
 
 <span style="color:#a2f;font-weight:bold">function</span> fromSymbol(symbol) {
     <span style="color:#a2f;font-weight:bold">const</span> start <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">false</span>);
@@ -343,7 +342,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 	<span style="color:#a2f;font-weight:bold">return</span> stack.pop();
 }
 </code></pre></div><h4 id="example1">Example</h4>
-<p>Let's simulate the algorithm on *<em>(a∣b)<em>c</em></em></p>
+<p>Let's simulate the algorithm on <strong>(a∣b)*c</strong></p>
 <ol>
 <li>Insert explicit concatenation operator (.): <strong>(a∣b)*c</strong> → <strong>(a∣b)*.c</strong></li>
 <li>Convert to postfix notation: <strong>(a∣b)*.c</strong> → <strong>ab∣*c.</strong></li>
@@ -577,7 +576,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-16 20:22:56.302139 &#43;0200 EET m=&#43;0.188806717">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-16 20:34:27.949602 &#43;0200 EET m=&#43;0.197382853">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
