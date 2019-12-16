@@ -129,7 +129,7 @@ if (!doNotTrack) {
 <h3 id="deterministic-finite-automata-dfa">Deterministic Finite Automata (DFA)</h3>
 <p><img id="fig1.1" src="/images/posts/2019-02-20-regex/dfa.png" /></p>
 <p class="text-center"><small>Figure 1.1: Deterministic Finite Automation (DFA)</small></p>
-<p>In <a href="#fig1.1">Fig 1.1</a> we have automation with four states; \(q_0\) is called the <strong>start state</strong> and \(q_3\) is the <strong>end (accepting)</strong> state. It recognizes all the strings that start with <strong>&ldquo;ab&rdquo;</strong>, followed by an arbitrary number of **&lsquo;b&rsquo;**s and ending with an <strong>&lsquo;a&rsquo;</strong>.</p>
+<p>In <a href="#fig1.1">Fig 1.1</a> we have automation with four states; \(q_0\) is called the <strong>start state</strong> and \(q_3\) is the <strong>end (accepting)</strong> state. It recognizes all the strings that start with <strong>&ldquo;ab&rdquo;</strong>, followed by an arbitrary number of <strong>&lsquo;b&rsquo;</strong> s and ending with an <strong>&lsquo;a&rsquo;</strong>.</p>
 <p>If we process the string <strong>&ldquo;abba&rdquo;</strong> through the machine on <a href="#fig1.1">Fig 1.1</a> we'll go through the following states:</p>
 <table>
 <thead>
@@ -195,7 +195,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p>On <a href="#fig2.1">Fig 2.1</a> we have an automation that recognizes the empty string ε. \(i\) is the start state and \(f\) is the accepting state.</p>
 <p><img id="fig2.2" src="/images/posts/2019-02-20-regex/symbol-nfa.png" /></p>
 <p class="text-center"><small>Figure 2.2: Finite automation for the expression <em>a</em></small></p>
-<p>On <a href="#fig2.2">Fig 2.2</a> we construct an automation for the symbol <strong>&lsquo;a&rsquo;</strong>. We treat each symbol of the input alphabet as a regular expression by itself. The language of this automation consists only of the string <strong>&ldquo;a&rdquo;</strong>.</p>
+<p>On <a href="#fig2.2">Fig 2.2</a> we construct an automation for the symbol <strong>&lsquo;a&rsquo;</strong>. We treat each symbol of the input alphabet as a regular expression by itself. The language of this automation consists only of the word <strong>&ldquo;a&rdquo;</strong>.</p>
 <h4 id="induction">Induction</h4>
 <p>Suppose we have the two regular expressions \(S\) and \(T\) and their NFAs \(N(S)\) and \(N(T)\) respectively:</p>
 <p>a) <strong>Union</strong>: \(R = S \vert T \)</p>
@@ -212,34 +212,34 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p>We introduce \(i\) as start and \(f\) as an accepting state. We add ε-transitions: from \(i\) to \(f\), from \(i\) to the start state of \(N(S)\), then we connect the accepting state of \(N(S)\) with \(f\) and finally add a transition from the end state of \(N(S)\) to its start state. We mark the end state of \(N(S)\) as intermediate.</p>
 <p>The <em>closure (*)</em> operator has the highest precedence, followed by concatenation \((\cdot)\). The <em>union</em> \((\vert)\) is the operation with the lowest precedence. Modern regex implementations have additional operators like <em>+</em> (one or more), <em>?</em> (zero or one), their implementation, however, is analogous to the ones above and we'll skip them for the sake of brevity.</p>
 <h4 id="example">Example</h4>
-<p>Let's go through an example case. We want to construct an NFA for *<em>(a|b)<em>c</em></em>. The language of this expression contains all the strings that have zero or more **&lsquo;a&rsquo;**s or **&lsquo;b&rsquo;**s and end with <strong>&lsquo;c&rsquo;</strong>. Just like in arithmetic expressions, we use brackets to explicitly specify the operator precedence. We break the expression into its atomic subexpressions and build our way up. By the order of precedence we:</p>
+<p>Let's go through an example case. We want to construct an NFA for *<em>(a|b)<em>c</em></em>. The language of this expression contains all the strings that have zero or more <strong>&lsquo;a&rsquo;</strong> s or <strong>&lsquo;b&rsquo;</strong> s and end with <strong>&lsquo;c&rsquo;</strong>. Just like in arithmetic expressions, we use brackets to explicitly specify the operator precedence. We break the expression into its atomic subexpressions and build our way up. By the order of precedence we:</p>
 <ol>
 <li>Construct \(N(a)\): NFA for <strong>&lsquo;a&rsquo;</strong>.</li>
 </ol>
 <p><img id="fig4.1" src="/images/posts/2019-02-20-regex/ex-nfa-a.png" /></p>
-<p class="text-center"><small>Figure 4.1: \\(N(a)\\): NFA for **'a'**.</small></p>
+<p class="text-center"><small>Figure 4.1: N(a): NFA for 'a'</small></p>
 <ol start="2">
 <li>Construct \(N(b)\): a NFA for <strong>&lsquo;b&rsquo;</strong>.</li>
 </ol>
 <p><img id="fig4.2" src="/images/posts/2019-02-20-regex/ex-nfa-b.png" /></p>
-<p class="text-center"><small>Figure 4.2: \\(N(b)\\): NFA for **'b'**.</small></p>
+<p class="text-center"><small>Figure 4.2: N(b): NFA for 'b'</small></p>
 <ol start="3">
 <li>Apply <em>union</em> on \(N(a)\) and \(N(b)\) → \(N(a \vert b)\)</li>
 </ol>
 <p><img id="fig4.3" src="/images/posts/2019-02-20-regex/ex-union-na-nb.png" /></p>
-<p class="text-center"><small>Figure 4.3: \\(N(a \vert b)\\): Union of \\(N(a)\\) and \\(N(b)\\).</small></p>
+<p class="text-center"><small>Figure 4.3: N(a|b): Union of N(a) and N(b)</small></p>
 <ol start="4">
-<li>Apply <em>closure</em> on \(N(a \vert b)\) → \(N((a \vert b)\ast)\)</li>
+<li>Apply <em>closure</em> on \(N(a|b)\) → \(N((a \vert b)\ast)\)</li>
 </ol>
 <p><img id="fig4.4" src="/images/posts/2019-02-20-regex/ex-closure-nab.png" /></p>
-<p class="text-center"><small>Figure 4.4: \\(N((a \vert b)*)\\): Closure of \\(N(a \vert b)\\).</small></p>
+<p class="text-center"><small>Figure 4.4: N((a|b)*): Closure of N(a|b)</small></p>
 <ol start="5">
 <li>Apply <em>concatenation</em> to \(N((a \vert b)*)\) with \(N(c)\). The construction of \(N(c)\) is analogous to steps 1) and 2).</li>
 </ol>
 <p><img id="fig4.5" src="/images/posts/2019-02-20-regex/ex-concat-nabc.png" /></p>
-<p class="text-center"><small>Figure 4.5: \\(N((a \vert b)\ast c)\\): NFA for the expression of \\((a \vert b) \ast c\\).</small></p>
+<p class="text-center"><small>Figure 4.5: N((a|b)*c): NFA for the expression of (a|b)*c</small></p>
 <h3 id="parsing-a-regular-expression">Parsing a regular expression</h3>
-<p>First, we need to preprocess the string by adding an explicit concatenation operator. We're going to use the dot (.) symbol, as described in the paper. So for example, the regular expression \(abc\) would be converted to \(a \cdot b \cdot c\) and \((a \vert b)c\) wound turn into \((a \vert b)\cdot c\) You can find an implementation <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1">here</a>.</p>
+<p>First, we need to preprocess the string by adding an explicit concatenation operator. We're going to use the dot (.) symbol, as described in the paper. So for example, the regular expression \(abc\) would be converted to \(a \cdot b \cdot c\) and \((a \vert b)c\) wound turn into \((a \vert b)\cdot c\) You can check the implementation <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1">here</a>.</p>
 <p>The modern implementations use the dot character as &ldquo;any&rdquo; metacharacter. They would also probably build the NFA during parsing instead of creating a postfix expression still doing it this way would let us understand the process more clearly.</p>
 <p>There are several ways of parsing a regular expression. We'll follow through Thompson's original paper and that is by converting our expression from <strong>infix</strong> into <strong>postfix</strong> notation. This way we can easily apply the operators in the defined order of precedence.</p>
 <p>We won't delve into the technical details of this algorithm. You can check my implementation in less than 40 lines of javascript <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L36">here</a> and a neat explanation with more examples <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">here</a>.</p>
@@ -260,7 +260,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <span style="color:#a2f;font-weight:bold">function</span> addTransition(from, to, symbol) {
     from.transition[symbol] <span style="color:#666">=</span> to;
 }
-</code></pre></div><p>From our <strong>basis</strong>, we have two types of NFA's that would serve as our building blocks - an ε-NFA and a symbol-NFA. This is how we implement them:</p>
+</code></pre></div><p>From our <strong>basis</strong>, we have two types of NFA's that would serve as our building blocks: an ε-NFA and a symbol-NFA. This is how we implement them:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> fromEpsilon() {
     <span style="color:#a2f;font-weight:bold">const</span> start <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">false</span>);
     <span style="color:#a2f;font-weight:bold">const</span> end <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">true</span>);
@@ -345,8 +345,8 @@ For instance, in the arithmetic algebra we start with constants such as integers
 </code></pre></div><h4 id="example1">Example</h4>
 <p>Let's simulate the algorithm on *<em>(a∣b)<em>c</em></em></p>
 <ol>
-<li>Insert explicit concatenation operator (.): *<em>(a∣b)<em>c</em></em> → <strong>(a∣b)*.c</strong></li>
-<li>Convert to postfix notation: <strong>(a∣b)*.c</strong> → *<em>ab∣<em>c.</em></em></li>
+<li>Insert explicit concatenation operator (.): <strong>(a∣b)*c</strong> → <strong>(a∣b)*.c</strong></li>
+<li>Convert to postfix notation: <strong>(a∣b)*.c</strong> → <strong>ab∣*c.</strong></li>
 <li>Construct an NFA:</li>
 </ol>
 <table>
@@ -440,7 +440,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 </table>
 <p>We check if any state in the set of states that we end up with is an accepting state and if so - the string is recognized by the NFA. In the above case, the final set contains only \(q_9\) which is an accepting state.</p>
 <h4 id="dealing-with-epsilontransitions">Dealing with ε-transitions</h4>
-<p>As mentioned above, Thompson's construction has two types of states. Ones with ε-transitions and ones with a transition on a symbol. So each time we end up in a state with ε-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is obvious on step 3 from the example above - on \(q_7\) we read <strong>&lsquo;b&rsquo;</strong> and proceed to \(q_8\) which is an epsilon transition state. We follow the ε-transition and reach \(q_9\) which has no ε-transitions so we add it to the list of next states. This is a recursive procedure.</p>
+<p>As mentioned above, Thompson's construction has two types of states. Ones with ε-transitions and ones with a transition on a symbol. So each time we end up in a state with ε-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is obvious on step 3 from the example above, on \(q_7\) we read <strong>&lsquo;b&rsquo;</strong> and proceed to \(q_8\) which is an epsilon transition state. We follow the ε-transition and reach \(q_9\) which has no ε-transitions so we add it to the list of next states. This is a recursive procedure.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> addNextState(state, nextStates, visited) {
     <span style="color:#a2f;font-weight:bold">if</span> (state.epsilonTransitions.length) {
         <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#a2f;font-weight:bold">const</span> st <span style="color:#a2f;font-weight:bold">of</span> state.epsilonTransitions) {
@@ -577,7 +577,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-16 11:10:13.619281 &#43;0200 EET m=&#43;0.247359394">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-16 20:22:56.302139 &#43;0200 EET m=&#43;0.188806717">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
