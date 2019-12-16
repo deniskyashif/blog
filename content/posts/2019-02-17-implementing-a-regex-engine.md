@@ -21,7 +21,7 @@ In informal terms **finite automation** (or **finite state machine**) is an abst
 <img id="fig1.1" src="/images/posts/2019-02-20-regex/dfa.png" />
 <p class="text-center"><small>Figure 1.1: Deterministic Finite Automation (DFA)</small></p>
 
-In [Fig 1.1](#fig1.1) we have automation with four states; \\(q_0\\) is called the **start state** and \\(q_3\\) is the **end (accepting)** state. It recognizes all the strings that start with **"ab"**, followed by an arbitrary number of **'b'**s and ending with an **'a'**.
+In [Fig 1.1](#fig1.1) we have automation with four states; \\(q_0\\) is called the **start state** and \\(q_3\\) is the **end (accepting)** state. It recognizes all the strings that start with **"ab"**, followed by an arbitrary number of **'b'** s and ending with an **'a'**.
 
 If we process the string **"abba"** through the machine on [Fig 1.1](#fig1.1) we'll go through the following states:  
 
@@ -76,7 +76,7 @@ On [Fig 2.1](#fig2.1) we have an automation that recognizes the empty string &ep
 <img id="fig2.2" src="/images/posts/2019-02-20-regex/symbol-nfa.png" />
 <p class="text-center"><small>Figure 2.2: Finite automation for the expression <em>a</em></small></p>
 
-On [Fig 2.2](#fig2.2) we construct an automation for the symbol **'a'**. We treat each symbol of the input alphabet as a regular expression by itself. The language of this automation consists only of the string **"a"**.
+On [Fig 2.2](#fig2.2) we construct an automation for the symbol **'a'**. We treat each symbol of the input alphabet as a regular expression by itself. The language of this automation consists only of the word **"a"**.
 
 #### Induction
 Suppose we have the two regular expressions \\(S\\) and \\(T\\) and their NFAs \\(N(S)\\) and \\(N(T)\\) respectively:
@@ -105,35 +105,35 @@ We introduce \\(i\\) as start and \\(f\\) as an accepting state. We add &epsilon
 The _closure (*)_ operator has the highest precedence, followed by concatenation \\((\cdot)\\). The _union_ \\((\vert)\\) is the operation with the lowest precedence. Modern regex implementations have additional operators like _&plus;_ (one or more), _?_ (zero or one), their implementation, however, is analogous to the ones above and we'll skip them for the sake of brevity.
 
 #### Example
-Let's go through an example case. We want to construct an NFA for **(a|b)*c**. The language of this expression contains all the strings that have zero or more **'a'**s or **'b'**s and end with **'c'**. Just like in arithmetic expressions, we use brackets to explicitly specify the operator precedence. We break the expression into its atomic subexpressions and build our way up. By the order of precedence we:
+Let's go through an example case. We want to construct an NFA for **(a&#8739;b)\*c**. The language of this expression contains all the strings that have zero or more **'a'** s or **'b'** s and end with **'c'**. Just like in arithmetic expressions, we use brackets to explicitly specify the operator precedence. We break the expression into its atomic subexpressions and build our way up. By the order of precedence we:
 
 1) Construct \\(N(a)\\): NFA for **'a'**.
 
 <img id="fig4.1" src="/images/posts/2019-02-20-regex/ex-nfa-a.png" />
-<p class="text-center"><small>Figure 4.1: \\(N(a)\\): NFA for **'a'**.</small></p>
+<p class="text-center"><small>Figure 4.1: N(a): NFA for 'a'</small></p>
 
 2) Construct \\(N(b)\\): a NFA for **'b'**.
 
 <img id="fig4.2" src="/images/posts/2019-02-20-regex/ex-nfa-b.png" />
-<p class="text-center"><small>Figure 4.2: \\(N(b)\\): NFA for **'b'**.</small></p>
+<p class="text-center"><small>Figure 4.2: N(b): NFA for 'b'</small></p>
 
 3) Apply _union_ on \\(N(a)\\) and \\(N(b)\\) &rarr; \\(N(a \vert b)\\)
 
 <img id="fig4.3" src="/images/posts/2019-02-20-regex/ex-union-na-nb.png" />
-<p class="text-center"><small>Figure 4.3: \\(N(a \vert b)\\): Union of \\(N(a)\\) and \\(N(b)\\).</small></p>
+<p class="text-center"><small>Figure 4.3: N(a&#8739;b): Union of N(a) and N(b)</small></p>
 
-4) Apply _closure_ on \\(N(a \vert b)\\) &rarr; \\(N((a \vert b)\ast)\\)
+4) Apply _closure_ on \\(N(a|b)\\) &rarr; \\(N((a \vert b)\ast)\\)
 
 <img id="fig4.4" src="/images/posts/2019-02-20-regex/ex-closure-nab.png" />
-<p class="text-center"><small>Figure 4.4: \\(N((a \vert b)*)\\): Closure of \\(N(a \vert b)\\).</small></p>
+<p class="text-center"><small>Figure 4.4: N((a&#8739;b)*): Closure of N(a&#8739;b)</small></p>
 
 5) Apply _concatenation_ to \\(N((a \vert b)*)\\) with \\(N\(c\)\\). The construction of \\(N\(c\)\\) is analogous to steps 1) and 2).
 
 <img id="fig4.5" src="/images/posts/2019-02-20-regex/ex-concat-nabc.png" />
-<p class="text-center"><small>Figure 4.5: \\(N((a \vert b)\ast c)\\): NFA for the expression of \\((a \vert b) \ast c\\).</small></p>
+<p class="text-center"><small>Figure 4.5: N((a&#8739;b)*c): NFA for the expression of (a&#8739;b)*c</small></p>
 
 ### Parsing a regular expression
-First, we need to preprocess the string by adding an explicit concatenation operator. We're going to use the dot (.) symbol, as described in the paper. So for example, the regular expression \\(abc\\) would be converted to \\(a \cdot b \cdot c\\) and \\((a \vert b)c\\) wound turn into \\((a \vert b)\cdot c\\) You can find an implementation [here](https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1).
+First, we need to preprocess the string by adding an explicit concatenation operator. We're going to use the dot (.) symbol, as described in the paper. So for example, the regular expression \\(abc\\) would be converted to \\(a \cdot b \cdot c\\) and \\((a \vert b)c\\) wound turn into \\((a \vert b)\cdot c\\) You can check the implementation [here](https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1).
 
 The modern implementations use the dot character as "any" metacharacter. They would also probably build the NFA during parsing instead of creating a postfix expression still doing it this way would let us understand the process more clearly.
 
@@ -166,7 +166,7 @@ function addTransition(from, to, symbol) {
 }
 ```
 
-From our **basis**, we have two types of NFA's that would serve as our building blocks - an &epsilon;-NFA and a symbol-NFA. This is how we implement them:
+From our **basis**, we have two types of NFA's that would serve as our building blocks: an &epsilon;-NFA and a symbol-NFA. This is how we implement them:
 
 ```javascript
 function fromEpsilon() {
@@ -176,7 +176,6 @@ function fromEpsilon() {
     
     return { start, end };
 }
-
 
 function fromSymbol(symbol) {
     const start = createState(false);
@@ -260,10 +259,10 @@ function toNFA(postfixExp) {
 ```
 
 #### Example
-Let's simulate the algorithm on **(a&#8739;b)*c**
+Let's simulate the algorithm on **(a&#8739;b)\*c**
 
-1) Insert explicit concatenation operator (.): **(a&#8739;b)*c** &rarr; **(a&#8739;b)*.c**  
-2) Convert to postfix notation: **(a&#8739;b)*.c** &rarr; **ab&#8739;*c.**  
+1) Insert explicit concatenation operator (.): **(a&#8739;b)\*c** &rarr; **(a&#8739;b)*.c**  
+2) Convert to postfix notation: **(a&#8739;b)*.c** &rarr; **ab&#8739;\*c.**   
 3) Construct an NFA:
 
 | Step | &nbsp;&nbsp;&nbsp;&nbsp;Scan&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;Operations                                             | &nbsp;Stack&nbsp;          |
@@ -303,7 +302,7 @@ When reading a symbol from the input string, instead of transitioning one state 
 We check if any state in the set of states that we end up with is an accepting state and if so - the string is recognized by the NFA. In the above case, the final set contains only \\(q_9\\) which is an accepting state.
 
 #### Dealing with &epsilon;-transitions
-As mentioned above, Thompson's construction has two types of states. Ones with &epsilon;-transitions and ones with a transition on a symbol. So each time we end up in a state with &epsilon;-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is obvious on step 3 from the example above - on \\(q_7\\) we read **'b'** and proceed to \\(q_8\\) which is an epsilon transition state. We follow the &epsilon;-transition and reach \\(q_9\\) which has no &epsilon;-transitions so we add it to the list of next states. This is a recursive procedure.
+As mentioned above, Thompson's construction has two types of states. Ones with &epsilon;-transitions and ones with a transition on a symbol. So each time we end up in a state with &epsilon;-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is obvious on step 3 from the example above, on \\(q_7\\) we read **'b'** and proceed to \\(q_8\\) which is an epsilon transition state. We follow the &epsilon;-transition and reach \\(q_9\\) which has no &epsilon;-transitions so we add it to the list of next states. This is a recursive procedure.
 
 ```javascript
 function addNextState(state, nextStates, visited) {

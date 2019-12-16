@@ -32,7 +32,7 @@ Besides, state machines have an **initial state** (we can pick an arbitrary one 
 
 State machines are simply directed graphs and there're various ways to construct one. We can use an [adjacency matrix](https://en.wikipedia.org/wiki/Adjacency_matrix), or go with an object-oriented approach via [the state pattern](https://en.wikipedia.org/wiki/State_pattern) or encode the state and the transitions in a map structure such as C#'s `Dictionary<TKey, TValue>` where the keys are the states and their values are the sets of transitions from these states.
 
-The recent developments in v. 8 of C# added significant improvements in its pattern matching capabilities and the **switch expressions** in particular  (which provided some inspiration for this article). If you haven't checked them out, I recommend [this article](https://devblogs.microsoft.com/dotnet/do-more-with-patterns-in-c-8-0/) by Mads Torgersen, but long story short - we can now return values from switches, thus using it for conditional assignment.
+The recent developments in version 8 of C# added significant improvements in its pattern matching capabilities and the **switch expressions** in particular (which provided some inspiration for this article). If you haven't checked them out, I recommend [this article](https://devblogs.microsoft.com/dotnet/do-more-with-patterns-in-c-8-0/) by Mads Torgersen, but long story short - we can now return values from switches, thus using it for conditional assignment.
 
 We implement the state machine in Figure 1 as:
 
