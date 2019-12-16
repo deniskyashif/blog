@@ -107,9 +107,9 @@ if (!doNotTrack) {
 
 		
 
-		<p>Recently, I watched Rob Pike's <a href="https://www.youtube.com/watch?v=f6kdp27TYZs">talk on &ldquo;Go Concurrency Patterns&rdquo;</a> where he explains Go's approach to concurrency and demonstrates some of its features for building concurrent programs. I found its simplicity and ease of use fascinating and went on to implement some of these techniques in C#.</p>
-<p>In this article, we'll explore the synchronization data structures in .NET's <code>System.Threading.Channels</code> namespace and learn how to use them for designing concurrent workflows. It would be helpful to have some basic understanding of .NET's <a href="https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/task-parallel-library-tpl">Task Parallel Library
-(TPL)</a>, but it's in no means necessary. Let's start by introducing some definitions.</p>
+		<p>In this article, we'll explore the synchronization data structures in .NET's <code>System.Threading.Channels</code> namespace and learn how to use them for designing concurrent workflows. It would be helpful to have some basic understanding of .NET's <a href="https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/task-parallel-library-tpl">Task Parallel Library
+(TPL)</a>, but it's in no means necessary.</p>
+<p>Recently, I watched Rob Pike's <a href="https://www.youtube.com/watch?v=f6kdp27TYZs">talk on &ldquo;Go Concurrency Patterns&rdquo;</a> where he explains Go's approach to concurrency and demonstrates some of its features for building concurrent programs. I found its simplicity and ease of use fascinating and went on to implement some of these techniques in C#. Let's start by introducing some definitions.</p>
 <h2 id="concurrency">Concurrency</h2>
 <p>The relationship between concurrency and parallelism is commonly misunderstood. In fact, two procedures being concurrent doesn't mean that they'll run in parallel. The following quote by Martin Kleppmann has stood out in my mind when it comes to concurrency:</p>
 <blockquote>
@@ -430,7 +430,7 @@ Reader 0: Joe 9
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-14 11:17:52.364242 &#43;0200 EET m=&#43;0.113206826">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-16 11:10:13.540505 &#43;0200 EET m=&#43;0.168581763">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
