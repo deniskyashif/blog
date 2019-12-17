@@ -165,7 +165,10 @@ Notice that we have created an <strong>unbounded</strong> channel, meaning that 
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#0b0;font-weight:bold">var</span> ch = Channel.CreateBounded&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt;(capacity: <span style="color:#666">1</span><span style="color:#666">0</span>);
 </code></pre></div><p>So when this limit is reached, <code>WriteAsync()</code> won't be able to write, until there's an available slot.</p>
 <h2 id="concurrency-patterns">Concurrency Patterns</h2>
-<p>Now it's time to explore a few concurrent programming techniques for working with channels. This part consists of several examples that are independent of each other. You can also find the interactive version of them on <a href="https://github.com/deniskyashif/trydotnet-channels">GitHub</a>.</p>
+<blockquote>
+<p>Don't communicate by sharing memory, share memory by communicating.</p>
+</blockquote>
+<p>It's time to explore a few concurrent programming techniques for working with channels. This part consists of several examples that are independent of each other. You can also find the interactive version of them on <a href="https://github.com/deniskyashif/trydotnet-channels">GitHub</a>.</p>
 <h3 id="the-generator">The Generator</h3>
 <p>A generator is a method that returns a channel. The one below creates a channel and writes a given number of messages asynchronously from a separate thread.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">static</span> ChannelReader&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt; CreateMessenger(<span style="color:#0b0;font-weight:bold">string</span> msg, <span style="color:#0b0;font-weight:bold">int</span> count)
@@ -339,12 +342,7 @@ Reader 1: Joe 7
 Reader 2: Joe 8
 Reader 0: Joe 9
 </code></pre><h2 id="conclusion">Conclusion</h2>
-<p>In this article, we defined the term concurrency and discussed how it relates to parallelism. We explained why the two terms should not be confused. Then we explored C#&lsquo;s channel data structure and learned how to use it for implementing publish/subscribe workflows. We've seen how to make an efficient use multiple CPUs by distrubuting the reading/writing operations amongst several workers.</p>
-<p>The underlying concept behind the concurrency model, described in this article, can be summarized as:</p>
-<blockquote>
-<p>Don't communicate by sharing memory, share memory by communicating.</p>
-<p>&ndash; Rob Pike &ldquo;Go Concurrency Patterns&rdquo;</p>
-</blockquote>
+<p>In this article, we defined the term concurrency and discussed how it relates to parallelism. We explained why the two terms should not be confused. Then we explored C#&lsquo;s channel data structure and learned how to use it to implement publish/subscribe workflows. We've seen how to make an efficient use multiple CPUs by distrubuting the reading/writing operations amongst several workers.</p>
 <p><em>Check out <a href="/csharp-channels-part-2">part 2</a> where we discuss some cancellation techniques and put what we've learned into practice</em></p>
 <h2 id="references--further-reading">References &amp; Further Reading</h2>
 <ul>
@@ -427,7 +425,7 @@ Reader 0: Joe 9
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-17 10:45:50.365658 &#43;0200 EET m=&#43;0.113281647">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-17 17:37:28.230646 &#43;0200 EET m=&#43;0.110336027">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
