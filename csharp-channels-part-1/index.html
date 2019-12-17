@@ -163,7 +163,7 @@ ch.Writer.Complete();
 </code></pre></div><p>The consumer (reader) waits until there's an available message to read. On the other side, the producer (writer) waits until it's able to send a message, hence, we say that <strong>channels both communicate and synchronize</strong>. Both operations are non-blocking, that is, while we wait, the thread is free to do some other work.<br>
 Notice that we have created an <strong>unbounded</strong> channel, meaning that it accepts as many messages as it can with regards to the available memory. With <strong>bounded</strong> channels, however, we can limit the number of messages that can be processed at a time.</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#0b0;font-weight:bold">var</span> ch = Channel.CreateBounded&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt;(capacity: <span style="color:#666">1</span><span style="color:#666">0</span>);
-</code></pre></div><p>So when this limit is reached, <code>WriteAsync()</code> won't be able to write, until there's an available slot.</p>
+</code></pre></div><p>So when this limit is reached, <code>WriteAsync()</code> won't be able to write, until there's an available slot in the channel's buffer. A slot is freed up when a consumer reads from the channel.</p>
 <h2 id="concurrency-patterns">Concurrency Patterns</h2>
 <blockquote>
 <p>Don't communicate by sharing memory, share memory by communicating.</p>
@@ -425,7 +425,7 @@ Reader 0: Joe 9
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-17 17:37:28.230646 &#43;0200 EET m=&#43;0.110336027">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-17 17:42:41.229455 &#43;0200 EET m=&#43;0.116640885">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
