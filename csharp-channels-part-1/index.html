@@ -290,26 +290,25 @@ We've created the local asynchronous <code>Redirect()</code> function which take
 <p><img src="/images/posts/2019-12-08-csharp-channels-part1/split-sketch.png" width="600" /></p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#a2f;font-weight:bold">static</span> IList&lt;ChannelReader&lt;T&gt;&gt; Split&lt;T&gt;(ChannelReader&lt;T&gt; ch, <span style="color:#0b0;font-weight:bold">int</span> n)
 {
-    <span style="color:#080;font-style:italic">// Initialize the output channels
-</span><span style="color:#080;font-style:italic"></span>    <span style="color:#0b0;font-weight:bold">var</span> outputs = <span style="color:#a2f;font-weight:bold">new</span> List&lt;Channel&lt;T&gt;&gt;(n);
+    <span style="color:#0b0;font-weight:bold">var</span> outputs = <span style="color:#a2f;font-weight:bold">new</span> Channel&lt;T&gt;[n];
+
     <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#0b0;font-weight:bold">int</span> i = <span style="color:#666">0</span>; i &lt; n; i++)
-        outputs.Add(Channel.CreateUnbounded&lt;T&gt;());
+        outputs[i] = Channel.CreateUnbounded&lt;T&gt;();
 
     Task.Run(<span style="color:#a2f;font-weight:bold">async</span> () =&gt;
     {
         <span style="color:#0b0;font-weight:bold">var</span> index = <span style="color:#666">0</span>;
         <span style="color:#a2f;font-weight:bold">await</span> <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> item <span style="color:#a2f;font-weight:bold">in</span> ch.ReadAllAsync())
         {
-            <span style="color:#0b0;font-weight:bold">var</span> ch = output[index];
-            <span style="color:#a2f;font-weight:bold">await</span> ch.Writer.WriteAsync(item);
+            <span style="color:#a2f;font-weight:bold">await</span> outputs[index].Writer.WriteAsync(item);
             index = (index + <span style="color:#666">1</span>) % n;
         }
 
-    	<span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> ch <span style="color:#a2f;font-weight:bold">in</span> outputs)
+        <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> ch <span style="color:#a2f;font-weight:bold">in</span> outputs)
             ch.Writer.Complete();
     });
 
-    <span style="color:#a2f;font-weight:bold">return</span> outputs.Select(ch =&gt; ch.Reader).ToList();
+    <span style="color:#a2f;font-weight:bold">return</span> outputs.Select(ch =&gt; ch.Reader).ToArray();
 }
 </code></pre></div><p><code>Split&lt;T&gt;</code> takes a channel and redirects its messages to <code>n</code> number of newly created channels in a round-robin fashion. Here's how to use it:</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#0b0;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#b44">&#34;Joe&#34;</span>, <span style="color:#666">1</span><span style="color:#666">0</span>);
@@ -323,9 +322,7 @@ We've created the local asynchronous <code>Redirect()</code> function which take
     tasks.Add(Task.Run(<span style="color:#a2f;font-weight:bold">async</span> () =&gt;
     {
         <span style="color:#a2f;font-weight:bold">await</span> <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> item <span style="color:#a2f;font-weight:bold">in</span> reader.ReadAllAsync())
-        {
             Console.WriteLine(<span style="color:#b44">$&#34;Reader {index}: {item}&#34;</span>);
-        }
     }));
 }
 
@@ -430,7 +427,7 @@ Reader 0: Joe 9
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-16 23:32:26.826503 &#43;0200 EET m=&#43;0.114463232">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-17 10:45:50.365658 &#43;0200 EET m=&#43;0.113281647">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
