@@ -104,11 +104,13 @@ Notice that we have created an **unbounded** channel, meaning that it accepts as
 var ch = Channel.CreateBounded<string>(capacity: 10);
 ```
 
-So when this limit is reached, `WriteAsync()` won't be able to write, until there's an available slot.
+So when this limit is reached, `WriteAsync()` won't be able to write, until there's an available slot in the channel's buffer. A slot is freed up when a consumer reads from the channel.
 
 ## Concurrency Patterns
 
-Now it's time to explore a few concurrent programming techniques for working with channels. This part consists of several examples that are independent of each other. You can also find the interactive version of them on [GitHub](https://github.com/deniskyashif/trydotnet-channels).
+> Don't communicate by sharing memory, share memory by communicating.
+
+It's time to explore a few concurrent programming techniques for working with channels. This part consists of several examples that are independent of each other. You can also find the interactive version of them on [GitHub](https://github.com/deniskyashif/trydotnet-channels).
 
 ### The Generator
 
@@ -288,26 +290,25 @@ Joe talks too much and we cannot handle all of his messages. We want to distribu
 ```cs
 static IList<ChannelReader<T>> Split<T>(ChannelReader<T> ch, int n)
 {
-    // Initialize the output channels
-    var outputs = new List<Channel<T>>(n);
+    var outputs = new Channel<T>[n];
+
     for (int i = 0; i < n; i++)
-        outputs.Add(Channel.CreateUnbounded<T>());
+        outputs[i] = Channel.CreateUnbounded<T>();
 
     Task.Run(async () =>
     {
         var index = 0;
         await foreach (var item in ch.ReadAllAsync())
         {
-            var ch = output[index];
-            await ch.Writer.WriteAsync(item);
+            await outputs[index].Writer.WriteAsync(item);
             index = (index + 1) % n;
         }
 
-    	foreach (var ch in outputs)
+        foreach (var ch in outputs)
             ch.Writer.Complete();
     });
 
-    return outputs.Select(ch => ch.Reader).ToList();
+    return outputs.Select(ch => ch.Reader).ToArray();
 }
 ```
 
@@ -325,9 +326,7 @@ for (int i = 0; i < readers.Count; i++)
     tasks.Add(Task.Run(async () =>
     {
         await foreach (var item in reader.ReadAllAsync())
-        {
             Console.WriteLine($"Reader {index}: {item}");
-        }
     }));
 }
 
@@ -351,13 +350,7 @@ Reader 0: Joe 9
 
 ## Conclusion
 
-In this article, we defined the term concurrency and discussed how it relates to parallelism. We explained why the two terms should not be confused. Then we explored C#'s channel data structure and learned how to use it for implementing publish/subscribe workflows. We've seen how to make an efficient use multiple CPUs by distrubuting the reading/writing operations amongst several workers.
-
-The underlying concept behind the concurrency model, described in this article, can be summarized as:
-
-> Don't communicate by sharing memory, share memory by communicating.
->
-> -- Rob Pike "Go Concurrency Patterns"
+In this article, we defined the term concurrency and discussed how it relates to parallelism. We explained why the two terms should not be confused. Then we explored C#'s channel data structure and learned how to use it to implement publish/subscribe workflows. We've seen how to make an efficient use multiple CPUs by distrubuting the reading/writing operations amongst several workers.
 
 _Check out [part 2](/csharp-channels-part-2) where we discuss some cancellation techniques and put what we've learned into practice_
 
