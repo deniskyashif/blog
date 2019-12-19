@@ -4,7 +4,8 @@ title = "Denis Kyashif's Blog"
 theme = "tale"
 disqusShortname = "deniskyashif"
 PygmentsCodeFences = true
-PygmentsStyle = "emacs"
+pygmentsCodeFencesGuessSyntax = true
+pygmentsUseClasses = true
 googleAnalytics = "UA-133185625-1"
 
 [author]

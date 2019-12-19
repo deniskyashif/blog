@@ -57,7 +57,7 @@ Let's go the other way around and tell Joe to stop talking. We need to modify ou
 static ChannelReader<string> CreateMessenger(
     string msg,
     int count,
-    CancellationToken token = default(CancellationToken))
+    CancellationToken token = default)
 {
     var ch = Channel.CreateUnbounded<string>();
 
