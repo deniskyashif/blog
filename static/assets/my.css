@@ -6,16 +6,6 @@ html, body, h1, h2, h3, h4, h5, .post-title, .post-info, .catalogue-title, nav a
     box-shadow: none;
 }
 
-.nav .rss {
-    color: #ee802f;
-    opacity: 1;
-    display: none;
-}
-
-.nav .rss:hover {
-    color: #d36311;
-}
-
 main {
     border-top: 1px solid #aaa;
 }
