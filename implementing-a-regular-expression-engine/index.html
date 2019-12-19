@@ -242,102 +242,102 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p>We won't delve into the technical details of this algorithm. You can check my implementation in less than 40 lines of javascript <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L36">here</a> and a neat explanation with more examples <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">here</a>.</p>
 <h3 id="constructing-the-nfa">Constructing the NFA</h3>
 <p>We represent an <strong>NFA state</strong> as an object with the following properties:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> createState(isEnd) {
-    <span style="color:#a2f;font-weight:bold">return</span> {
-        isEnd,
-        transition<span style="color:#666">:</span> {},
-        epsilonTransitions<span style="color:#666">:</span> []
-    };
-}
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">createState</span><span class="p">(</span><span class="nx">isEnd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">isEnd</span><span class="p">,</span>
+        <span class="nx">transition</span><span class="o">:</span> <span class="p">{</span><span class="p">}</span><span class="p">,</span>
+        <span class="nx">epsilonTransitions</span><span class="o">:</span> <span class="p">[</span><span class="p">]</span>
+    <span class="p">}</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p>There are <strong>two types of transitions</strong> - by a symbol and by epsilon (empty string). A state in Thompson's NFA can either have a symbol transition to at most one state or epsilon transitions to up to two states, but it cannot have a symbol and epsilon transitions at the same time.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> addEpsilonTransition(from, to) {
-    from.epsilonTransitions.push(to);
-}
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">from</span><span class="p">.</span><span class="nx">epsilonTransitions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">to</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span style="color:#a2f;font-weight:bold">function</span> addTransition(from, to, symbol) {
-    from.transition[symbol] <span style="color:#666">=</span> to;
-}
+<span class="kd">function</span> <span class="nx">addTransition</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">symbol</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">from</span><span class="p">.</span><span class="nx">transition</span><span class="p">[</span><span class="nx">symbol</span><span class="p">]</span> <span class="o">=</span> <span class="nx">to</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p>From our <strong>basis</strong>, we have two types of NFA's that would serve as our building blocks: an ε-NFA and a symbol-NFA. This is how we implement them:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> fromEpsilon() {
-    <span style="color:#a2f;font-weight:bold">const</span> start <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">false</span>);
-    <span style="color:#a2f;font-weight:bold">const</span> end <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">true</span>);
-    addEpsilonTransition(start, end);
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">fromEpsilon</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">createState</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">createState</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span><span class="p">;</span>
     
-    <span style="color:#a2f;font-weight:bold">return</span> { start, end };
-}
+    <span class="k">return</span> <span class="p">{</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span> <span class="p">}</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span style="color:#a2f;font-weight:bold">function</span> fromSymbol(symbol) {
-    <span style="color:#a2f;font-weight:bold">const</span> start <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">false</span>);
-    <span style="color:#a2f;font-weight:bold">const</span> end <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">true</span>);
-    addTransition(start, end, symbol);
+<span class="kd">function</span> <span class="nx">fromSymbol</span><span class="p">(</span><span class="nx">symbol</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">createState</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">createState</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">addTransition</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">,</span> <span class="nx">symbol</span><span class="p">)</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">return</span> { start, end };
-}
+    <span class="k">return</span> <span class="p">{</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span> <span class="p">}</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p>The NFA is simply an object which holds references to its start and end states. By following the <strong>inductive rules</strong> (described above), we build larger NFAs by applying the three operations on smaller NFAs.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> concat(first, second) {
-    addEpsilonTransition(first.end, second.start);
-    first.end.isEnd <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">false</span>;
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">concat</span><span class="p">(</span><span class="nx">first</span><span class="p">,</span> <span class="nx">second</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">first</span><span class="p">.</span><span class="nx">end</span><span class="p">,</span> <span class="nx">second</span><span class="p">.</span><span class="nx">start</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">first</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">isEnd</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">return</span> { start<span style="color:#666">:</span> first.start, end<span style="color:#666">:</span> second.end };
-}
+    <span class="k">return</span> <span class="p">{</span> <span class="nx">start</span><span class="o">:</span> <span class="nx">first</span><span class="p">.</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="o">:</span> <span class="nx">second</span><span class="p">.</span><span class="nx">end</span> <span class="p">}</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span style="color:#a2f;font-weight:bold">function</span> union(first, second) {
-    <span style="color:#a2f;font-weight:bold">const</span> start <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">false</span>);
-    addEpsilonTransition(start, first.start);
-    addEpsilonTransition(start, second.start);
+<span class="kd">function</span> <span class="nx">union</span><span class="p">(</span><span class="nx">first</span><span class="p">,</span> <span class="nx">second</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">createState</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">first</span><span class="p">.</span><span class="nx">start</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">second</span><span class="p">.</span><span class="nx">start</span><span class="p">)</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">const</span> end <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">true</span>);
-    addEpsilonTransition(first.end, end);
-    first.end.isEnd <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">false</span>;
-    addEpsilonTransition(second.end, end);
-    second.end.isEnd <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">false</span>;
+    <span class="kr">const</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">createState</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">first</span><span class="p">.</span><span class="nx">end</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">first</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">isEnd</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">second</span><span class="p">.</span><span class="nx">end</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">second</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">isEnd</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">return</span> { start, end };
-}
+    <span class="k">return</span> <span class="p">{</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span> <span class="p">}</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span style="color:#a2f;font-weight:bold">function</span> closure(nfa) {
-    <span style="color:#a2f;font-weight:bold">const</span> start <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">false</span>);
-    <span style="color:#a2f;font-weight:bold">const</span> end <span style="color:#666">=</span> createState(<span style="color:#a2f;font-weight:bold">true</span>);
+<span class="kd">function</span> <span class="nx">closure</span><span class="p">(</span><span class="nx">nfa</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">createState</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">createState</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="p">;</span>
 
-    addEpsilonTransition(start, end);
-    addEpsilonTransition(start, nfa.start);
+    <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">nfa</span><span class="p">.</span><span class="nx">start</span><span class="p">)</span><span class="p">;</span>
 
-    addEpsilonTransition(nfa.end, end);
-    addEpsilonTransition(nfa.end, nfa.start);
-    nfa.end.isEnd <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">false</span>;
+    <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">nfa</span><span class="p">.</span><span class="nx">end</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">addEpsilonTransition</span><span class="p">(</span><span class="nx">nfa</span><span class="p">.</span><span class="nx">end</span><span class="p">,</span> <span class="nx">nfa</span><span class="p">.</span><span class="nx">start</span><span class="p">)</span><span class="p">;</span>
+    <span class="nx">nfa</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">isEnd</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">return</span> { start, end };
-}
+    <span class="k">return</span> <span class="p">{</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span> <span class="p">}</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p>Now is time to put it all together. We <strong>scan our postfix expression one symbol at a time</strong> and store the context in a stack. <strong>The stack contains NFAs</strong>.</p>
 <ul>
 <li>When we scan a character - we construct a character-NFA and push it to the stack.</li>
 <li>When we scan an operator, we pop from the stack, apply this operation on the NFA(s) and push the resulting NFA back to the stack.</li>
 </ul>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> toNFA(postfixExp) {
-	<span style="color:#a2f;font-weight:bold">if</span>(postfixExp <span style="color:#666">===</span> <span style="color:#b44">&#39;&#39;</span>) {
-	    <span style="color:#a2f;font-weight:bold">return</span> fromEpsilon();
-	}
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">toNFA</span><span class="p">(</span><span class="nx">postfixExp</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span><span class="p">(</span><span class="nx">postfixExp</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
+	    <span class="k">return</span> <span class="nx">fromEpsilon</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+	<span class="p">}</span>
 	
-	<span style="color:#a2f;font-weight:bold">const</span> stack <span style="color:#666">=</span> [];
+	<span class="kr">const</span> <span class="nx">stack</span> <span class="o">=</span> <span class="p">[</span><span class="p">]</span><span class="p">;</span>
     
-	<span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#a2f;font-weight:bold">const</span> token <span style="color:#a2f;font-weight:bold">of</span> postfixExp) {
-		<span style="color:#a2f;font-weight:bold">if</span>(token <span style="color:#666">===</span> <span style="color:#b44">&#39;*&#39;</span>) {
-   		    stack.push(closure(stack.pop()));
-   		} <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#a2f;font-weight:bold">if</span> (token <span style="color:#666">===</span> <span style="color:#b44">&#39;|&#39;</span>) {
-   		    <span style="color:#a2f;font-weight:bold">const</span> right <span style="color:#666">=</span> stack.pop();
-   		    <span style="color:#a2f;font-weight:bold">const</span> left <span style="color:#666">=</span> stack.pop();
-   		    stack.push(union(left, right));
-   		} <span style="color:#a2f;font-weight:bold">else</span> <span style="color:#a2f;font-weight:bold">if</span> (token <span style="color:#666">===</span> <span style="color:#b44">&#39;.&#39;</span>) {
-   		    <span style="color:#a2f;font-weight:bold">const</span> right <span style="color:#666">=</span> stack.pop();
-   		    <span style="color:#a2f;font-weight:bold">const</span> left <span style="color:#666">=</span> stack.pop();
-   		    stack.push(concat(left, right));
-   		} <span style="color:#a2f;font-weight:bold">else</span> {
-   		    stack.push(fromSymbol(token));
-   		}
-   	}
+	<span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">token</span> <span class="k">of</span> <span class="nx">postfixExp</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span><span class="p">(</span><span class="nx">token</span> <span class="o">===</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span> <span class="p">{</span>
+   		    <span class="nx">stack</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">closure</span><span class="p">(</span><span class="nx">stack</span><span class="p">.</span><span class="nx">pop</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+   		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">token</span> <span class="o">===</span> <span class="s1">&#39;|&#39;</span><span class="p">)</span> <span class="p">{</span>
+   		    <span class="kr">const</span> <span class="nx">right</span> <span class="o">=</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">pop</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+   		    <span class="kr">const</span> <span class="nx">left</span> <span class="o">=</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">pop</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+   		    <span class="nx">stack</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">union</span><span class="p">(</span><span class="nx">left</span><span class="p">,</span> <span class="nx">right</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+   		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">token</span> <span class="o">===</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="p">{</span>
+   		    <span class="kr">const</span> <span class="nx">right</span> <span class="o">=</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">pop</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+   		    <span class="kr">const</span> <span class="nx">left</span> <span class="o">=</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">pop</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+   		    <span class="nx">stack</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="nx">left</span><span class="p">,</span> <span class="nx">right</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+   		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   		    <span class="nx">stack</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">fromSymbol</span><span class="p">(</span><span class="nx">token</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+   		<span class="p">}</span>
+   	<span class="p">}</span>
     
-	<span style="color:#a2f;font-weight:bold">return</span> stack.pop();
-}
+	<span class="k">return</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">pop</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><h4 id="example1">Example</h4>
 <p>Let's simulate the algorithm on <strong>(a∣b)*c</strong></p>
 <ol>
@@ -437,51 +437,51 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p>We check if any state in the set of states that we end up with is an accepting state and if so - the string is recognized by the NFA. In the above case, the final set contains only \(q_9\) which is an accepting state.</p>
 <h4 id="dealing-with-epsilontransitions">Dealing with ε-transitions</h4>
 <p>As mentioned above, Thompson's construction has two types of states. Ones with ε-transitions and ones with a transition on a symbol. So each time we end up in a state with ε-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is obvious on step 3 from the example above, on \(q_7\) we read <strong>&lsquo;b&rsquo;</strong> and proceed to \(q_8\) which is an epsilon transition state. We follow the ε-transition and reach \(q_9\) which has no ε-transitions so we add it to the list of next states. This is a recursive procedure.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> addNextState(state, nextStates, visited) {
-    <span style="color:#a2f;font-weight:bold">if</span> (state.epsilonTransitions.length) {
-        <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#a2f;font-weight:bold">const</span> st <span style="color:#a2f;font-weight:bold">of</span> state.epsilonTransitions) {
-            <span style="color:#a2f;font-weight:bold">if</span> (<span style="color:#666">!</span>visited.find(vs =&gt; vs <span style="color:#666">===</span> st)) {
-                visited.push(st);
-                addNextStates(st, nextStates, visited);
-            }
-        }
-    } <span style="color:#a2f;font-weight:bold">else</span> {
-        nextStates.push(state);
-    }
-}
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">addNextState</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">nextStates</span><span class="p">,</span> <span class="nx">visited</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">epsilonTransitions</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">st</span> <span class="k">of</span> <span class="nx">state</span><span class="p">.</span><span class="nx">epsilonTransitions</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">visited</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">vs</span> <span class="p">=&gt;</span> <span class="nx">vs</span> <span class="o">===</span> <span class="nx">st</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">visited</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">st</span><span class="p">)</span><span class="p">;</span>
+                <span class="nx">addNextStates</span><span class="p">(</span><span class="nx">st</span><span class="p">,</span> <span class="nx">nextStates</span><span class="p">,</span> <span class="nx">visited</span><span class="p">)</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">nextStates</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>We also have to mark the ε-transition states as visited to prevent infinite looping. The bottom of the recursion is when we reach a state with no ε-transitions. This is the code or the search procedure:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> search(nfa, word) {
-    <span style="color:#a2f;font-weight:bold">let</span> currentStates <span style="color:#666">=</span> [];
-    addNextState(nfa.start, currentStates, []);
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">search</span><span class="p">(</span><span class="nx">nfa</span><span class="p">,</span> <span class="nx">word</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">currentStates</span> <span class="o">=</span> <span class="p">[</span><span class="p">]</span><span class="p">;</span>
+    <span class="nx">addNextState</span><span class="p">(</span><span class="nx">nfa</span><span class="p">.</span><span class="nx">start</span><span class="p">,</span> <span class="nx">currentStates</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#a2f;font-weight:bold">const</span> symbol <span style="color:#a2f;font-weight:bold">of</span> word) {
-        <span style="color:#a2f;font-weight:bold">const</span> nextStates <span style="color:#666">=</span> [];
+    <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">symbol</span> <span class="k">of</span> <span class="nx">word</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">const</span> <span class="nx">nextStates</span> <span class="o">=</span> <span class="p">[</span><span class="p">]</span><span class="p">;</span>
 
-        <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#a2f;font-weight:bold">const</span> state <span style="color:#a2f;font-weight:bold">of</span> currentStates) {
-            <span style="color:#a2f;font-weight:bold">const</span> nextState <span style="color:#666">=</span> state.transition[symbol];
-            <span style="color:#a2f;font-weight:bold">if</span> (nextState) {
-                addNextState(nextState, nextStates, []);
-            }
-        }
-        currentStates <span style="color:#666">=</span> nextStates;
-    }
+        <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">state</span> <span class="k">of</span> <span class="nx">currentStates</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kr">const</span> <span class="nx">nextState</span> <span class="o">=</span> <span class="nx">state</span><span class="p">.</span><span class="nx">transition</span><span class="p">[</span><span class="nx">symbol</span><span class="p">]</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">nextState</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">addNextState</span><span class="p">(</span><span class="nx">nextState</span><span class="p">,</span> <span class="nx">nextStates</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nx">currentStates</span> <span class="o">=</span> <span class="nx">nextStates</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    <span style="color:#a2f;font-weight:bold">return</span> currentStates.find(s =&gt; s.isEnd) <span style="color:#666">?</span> <span style="color:#a2f;font-weight:bold">true</span> <span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">false</span>;
-}
+    <span class="k">return</span> <span class="nx">currentStates</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">s</span> <span class="p">=&gt;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">isEnd</span><span class="p">)</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p>The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on <a href="#fig5.1">Fig 5.1</a> the start state \(q_0\) is an ε-transition state, so we follow the transitions recursively until reaching the symbol transition states \(q_1\) and \(q_5\) which become our initial set of states.</p>
 <p>Given a string of length <em>n</em>, on each iteration, this algorithm keeps two lists of states with a length of approximately <em>n</em>. This gives us a time complexity of \(O(n^2)\) which significantly outperforms the recursive backtracking approach.</p>
 <h2 id="putting-it-all-together">Putting it all together</h2>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">function</span> createMatcher(exp) {
-    <span style="color:#a2f;font-weight:bold">const</span> postfixExp <span style="color:#666">=</span> toPostfix(insertExplicitConcatOperator(exp));
-    <span style="color:#a2f;font-weight:bold">const</span> nfa <span style="color:#666">=</span> toNFA(postfixExp);
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">createMatcher</span><span class="p">(</span><span class="nx">exp</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">postfixExp</span> <span class="o">=</span> <span class="nx">toPostfix</span><span class="p">(</span><span class="nx">insertExplicitConcatOperator</span><span class="p">(</span><span class="nx">exp</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+    <span class="kr">const</span> <span class="nx">nfa</span> <span class="o">=</span> <span class="nx">toNFA</span><span class="p">(</span><span class="nx">postfixExp</span><span class="p">)</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">return</span> word =&gt; search(nfa, word);
-}
+    <span class="k">return</span> <span class="nx">word</span> <span class="p">=&gt;</span> <span class="nx">search</span><span class="p">(</span><span class="nx">nfa</span><span class="p">,</span> <span class="nx">word</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span style="color:#a2f;font-weight:bold">const</span> match <span style="color:#666">=</span> createMatcher(<span style="color:#b44">&#39;a*b&#39;</span>);
-match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-style:italic">// false
-</span><span style="color:#080;font-style:italic"></span>match(<span style="color:#b44">&#39;b&#39;</span>); <span style="color:#080;font-style:italic">// true
-</span><span style="color:#080;font-style:italic"></span>match(<span style="color:#b44">&#39;ab&#39;</span>); <span style="color:#080;font-style:italic">// true
+<span class="kr">const</span> <span class="nx">match</span> <span class="o">=</span> <span class="nx">createMatcher</span><span class="p">(</span><span class="s1">&#39;a*b&#39;</span><span class="p">)</span><span class="p">;</span>
+<span class="nx">match</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="p">;</span> <span class="c1">// false
+</span><span class="c1"></span><span class="nx">match</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span><span class="p">;</span> <span class="c1">// true
+</span><span class="c1"></span><span class="nx">match</span><span class="p">(</span><span class="s1">&#39;ab&#39;</span><span class="p">)</span><span class="p">;</span> <span class="c1">// true
 </span></code></pre></div><h2 id="recap">Recap</h2>
 <p>We started by learning about finite automata and how do they work. We classified them as deterministic and nondeterministic. We also introduced the concept of ε-NFAs which are a specific type of nondeterministic automata. We've seen how NFAs and DFAs have the same expressive power and how they can be used for string recognition.</p>
 <p>We defined the building blocks of the regular expressions and learned how by applying operators (concatenation, union, and closure) we can construct more complex expressions from smaller ones. Then we learned how to compile a regular expression into its equivalent NFA then implemented an algorithm that processes a string through an NFA to determine whether it is matched or not.</p>
@@ -573,7 +573,7 @@ match(<span style="color:#b44">&#39;&#39;</span>); <span style="color:#080;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-19 08:34:56.933915 &#43;0200 EET m=&#43;0.183687928">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-19 09:10:31.482147 &#43;0200 EET m=&#43;0.179453538">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>

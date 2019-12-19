@@ -101,14 +101,14 @@ if (!doNotTrack) {
 <p>Unlike the <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/treeview#configuration-loadOnDemand">TreeView</a>, the <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/treelist">TreeList</a> <strong>doesn't</strong> provide a configuration option to indicate that we're going to lazily load the widget data. Instead we have to resort to its data source.</p>
 <h2 id="treelistdatasource">TreeListDataSource</h2>
 <p>The TreeList has its own DataSource implementation, which extends the KendoUI DataSource. Unlike the TreeView which works with a hierarchical data structure, it expects a linear data structure, i.e. JavaScript array, and the relations are described using property references. So for example the following collection:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
-<span style="color:#a2f;font-weight:bold">var</span> dataSource <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> kendo.data.TreeListDataSource({
-    data<span style="color:#666">:</span> [
-        { employeeId<span style="color:#666">:</span> <span style="color:#666">1</span>, name<span style="color:#666">:</span> <span style="color:#b44">&#39;Montgomery Burns&#39;</span>, reportsTo<span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">null</span>, hasSubordinates<span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">true</span> },
-        { employeeId<span style="color:#666">:</span> <span style="color:#666">2</span>, name<span style="color:#666">:</span> <span style="color:#b44">&#34;Homer Simpson&#34;</span>, reportsTo<span style="color:#666">:</span> <span style="color:#666">1</span>, hasSubordinates<span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">false</span> },
-        { employeeId<span style="color:#666">:</span> <span style="color:#666">3</span>, name<span style="color:#666">:</span> <span style="color:#b44">&#34;Lenford Leonard&#34;</span>, reportsTo<span style="color:#666">:</span> <span style="color:#666">1</span>, hasSubordinates<span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">false</span> }
-    ]
-});
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript">
+<span class="kd">var</span> <span class="nx">dataSource</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">kendo</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">TreeListDataSource</span><span class="p">(</span><span class="p">{</span>
+    <span class="nx">data</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span> <span class="nx">employeeId</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Montgomery Burns&#39;</span><span class="p">,</span> <span class="nx">reportsTo</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">hasSubordinates</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span><span class="p">,</span>
+        <span class="p">{</span> <span class="nx">employeeId</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;Homer Simpson&#34;</span><span class="p">,</span> <span class="nx">reportsTo</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">hasSubordinates</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}</span><span class="p">,</span>
+        <span class="p">{</span> <span class="nx">employeeId</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;Lenford Leonard&#34;</span><span class="p">,</span> <span class="nx">reportsTo</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">hasSubordinates</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span><span class="p">)</span><span class="p">;</span>
 
 </code></pre></div><p>will result in the corresponding tree:</p>
 <pre><code>+-- Montgomery Burns  
@@ -116,49 +116,49 @@ if (!doNotTrack) {
 |   +-- Lenford Leonard
 </code></pre><h3 id="remote-data-binding">Remote Data Binding</h3>
 <p>For remote data binding we need to use the DataSource's <code>transport</code> property. This is straightforward as in any other Kendo widget:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a2f;font-weight:bold">var</span> treeListDataSource <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> kendo.data.TreeListDataSource({
-    transport<span style="color:#666">:</span> {
-        read<span style="color:#666">:</span> {
-            url<span style="color:#666">:</span> <span style="color:#b44">&#39;api/employees&#39;</span>,
-            type<span style="color:#666">:</span> <span style="color:#b44">&#39;GET&#39;</span>,
-            dataType<span style="color:#666">:</span> <span style="color:#b44">&#39;json&#39;</span>
-        }
-    },
-    schema<span style="color:#666">:</span> { <span style="color:#080;font-style:italic">/* ... */</span> }
-});
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">treeListDataSource</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">kendo</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">TreeListDataSource</span><span class="p">(</span><span class="p">{</span>
+    <span class="nx">transport</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">read</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;api/employees&#39;</span><span class="p">,</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+            <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;json&#39;</span>
+        <span class="p">}</span>
+    <span class="p">}</span><span class="p">,</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+<span class="p">}</span><span class="p">)</span><span class="p">;</span>
 </code></pre></div><h3 id="schemamodel"><code>schema.model</code></h3>
 <p>Next we have adapt the widget to the structure of the data by configuring the schema and describe its field mapping in the model.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
-<span style="color:#a2f;font-weight:bold">var</span> treeListDataSource <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">new</span> kendo.data.TreeListDataSource({
-    transport<span style="color:#666">:</span> { <span style="color:#080;font-style:italic">/* ... */</span> },
-    schema<span style="color:#666">:</span> {
-        <span style="color:#080;font-style:italic">// property mapping
-</span><span style="color:#080;font-style:italic"></span>        model<span style="color:#666">:</span> {
-            id<span style="color:#666">:</span> <span style="color:#b44">&#39;employeeId&#39;</span>, <span style="color:#080;font-style:italic">// unique id field name
-</span><span style="color:#080;font-style:italic"></span>            parentId<span style="color:#666">:</span> <span style="color:#b44">&#39;reportsTo&#39;</span>, <span style="color:#080;font-style:italic">// relation with another record&#39;s id
-</span><span style="color:#080;font-style:italic"></span>            hasChildren<span style="color:#666">:</span> <span style="color:#b44">&#39;hasSubordinates&#39;</span>, <span style="color:#080;font-style:italic">// indicates that there&#39;re records that haven&#39;t been loaded
-</span><span style="color:#080;font-style:italic"></span>            fields<span style="color:#666">:</span> {
-            	employeeId<span style="color:#666">:</span> { type<span style="color:#666">:</span> <span style="color:#b44">&#39;number&#39;</span>, nullable<span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">false</span> },
-                name<span style="color:#666">:</span> { type<span style="color:#666">:</span> <span style="color:#b44">&#39;string&#39;</span>, nullable<span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">false</span> },
-                reportsTo<span style="color:#666">:</span> { type<span style="color:#666">:</span> <span style="color:#b44">&#39;number&#39;</span>, nullable<span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">true</span> }
-            }
-        }
-    }
-});
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript">
+<span class="kd">var</span> <span class="nx">treeListDataSource</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">kendo</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">TreeListDataSource</span><span class="p">(</span><span class="p">{</span>
+    <span class="nx">transport</span><span class="o">:</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span><span class="p">,</span>
+    <span class="nx">schema</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// property mapping
+</span><span class="c1"></span>        <span class="nx">model</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;employeeId&#39;</span><span class="p">,</span> <span class="c1">// unique id field name
+</span><span class="c1"></span>            <span class="nx">parentId</span><span class="o">:</span> <span class="s1">&#39;reportsTo&#39;</span><span class="p">,</span> <span class="c1">// relation with another record&#39;s id
+</span><span class="c1"></span>            <span class="nx">hasChildren</span><span class="o">:</span> <span class="s1">&#39;hasSubordinates&#39;</span><span class="p">,</span> <span class="c1">// indicates that there&#39;re records that haven&#39;t been loaded
+</span><span class="c1"></span>            <span class="nx">fields</span><span class="o">:</span> <span class="p">{</span>
+            	<span class="nx">employeeId</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nx">nullable</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}</span><span class="p">,</span>
+                <span class="nx">name</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="nx">nullable</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}</span><span class="p">,</span>
+                <span class="nx">reportsTo</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nx">nullable</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span><span class="p">)</span><span class="p">;</span>
 
 </code></pre></div><h3 id="haschildren"><code>hasChildren</code></h3>
 <p>This property indicates whether it has child items that have to be additionally fetched from the remote service. We can map it to another property, compute it dynamically with a function or hardcode it.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
-<span style="color:#080;font-style:italic">// hard-code that the item will always have children
-</span><span style="color:#080;font-style:italic"></span>hasChildren<span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">true</span>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript">
+<span class="c1">// hard-code that the item will always have children
+</span><span class="c1"></span><span class="nx">hasChildren</span><span class="o">:</span> <span class="kc">true</span>
 
-<span style="color:#080;font-style:italic">// map the hasChildren property to the hasSubordinates field, serialized from the server
-</span><span style="color:#080;font-style:italic"></span>hasChildren<span style="color:#666">:</span> <span style="color:#b44">&#34;hasSubordinates&#34;</span>
+<span class="c1">// map the hasChildren property to the hasSubordinates field, serialized from the server
+</span><span class="c1"></span><span class="nx">hasChildren</span><span class="o">:</span> <span class="s2">&#34;hasSubordinates&#34;</span>
 
-<span style="color:#080;font-style:italic">// compute whether the given item will have children
-</span><span style="color:#080;font-style:italic"></span>hasChildren<span style="color:#666">:</span> <span style="color:#a2f;font-weight:bold">function</span>(item) {
-    <span style="color:#a2f;font-weight:bold">return</span> item.hasEmployees <span style="color:#666">&amp;&amp;</span> item.relatedDepartment;
-}
+<span class="c1">// compute whether the given item will have children
+</span><span class="c1"></span><span class="nx">hasChildren</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">item</span><span class="p">.</span><span class="nx">hasEmployees</span> <span class="o">&amp;&amp;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">relatedDepartment</span><span class="p">;</span>
+<span class="p">}</span>
 
 </code></pre></div><h2 id="the-endpoint">The Endpoint</h2>
 <p>On initial load the widget's data soruce will make an API call to the url we've defined, e.g.</p>
@@ -245,7 +245,7 @@ You can find the complete example <a href="https://jsfiddle.net/8xwhv0Le/1/">her
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-19 08:34:56.927285 &#43;0200 EET m=&#43;0.177057328">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-19 09:10:31.477499 &#43;0200 EET m=&#43;0.174805121">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>

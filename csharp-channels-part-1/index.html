@@ -119,47 +119,47 @@ Think of it this way - concurrency is about <strong>structure</strong> and paral
 <p>A concurrent program is structured into independent pieces that we have to coordinate. To make that work, we need some form of communication. There're several ways to achieve that in .NET. In this article, we'll explore the <code>System.Threading.Channels</code> (ships with .NET Core 3.1 SDK or available as a <a href="https://www.nuget.org/packages/System.Threading.Channels/">NuGet package</a>) which provides an API, analogous to Go's built-in channel primitive.</p>
 <img src="/images/posts/2019-12-08-csharp-channels-part1/channel-sketch.png" width="600">
 <p>A channel is a data structure that allows one thread to communicate with another thread. In .NET, this was usually done by using a shared variable that supports concurrency (by implementing some synchronization/locking mechanism). Channels, on the other hand, can be used to send messages directly between threads without any external synchronization or locking required. These messages are sent in FIFO (first in first out) order. Here's how we create a channel:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">Channel&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt; ch = Channel.CreateUnbounded&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt;();
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Channel</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">ch</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">.</span><span class="n">CreateUnbounded</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
 </code></pre></div><p><code>Channel</code> is a static class that exposes several factory methods for creating channels. <code>Channel&lt;T&gt;</code> is a data structure that supports reading and writing. That's how we write asynchronously to a channel:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#b44">&#34;My first message&#34;</span>);
-<span style="color:#a2f;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#b44">&#34;My second message&#34;</span>);
-ch.Writer.Complete();
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">await</span> <span class="n">ch</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="s">&#34;My first message&#34;</span><span class="p">)</span><span class="p">;</span>
+<span class="k">await</span> <span class="n">ch</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="s">&#34;My second message&#34;</span><span class="p">)</span><span class="p">;</span>
+<span class="n">ch</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">Complete</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
 </code></pre></div><p>This is how we read from a channel:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">while</span> (<span style="color:#a2f;font-weight:bold">await</span> ch.Reader.WaitToReadAsync()) 
-    Console.WriteLine(<span style="color:#a2f;font-weight:bold">await</span> ch.Reader.ReadAsync());
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">while</span> <span class="p">(</span><span class="k">await</span> <span class="n">ch</span><span class="p">.</span><span class="n">Reader</span><span class="p">.</span><span class="n">WaitToReadAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span> 
+    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="k">await</span> <span class="n">ch</span><span class="p">.</span><span class="n">Reader</span><span class="p">.</span><span class="n">ReadAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
 </code></pre></div><p>The reader's <code>WaitToReadAsync()</code> will complete with <code>true</code> when data is available to read, or with <code>false</code> when no further data will ever be read, that is, after the writer invokes <code>Complete()</code>. The reader also provides an option to consume the data as an async stream by exposing a method that returns <code>IAsyncEnumerable&lt;T&gt;</code>:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#a2f;font-weight:bold">await</span> <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> item <span style="color:#a2f;font-weight:bold">in</span> ch.Reader.ReadAllAsync())
-    Console.WriteLine(item);
+<div class="highlight"><pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">await</span> <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">item</span> <span class="k">in</span> <span class="n">ch</span><span class="p">.</span><span class="n">Reader</span><span class="p">.</span><span class="n">ReadAllAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="p">;</span>
 </code></pre></div><p>Channels also have a blocking API which we won't cover in this article.</p>
 <h3 id="using-channels">Using Channels</h3>
 <p>Here's a basic example when we have a separate producer and consumer threads which communicate through a channel.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#0b0;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt;();
+<div class="highlight"><pre class="chroma"><code class="language-cs" data-lang="cs"><span class="kt">var</span> <span class="n">ch</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">.</span><span class="n">CreateUnbounded</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
 
-<span style="color:#0b0;font-weight:bold">var</span> consumer = Task.Run(<span style="color:#a2f;font-weight:bold">async</span> () =&gt;
-{
-    <span style="color:#a2f;font-weight:bold">while</span> (<span style="color:#a2f;font-weight:bold">await</span> ch.Reader.WaitToReadAsync())
-        Console.WriteLine(<span style="color:#a2f;font-weight:bold">await</span> ch.Reader.ReadAsync());
-});
-<span style="color:#0b0;font-weight:bold">var</span> producer = Task.Run(<span style="color:#a2f;font-weight:bold">async</span> () =&gt;
-{
-    <span style="color:#0b0;font-weight:bold">var</span> rnd = <span style="color:#a2f;font-weight:bold">new</span> Random();
-    <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#0b0;font-weight:bold">int</span> i = <span style="color:#666">0</span>; i &lt; <span style="color:#666">5</span>; i++)
-    {
-        <span style="color:#a2f;font-weight:bold">await</span> Task.Delay(TimeSpan.FromSeconds(rnd.Next(<span style="color:#666">3</span>)));
-        <span style="color:#a2f;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#b44">$&#34;Message {i}&#34;</span>);
-    }
-    ch.Writer.Complete();
-});
+<span class="kt">var</span> <span class="n">consumer</span> <span class="p">=</span> <span class="n">Task</span><span class="p">.</span><span class="n">Run</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">await</span> <span class="n">ch</span><span class="p">.</span><span class="n">Reader</span><span class="p">.</span><span class="n">WaitToReadAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="k">await</span> <span class="n">ch</span><span class="p">.</span><span class="n">Reader</span><span class="p">.</span><span class="n">ReadAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span><span class="p">)</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">producer</span> <span class="p">=</span> <span class="n">Task</span><span class="p">.</span><span class="n">Run</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">rnd</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Random</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="m">5</span><span class="p">;</span> <span class="n">i</span><span class="p">+</span><span class="p">+</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="n">Delay</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">.</span><span class="n">FromSeconds</span><span class="p">(</span><span class="n">rnd</span><span class="p">.</span><span class="n">Next</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+        <span class="k">await</span> <span class="n">ch</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="s">$&#34;Message {i}&#34;</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">ch</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">Complete</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span><span class="p">)</span><span class="p">;</span>
 
-<span style="color:#a2f;font-weight:bold">await</span> Task.WhenAll(producer, consumer);
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#666">[</span>12:27:16 PM<span style="color:#666">]</span> Message <span style="color:#666">0</span>
-<span style="color:#666">[</span>12:27:18 PM<span style="color:#666">]</span> Message <span style="color:#666">1</span>
-<span style="color:#666">[</span>12:27:19 PM<span style="color:#666">]</span> Message <span style="color:#666">2</span>
-<span style="color:#666">[</span>12:27:20 PM<span style="color:#666">]</span> Message <span style="color:#666">3</span>
-<span style="color:#666">[</span>12:27:22 PM<span style="color:#666">]</span> Message <span style="color:#666">4</span>
+<span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="n">WhenAll</span><span class="p">(</span><span class="n">producer</span><span class="p">,</span> <span class="n">consumer</span><span class="p">)</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">[</span>12:27:16 PM<span class="o">]</span> Message <span class="m">0</span>
+<span class="o">[</span>12:27:18 PM<span class="o">]</span> Message <span class="m">1</span>
+<span class="o">[</span>12:27:19 PM<span class="o">]</span> Message <span class="m">2</span>
+<span class="o">[</span>12:27:20 PM<span class="o">]</span> Message <span class="m">3</span>
+<span class="o">[</span>12:27:22 PM<span class="o">]</span> Message <span class="m">4</span>
 </code></pre></div><p>The consumer (reader) waits until there's an available message to read. On the other side, the producer (writer) waits until it's able to send a message, hence, we say that <strong>channels both communicate and synchronize</strong>. Both operations are non-blocking, that is, while we wait, the thread is free to do some other work.<br>
 Notice that we have created an <strong>unbounded</strong> channel, meaning that it accepts as many messages as it can with regards to the available memory. With <strong>bounded</strong> channels, however, we can limit the number of messages that can be processed at a time.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#0b0;font-weight:bold">var</span> ch = Channel.CreateBounded&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt;(capacity: <span style="color:#666">1</span><span style="color:#666">0</span>);
+<div class="highlight"><pre class="chroma"><code class="language-cs" data-lang="cs"><span class="kt">var</span> <span class="n">ch</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">.</span><span class="n">CreateBounded</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span><span class="p">(</span><span class="n">capacity</span><span class="p">:</span> <span class="m">1</span><span class="m">0</span><span class="p">)</span><span class="p">;</span>
 </code></pre></div><p>So when this limit is reached, <code>WriteAsync()</code> won't be able to write, until there's an available slot in the channel's buffer. A slot is freed up when a consumer reads from the channel.</p>
 <h2 id="concurrency-patterns">Concurrency Patterns</h2>
 <blockquote>
@@ -168,165 +168,164 @@ Notice that we have created an <strong>unbounded</strong> channel, meaning that 
 <p>It's time to explore a few concurrent programming techniques for working with channels. This part consists of several examples that are independent of each other. You can also find the interactive version of them on <a href="https://github.com/deniskyashif/trydotnet-channels">GitHub</a>.</p>
 <h3 id="the-generator">The Generator</h3>
 <p>A generator is a method that returns a channel. The one below creates a channel and writes a given number of messages asynchronously from a separate thread.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">static</span> ChannelReader&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt; CreateMessenger(<span style="color:#0b0;font-weight:bold">string</span> msg, <span style="color:#0b0;font-weight:bold">int</span> count)
-{
-    <span style="color:#0b0;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#0b0;font-weight:bold">string</span>&gt;();
-    <span style="color:#0b0;font-weight:bold">var</span> rnd = <span style="color:#a2f;font-weight:bold">new</span> Random();
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">static</span> <span class="n">ChannelReader</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">CreateMessenger</span><span class="p">(</span><span class="kt">string</span> <span class="n">msg</span><span class="p">,</span> <span class="kt">int</span> <span class="n">count</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">ch</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">.</span><span class="n">CreateUnbounded</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="kt">var</span> <span class="n">rnd</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Random</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
 
-    Task.Run(<span style="color:#a2f;font-weight:bold">async</span> () =&gt;
-    {
-        <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#0b0;font-weight:bold">int</span> i = <span style="color:#666">0</span>; i &lt; count; i++)
-        {
-            <span style="color:#a2f;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#b44">$&#34;{msg} {i}&#34;</span>);
-            <span style="color:#a2f;font-weight:bold">await</span> Task.Delay(TimeSpan.FromSeconds(rnd.Next(<span style="color:#666">3</span>)));
-        }
-        ch.Writer.Complete();
-    });
+    <span class="n">Task</span><span class="p">.</span><span class="n">Run</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="p">+</span><span class="p">+</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">await</span> <span class="n">ch</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="s">$&#34;{msg} {i}&#34;</span><span class="p">)</span><span class="p">;</span>
+            <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="n">Delay</span><span class="p">(</span><span class="n">TimeSpan</span><span class="p">.</span><span class="n">FromSeconds</span><span class="p">(</span><span class="n">rnd</span><span class="p">.</span><span class="n">Next</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">ch</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">Complete</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">)</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">return</span> ch.Reader;
-}
+    <span class="k">return</span> <span class="n">ch</span><span class="p">.</span><span class="n">Reader</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p>By returning a <code>ChannelReader&lt;T&gt;</code> we ensure that our consumers won't be able to attempt writing to it.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#0b0;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#b44">&#34;Joe&#34;</span>, <span style="color:#666">5</span>);
-<span style="color:#a2f;font-weight:bold">await</span> <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> item <span style="color:#a2f;font-weight:bold">in</span> joe.ReadAllAsync())
-    Console.WriteLine(item);
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#666">[</span>7:31:39 AM<span style="color:#666">]</span> Joe <span style="color:#666">0</span>
-<span style="color:#666">[</span>7:31:40 AM<span style="color:#666">]</span> Joe <span style="color:#666">1</span>
-<span style="color:#666">[</span>7:31:42 AM<span style="color:#666">]</span> Joe <span style="color:#666">2</span>
-<span style="color:#666">[</span>7:31:44 AM<span style="color:#666">]</span> Joe <span style="color:#666">3</span>
-<span style="color:#666">[</span>7:31:44 AM<span style="color:#666">]</span> Joe <span style="color:#666">4</span>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">joe</span> <span class="p">=</span> <span class="n">CreateMessenger</span><span class="p">(</span><span class="s">&#34;Joe&#34;</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span><span class="p">;</span>
+<span class="k">await</span> <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">item</span> <span class="k">in</span> <span class="n">joe</span><span class="p">.</span><span class="n">ReadAllAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">[</span>7:31:39 AM<span class="o">]</span> Joe <span class="m">0</span>
+<span class="o">[</span>7:31:40 AM<span class="o">]</span> Joe <span class="m">1</span>
+<span class="o">[</span>7:31:42 AM<span class="o">]</span> Joe <span class="m">2</span>
+<span class="o">[</span>7:31:44 AM<span class="o">]</span> Joe <span class="m">3</span>
+<span class="o">[</span>7:31:44 AM<span class="o">]</span> Joe <span class="m">4</span>
 </code></pre></div><p>Let's try to read from multiple channels.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#0b0;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#b44">&#34;Joe&#34;</span>, <span style="color:#666">3</span>);
-<span style="color:#0b0;font-weight:bold">var</span> ann = CreateMessenger(<span style="color:#b44">&#34;Ann&#34;</span>, <span style="color:#666">3</span>);
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">joe</span> <span class="p">=</span> <span class="n">CreateMessenger</span><span class="p">(</span><span class="s">&#34;Joe&#34;</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">ann</span> <span class="p">=</span> <span class="n">CreateMessenger</span><span class="p">(</span><span class="s">&#34;Ann&#34;</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span><span class="p">;</span>
 
-<span style="color:#a2f;font-weight:bold">while</span> (<span style="color:#a2f;font-weight:bold">await</span> joe.WaitToReadAsync() || <span style="color:#a2f;font-weight:bold">await</span> ann.WaitToReadAsync())
-{
-    Console.WriteLine(<span style="color:#a2f;font-weight:bold">await</span> joe.ReadAsync());
-    Console.WriteLine(<span style="color:#a2f;font-weight:bold">await</span> ann.ReadAsync());
-}
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#666">[</span>8:00:51 AM<span style="color:#666">]</span> Joe <span style="color:#666">0</span>
-<span style="color:#666">[</span>8:00:51 AM<span style="color:#666">]</span> Ann <span style="color:#666">0</span>
-<span style="color:#666">[</span>8:00:52 AM<span style="color:#666">]</span> Joe <span style="color:#666">1</span>
-<span style="color:#666">[</span>8:00:52 AM<span style="color:#666">]</span> Ann <span style="color:#666">1</span>
-<span style="color:#666">[</span>8:00:54 AM<span style="color:#666">]</span> Joe <span style="color:#666">2</span>
-<span style="color:#666">[</span>8:00:54 AM<span style="color:#666">]</span> Ann <span style="color:#666">2</span>
+<span class="k">while</span> <span class="p">(</span><span class="k">await</span> <span class="n">joe</span><span class="p">.</span><span class="n">WaitToReadAsync</span><span class="p">(</span><span class="p">)</span> <span class="p">|</span><span class="p">|</span> <span class="k">await</span> <span class="n">ann</span><span class="p">.</span><span class="n">WaitToReadAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="k">await</span> <span class="n">joe</span><span class="p">.</span><span class="n">ReadAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="k">await</span> <span class="n">ann</span><span class="p">.</span><span class="n">ReadAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">[</span>8:00:51 AM<span class="o">]</span> Joe <span class="m">0</span>
+<span class="o">[</span>8:00:51 AM<span class="o">]</span> Ann <span class="m">0</span>
+<span class="o">[</span>8:00:52 AM<span class="o">]</span> Joe <span class="m">1</span>
+<span class="o">[</span>8:00:52 AM<span class="o">]</span> Ann <span class="m">1</span>
+<span class="o">[</span>8:00:54 AM<span class="o">]</span> Joe <span class="m">2</span>
+<span class="o">[</span>8:00:54 AM<span class="o">]</span> Ann <span class="m">2</span>
 </code></pre></div><p>This approach is problematic in several ways. Suppose Ann sends more messages than Joe:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#0b0;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#b44">&#34;Joe&#34;</span>, <span style="color:#666">2</span>);
-<span style="color:#0b0;font-weight:bold">var</span> ann = CreateMessenger(<span style="color:#b44">&#34;Ann&#34;</span>, <span style="color:#666">5</span>);
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">joe</span> <span class="p">=</span> <span class="n">CreateMessenger</span><span class="p">(</span><span class="s">&#34;Joe&#34;</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">ann</span> <span class="p">=</span> <span class="n">CreateMessenger</span><span class="p">(</span><span class="s">&#34;Ann&#34;</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span><span class="p">;</span>
 </code></pre></div><p>We're still going to try and read from Joe, even when his channel is completed which is going to throw an exception.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#666">[</span>8:05:01 AM<span style="color:#666">]</span> Joe <span style="color:#666">0</span>
-<span style="color:#666">[</span>8:05:01 AM<span style="color:#666">]</span> Ann <span style="color:#666">0</span>
-<span style="color:#666">[</span>8:05:02 AM<span style="color:#666">]</span> Joe <span style="color:#666">1</span>
-<span style="color:#666">[</span>8:05:02 AM<span style="color:#666">]</span> Ann <span style="color:#666">1</span>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">[</span>8:05:01 AM<span class="o">]</span> Joe <span class="m">0</span>
+<span class="o">[</span>8:05:01 AM<span class="o">]</span> Ann <span class="m">0</span>
+<span class="o">[</span>8:05:02 AM<span class="o">]</span> Joe <span class="m">1</span>
+<span class="o">[</span>8:05:02 AM<span class="o">]</span> Ann <span class="m">1</span>
 Unhandled exception. System.Threading.Channels.ChannelClosedException: 
     The channel has been closed.
 </code></pre></div><p>A quick and dirty solution would be to wrap it in a try/catch block:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">try</span>
-{
-    Console.WriteLine(<span style="color:#a2f;font-weight:bold">await</span> joe.ReadAsync());
-    Console.WriteLine(<span style="color:#a2f;font-weight:bold">await</span> ann.ReadAsync());
-}
-<span style="color:#a2f;font-weight:bold">catch</span> (ChannelClosedException) { }
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">try</span>
+<span class="p">{</span>
+    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="k">await</span> <span class="n">joe</span><span class="p">.</span><span class="n">ReadAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="k">await</span> <span class="n">ann</span><span class="p">.</span><span class="n">ReadAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">catch</span> <span class="p">(</span><span class="n">ChannelClosedException</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
 </code></pre></div><p>Our code is concurrent, but not optimal because it executes in a lockstep. Suppose, Ann is more talkative than Joe, so her messages have an up to 3 seconds delay, whereas Joe sends messages on up to every 10 seconds. This will force us to wait for Joe, even though we might have several messages waiting ready to be read from Ann. Currently, we cannot read from Ann before reading from Joe. We should be doing better!</p>
 <h3 id="multiplexer">Multiplexer</h3>
 <p>We want to read from both Joe and Ann and process whoever's message arrives first. We're going to solve this by consolidating their messages into a single channel. Let's define our <code>Merge&lt;T&gt;()</code> method:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">static</span> ChannelReader&lt;T&gt; Merge&lt;T&gt;(
-    ChannelReader&lt;T&gt; first, 
-    ChannelReader&lt;T&gt; second)
-{
-    <span style="color:#0b0;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;T&gt;();
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">static</span> <span class="n">ChannelReader</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">Merge</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="p">(</span>
+    <span class="n">ChannelReader</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">first</span><span class="p">,</span> <span class="n">ChannelReader</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">second</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">output</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">.</span><span class="n">CreateUnbounded</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
 
-    Task.Run(<span style="color:#a2f;font-weight:bold">async</span> () =&gt;
-    {
-        <span style="color:#a2f;font-weight:bold">await</span> <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> item <span style="color:#a2f;font-weight:bold">in</span> first.ReadAllAsync())
-            <span style="color:#a2f;font-weight:bold">await</span> output.Writer.WriteAsync(item);
-    });
-    Task.Run(<span style="color:#a2f;font-weight:bold">async</span> () =&gt;
-    {
-        <span style="color:#a2f;font-weight:bold">await</span> <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> item <span style="color:#a2f;font-weight:bold">in</span> second.ReadAllAsync())
-            <span style="color:#a2f;font-weight:bold">await</span> output.Writer.WriteAsync(item);
-    });
+    <span class="n">Task</span><span class="p">.</span><span class="n">Run</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="k">await</span> <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">item</span> <span class="k">in</span> <span class="n">first</span><span class="p">.</span><span class="n">ReadAllAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">output</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">Task</span><span class="p">.</span><span class="n">Run</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="k">await</span> <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">item</span> <span class="k">in</span> <span class="n">second</span><span class="p">.</span><span class="n">ReadAllAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">output</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">)</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">return</span> output;
-}
+    <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p><code>Merge&lt;T&gt;()</code> takes two channels and starts reading from them simultaneously. It creates and immediately returns a new channel which consolidates the outputs from the input channels. The reading procedures are run asynchronously on separate threads. Think of it like this:</p>
 <p><img src="/images/posts/2019-12-08-csharp-channels-part1/merge-sketch.png" width="600" /></p>
 <p>That's how we use it.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#0b0;font-weight:bold">var</span> ch = Merge(CreateMessenger(<span style="color:#b44">&#34;Joe&#34;</span>, <span style="color:#666">3</span>), CreateMessenger(<span style="color:#b44">&#34;Ann&#34;</span>, <span style="color:#666">5</span>));
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">ch</span> <span class="p">=</span> <span class="n">Merge</span><span class="p">(</span><span class="n">CreateMessenger</span><span class="p">(</span><span class="s">&#34;Joe&#34;</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span><span class="p">,</span> <span class="n">CreateMessenger</span><span class="p">(</span><span class="s">&#34;Ann&#34;</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
 
-<span style="color:#a2f;font-weight:bold">await</span> <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> item <span style="color:#a2f;font-weight:bold">in</span> ch.ReadAllAsync())
-    Console.WriteLine(item);
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#666">[</span>8:39:32 AM<span style="color:#666">]</span> Ann <span style="color:#666">0</span>
-<span style="color:#666">[</span>8:39:32 AM<span style="color:#666">]</span> Joe <span style="color:#666">0</span>
-<span style="color:#666">[</span>8:39:32 AM<span style="color:#666">]</span> Ann <span style="color:#666">1</span>
-<span style="color:#666">[</span>8:39:33 AM<span style="color:#666">]</span> Ann <span style="color:#666">2</span>
-<span style="color:#666">[</span>8:39:33 AM<span style="color:#666">]</span> Ann <span style="color:#666">3</span>
-<span style="color:#666">[</span>8:39:34 AM<span style="color:#666">]</span> Joe <span style="color:#666">1</span>
-<span style="color:#666">[</span>8:39:35 AM<span style="color:#666">]</span> Ann <span style="color:#666">4</span>
-<span style="color:#666">[</span>8:39:36 AM<span style="color:#666">]</span> Joe <span style="color:#666">2</span>
+<span class="k">await</span> <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">item</span> <span class="k">in</span> <span class="n">ch</span><span class="p">.</span><span class="n">ReadAllAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">[</span>8:39:32 AM<span class="o">]</span> Ann <span class="m">0</span>
+<span class="o">[</span>8:39:32 AM<span class="o">]</span> Joe <span class="m">0</span>
+<span class="o">[</span>8:39:32 AM<span class="o">]</span> Ann <span class="m">1</span>
+<span class="o">[</span>8:39:33 AM<span class="o">]</span> Ann <span class="m">2</span>
+<span class="o">[</span>8:39:33 AM<span class="o">]</span> Ann <span class="m">3</span>
+<span class="o">[</span>8:39:34 AM<span class="o">]</span> Joe <span class="m">1</span>
+<span class="o">[</span>8:39:35 AM<span class="o">]</span> Ann <span class="m">4</span>
+<span class="o">[</span>8:39:36 AM<span class="o">]</span> Joe <span class="m">2</span>
 </code></pre></div><p>We have simplified our code and solved the problem with Ann sending more messages than Joe while also doing it more often. However, you might have noticed that <code>Merge&lt;T&gt;()</code> has a defect - the output channel's writer never closes which leads us to continue waiting to read, even when Joe and Ann have finished sending messages. Also, there's no way for us to handle a potential failure of any of the readers. We have to modify our code:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a2f;font-weight:bold">static</span> ChannelReader&lt;T&gt; Merge&lt;T&gt;(<span style="color:#a2f;font-weight:bold">params</span> ChannelReader&lt;T&gt;[] inputs)
-{
-    <span style="color:#0b0;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;T&gt;();
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">static</span> <span class="n">ChannelReader</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">Merge</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="p">(</span><span class="k">params</span> <span class="n">ChannelReader</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="p">[</span><span class="p">]</span> <span class="n">inputs</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">output</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">.</span><span class="n">CreateUnbounded</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
 
-    Task.Run(<span style="color:#a2f;font-weight:bold">async</span> () =&gt;
-    {
-        <span style="color:#a2f;font-weight:bold">async</span> Task Redirect(ChannelReader&lt;T&gt; input)
-        {
-            <span style="color:#a2f;font-weight:bold">await</span> <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> item <span style="color:#a2f;font-weight:bold">in</span> input.ReadAllAsync())
-                <span style="color:#a2f;font-weight:bold">await</span> output.Writer.WriteAsync(item);
-    	}
+    <span class="n">Task</span><span class="p">.</span><span class="n">Run</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="k">async</span> <span class="n">Task</span> <span class="n">Redirect</span><span class="p">(</span><span class="n">ChannelReader</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">input</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">await</span> <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">item</span> <span class="k">in</span> <span class="n">input</span><span class="p">.</span><span class="n">ReadAllAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+                <span class="k">await</span> <span class="n">output</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="p">;</span>
+    	<span class="p">}</span>
             
-        <span style="color:#a2f;font-weight:bold">await</span> Task.WhenAll(inputs.Select(i =&gt; Redirect(i)).ToArray());
-        output.Writer.Complete();
-    });
+        <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="n">WhenAll</span><span class="p">(</span><span class="n">inputs</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">Redirect</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="p">)</span><span class="p">.</span><span class="n">ToArray</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+        <span class="n">output</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">Complete</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">)</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">return</span> output;
-}
+    <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p>Our <code>Merge&lt;T&gt;()</code> now also works with an arbitrary number of inputs.<br>
 We've created the local asynchronous <code>Redirect()</code> function which takes a channel as an input writes its messages to the consolidated output. It returns a <code>Task</code> so we can use <code>WhenAll()</code> to wait for the input channels to complete. This allows us to also capture potential exceptions. In the end, we know that there's nothing left to be read, so we can safely close the writer.</p>
 <p>Our code is concurrent and non-blocking. The messages are being processed at the time of arrival and there's no need to use locks or any kind of conditional logic. While we're waiting, the thread is free to perform other work. We also don't have to handle the case when one of the writers complete (as you can see Ann has sent all of her messages before Joe).</p>
 <h3 id="demultiplexer">Demultiplexer</h3>
 <p>Joe talks too much and we cannot handle all of his messages. We want to distribute the work amongst several consumers. Let's define <code>Split&lt;T&gt;()</code>:</p>
 <p><img src="/images/posts/2019-12-08-csharp-channels-part1/split-sketch.png" width="600" /></p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#a2f;font-weight:bold">static</span> IList&lt;ChannelReader&lt;T&gt;&gt; Split&lt;T&gt;(ChannelReader&lt;T&gt; ch, <span style="color:#0b0;font-weight:bold">int</span> n)
-{
-    <span style="color:#0b0;font-weight:bold">var</span> outputs = <span style="color:#a2f;font-weight:bold">new</span> Channel&lt;T&gt;[n];
+<div class="highlight"><pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">static</span> <span class="n">IList</span><span class="p">&lt;</span><span class="n">ChannelReader</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="p">&gt;</span> <span class="n">Split</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="p">(</span><span class="n">ChannelReader</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">ch</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">outputs</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Channel</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#0b0;font-weight:bold">int</span> i = <span style="color:#666">0</span>; i &lt; n; i++)
-        outputs[i] = Channel.CreateUnbounded&lt;T&gt;();
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="p">+</span><span class="p">+</span><span class="p">)</span>
+        <span class="n">outputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">.</span><span class="n">CreateUnbounded</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
 
-    Task.Run(<span style="color:#a2f;font-weight:bold">async</span> () =&gt;
-    {
-        <span style="color:#0b0;font-weight:bold">var</span> index = <span style="color:#666">0</span>;
-        <span style="color:#a2f;font-weight:bold">await</span> <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> item <span style="color:#a2f;font-weight:bold">in</span> ch.ReadAllAsync())
-        {
-            <span style="color:#a2f;font-weight:bold">await</span> outputs[index].Writer.WriteAsync(item);
-            index = (index + <span style="color:#666">1</span>) % n;
-        }
+    <span class="n">Task</span><span class="p">.</span><span class="n">Run</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="kt">var</span> <span class="n">index</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="k">await</span> <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">item</span> <span class="k">in</span> <span class="n">ch</span><span class="p">.</span><span class="n">ReadAllAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">await</span> <span class="n">outputs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">WriteAsync</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="p">;</span>
+            <span class="n">index</span> <span class="p">=</span> <span class="p">(</span><span class="n">index</span> <span class="p">+</span> <span class="m">1</span><span class="p">)</span> <span class="p">%</span> <span class="n">n</span><span class="p">;</span>
+        <span class="p">}</span>
 
-        <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> ch <span style="color:#a2f;font-weight:bold">in</span> outputs)
-            ch.Writer.Complete();
-    });
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">ch</span> <span class="k">in</span> <span class="n">outputs</span><span class="p">)</span>
+            <span class="n">ch</span><span class="p">.</span><span class="n">Writer</span><span class="p">.</span><span class="n">Complete</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">)</span><span class="p">;</span>
 
-    <span style="color:#a2f;font-weight:bold">return</span> outputs.Select(ch =&gt; ch.Reader).ToArray();
-}
+    <span class="k">return</span> <span class="n">outputs</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">ch</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">ch</span><span class="p">.</span><span class="n">Reader</span><span class="p">)</span><span class="p">.</span><span class="n">ToArray</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p><code>Split&lt;T&gt;</code> takes a channel and redirects its messages to <code>n</code> number of newly created channels in a round-robin fashion. Here's how to use it:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#0b0;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#b44">&#34;Joe&#34;</span>, <span style="color:#666">1</span><span style="color:#666">0</span>);
-<span style="color:#0b0;font-weight:bold">var</span> readers = Split(joe, <span style="color:#666">3</span>);
-<span style="color:#0b0;font-weight:bold">var</span> tasks = <span style="color:#a2f;font-weight:bold">new</span> List&lt;Task&gt;();
+<div class="highlight"><pre class="chroma"><code class="language-cs" data-lang="cs"><span class="kt">var</span> <span class="n">joe</span> <span class="p">=</span> <span class="n">CreateMessenger</span><span class="p">(</span><span class="s">&#34;Joe&#34;</span><span class="p">,</span> <span class="m">1</span><span class="m">0</span><span class="p">)</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">readers</span> <span class="p">=</span> <span class="n">Split</span><span class="p">(</span><span class="n">joe</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">tasks</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Task</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
 
-<span style="color:#a2f;font-weight:bold">for</span> (<span style="color:#0b0;font-weight:bold">int</span> i = <span style="color:#666">0</span>; i &lt; readers.Count; i++)
-{
-    <span style="color:#0b0;font-weight:bold">var</span> reader = readers[i];
-    <span style="color:#0b0;font-weight:bold">var</span> index = i;
-    tasks.Add(Task.Run(<span style="color:#a2f;font-weight:bold">async</span> () =&gt;
-    {
-        <span style="color:#a2f;font-weight:bold">await</span> <span style="color:#a2f;font-weight:bold">foreach</span> (<span style="color:#0b0;font-weight:bold">var</span> item <span style="color:#a2f;font-weight:bold">in</span> reader.ReadAllAsync())
-            Console.WriteLine(<span style="color:#b44">$&#34;Reader {index}: {item}&#34;</span>);
-    }));
-}
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">readers</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">i</span><span class="p">+</span><span class="p">+</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">reader</span> <span class="p">=</span> <span class="n">readers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">;</span>
+    <span class="kt">var</span> <span class="n">index</span> <span class="p">=</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">tasks</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">Task</span><span class="p">.</span><span class="n">Run</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="k">await</span> <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">item</span> <span class="k">in</span> <span class="n">reader</span><span class="p">.</span><span class="n">ReadAllAsync</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&#34;Reader {index}: {item}&#34;</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span style="color:#a2f;font-weight:bold">await</span> Task.WhenAll(tasks);
+<span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="n">WhenAll</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span><span class="p">;</span>
 </code></pre></div><p>Joe sends 10 messages which we distribute amongst 3 channels. Below is a possible output we can get. Some channels may take longer to process a message, therefore, we have no guarantee that the order of emission is going to be preserved. Our code is structured so that we process (in this case log) a message as soon as it arrives.</p>
 <pre><code>Reader 0: Joe 0
 Reader 1: Joe 1
@@ -340,11 +339,12 @@ Reader 2: Joe 8
 Reader 0: Joe 9
 </code></pre><h2 id="conclusion">Conclusion</h2>
 <p>In this article, we defined the term concurrency and discussed how it relates to parallelism. We explained why the two terms should not be confused. Then we explored C#&lsquo;s channel data structure and learned how to use it to implement publish/subscribe workflows. We've seen how to make an efficient use multiple CPUs by distrubuting the reading/writing operations amongst several workers.</p>
-<p><em>Check out <a href="/csharp-channels-part-2">part 2</a> where we discuss some cancellation techniques and put what we've learned into practice</em></p>
+<p><em>Check out <a href="/csharp-channels-part-2">part 2</a> where we discuss some cancellation techniques and put what we've learned into practice.</em></p>
 <h2 id="references--further-reading">References &amp; Further Reading</h2>
 <ul>
 <li><a href="https://github.com/deniskyashif/trydotnet-channels">GitHub Repo</a> with the interactive examples</li>
-<li><a href="https://devblogs.microsoft.com/dotnet/an-introduction-to-system-threading-channels/">An Introduction to System.Threading.Channels</a></li>
+<li>Part 2: <a href="/csharp-channels-part-2">C# Channels - Timeout and Cancellation</a></li>
+<li><a href="https://devblogs.microsoft.com/dotnet/an-introduction-to-system-threading-channels/">An Introduction to System.Threading.Channels</a> on the .NET Blog</li>
 <li><a href="https://stephencleary.com/book/">Concurrency in C# Cookbook</a> by Stephen Cleary - my highly recommended go-to reference for concurrent C#</li>
 <li>The graphics are implemented using <a href="https://sketch.io/sketchpad/">sketch.io</a></li>
 </ul>
@@ -422,7 +422,7 @@ Reader 0: Joe 9
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-19 08:34:56.858573 &#43;0200 EET m=&#43;0.108342904">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-19 09:10:31.406668 &#43;0200 EET m=&#43;0.103972683">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
