@@ -57,24 +57,6 @@
     </item>
     
     <item>
-      <title>state-machines</title>
-      <link>https://deniskyashif.com/tags/state-machines/</link>
-      <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/state-machines/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>antlr</title>
-      <link>https://deniskyashif.com/tags/antlr/</link>
-      <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/antlr/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>compilers</title>
       <link>https://deniskyashif.com/tags/compilers/</link>
       <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
@@ -93,47 +75,11 @@
     </item>
     
     <item>
-      <title>parsing</title>
-      <link>https://deniskyashif.com/tags/parsing/</link>
-      <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/parsing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>algorithms</title>
       <link>https://deniskyashif.com/tags/algorithms/</link>
       <pubDate>Fri, 28 Jun 2019 13:26:25 +0300</pubDate>
       
       <guid>https://deniskyashif.com/tags/algorithms/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dynamic-programming</title>
-      <link>https://deniskyashif.com/tags/dynamic-programming/</link>
-      <pubDate>Fri, 28 Jun 2019 13:26:25 +0300</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/dynamic-programming/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>functional-programming</title>
-      <link>https://deniskyashif.com/tags/functional-programming/</link>
-      <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/functional-programming/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>lambda-calculus</title>
-      <link>https://deniskyashif.com/tags/lambda-calculus/</link>
-      <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/lambda-calculus/</guid>
       <description></description>
     </item>
     
@@ -147,47 +93,11 @@
     </item>
     
     <item>
-      <title>finite-state-machines</title>
-      <link>https://deniskyashif.com/tags/finite-state-machines/</link>
-      <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/finite-state-machines/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>regex</title>
-      <link>https://deniskyashif.com/tags/regex/</link>
-      <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/regex/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>angular</title>
       <link>https://deniskyashif.com/tags/angular/</link>
       <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
       
       <guid>https://deniskyashif.com/tags/angular/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>conference</title>
-      <link>https://deniskyashif.com/tags/conference/</link>
-      <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/conference/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>speaking</title>
-      <link>https://deniskyashif.com/tags/speaking/</link>
-      <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/speaking/</guid>
       <description></description>
     </item>
     
@@ -201,15 +111,6 @@
     </item>
     
     <item>
-      <title>aspnet</title>
-      <link>https://deniskyashif.com/tags/aspnet/</link>
-      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/aspnet/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>telerik</title>
       <link>https://deniskyashif.com/tags/telerik/</link>
       <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
@@ -219,11 +120,11 @@
     </item>
     
     <item>
-      <title>kendoui</title>
-      <link>https://deniskyashif.com/tags/kendoui/</link>
+      <title>kendo-ui</title>
+      <link>https://deniskyashif.com/tags/kendo-ui/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/tags/kendoui/</guid>
+      <guid>https://deniskyashif.com/tags/kendo-ui/</guid>
       <description></description>
     </item>
     
@@ -237,38 +138,11 @@
     </item>
     
     <item>
-      <title>machine translation</title>
-      <link>https://deniskyashif.com/tags/machine-translation/</link>
+      <title>nlp</title>
+      <link>https://deniskyashif.com/tags/nlp/</link>
       <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/tags/machine-translation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>natural language processing</title>
-      <link>https://deniskyashif.com/tags/natural-language-processing/</link>
-      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/natural-language-processing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>omnisharp</title>
-      <link>https://deniskyashif.com/tags/omnisharp/</link>
-      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/omnisharp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>roslyn</title>
-      <link>https://deniskyashif.com/tags/roslyn/</link>
-      <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/roslyn/</guid>
+      <guid>https://deniskyashif.com/tags/nlp/</guid>
       <description></description>
     </item>
     

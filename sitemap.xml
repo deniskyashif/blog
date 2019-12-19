@@ -58,27 +58,12 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/tags/state-machines/</loc>
-    <lastmod>2019-11-20T07:28:47+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/antlr/</loc>
-    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://deniskyashif.com/tags/compilers/</loc>
     <lastmod>2019-09-13T17:14:58-07:00</lastmod>
   </url>
   
   <url>
     <loc>https://deniskyashif.com/tags/javascript/</loc>
-    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/parsing/</loc>
     <lastmod>2019-09-13T17:14:58-07:00</lastmod>
   </url>
   
@@ -98,22 +83,7 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/tags/dynamic-programming/</loc>
-    <lastmod>2019-06-28T13:26:25+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/functional-programming/</loc>
-    <lastmod>2019-06-05T17:31:07+03:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://deniskyashif.com/g%C3%B6dels-system-t-in-typescript/</loc>
-    <lastmod>2019-06-05T17:31:07+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/lambda-calculus/</loc>
     <lastmod>2019-06-05T17:31:07+03:00</lastmod>
   </url>
   
@@ -128,17 +98,7 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/tags/finite-state-machines/</loc>
-    <lastmod>2019-02-17T15:05:00+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://deniskyashif.com/implementing-a-regular-expression-engine/</loc>
-    <lastmod>2019-02-17T15:05:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/regex/</loc>
     <lastmod>2019-02-17T15:05:00+02:00</lastmod>
   </url>
   
@@ -148,28 +108,13 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/tags/conference/</loc>
-    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://deniskyashif.com/scalable-angular-apps-at-devreach-2018/</loc>
-    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/speaking/</loc>
     <lastmod>2019-01-26T22:31:14+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://deniskyashif.com/tags/talks/</loc>
     <lastmod>2019-01-26T22:31:14+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/aspnet/</loc>
-    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -188,7 +133,7 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/tags/kendoui/</loc>
+    <loc>https://deniskyashif.com/tags/kendo-ui/</loc>
     <lastmod>2017-06-20T00:00:00+00:00</lastmod>
   </url>
   
@@ -203,12 +148,7 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/tags/machine-translation/</loc>
-    <lastmod>2017-01-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/natural-language-processing/</loc>
+    <loc>https://deniskyashif.com/tags/nlp/</loc>
     <lastmod>2017-01-18T00:00:00+00:00</lastmod>
   </url>
   
@@ -229,16 +169,6 @@
   
   <url>
     <loc>https://deniskyashif.com/bring-.net-development-into-your-favourite-editor-with-omnisharp/</loc>
-    <lastmod>2015-12-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/omnisharp/</loc>
-    <lastmod>2015-12-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/roslyn/</loc>
     <lastmod>2015-12-09T00:00:00+00:00</lastmod>
   </url>
   
