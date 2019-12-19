@@ -2,7 +2,7 @@
 title: "Gödel's System T in TypeScript"
 date: 2019-06-05T17:31:07+03:00
 draft: false
-tags: ["compsci", "lambda-calculus", "functional-programming", "typescript", "javascript"]
+tags: ["compsci", "typescript", "javascript"]
 summary: "Experimenting with a rudimentary type system that ensures the programs always terminate."
 description: "Experimenting with a rudimentary type system that ensures the programs always terminate."
 useMath: true

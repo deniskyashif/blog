@@ -2,7 +2,7 @@
 title: "KendoUI TreeList Load on Demand"
 date: 2017-06-20
 draft: false
-tags: ["kendoui", "javascript"]
+tags: ["javascript", "kendo-ui"]
 summary: "How to lazily load the descendant items of a record in a TreeList."
 aliases: 
     - /2017/06/20/kendoui-treelist-load-on-demand

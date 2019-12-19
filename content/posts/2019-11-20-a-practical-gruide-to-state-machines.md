@@ -3,7 +3,7 @@ title: "A Practical Guide to  State Machines"
 date: 2019-11-20T07:28:47+02:00
 draft: false
 summary: "Express application logic in a concise and declarative way using state machines and C#'s pattern matching."
-tags: ["state-machines", "software-design", "csharp", "compsci", "dotnet"]
+tags: ["software-design", "compsci", "csharp", "dotnet"]
 images: 
 - "/images/posts/2019-11-20-guide-to-fsm/smiling-fsm.jpeg"
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-11-20-a-practical-gruide-to-state-machines.md"

@@ -2,7 +2,7 @@
 title: "Implementing a Regular Expression Engine"
 date: 2019-02-17T15:05:00+02:00
 draft: false
-tags: ["compsci", "regex", "parsing", "compilers", "finite-state-machines", "algorithms", "javascript"]
+tags: ["compsci", "compilers", "algorithms", "javascript"]
 useMath: true
 summary: "Using Ken Thompson's construction algorithm."
 description: "This article describes how to implement a simple and efficient regular expression engine following the Thompson's construction algorithm."

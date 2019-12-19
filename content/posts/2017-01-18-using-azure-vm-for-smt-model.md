@@ -2,7 +2,7 @@
 title: "Statistical Machine Translation on Azure VM using Moses"
 date: 2017-01-18
 draft: false
-tags: ["natural language processing", "machine translation", "azure"]
+tags: ["nlp", "azure"]
 summary: "Training a machine translation model on an Azure compute optimized VM."
 aliases:
     - /2017/01/18/statistical-machine-translation-on-azure-vm-using-moses
