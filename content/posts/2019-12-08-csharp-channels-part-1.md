@@ -357,7 +357,7 @@ _Check out [part 2](/csharp-channels-part-2) where we discuss some cancellation 
 
 - [GitHub Repo](https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
 - Part 2: [C# Channels - Timeout and Cancellation](/csharp-channels-part-2)
-- Part 3: [C# Channels - Streaming Data Pipelines](/csharp-channels-part-3)
+- Part 3: [C# Channels - Async Data Pipelines](/csharp-channels-part-3)
 - [An Introduction to System.Threading.Channels](https://devblogs.microsoft.com/dotnet/an-introduction-to-system-threading-channels/) on the .NET Blog
 - [Concurrency in C# Cookbook](https://stephencleary.com/book/) by Stephen Cleary - my highly recommended go-to reference for concurrent C#
 - The graphics are implemented using [sketch.io](https://sketch.io/sketchpad/)

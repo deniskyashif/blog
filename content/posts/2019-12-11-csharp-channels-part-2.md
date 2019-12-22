@@ -168,5 +168,5 @@ Again - our code is non-blocking concurrent, thus there's no need to use locks, 
 ## References
 - [GitHub Repo](https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
 - Part 1: [C# Channels - Publish / Subscribe workflows](/csharp-channels-part-1)
-- Part 3: [C# Channels - Streaming Data Pipelines](/csharp-channels-part-3)
+- Part 3: [C# Channels - Async Data Pipelines](/csharp-channels-part-3)
 - The graphics are implemented using [sketch.io](https://sketch.io/sketchpad/)
