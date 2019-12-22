@@ -1,13 +1,14 @@
 ---
 title: "C# Channels - Streaming Data Pipelines"
 date: 2019-12-13T10:42:15+02:00
-draft: true
+draft: false
 url: "csharp-channels-part-3"
 tags: ["software-design", "csharp", "concurrency", "dotnet"]
 summary: "How to implement an \"assembly line\" concurrency model using channels."
 ---
 
 In this article we'll learn how to efficiently process data in a non-blocking way using the pipeline pattern. We'll see how to construct flexible and testable pipelines using C#'s channels, as well as how to perform cancellation and deal with errors.
+    
 
 ## Pipelines
 
@@ -139,9 +140,9 @@ int CountLines(FileInfo file)
 Now we've implemented the stages of our pipeline, we are ready to put them all together.
 
 ```cs
-var fileGen = GetFilesRecursively(".");
+var fileGen = GetFilesRecursively("node-modules");
 var sourceCodeFiles = FilterByExtension(
-    fileGen, new HashSet<string> { ".cs", ".ts" });
+    fileGen, new HashSet<string> { ".js", ".ts" });
 var counter = GetLineCount(sourceCodeFiles);
 ```
 
@@ -166,7 +167,7 @@ We've covered the happy path, however, our pipeline has to be able deal with mal
 2. An invalid input should not cause the pipeline to stop. The pipeline should continue to process the inputs thereafter.
 3. The pipeline should not swallow errors. All the errors should be reported.
 
-We're going to modify stage 2 which counts the lines in a file. Our definition for an invalid input is an empty file. Our pipeline should not pass them forward and instead, it should report the existence of such files. We solve that by introducing a second channel - a one which will contain errors.
+We're going to modify stage 2 which counts the lines in a file. Our definition for an invalid input is an empty file. Our pipeline should not pass them forward and instead, it should report the existence of such files. We solve that by introducing a second channel - a one which will contain the errors.
 
 ``` diff
 - static ChannelReader<(FileInfo file, int lines)> GetLineCount(
@@ -199,79 +200,199 @@ We're going to modify stage 2 which counts the lines in a file. Our definition f
 
 We've created a second channel for errors and changed the signature of the stage so it returns both the output and the error channels. Empty files are not passed to the next stage, we've provided a mechanism to report them using the error channel and after we get an invalid input, our pipeline continues processing the next ones.
 
+```cs
+...
+var (counter, errors) = GetLineCount(sourceCodeFiles);
+var totalLines = 0;
+
+await foreach (var item in counter.ReadAllAsync())
+    totalLines += item.lines;
+
+Console.WriteLine($"Total lines: {totalLines}");
+
+await foreach (var errMessage in errors.ReadAllAsync())
+    Console.WriteLine(errMessage);
+```
+
 ## Cancellation
 
-Similarily to the error handling, the stages being independent means that each has to handle cancellation on their own. Let's make `GetLineCount` cancellable.
+Similarily to the error handling, the stages being independent means that each has to handle cancellation on their own. To stop the pipeline, we need to prevent the generator from delegating new jobs. Let's make it cancellable.
 
-```diff
-static (ChannelReader<(FileInfo file, int lines)> output, 
-        ChannelReader<string> errors)
--   GetLineCount(ChannelReader<FileInfo> input)
-+   GetLineCount(ChannelReader<FileInfo> input, CancellationToken token = default)
+```cs
+static ChannelReader<string> GetFilesRecursively(
+    string root, CancellationToken token = default)
 {
-    var output = Channel.CreateUnbounded<(FileInfo, int)>();
-    var errors = Channel.CreateUnbounded<string>();
+    var output = Channel.CreateUnbounded<string>();
 
-    Task.Run(async () =>
+    void WalkDir(string path)
     {
-+       try
-+       {
--           await foreach (var file in input.ReadAllAsync())
-+           await foreach (var file in input.ReadAllAsync(token))
-            {
-                var lines = CountLines(file);
-                if (lines == 0)
--                   await errors.Writer.WriteAsync($"[Error] Empty file {file}");
-+                   await errors.Writer.WriteAsync($"[Error] Empty file {file}", token);
-                else
--                   await output.Writer.WriteAsync((file, lines));
-+                   await output.Writer.WriteAsync((file, lines), token);
-            }
-+       }
--           output.Writer.Complete();
--           errors.Writer.Complete();
-+       catch (OperationCanceledException)
-+       {
-+           await errors.Writer.WriteAsync("Line Counter was cancelled.");
-+       }
-+       finally
-+       {
-+           output.Writer.Complete();
-+           errors.Writer.Complete();
-+       }
-    }, token);
+        if (token.IsCancellationRequested)
+            throw new OperationCanceledException();
+        foreach (var file in Directory.GetFiles(path))
+            output.Writer.WriteAsync(file, token);
+        foreach (var dir in Directory.GetDirectories(path))
+            WalkDir(dir);
+    }
 
-    return (output, errors);
+    Task.Run(() =>
+    {
+        try
+        {
+            WalkDir(root);
+        }
+        catch (OperationCanceledException) { Console.WriteLine("Cancelled."); }
+        finally { output.Writer.Complete(); }
+    });
+
+    return output;
 }
 ```
 
-The change is straightforward, we need to handle the cancellation in a `try/catch` and not forget to close the channels no matter what the outcome is. Keep in mind that we have multiple stages so cancelling one of them would eventually lead to stopping the pipeline, but the rest of them will keep executing. This will lead to memory leaks, therefore, it's important to cancel all of the stages in the pipeline, beginning with the generator.
+The change is straightforward, we need to handle the cancellation in a `try/catch` and not forget to close the output channel. Keep in mind that cancelling only the initial stage will leave the next stages running with the existing jobs which might not be desired (especially if the stages are long running). Therefore, we have to pass the cancellation token to each of them and make them able to handle cancellation as well.
+
+```cs
+var cts = new CancellationTokenSource();
+cts.CancelAfter(TimeSpan.FromSeconds(0.5));
+var fileSource = GetFilesRecursively("node-modules", cts.Token);
+...
+```
  
 ## Dealing with Bottlenecks
 
-### Split & Merge
+Our stages execute concurrently but this doesn't guarantee optimal performance. Remember the pizza preparation - it takes longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process with many pizza orders as we're going to end up with many pizzas with their toppings added, waiting to be baked, but our oven fits in only one at a time. We solve this by getting a larger oven, or even multiple ovens.
+
+<img src="/images/posts/csharp-channels-part3/bottleneck.png" />
+
+In the line counter example, the stage where we read the file and count its lines might cause a bottleneck when a file is sufficiently large. It makes sense to increase the capacity of this stage and that's where `Split<T>` and `Merge<T>` which we discussed in [part 1](/csharp-channels-part-1) come into use. We'll summarize them briefly.
+
+### Split
+
+`Split<T>` is a function that takes an input channel and distributes its messages amongst several outputs. That way we can let several threads handle the message processing.
 
 <img src="/images/posts/csharp-channels-part3/split.png" />
 
 <details>
-  <summary>Expand</summary>
+  <summary>Expand <code>Split&lt;T&gt;</code> implementation</summary>
 
 ```cs
-Split<T>()
+IList<ChannelReader<T>> Split<T>(ChannelReader<T> input, int n)
+{
+    var outputs = new Channel<T>[n];
+    for (var i = 0; i < n; i++)
+        outputs[i] = Channel.CreateUnbounded<T>();
+
+    Task.Run(async () =>
+    {
+        var index = 0;
+        await foreach (var item in input.ReadAllAsync())
+        {
+            await outputs[index].Writer.WriteAsync(item);
+            index = (index + 1) % n;
+        }
+
+        foreach (var ch in outputs)
+            ch.Writer.Complete();
+    });
+
+    return outputs.Select(ch => ch.Reader).ToArray();
+}
+```
+</details>
+<br />
+
+We're going to use it to distribute the source code files among 5 channels which will let us process up to 5 files simultaneously.
+
+```cs
+var fileSource = GetFilesRecursively("node-modules");
+var sourceCodeFiles =
+    FilterByExtension(fileSource, new HashSet<string> {".js", ".ts" });
+var splitter = Split(sourceCodeFiles, 5);
 ```
 
-</details>
+### Merge
+
+`Merge<T>` is the opposite operation. It takes multiple input channels and consolidates them in a single output.
 
 <img src="/images/posts/csharp-channels-part3/merge.png" />
 
-<img src="/images/posts/csharp-channels-part3/bottleneck.png" />
+<details>
+  <summary>Expand <code>Merge&lt;T&gt;</code> implementation</summary>
 
+```cs
+static ChannelReader<T> Merge<T>(params ChannelReader<T>[] inputs)
+{
+    var output = Channel.CreateUnbounded<T>();
+
+    Task.Run(async () =>
+    {
+        async Task Redirect(ChannelReader<T> input)
+        {
+            await foreach (var item in input.ReadAllAsync())
+                await output.Writer.WriteAsync(item);
+    	}
+            
+        await Task.WhenAll(inputs.Select(i => Redirect(i)).ToArray());
+        output.Writer.Complete();
+    });
+
+    return output;
+}
+```
+</details>
+<br />
+
+During `Merge<T>`, we read concurrently from several channels, so this is the stage where we need to tweak it a little bit and perform the line counting.
+
+We introduce, `CountLinesAndMerge` which doesn't only redirect, but also transforms.
+
+```cs {hl_lines=[11]}
+static ChannelReader<(FileInfo file, int lines)>
+    CountLinesAndMerge(IList<ChannelReader<FileInfo>> inputs)
+{
+    var output = Channel.CreateUnbounded<(FileInfo file, int lines)>();
+
+    Task.Run(async () =>
+    {
+        async Task Redirect(ChannelReader<FileInfo> input)
+        {
+            await foreach (var file in input.ReadAllAsync())
+                await output.Writer.WriteAsync((file, CountLines(file)));
+        }
+            
+        await Task.WhenAll(inputs.Select(Redirect).ToArray());
+        output.Writer.Complete();
+    });
+
+    return output;
+}
+```
+
+The error handling and the cancellation are omitted for the sake of brevity, however, we've already seen how to implement them. Now we're ready to build our pipeline.
+
+```diff
+var fileSource = GetFilesRecursively("node-modules");
+var sourceCodeFiles =
+    FilterByExtension(fileSource, new HashSet<string> {".js", ".ts"});
+- var counter = GetLineCount(sourceCodeFiles);
++ var splitter = Split(sourceCodeFiles, 5);
++ var counter = CountLinesAndMerge(splitter);
+```
 
 ## TPL Dataflow
 
-## Conclusion
-Benefits - system resource utilization (performance), composability, testability. Decreased cyclomatic complexity.
+TPL Dataflow is another option for implementing data processing pipelines or even meshes in .NET. It has a declarative and a higher-level API compared to the channel-based approach, but it also comes with more complexity and provides less control. I haven't done an extensive performance comparison yet, but I think that deciding between the two should strongly depend on the case. If you want a simple API and more control, the lightweight channels would be the way to go. If you want a higher-level API with more features, check out TPL Dataflow.
 
+## Conclusion
+
+We defined the pipeline concurrency model and learned how to use it to implement efficient and flexible data processing pipelines. We learned how to deal with errors, perform cancellation as well as how to apply some of the concurrency techniques (multiplexing and demultiplexing), described in the previous articles, to deal with potential bottlenecks.
+
+Besides performance, pipelines also make it very easy to be modified. Each stage is an atomic part of the whole composition which can be independently modified, replaced or removed as long as we keep the method signatures intact.
+
+It is easy to see how it can lead to significant reduction of our code's cyclomatic complexity as well as making it easier to test. Each stage is simply a method with no side effects, which can be unit tested in isolation. Stages have a **single responsibility**, which makes them easier to reason about thus we can cover all the possible cases in our unit tests.
 
 ## References & Further Reading
 
+- [GitHub Repo](https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
+- Part 1: [C# Channels - Publish / Subscribe workflows](/csharp-channels-part-1)
+- Part 2: [C# Channels - Timeout and Cancellation](/csharp-channels-part-2)
+- The graphics are implemented using [Lucidchart](https://www.lucidchart.com/)
