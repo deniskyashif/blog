@@ -3,9 +3,6 @@ languageCode = "en-us"
 title = "Denis Kyashif's Blog"
 theme = "tale"
 disqusShortname = "deniskyashif"
-PygmentsCodeFences = true
-pygmentsCodeFencesGuessSyntax = true
-pygmentsUseClasses = true
 googleAnalytics = "UA-133185625-1"
 
 [author]
@@ -35,3 +32,14 @@ enableEmoji = true
 
 [markup.goldmark.renderer]
 unsafe= true
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    style = "manni"
+    tabWidth = 4
