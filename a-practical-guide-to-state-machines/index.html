@@ -121,81 +121,81 @@ For a state machine to be deterministic means that on each input there is one an
 <p>State machines are simply directed graphs and there're various ways to construct one. We can use an <a href="https://en.wikipedia.org/wiki/Adjacency_matrix">adjacency matrix</a>, or go with an object-oriented approach via <a href="https://en.wikipedia.org/wiki/State_pattern">the state pattern</a> or encode the state and the transitions in a map structure such as C#&lsquo;s <code>Dictionary&lt;TKey, TValue&gt;</code> where the keys are the states and their values are the sets of transitions from these states.</p>
 <p>The recent developments in version 8 of C# added significant improvements in its pattern matching capabilities and the <strong>switch expressions</strong> in particular (which provided some inspiration for this article). If you haven't checked them out, I recommend <a href="https://devblogs.microsoft.com/dotnet/do-more-with-patterns-in-c-8-0/">this article</a> by Mads Torgersen, but long story short - we can now return values from switches, thus using it for conditional assignment.</p>
 <p>We implement the state machine in Figure 1 as:</p>
-<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">enum</span> <span class="n">State</span> <span class="p">{</span> <span class="n">Open</span><span class="p">,</span> <span class="n">Closed</span><span class="p">,</span> <span class="n">Locked</span> <span class="p">}</span>
-<span class="k">enum</span> <span class="n">Input</span> <span class="p">{</span> <span class="n">Open</span><span class="p">,</span> <span class="n">Close</span><span class="p">,</span> <span class="n">Lock</span><span class="p">,</span> <span class="n">Unlock</span> <span class="p">}</span>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">enum</span> State { Open, Closed, Locked }
+<span style="color:#069;font-weight:bold">enum</span> Input { Open, Close, Lock, Unlock }
 
-<span class="n">State</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">State</span> <span class="n">current</span><span class="p">,</span> <span class="n">Input</span> <span class="n">input</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> 
-    <span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">input</span><span class="p">)</span> <span class="k">switch</span>
-	<span class="p">{</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Closed</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Open</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Open</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Open</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Close</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Closed</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Closed</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Lock</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Locked</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Locked</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Unlock</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Closed</span><span class="p">,</span>
-        <span class="n">_</span> <span class="p">=</span><span class="p">&gt;</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">NotSupportedException</span><span class="p">(</span>
-            <span class="s">$&#34;{current} has no transition on {input}&#34;</span><span class="p">)</span>
-	<span class="p">}</span><span class="p">;</span>
+State ChangeState(State current, Input input) =&gt; 
+    (current, input) <span style="color:#069;font-weight:bold">switch</span>
+	{
+        (State.Closed, Input.Open) =&gt; State.Open,
+        (State.Open, Input.Close) =&gt; State.Closed,
+        (State.Closed, Input.Lock) =&gt; State.Locked,
+        (State.Locked, Input.Unlock) =&gt; State.Closed,
+        _ =&gt; <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> NotSupportedException(
+            <span style="color:#c30">$&#34;{current} has no transition on {input}&#34;</span>)
+	};
 </code></pre></div><p>That's how we &ldquo;run&rdquo; our machine:</p>
-<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">current</span> <span class="p">=</span> <span class="n">State</span><span class="p">.</span><span class="n">Closed</span><span class="p">;</span> <span class="c1">// the initial state
-</span><span class="c1"></span><span class="n">current</span> <span class="p">=</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Open</span><span class="p">)</span><span class="p">;</span> <span class="c1">// Opened
-</span><span class="c1"></span><span class="n">current</span> <span class="p">=</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Close</span><span class="p">)</span><span class="p">;</span> <span class="c1">// Closed
-</span><span class="c1"></span><span class="n">current</span> <span class="p">=</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Lock</span><span class="p">)</span><span class="p">;</span> <span class="c1">// Locked
-</span><span class="c1"></span><span class="n">current</span> <span class="p">=</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Open</span><span class="p">)</span><span class="p">;</span> <span class="c1">// throws
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> current = State.Closed; <span style="color:#09f;font-style:italic">// the initial state
+</span><span style="color:#09f;font-style:italic"></span>current = ChangeState(current, Input.Open); <span style="color:#09f;font-style:italic">// Opened
+</span><span style="color:#09f;font-style:italic"></span>current = ChangeState(current, Input.Close); <span style="color:#09f;font-style:italic">// Closed
+</span><span style="color:#09f;font-style:italic"></span>current = ChangeState(current, Input.Lock); <span style="color:#09f;font-style:italic">// Locked
+</span><span style="color:#09f;font-style:italic"></span>current = ChangeState(current, Input.Open); <span style="color:#09f;font-style:italic">// throws
 </span></code></pre></div><h2 id="state-machines-with-async-actions">State Machines with Async Actions</h2>
 <p>Let's take a look at another example. This time we'll implement a process scheduler.</p>
 <p><img src="/images/posts/2019-11-20-guide-to-fsm/2.svg" /></p>
 <p class="text-center"><small>Figure 2: The states of a process</small></p>
 <p>In Figure 2 we have the following sets of states and inputs:</p>
-<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">enum</span> <span class="n">State</span> <span class="p">{</span> <span class="n">Created</span><span class="p">,</span> <span class="n">Ready</span><span class="p">,</span> <span class="n">Running</span><span class="p">,</span> <span class="n">Waiting</span><span class="p">,</span> <span class="n">Terminated</span> <span class="p">}</span>
-<span class="k">enum</span> <span class="n">Input</span> <span class="p">{</span> 
-    <span class="n">Admit</span><span class="p">,</span> <span class="n">ScheduleDispatch</span><span class="p">,</span> <span class="n">Interrupt</span><span class="p">,</span>
-    <span class="n">IOorEventWait</span><span class="p">,</span> <span class="n">IOorEventComplete</span><span class="p">,</span> <span class="n">Exit</span> 
-<span class="p">}</span>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">enum</span> State { Created, Ready, Running, Waiting, Terminated }
+<span style="color:#069;font-weight:bold">enum</span> Input { 
+    Admit, ScheduleDispatch, Interrupt,
+    IOorEventWait, IOorEventComplete, Exit 
+}
 </code></pre></div><p>That's how we implement the transition function:</p>
-<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">State</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">State</span> <span class="n">current</span><span class="p">,</span> <span class="n">Input</span> <span class="n">input</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
-    <span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">input</span><span class="p">)</span> <span class="k">switch</span>
-    <span class="p">{</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Created</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Admit</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Ready</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Ready</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">ScheduleDispatch</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Running</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Running</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">IOorEventWait</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Waiting</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Waiting</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">IOorEventComplete</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Ready</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Running</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Interrupt</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Ready</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Running</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Exit</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Terminated</span><span class="p">,</span>
-        <span class="n">_</span> <span class="p">=</span><span class="p">&gt;</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">NotSupportedException</span><span class="p">(</span>
-            <span class="s">$&#34;{current} has no transition on {input}&#34;</span><span class="p">)</span>
-    <span class="p">}</span><span class="p">;</span>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">State ChangeState(State current, Input input) =&gt;
+    (current, input) <span style="color:#069;font-weight:bold">switch</span>
+    {
+        (State.Created, Input.Admit) =&gt; State.Ready,
+        (State.Ready, Input.ScheduleDispatch) =&gt; State.Running,
+        (State.Running, Input.IOorEventWait) =&gt; State.Waiting,
+        (State.Waiting, Input.IOorEventComplete) =&gt; State.Ready,
+        (State.Running, Input.Interrupt) =&gt; State.Ready,
+        (State.Running, Input.Exit) =&gt; State.Terminated,
+        _ =&gt; <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> NotSupportedException(
+            <span style="color:#c30">$&#34;{current} has no transition on {input}&#34;</span>)
+    };
 </code></pre></div><p>We can also create conditional transitions using the <code>when</code> keyword.</p>
-<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">State</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">State</span> <span class="n">current</span><span class="p">,</span> <span class="n">Input</span> <span class="n">input</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">hasPermission</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
-    <span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">input</span><span class="p">)</span> <span class="k">switch</span>
-    <span class="p">{</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">New</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Admit</span><span class="p">)</span> <span class="n">when</span> <span class="n">hasPermission</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">State</span><span class="p">.</span><span class="n">Ready</span>
-        <span class="c1">// ...
-</span><span class="c1"></span>    <span class="p">}</span><span class="p">;</span>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">State ChangeState(State current, Input input, <span style="color:#078;font-weight:bold">bool</span> hasPermission) =&gt;
+    (current, input) <span style="color:#069;font-weight:bold">switch</span>
+    {
+        (State.New, Input.Admit) when hasPermission =&gt; State.Ready
+        <span style="color:#09f;font-style:italic">// ...
+</span><span style="color:#09f;font-style:italic"></span>    };
 </code></pre></div><p>Suppose we want to execute some transition action on state change. Keep in mind that what comes after the <code>=&gt;</code> is an expression. So far we were simply returning values, now we want to run some arbitrary code. The approach might not seem very intuitive, but for those familiar with JavaScript it should ring a bell. We're going to wrap our code in an <em>immediately invoked function expression <a href="https://developer.mozilla.org/en-US/docs/Glossary/IIFE">(IIFE)</a></em> using C#&lsquo;s lambda syntax.</p>
-<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">State</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">State</span> <span class="n">current</span><span class="p">,</span> <span class="n">Input</span> <span class="n">input</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
-    <span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">input</span><span class="p">)</span> <span class="k">switch</span>
-	<span class="p">{</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">New</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Admit</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="p">(</span><span class="p">(</span><span class="n">Func</span><span class="p">&lt;</span><span class="n">State</span><span class="p">&gt;</span><span class="p">)</span><span class="p">(</span><span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="p">{</span>
-            <span class="n">ExecuteSomeAction</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
-            <span class="k">return</span> <span class="n">State</span><span class="p">.</span><span class="n">Ready</span><span class="p">;</span>
-        <span class="p">}</span><span class="p">)</span><span class="p">)</span><span class="p">(</span><span class="p">)</span><span class="p">,</span>
-        <span class="c1">// ...
-</span><span class="c1"></span>    <span class="p">}</span><span class="p">;</span>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">State ChangeState(State current, Input input) =&gt;
+    (current, input) <span style="color:#069;font-weight:bold">switch</span>
+	{
+        (State.New, Input.Admit) =&gt; ((Func&lt;State&gt;)(() =&gt; {
+            ExecuteSomeAction();
+            <span style="color:#069;font-weight:bold">return</span> State.Ready;
+        }))(),
+        <span style="color:#09f;font-style:italic">// ...
+</span><span style="color:#09f;font-style:italic"></span>    };
 </code></pre></div><p>The usage of our <code>ChangeState</code> method remains the same.</p>
-<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">current</span> <span class="p">=</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">New</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Admit</span><span class="p">)</span><span class="p">;</span> <span class="c1">// Ready
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> current = ChangeState(State.New, Input.Admit); <span style="color:#09f;font-style:italic">// Ready
 </span></code></pre></div><p>If <code>ExecuteSomeAction()</code> is a long-running operation, it would make sense to unblock the current thread by making it asynchronous. That requires us to refactor our state machine.</p>
-<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">State</span><span class="p">&gt;</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">State</span> <span class="n">current</span><span class="p">,</span> <span class="n">Input</span> <span class="n">input</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span>
-    <span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">input</span><span class="p">)</span> <span class="k">switch</span>
-    <span class="p">{</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">New</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Admit</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> 
-            <span class="k">await</span> <span class="p">(</span><span class="p">(</span><span class="n">Func</span><span class="p">&lt;</span><span class="n">Task</span><span class="p">&lt;</span><span class="n">State</span><span class="p">&gt;</span><span class="p">&gt;</span><span class="p">)</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="p">{</span>
-                <span class="k">await</span> <span class="n">ExecuteSomeActionAsync</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
-                <span class="k">return</span> <span class="n">State</span><span class="p">.</span><span class="n">Ready</span><span class="p">;</span>
-            <span class="p">}</span><span class="p">)</span><span class="p">)</span><span class="p">(</span><span class="p">)</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Ready</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">ScheduleDispatch</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> 
-            <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">Running</span><span class="p">)</span><span class="p">,</span>
-        <span class="c1">// ...
-</span><span class="c1"></span>   	<span class="p">}</span><span class="p">;</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="kt">var</span> <span class="n">current</span> <span class="p">=</span> <span class="k">await</span> <span class="n">ChangeState</span><span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="n">New</span><span class="p">,</span> <span class="n">Input</span><span class="p">.</span><span class="n">Admit</span><span class="p">)</span><span class="p">;</span> <span class="c1">// Ready
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">async</span> Task&lt;State&gt; ChangeState(State current, Input input) =&gt;
+    (current, input) <span style="color:#069;font-weight:bold">switch</span>
+    {
+        (State.New, Input.Admit) =&gt; 
+            <span style="color:#069;font-weight:bold">await</span> ((Func&lt;Task&lt;State&gt;&gt;)(<span style="color:#069;font-weight:bold">async</span> () =&gt; {
+                <span style="color:#069;font-weight:bold">await</span> ExecuteSomeActionAsync();
+                <span style="color:#069;font-weight:bold">return</span> State.Ready;
+            }))(),
+        (State.Ready, Input.ScheduleDispatch) =&gt; 
+            <span style="color:#069;font-weight:bold">await</span> Task.FromResult(State.Running),
+        <span style="color:#09f;font-style:italic">// ...
+</span><span style="color:#09f;font-style:italic"></span>   	};
+</code></pre></div><div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> current = <span style="color:#069;font-weight:bold">await</span> ChangeState(State.New, Input.Admit); <span style="color:#09f;font-style:italic">// Ready
 </span></code></pre></div><h2 id="combining-state-machines">Combining State Machines</h2>
 <p>In this example, we'll see how separate state machines can interact with each other to form a unified workflow.</p>
 <p>We're given the task to design an online store where customers can purchase items by paying online through a bank. The system has three participants: the customer, the store and the bank, with the following requirements:</p>
@@ -332,7 +332,7 @@ They are no silver bullet though. Not every domain is suitable to be modeled in 
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-19 09:21:22.31322 &#43;0200 EET m=&#43;0.093033137">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-23 09:02:55.839458 &#43;0200 EET m=&#43;0.094249083">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>

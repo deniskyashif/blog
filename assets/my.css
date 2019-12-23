@@ -73,6 +73,7 @@ main .post .post-title {
 .social-share {
     margin: 40px 0 20px 0;
 }
+
 .social-share .share-btn {
 	display: inline-block;
 	color: #ffffff;
@@ -169,4 +170,8 @@ main .post .post-title {
 
 .catalogue .catalogue-item {
     padding: 1rem 0;
+}
+
+.highlight {
+    background-color: #f0f3f3;
 }

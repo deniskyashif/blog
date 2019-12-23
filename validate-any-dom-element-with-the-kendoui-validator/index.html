@@ -97,40 +97,40 @@ if (!doNotTrack) {
 		<p>KendoUI's validator allows declaring rules and easily performing client-side validation for input and textarea elements. It offers great flexibility even when it comes to complex cases, when for example input fields are interconnected. Suppose we want to validate an element other than input or textarea, then calling <code>validate()</code> won't be enough.</p>
 <h2 id="the-problem">The Problem</h2>
 <p>Let's have a form consisting of a textarea and a grid.</p>
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">form</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;form&#34;</span><span class="p"></span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">textarea</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;text&#34;</span><span class="p"></span><span class="p">&gt;</span>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#309;font-weight:bold">form</span> <span style="color:#309">id</span><span style="color:#555">=</span><span style="color:#c30">&#34;form&#34;</span>&gt;
+  &lt;<span style="color:#309;font-weight:bold">textarea</span> <span style="color:#309">name</span><span style="color:#555">=</span><span style="color:#c30">&#34;text&#34;</span>&gt;
     Our world is a magical smoke screen
-  <span class="p">&lt;</span><span class="p">/</span><span class="nt">textarea</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;grid&#34;</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;validate&#34;</span><span class="p"></span><span class="p">&gt;</span>Validate<span class="p">&lt;</span><span class="p">/</span><span class="nt">button</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="p">/</span><span class="nt">form</span><span class="p">&gt;</span>
+  &lt;/<span style="color:#309;font-weight:bold">textarea</span>&gt;
+  &lt;<span style="color:#309;font-weight:bold">div</span> <span style="color:#309">id</span><span style="color:#555">=</span><span style="color:#c30">&#34;grid&#34;</span>&gt;&lt;/<span style="color:#309;font-weight:bold">div</span>&gt;
+  &lt;<span style="color:#309;font-weight:bold">button</span> <span style="color:#309">id</span><span style="color:#555">=</span><span style="color:#c30">&#34;validate&#34;</span>&gt;Validate&lt;/<span style="color:#309;font-weight:bold">button</span>&gt;
+&lt;/<span style="color:#309;font-weight:bold">form</span>&gt;
 </code></pre></div><p>We want to ensure the textarea's value is not longer than 20 characters and the grid contains at least two rows. To do so, we declare our validation rules in the following way:</p>
-<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">validator</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#form&#39;</span><span class="p">)</span><span class="p">.</span><span class="nx">kendoValidator</span><span class="p">(</span><span class="p">{</span>
-  <span class="nx">messages</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">text</span><span class="o">:</span> <span class="s1">&#39;Field must contain at most 20 symbols.&#39;</span><span class="p">,</span>
-    <span class="nx">grid</span><span class="o">:</span> <span class="s1">&#39;The grid must contain at least two rows.&#39;</span>
-  <span class="p">}</span><span class="p">,</span>
-  <span class="nx">rules</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">text</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span> 
-      <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="s1">&#39;[name=text]&#39;</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">item</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span>
-      <span class="p">}</span>
-      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span><span class="p">,</span>
-    <span class="nx">grid</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="s1">&#39;[data-role=grid]&#39;</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">grid</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">getKendoGrid</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
-        <span class="k">return</span> <span class="nx">grid</span><span class="p">.</span><span class="nx">dataItems</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">;</span>
-      <span class="p">}</span>
-      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span><span class="p">)</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;kendoValidator&#39;</span><span class="p">)</span><span class="p">;</span>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">var</span> validator <span style="color:#555">=</span> $(<span style="color:#c30">&#39;#form&#39;</span>).kendoValidator({
+  messages<span style="color:#555">:</span> {
+    text<span style="color:#555">:</span> <span style="color:#c30">&#39;Field must contain at most 20 symbols.&#39;</span>,
+    grid<span style="color:#555">:</span> <span style="color:#c30">&#39;The grid must contain at least two rows.&#39;</span>
+  },
+  rules<span style="color:#555">:</span> {
+    text<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">function</span>(item) { 
+      <span style="color:#069;font-weight:bold">if</span> (item.is(<span style="color:#c30">&#39;[name=text]&#39;</span>)) {
+        <span style="color:#069;font-weight:bold">return</span> item.val().length <span style="color:#555">&lt;</span> <span style="color:#f60">20</span>;
+      }
+      <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">true</span>;
+    },
+    grid<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">function</span>(item) {
+      <span style="color:#069;font-weight:bold">if</span> (item.is(<span style="color:#c30">&#39;[data-role=grid]&#39;</span>)) {
+        <span style="color:#069;font-weight:bold">var</span> grid <span style="color:#555">=</span> item.getKendoGrid();
+        <span style="color:#069;font-weight:bold">return</span> grid.dataItems().length <span style="color:#555">&gt;</span> <span style="color:#f60">1</span>;
+      }
+      <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">true</span>;
+    }
+  }
+}).data(<span style="color:#c30">&#39;kendoValidator&#39;</span>);
 </code></pre></div><p>Calling <code>validator.validate()</code> however checks only the textarea element. So I decided to peek in the KendoUI internals to get a better understanding of how the validator works. You can check the code <a href="https://github.com/telerik/kendo-ui-core/blob/25e8c5c5ccd176268e8ec9b2dad3722642898970/src/kendo.validator.js#L279">here</a>.</p>
 <p><strong>TL;DR:</strong> The validate function traverses all the input fields, apart from <em>&ldquo;submit&rdquo;</em>, <em>&ldquo;reset&rdquo;</em>, <em>&ldquo;button&rdquo;</em>, <em>&ldquo;disabled&rdquo;</em> and <em>&ldquo;readonly&rdquo;</em> types and applies the validation rules to them. No wonder why the grid gets omitted.</p>
 <h2 id="validateinput-to-the-rescue"><code>validateInput</code> to the rescue</h2>
 <p>This function lets us specify explicitly to which element we want to apply our rules. There is no type constraint whatsoever(although it has &ldquo;input&rdquo; in its name). We can also see that <code>validate</code> internally delegates the validation logic for each separate field by passing it to <code>validateInput</code>. Therefore we have to add the following line to our validation code.</p>
-<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">isValid</span> <span class="o">=</span> <span class="nx">validator</span><span class="p">.</span><span class="nx">validate</span><span class="p">(</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">validator</span><span class="p">.</span><span class="nx">validateInput</span><span class="p">(</span><span class="s1">&#39;#grid&#39;</span><span class="p">)</span><span class="p">;</span>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">var</span> isValid <span style="color:#555">=</span> validator.validate() <span style="color:#555">&amp;&amp;</span> validator.validateInput(<span style="color:#c30">&#39;#grid&#39;</span>);
 </code></pre></div>
 
 		<section class="social-share">
@@ -205,7 +205,7 @@ if (!doNotTrack) {
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-19 09:21:22.393003 &#43;0200 EET m=&#43;0.172817836">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-23 09:02:55.91109 &#43;0200 EET m=&#43;0.165882827">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
