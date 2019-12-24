@@ -11,7 +11,7 @@ googleAnalytics = "UA-133185625-1"
 
 [params]
   description = "My personal blog about software and computer science."
-  images = ["/images/site-feature-image.png"]
+  images = ["/images/site-feature-image-sq.png"]
   socialShareTwitter = true
   socialShareFacebook = true
   socialShareReddit = true
