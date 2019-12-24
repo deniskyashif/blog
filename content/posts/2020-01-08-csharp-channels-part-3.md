@@ -9,13 +9,13 @@ images:
 - "/images/posts/csharp-channels-part3/featured-image.png"
 ---
 
-In this article, we'll learn how to efficiently process data in a non-blocking way using the pipeline pattern. We'll see how to construct efficient and testable pipelines using C#'s channels, as well as how to perform cancellation and deal with errors. If you're new to the concept of channels in C#, I suggest checking out [part 1](/c-sharp-channels-part-1) and [part 2](/c-sharp-channels-part-2) of the series first.
+In this article, we'll learn how to efficiently process data in a non-blocking way using the pipeline pattern. We'll construct composable and testable pipelines using C#'s channels, and see how to perform cancellation and deal with errors. If you're new to the concept of channels in C#, I suggest checking out [part 1](/c-sharp-channels-part-1) and [part 2](/c-sharp-channels-part-2) of the series first.
 
 ## Pipelines
 
 A pipeline is a concurrency model that consists of a sequence of stages. Each stage performs a part of the full job and when it's done, it forwards it to the next stage. It also runs in a separate thread and **shares no state** with the other stages.
 
-<img src="/images/posts/csharp-channels-part3/pipeline.png" />
+<img src="/images/posts/2020-01-08-csharp-channels-part3/pipeline.png" />
 
 The generator delegates the jobs, which are being processed through the pipeline. For example, we can represent the pizza preparation as a pipeline, consisting of the following stages:
 
@@ -31,7 +31,7 @@ In this concurrency model, each stage executes simultaneously, that is, when sta
 
 Each pipeline starts with a generator method, which initiates jobs by passing it to the stages. Each stage is also a method that runs on its thread. The communication between the stages in a pipeline is performed using channels. A stage takes a channel as an input, reads from it asynchronously, performs some work and passes data to an output channel.
 
-<img src="/images/posts/csharp-channels-part3/pipeline-channels.png" />
+<img src="/images/posts/2020-01-08-csharp-channels-part3/pipeline-channels.png" />
 
 To see it in action, we're going to design a program that efficiently counts the lines of code in a project.
 
@@ -97,7 +97,7 @@ This stage takes an input channel (produced by the generator) from which it asyn
 This stage is responsible for determining the number of lines in each file.
 
 ```cs
-static ChannelReader<(FileInfo file, int lines)> 
+ChannelReader<(FileInfo file, int lines)> 
     GetLineCount(ChannelReader<FileInfo> input)
 {
     var output = Channel.CreateUnbounded<(FileInfo, int)>();
@@ -116,7 +116,7 @@ static ChannelReader<(FileInfo file, int lines)>
 }
 ```
 
-We write a tuple of type `(FileInfo, int)` which is a pair of the file metadata and its number of lines. It's obvious what `int CountLines(FileInfo file)` does. You can check out the implementation below.
+We write a tuple of type `(FileInfo, int)` which is a pair of the file metadata and its number of lines. The `int CountLines(FileInfo file)` method is straightforward, you can check out the implementation below.
 
 <details>
   <summary>Expand <code>CountLines</code></summary>
@@ -169,12 +169,12 @@ responsibility to deal with it. To achieve good error handling, our pipeline nee
 2. Invalid input should not cause the pipeline to stop. The pipeline should continue to process the inputs thereafter.
 3. The pipeline should not swallow errors. All the errors should be reported.
 
-We're going to modify stage 2 which counts the lines in a file. Our definition for invalid input is an empty file. Our pipeline should not pass them forward and instead, it should report the existence of such files. We solve that by introducing a second channel - a one which will contain the errors.
+We're going to modify stage 2 which counts the lines in a file. Our definition for invalid input is an empty file. Our pipeline should not pass them forward and instead, it should report the existence of such files. We solve that by introducing a second channel that holds the errors.
 
 ``` diff
-- static ChannelReader<(FileInfo file, int lines)> GetLineCount(
-+ static (ChannelReader<(FileInfo file, int lines)> output,
-+         ChannelReader<string> errors)
+- ChannelReader<(FileInfo file, int lines)> GetLineCount(
++     (ChannelReader<(FileInfo file, int lines)> output,
++      ChannelReader<string> errors)
     GetLineCount(ChannelReader<FileInfo> input)
     {
         var output = Channel.CreateUnbounded<(FileInfo, int)>();
@@ -203,7 +203,9 @@ We're going to modify stage 2 which counts the lines in a file. Our definition f
 We've created a second channel for errors and changed the signature of the method so it returns both the output and the error channels. Empty files are not passed to the next stage, we've provided a mechanism to report them using the error channel and after we get an invalid input, our pipeline continues processing the next ones.
 
 ```cs
-...
+var fileGen = GetFilesRecursively("path_to/node_modules");
+var sourceCodeFiles = FilterByExtension(
+    fileGen, new HashSet<string> { ".js", ".ts" });
 var (counter, errors) = GetLineCount(sourceCodeFiles);
 var totalLines = 0;
 
@@ -221,7 +223,7 @@ await foreach (var errMessage in errors.ReadAllAsync())
 Similarily to the error handling, the stages being independent means that each has to handle cancellation on their own. To stop the pipeline, we need to prevent the generator from delegating new jobs. Let's make it cancellable.
 
 ```cs
-static ChannelReader<string> GetFilesRecursively(
+ChannelReader<string> GetFilesRecursively(
     string root, CancellationToken token = default)
 {
     var output = Channel.CreateUnbounded<string>();
@@ -250,28 +252,28 @@ static ChannelReader<string> GetFilesRecursively(
 }
 ```
 
-The change is straightforward, we need to handle the cancellation in a `try/catch` block and not forget to close the output channel. Keep in mind that canceling only the initial stage will leave the next stages running with the existing jobs which might not always be desired (especially if the stages are long-running). Therefore, we have to pass the cancellation token to each of them and make them able to handle cancellation as well.
+The change is straightforward, we need to handle the cancellation in a `try/catch` block and not forget to close the output channel. Keep in mind that canceling only the initial stage will leave the next stages running with the existing jobs which might not always be desired, especially if the stages are long-running. Therefore, we have to make them able to handle cancellation as well.
 
 ```cs
 var cts = new CancellationTokenSource();
-cts.CancelAfter(TimeSpan.FromSeconds(0.5));
+cts.CancelAfter(TimeSpan.FromSeconds(2));
 var fileSource = GetFilesRecursively("path_to/node_modules", cts.Token);
 ...
 ```
  
 ## Dealing with Bottlenecks
 
-Our stages execute concurrently but this doesn't guarantee optimal performance. Let's revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we're going to end up with many pizzas with their toppings added, waiting to be baked, but our oven fits in only one at a time. We solve this by getting a larger oven, or even multiple ovens.
+Our stages execute concurrently but this doesn't guarantee an optimal performance. Let's revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we're going to end up with many pizzas with their toppings added, waiting to be baked, but our oven fits in only one at a time. We solve this by getting a larger oven, or even multiple ovens.
 
-<img src="/images/posts/csharp-channels-part3/bottleneck.png" />
+<img src="/images/posts/2020-01-08-csharp-channels-part3/bottleneck.png" />
 
 In the line-counter example, the stage where we read the file and count its lines might cause a bottleneck when a file is sufficiently large. It makes sense to increase the capacity of this stage and that's where `Split<T>` and `Merge<T>` which we discussed in [part 1](/csharp-channels-part-1#multiplexer) come into use. We'll summarize them.
 
 ### Split
 
-`Split<T>` is a method that takes an input channel and distributes its messages amongst several outputs. That way we can let several threads handle the message processing.
+`Split<T>` is a method that takes an input channel and distributes its messages amongst several outputs. That way we can let several threads concurrently handle the message processing.
 
-<img src="/images/posts/csharp-channels-part3/split.png" />
+<img src="/images/posts/2020-01-08-csharp-channels-part3/split.png" />
 
 <details>
   <summary>Expand <code>Split&lt;T&gt;</code> implementation</summary>
@@ -315,13 +317,13 @@ var splitter = Split(sourceCodeFiles, 5);
 
 `Merge<T>` is the opposite operation. It takes multiple input channels and consolidates them in a single output.
 
-<img src="/images/posts/csharp-channels-part3/merge.png" />
+<img src="/images/posts/2020-01-08-csharp-channels-part3/merge.png" />
 
 <details>
   <summary>Expand <code>Merge&lt;T&gt;</code> implementation</summary>
 
 ```cs
-static ChannelReader<T> Merge<T>(params ChannelReader<T>[] inputs)
+ChannelReader<T> Merge<T>(params ChannelReader<T>[] inputs)
 {
     var output = Channel.CreateUnbounded<T>();
 
@@ -343,12 +345,12 @@ static ChannelReader<T> Merge<T>(params ChannelReader<T>[] inputs)
 </details>
 <br />
 
-During `Merge<T>`, we read concurrently from several channels, so this is the stage where we need to tweak it a little bit and perform the line counting.
+During `Merge<T>`, we read concurrently from several channels, so this is the stage that we need to tweak a little bit and perform the line counting.
 
 We introduce, `CountLinesAndMerge` which doesn't only redirect, but also transforms.
 
 ```cs {hl_lines=[11]}
-static ChannelReader<(FileInfo file, int lines)>
+ChannelReader<(FileInfo file, int lines)>
     CountLinesAndMerge(IList<ChannelReader<FileInfo>> inputs)
 {
     var output = Channel.CreateUnbounded<(FileInfo file, int lines)>();
@@ -381,15 +383,15 @@ var sourceCodeFiles =
 
 ## TPL Dataflow
 
-The TPL Dataflow library is another option for implementing data processing pipelines or even meshes in .NET. It has a declarative and a higher-level API compared to the channel-based approach, but it also comes with more complexity and provides less control. I haven't done an extensive performance comparison yet, but I think that deciding between the two should strongly depend on the case. If you prefer a simpler API and more control, the lightweight channels would be the way to go. If you want a high-level API with more features, check out TPL Dataflow.
+The TPL Dataflow library is another option for implementing pipelines or even meshes in .NET. It has a declarative and a higher-level API compared to the channel-based approach, but it also comes with more complexity and provides less control. Personally, I think that deciding between the two should strongly depend on the case. If you prefer a simpler API and more control, the lightweight channels would be the way to go. If you want a high-level API with more features, check out TPL Dataflow.
 
 ## Conclusion
 
-We defined the pipeline concurrency model and learned how to use it to implement efficient and flexible async data processing pipelines. We learned how to deal with errors, perform cancellation as well as how to apply some of the concurrency techniques (multiplexing and demultiplexing), described in the previous articles, to deal with potential bottlenecks.
+We defined the pipeline concurrency model and learned how to use it to implement efficient and flexible data processing pipelines. We learned how to deal with errors, perform cancellation as well as how to apply some of the concurrency techniques (multiplexing and demultiplexing), described in the previous articles, to deal with potential bottlenecks.
 
-Besides performance, pipelines are also easy to change. Each stage is an atomic part of the whole composition which can be independently modified, replaced or removed as long as we keep the method signatures intact.
+Besides performance, pipelines are also easy to change. Each stage is an atomic part of the whole composition that can be independently modified, replaced or removed as long as we keep the method (stage) signatures intact.
 
-We can see how it can lead to a significant reduction in our code's cyclomatic complexity as well as making it easier to test. Each stage is simply a method with no side effects, which can be unit tested in isolation. Stages have a **single responsibility**, which makes them easier to reason about, thus we can cover all the possible cases in our unit tests.
+We can see how it can lead to a significant reduction in our code's cyclomatic complexity as well as making it easier to test. Each stage is simply a method with no side effects, which can be unit tested in isolation. Stages have a **single responsibility**, which makes them easier to reason about, thus we can cover all the possible cases.
 
 ## References & Further Reading
 
