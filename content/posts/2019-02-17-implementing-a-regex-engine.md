@@ -280,7 +280,7 @@ Let's simulate the algorithm on **(a&#8739;b)\*c**
 The simplest way to check if a string is recognized by automation is by computing all the possible paths through the NFA until we end up in an accepting state or exhaust all the possibilities. It falls down to a recursive depth-first search with backtracking. Let's see an example:
 
 <img id="fig5.1" src="/images/posts/2019-02-20-regex/nfa-search.png" />
-<p class="text-center"><small>Figure 5.1: NFA for the expression _(aba)&#8739;(abb)_</small></p>
+<p class="text-center"><small>Figure 5.1: NFA for the expression (aba)&#8739;(abb)</small></p>
 
 The automation in [Fig. 5.1](#fig5.1) recognizes either the string **"aba"** or **"abb"**. If we want to process **"abb"**, our simulation with recursive backtracking would process the input **one state at a time** so we'll first end up reaching \\(q_3\\) after reading **"ab"** from the input string. The next symbol is **'b'** but there's no transition from \\(q_3\\) on **'b'**, therefore, we backtrack to \\(q_0\\) and take the other path which leads us to the accepting state. You can check out my implementation on [GitHub](https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134).
 

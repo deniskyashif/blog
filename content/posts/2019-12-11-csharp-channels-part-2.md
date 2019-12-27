@@ -37,7 +37,7 @@ catch (OperationCanceledException)
     Console.WriteLine("Joe, you are too slow!");
 }
 ```
-```sh
+```
 Joe 0
 Joe 1
 Joe 2
@@ -92,7 +92,7 @@ await foreach (var item in joe.ReadAllAsync())
 
 Joe had 10 messages to send, but we gave him only 5 seconds, for which he managed to send only 4. We can also manually send a cancellation request, for example, after reading `N` number of messages.
 
-```sh
+```
 Joe 0
 Joe 1
 Joe 2
@@ -148,7 +148,7 @@ ch.Writer.Complete();
 
 Depending on the timeout interval we might end up receiving responses for all of the queries,
 
-```sh
+```
 [9:09:14 AM] Result from Google for Milky Way
 [9:09:14 AM] Result from Wikipedia for Milky Way
 [9:09:16 AM] Result from Quora for Milky Way
@@ -157,7 +157,7 @@ All searches have completed.
 
 or cut off the ones that are too slow.
 
-```sh
+```
 [9:09:19 AM] Result from Quora for Milky Way
 [9:09:20 AM] Result from Wikipedia for Milky Way
 Timeout.
@@ -168,5 +168,5 @@ Again - our code is non-blocking concurrent, thus there's no need to use locks, 
 ## References
 - [GitHub Repo](https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
 - Part 1: [C# Channels - Publish / Subscribe workflows](/csharp-channels-part-1)
-- Part 3: [C# Channels - Async Data Pipelines](/csharp-channels-part-3)
+<!-- - Part 3: [C# Channels - Async Data Pipelines](/csharp-channels-part-3) -->
 - The graphics are implemented using [sketch.io](https://sketch.io/sketchpad/)

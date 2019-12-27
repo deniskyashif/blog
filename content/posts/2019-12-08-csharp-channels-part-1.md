@@ -89,7 +89,7 @@ var producer = Task.Run(async () =>
 
 await Task.WhenAll(producer, consumer);
 ```
-```sh
+```
 [12:27:16 PM] Message 0
 [12:27:18 PM] Message 1
 [12:27:19 PM] Message 2
@@ -143,7 +143,7 @@ var joe = CreateMessenger("Joe", 5);
 await foreach (var item in joe.ReadAllAsync())
     Console.WriteLine(item);
 ```
-```sh
+```
 [7:31:39 AM] Joe 0
 [7:31:40 AM] Joe 1
 [7:31:42 AM] Joe 2
@@ -163,7 +163,7 @@ while (await joe.WaitToReadAsync() || await ann.WaitToReadAsync())
     Console.WriteLine(await ann.ReadAsync());
 }
 ```
-```sh
+```
 [8:00:51 AM] Joe 0
 [8:00:51 AM] Ann 0
 [8:00:52 AM] Joe 1
@@ -181,7 +181,7 @@ var ann = CreateMessenger("Ann", 5);
 
 We're still going to try and read from Joe, even when his channel is completed which is going to throw an exception.
 
-```sh
+```
 [8:05:01 AM] Joe 0
 [8:05:01 AM] Ann 0
 [8:05:02 AM] Joe 1
@@ -241,7 +241,7 @@ await foreach (var item in ch.ReadAllAsync())
     Console.WriteLine(item);
 ```
 
-```sh
+```
 [8:39:32 AM] Ann 0
 [8:39:32 AM] Joe 0
 [8:39:32 AM] Ann 1
@@ -357,7 +357,7 @@ _Check out [part 2](/csharp-channels-part-2) where we discuss some cancellation 
 
 - [GitHub Repo](https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
 - Part 2: [C# Channels - Timeout and Cancellation](/csharp-channels-part-2)
-- Part 3: [C# Channels - Async Data Pipelines](/csharp-channels-part-3)
+<!-- - Part 3: [C# Channels - Async Data Pipelines](/csharp-channels-part-3) -->
 - [An Introduction to System.Threading.Channels](https://devblogs.microsoft.com/dotnet/an-introduction-to-system-threading-channels/) on the .NET Blog
 - [Concurrency in C# Cookbook](https://stephencleary.com/book/) by Stephen Cleary - my highly recommended go-to reference for concurrent C#
 - The graphics are implemented using [sketch.io](https://sketch.io/sketchpad/)
