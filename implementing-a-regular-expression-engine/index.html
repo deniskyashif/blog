@@ -382,7 +382,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <h3 id="recursive-backtracking">Recursive Backtracking</h3>
 <p>The simplest way to check if a string is recognized by automation is by computing all the possible paths through the NFA until we end up in an accepting state or exhaust all the possibilities. It falls down to a recursive depth-first search with backtracking. Let's see an example:</p>
 <p><img id="fig5.1" src="/images/posts/2019-02-20-regex/nfa-search.png" /></p>
-<p class="text-center"><small>Figure 5.1: NFA for the expression _(aba)&#8739;(abb)_</small></p>
+<p class="text-center"><small>Figure 5.1: NFA for the expression (aba)&#8739;(abb)</small></p>
 <p>The automation in <a href="#fig5.1">Fig. 5.1</a> recognizes either the string <strong>&ldquo;aba&rdquo;</strong> or <strong>&ldquo;abb&rdquo;</strong>. If we want to process <strong>&ldquo;abb&rdquo;</strong>, our simulation with recursive backtracking would process the input <strong>one state at a time</strong> so we'll first end up reaching \(q_3\) after reading <strong>&ldquo;ab&rdquo;</strong> from the input string. The next symbol is <strong>&lsquo;b&rsquo;</strong> but there's no transition from \(q_3\) on <strong>&lsquo;b&rsquo;</strong>, therefore, we backtrack to \(q_0\) and take the other path which leads us to the accepting state. You can check out my implementation on <a href="https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134">GitHub</a>.</p>
 <p>For the automation on <a href="fig#5.1">Fig 5.1</a> we ended up going through all of the possible two paths. This doesn't seem like a big deal but in a more complex scenario, there might be considerable performance implications.</p>
 <p>Given an NFA with <em>n</em> states, from each of its states, it can transition to at most <em>n</em> possible states. This means there might be a maximum \(2^n\) paths, thus in the worst case this algorithm will end up going through all of these paths until it finds a match (or not). Needless to say, O(\(2^n\)) is not scalable because for a string of 10 characters to check whether it's matched or not we might end up doing 1024 operations. We should certainly do better than that.</p>
@@ -558,7 +558,7 @@ match(<span style="color:#c30">&#39;&#39;</span>); <span style="color:#09f;font-
 
         <footer>
 	<span>
-		&copy; <time datetime="2019-12-24 10:20:34.523751 &#43;0200 EET m=&#43;0.169163928">2019</time> Denis Kyashif
+		&copy; <time datetime="2019-12-27 09:53:54.799782 &#43;0200 EET m=&#43;0.173325064">2019</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
