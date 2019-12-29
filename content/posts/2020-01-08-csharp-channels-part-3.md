@@ -1,19 +1,20 @@
 ---
 title: "C# Channels - Async Data Pipelines"
 date: 2019-12-23T08:42:15+02:00
-draft: true
+draft: false
 url: "csharp-channels-part-3"
 tags: ["software-design", "csharp", "concurrency", "dotnet"]
 summary: "How to implement an \"assembly line\" concurrency model using channels."
 images: 
-- "/images/posts/csharp-channels-part3/featured-image.png"
+- "/images/posts/2020-01-08-csharp-channels-part3/featured-image.png"
 ---
 
 In this article, we'll learn how to efficiently process data in a non-blocking way using the pipeline pattern. We'll construct composable and testable pipelines using C#'s channels, and see how to perform cancellation and deal with errors. If you're new to the concept of channels in C#, I suggest checking out [part 1](/c-sharp-channels-part-1) and [part 2](/c-sharp-channels-part-2) of the series first.
 
 ## Pipelines
 
-A pipeline is a concurrency model that consists of a sequence of stages. Each stage performs a part of the full job and when it's done, it forwards it to the next stage. It also runs in a separate thread and **shares no state** with the other stages.
+
+A pipeline is a concurrency model where a job is handled through several processing stages. Each stage performs a part of the full job and when it's done, it forwards it to the next stage. It also runs in a separate thread and **shares no state** with the other stages.
 
 <img src="/images/posts/2020-01-08-csharp-channels-part3/pipeline.png" />
 
@@ -25,7 +26,7 @@ The generator delegates the jobs, which are being processed through the pipeline
 3. Bake in oven
 4. Put in a box
 
-In this concurrency model, each stage executes simultaneously, that is, when stage 2 adds toppings to pizza 1, stage 1 can prepare the dough for pizza 2, when stage 4 puts the baked pizza 1 in a box, stage 1 might be preparing the dough for pizza 3 and so on.
+Stages start executing as soon as their input is ready, e.g., when stage 2 adds toppings to pizza 1, stage 1 can prepare the dough for pizza 2, when stage 4 puts the baked pizza 1 in a box, stage 1 might be preparing the dough for pizza 3 and so on.
 
 ## Implementing a Channel-based Pipeline
 
