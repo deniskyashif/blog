@@ -13,8 +13,7 @@ In this article, we'll learn how to efficiently process data in a non-blocking w
 
 ## Pipelines
 
-
-A pipeline is a concurrency model where a job is handled through several processing stages. Each stage performs a part of the full job and when it's done, it forwards it to the next stage. It also runs in a separate thread and **shares no state** with the other stages.
+A pipeline is a concurrency model where a job is handled through several processing stages. Each stage performs a part of the full job and when it's done, it forwards it to the next stage. It also runs in a separate thread and **shares no state** with the other stages. 
 
 <img src="/images/posts/2020-01-08-csharp-channels-part3/pipeline.png" />
 
@@ -30,15 +29,15 @@ Stages start executing as soon as their input is ready, e.g., when stage 2 adds 
 
 ## Implementing a Channel-based Pipeline
 
-Each pipeline starts with a generator method, which initiates jobs by passing it to the stages. Each stage is also a method that runs on its thread. The communication between the stages in a pipeline is performed using channels. A stage takes a channel as an input, reads from it asynchronously, performs some work and passes data to an output channel.
+Each pipeline starts with a generator method, which initiates jobs by passing it to the stages. The intermediate stages are also methods that run on separate threads. Channels serve as a transport mechanism between the stages. A stage takes a channel as an input, performs some work on each data item it asynchronously reads, and passes the result to an output channel. The purpose of a stage is to do one job and do it well.
 
 <img src="/images/posts/2020-01-08-csharp-channels-part3/pipeline-channels.png" />
 
-To see it in action, we're going to design a program that efficiently counts the lines of code in a project.
+To see it in action, we're going to implement a program that efficiently counts the lines of code in a project.
 
 ### The Generator - Enumerate the Files
 
-The initial stage of our pipeline would be to recursively enumerate the files in the workspace. We implement it as a generator.
+The initial stage of our pipeline would be to enumerate recursively the files in the workspace. We implement it as a generator.
 
 ```cs
 ChannelReader<string> GetFilesRecursively(string root)
@@ -64,7 +63,7 @@ ChannelReader<string> GetFilesRecursively(string root)
 }
 ```
 
-We perform a depth-first traversal of the folder and its subfolders and write each file name we encounter to the output channel. When we're done with the traversal, we mark the channel as complete so the consumer (the next stage) knows when to stop reading from it.
+We perform a depth-first traversal of the directory and its subdirectories and write each file name we encounter to the output channel. When we're done with the traversal, we mark the channel as complete so the consumer (the next stage) knows when to stop reading from it.
 
 ### Stage 1 - Keep the Source Files
 
@@ -388,7 +387,7 @@ The TPL Dataflow library is another option for implementing pipelines or even me
 
 ## Conclusion
 
-We defined the pipeline concurrency model and learned how to use it to implement efficient and flexible data processing pipelines. We learned how to deal with errors, perform cancellation as well as how to apply some of the concurrency techniques (multiplexing and demultiplexing), described in the previous articles, to deal with potential bottlenecks.
+We defined the pipeline concurrency model and learned how to use it to implement flexible, high-performance data processing workflows. We learned how to deal with errors, perform cancellation as well as how to apply some of the channel concurrency techniques (multiplexing and demultiplexing), described in the previous articles, to deal with potential bottlenecks.
 
 Besides performance, pipelines are also easy to change. Each stage is an atomic part of the whole composition that can be independently modified, replaced or removed as long as we keep the method (stage) signatures intact.
 
