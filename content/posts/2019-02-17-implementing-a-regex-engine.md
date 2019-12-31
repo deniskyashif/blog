@@ -14,14 +14,14 @@ editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-0
 Understanding and using regular expressions properly is a valuable skill when it comes to text processing. Due to their declarative yet idiomatic syntax, regular expressions can sometimes be a source of confusion (even [anxiety](https://stackoverflow.com/questions/172303/is-there-a-regular-expression-to-detect-a-valid-regular-expression)) amongst software developers. In this article, we'll implement a simple and efficient regex engine. We'll define the syntax of our regular expressions, learn how to parse them and build our recognizer. First, we'll briefly cover some theoretical foundations.
 
 ## Finite Automata
-In informal terms **finite automation** (or **finite state machine**) is an abstract machine that  has states and transitions between these states. It is always in one of its states and while it reads an input it switches from state to state. It has a **start state** and can have one or more **end (accepting) states**.
+In informal terms **finite automaton** (or **finite state machine**) is an abstract machine that  has states and transitions between these states. It is always in one of its states and while it reads an input it switches from state to state. It has a **start state** and can have one or more **end (accepting) states**.
 
 ### Deterministic Finite Automata (DFA)
 
 <img id="fig1.1" src="/images/posts/2019-02-20-regex/dfa.png" />
-<p class="text-center"><small>Figure 1.1: Deterministic Finite Automation (DFA)</small></p>
+<p class="text-center"><small>Figure 1.1: Deterministic Finite Automaton (DFA)</small></p>
 
-In [Fig 1.1](#fig1.1) we have automation with four states; \\(q_0\\) is called the **start state** and \\(q_3\\) is the **end (accepting)** state. It recognizes all the strings that start with **"ab"**, followed by an arbitrary number of **'b'** s and ending with an **'a'**.
+In [Fig 1.1](#fig1.1) we have automaton with four states; \\(q_0\\) is called the **start state** and \\(q_3\\) is the **end (accepting)** state. It recognizes all the strings that start with **"ab"**, followed by an arbitrary number of **'b'** s and ending with an **'a'**.
 
 If we process the string **"abba"** through the machine on [Fig 1.1](#fig1.1) we'll go through the following states:  
 
@@ -32,13 +32,13 @@ If we process the string **"abba"** through the machine on [Fig 1.1](#fig1.1) we
 | 2    | \\(q_2\\)         | b                 | \\(q_2\\)             |
 | 3    | \\(q_2\\)         | a                 | \\(q_3\\)             |
   
-For the strings **"aba"**, **"abbba"** or **"abbbbba"**, the automation will end up in the accepting state of \\(q_3\\). If at any point during processing, the machine has no state to follow for a given input symbol - it stops the execution and the string is not recognized. So it won't recognize **"ab"** as it will end up in the non-accepting state of \\(q_2\\) and **"abca"** as there's no transition on the symbol **'c'** from \\(q_2\\). In the example of [Fig 1.1](#fig1), at each state for a given valid input symbol, we can end up in exactly one state, we say that the machine is **deterministic** (DFA).
+For the strings **"aba"**, **"abbba"** or **"abbbbba"**, the automaton will end up in the accepting state of \\(q_3\\). If at any point during processing, the machine has no state to follow for a given input symbol - it stops the execution and the string is not recognized. So it won't recognize **"ab"** as it will end up in the non-accepting state of \\(q_2\\) and **"abca"** as there's no transition on the symbol **'c'** from \\(q_2\\). In the example of [Fig 1.1](#fig1), at each state for a given valid input symbol, we can end up in exactly one state, we say that the machine is **deterministic** (DFA).
 
 ### Nondeterministic Finite Automata (NFA)
-Suppose we have the following automation:
+Suppose we have the following automaton:
 
 <img id="fig1.2" src="/images/posts/2019-02-20-regex/nfa.png" />
-<p class="text-center"><small>Figure 1.2: Nondeterministic Finite Automation (NFA)</small></p>
+<p class="text-center"><small>Figure 1.2: Nondeterministic Finite Automaton (NFA)</small></p>
 
 We can see on [Fig 1.2](#fig1.2) that from \\(q_1\\) on input **'b'** we can transition to two states - \\(q_1\\) and \\(q_2\\). In this case, we say that the machine is **nondeterministic** (NFA). It is easy to see that this machine is equivalent to the one in [Fig 1.1](#fig1.1), i.e. they recognize the same set of strings. Every NFA can be converted to its corresponding DFA, the proof and the conversion, however, are a subject of another article.
 
@@ -52,7 +52,7 @@ We represent an &epsilon;-NFA exactly as we do an NFA but with one exception. It
 On [Fig 1.3](#fig1.3) we can see that we have **&epsilon;-transition** from \\(q_2\\) to \\(q_1\\). This &epsilon;-NFA is equivalent to the NFA in [Fig 1.2](#fig1.2).
 
 ## Compiling Regular Expressions to Finite Automata
-The set of strings recognized by a finite automation \\(A\\) is called **the language of \\(A\\)** and is denoted as \\(L(A)\\). If a language can be recognized by **finite automation** then there's is a corresponding **regular expression** that describes the same language and vice versa ([Kleene's Theorem](http://www.cs.may.ie/staff/jpower/Courses/Previous/parsing/node6.html)). The regular expression, equivalent to the automation in [Fig 1.1](#fig1.1)  would be **abb*a**. In other words, regular expressions can be thought of as a **user-friendly alternative** to finite automata for describing patterns in text.
+The set of strings recognized by a finite automaton \\(A\\) is called **the language of \\(A\\)** and is denoted as \\(L(A)\\). If a language can be recognized by **finite automaton** then there's is a corresponding **regular expression** that describes the same language and vice versa ([Kleene's Theorem](http://www.cs.may.ie/staff/jpower/Courses/Previous/parsing/node6.html)). The regular expression, equivalent to the automaton in [Fig 1.1](#fig1.1)  would be **abb*a**. In other words, regular expressions can be thought of as a **user-friendly alternative** to finite automata for describing patterns in text.
 
 ### Thompson's Construction
 Algebras of all kinds start with some elementary expressions, usually constants and/or variables. Then they allow us to construct more complex expressions by applying a certain set of operations to these elementary expressions. Usually, some method of grouping operators with their operands such as parentheses is required as well.  
@@ -69,14 +69,14 @@ To compile a regular expression \\(R\\) to an NFA we first need to parse \\(R\\)
 #### Basis
 
 <img id="fig2.1" src="/images/posts/2019-02-20-regex/e-nfa-impl.png" />
-<p class="text-center"><small>Figure 2.1: Finite automation for the expression <strong>&epsilon;</strong></small></p>
+<p class="text-center"><small>Figure 2.1: Finite automaton for the expression <strong>&epsilon;</strong></small></p>
 
-On [Fig 2.1](#fig2.1) we have an automation that recognizes the empty string &epsilon;. \\(i\\) is the start state and \\(f\\) is the accepting state.
+On [Fig 2.1](#fig2.1) we have an automaton that recognizes the empty string &epsilon;. \\(i\\) is the start state and \\(f\\) is the accepting state.
 
 <img id="fig2.2" src="/images/posts/2019-02-20-regex/symbol-nfa.png" />
-<p class="text-center"><small>Figure 2.2: Finite automation for the expression <em>a</em></small></p>
+<p class="text-center"><small>Figure 2.2: Finite automaton for the expression <em>a</em></small></p>
 
-On [Fig 2.2](#fig2.2) we construct an automation for the symbol **'a'**. We treat each symbol of the input alphabet as a regular expression by itself. The language of this automation consists only of the word **"a"**.
+On [Fig 2.2](#fig2.2) we construct an automaton for the symbol **'a'**. We treat each symbol of the input alphabet as a regular expression by itself. The language of this automaton consists only of the word **"a"**.
 
 #### Induction
 Suppose we have the two regular expressions \\(S\\) and \\(T\\) and their NFAs \\(N(S)\\) and \\(N(T)\\) respectively:
@@ -277,14 +277,14 @@ Let's simulate the algorithm on **(a&#8739;b)\*c**
 ## NFA Search Algorithms
 
 ### Recursive Backtracking
-The simplest way to check if a string is recognized by automation is by computing all the possible paths through the NFA until we end up in an accepting state or exhaust all the possibilities. It falls down to a recursive depth-first search with backtracking. Let's see an example:
+The simplest way to check if a string is recognized by automaton is by computing all the possible paths through the NFA until we end up in an accepting state or exhaust all the possibilities. It falls down to a recursive depth-first search with backtracking. Let's see an example:
 
 <img id="fig5.1" src="/images/posts/2019-02-20-regex/nfa-search.png" />
 <p class="text-center"><small>Figure 5.1: NFA for the expression (aba)&#8739;(abb)</small></p>
 
-The automation in [Fig. 5.1](#fig5.1) recognizes either the string **"aba"** or **"abb"**. If we want to process **"abb"**, our simulation with recursive backtracking would process the input **one state at a time** so we'll first end up reaching \\(q_3\\) after reading **"ab"** from the input string. The next symbol is **'b'** but there's no transition from \\(q_3\\) on **'b'**, therefore, we backtrack to \\(q_0\\) and take the other path which leads us to the accepting state. You can check out my implementation on [GitHub](https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134).
+The automaton in [Fig. 5.1](#fig5.1) recognizes either the string **"aba"** or **"abb"**. If we want to process **"abb"**, our simulation with recursive backtracking would process the input **one state at a time** so we'll first end up reaching \\(q_3\\) after reading **"ab"** from the input string. The next symbol is **'b'** but there's no transition from \\(q_3\\) on **'b'**, therefore, we backtrack to \\(q_0\\) and take the other path which leads us to the accepting state. You can check out my implementation on [GitHub](https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134).
 
-For the automation on [Fig 5.1](fig#5.1) we ended up going through all of the possible two paths. This doesn't seem like a big deal but in a more complex scenario, there might be considerable performance implications.
+For the automaton on [Fig 5.1](fig#5.1) we ended up going through all of the possible two paths. This doesn't seem like a big deal but in a more complex scenario, there might be considerable performance implications.
 
 Given an NFA with _n_ states, from each of its states, it can transition to at most _n_ possible states. This means there might be a maximum \\(2^n\\) paths, thus in the worst case this algorithm will end up going through all of these paths until it finds a match (or not). Needless to say, O(\\(2^n\\)) is not scalable because for a string of 10 characters to check whether it's matched or not we might end up doing 1024 operations. We should certainly do better than that.
 
