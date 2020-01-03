@@ -6,6 +6,7 @@
 	{{- else if .Description }}
 	<meta name="description" content="{{ .Description }}">
 	{{- end }}
+    <meta name="author" content="{{if .Params.Author}}{{.Params.Author}}{{else}}{{ .Site.Author.name }}{{end}}" />
 	
 	<title>
 		{{- if eq .RelPermalink "/" }}

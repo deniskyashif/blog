@@ -1,7 +1,7 @@
 ---
 title: "C# Channels - Async Data Pipelines"
-date: 2019-12-23T08:42:15+02:00
-draft: true
+date: 2020-01-08T08:42:15+02:00
+draft: false
 url: "csharp-channels-part-3"
 tags: ["software-design", "csharp", "concurrency", "dotnet"]
 summary: "How to implement an \"assembly line\" concurrency model using channels."
@@ -261,13 +261,13 @@ var fileSource = GetFilesRecursively("path_to/node_modules", cts.Token);
 ...
 ```
  
-## Dealing with Bottlenecks
+## Dealing with Backpressure
 
-Our stages execute concurrently but this doesn't guarantee an optimal performance. Let's revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we're going to end up with many pizzas with their toppings added, waiting to be baked, but our oven fits in only one at a time. We solve this by getting a larger oven, or even multiple ovens.
+The term [backpressure](https://en.wikipedia.org/wiki/Back_pressure) is borrowed from fluid dynamics and relates to to the software systems' dataflow. In our examples, the stages execute concurrently but this doesn't guarantee an optimal performance. Let's revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we're going to end up with many pizzas with their toppings added, waiting to be baked, but our oven bakes in only one at a time. We can solve this by getting a larger oven, or even multiple ovens.
 
 <img src="/images/posts/2020-01-08-csharp-channels-part3/bottleneck.png" />
 
-In the line-counter example, the stage where we read the file and count its lines might cause a bottleneck when a file is sufficiently large. It makes sense to increase the capacity of this stage and that's where `Split<T>` and `Merge<T>` which we discussed in [part 1](/csharp-channels-part-1#multiplexer) come into use. We'll summarize them.
+In the line-counter example, the stage where we read the file and count its lines might cause might experience backpressure because reading a sufficiently large file is slower than retreiving a file metadata (the previous stage). It makes sense to increase the capacity of this stage and that's where `Split<T>` and `Merge<T>` which we discussed in [part 1](/csharp-channels-part-1#multiplexer) come into use. We'll summarize them.
 
 ### Split
 
@@ -304,7 +304,7 @@ IList<ChannelReader<T>> Split<T>(ChannelReader<T> input, int n)
 </details>
 <br />
 
-We're going to use it to distribute the source code files among 5 channels which will let us process up to 5 files simultaneously.
+We're going to use it to distribute the source code files among 5 channels which will let us process up to 5 files simultaneously. This is similar to when supermarkets open additional checkout lines when there're a lot of customers waiting.
 
 ```cs
 var fileSource = GetFilesRecursively("path_to/node_modules");
@@ -387,9 +387,9 @@ The TPL Dataflow library is another option for implementing pipelines or even me
 
 ## Conclusion
 
-We defined the pipeline concurrency model and learned how to use it to implement flexible, high-performance data processing workflows. We learned how to deal with errors, perform cancellation as well as how to apply some of the channel concurrency techniques (multiplexing and demultiplexing), described in the previous articles, to deal with potential bottlenecks.
+We defined the pipeline concurrency model and learned how to use it to implement flexible, high-performance data processing workflows. We learned how to deal with errors, perform cancellation as well as how to apply some of the channel techniques (multiplexing and demultiplexing), described in the previous articles, to handle backpressure.
 
-Besides performance, pipelines are also easy to change. Each stage is an atomic part of the whole composition that can be independently modified, replaced or removed as long as we keep the method (stage) signatures intact.
+Besides performance, pipelines are also easy to change. Each stage is an atomic part of the whole composition that can be independently modified, replaced, or removed as long as we keep the method (stage) signatures intact. For example, it's trivial to convert the line counter pipeline to search for patterns in text, say extracting the errors from log files.
 
 We can see how it can lead to a significant reduction in our code's cyclomatic complexity as well as making it easier to test. Each stage is simply a method with no side effects, which can be unit tested in isolation. Stages have a **single responsibility**, which makes them easier to reason about, thus we can cover all the possible cases.
 
