@@ -13,19 +13,19 @@
     
     <item>
       <title>C# Channels - Timeout and Cancellation</title>
-      <link>https://deniskyashif.com/csharp-channels-part-2/</link>
+      <link>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</link>
       <pubDate>Wed, 11 Dec 2019 15:01:01 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/csharp-channels-part-2/</guid>
+      <guid>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</guid>
       <description>Explore cancellation and timeout techniques with channels.</description>
     </item>
     
     <item>
       <title>C# Channels - Publish / Subscribe Workflows</title>
-      <link>https://deniskyashif.com/csharp-channels-part-1/</link>
+      <link>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</link>
       <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/csharp-channels-part-1/</guid>
+      <guid>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</guid>
       <description>Concurrency patterns using channels.</description>
     </item>
     

@@ -13,64 +13,64 @@
     
     <item>
       <title>Translation using Syntactic Rules</title>
-      <link>https://deniskyashif.com/translation-using-syntactic-rules/</link>
+      <link>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</link>
       <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
       
-      <guid>https://deniskyashif.com/translation-using-syntactic-rules/</guid>
+      <guid>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</guid>
       <description>How to describe a formal language and build a translator with ANTLR and JavaScript.</description>
     </item>
     
     <item>
       <title>Gödel&#39;s System T in TypeScript</title>
-      <link>https://deniskyashif.com/g%C3%B6dels-system-t-in-typescript/</link>
+      <link>https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/</link>
       <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
       
-      <guid>https://deniskyashif.com/g%C3%B6dels-system-t-in-typescript/</guid>
+      <guid>https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/</guid>
       <description>Experimenting with a rudimentary type system that ensures the programs always terminate.</description>
     </item>
     
     <item>
       <title>On Recursive Functions</title>
-      <link>https://deniskyashif.com/on-recursive-functions/</link>
+      <link>https://deniskyashif.com/2019/05/15/on-recursive-functions/</link>
       <pubDate>Wed, 15 May 2019 15:16:00 +0300</pubDate>
       
-      <guid>https://deniskyashif.com/on-recursive-functions/</guid>
+      <guid>https://deniskyashif.com/2019/05/15/on-recursive-functions/</guid>
       <description>Lambda Calculus and the Y combinator in JavaScript.</description>
     </item>
     
     <item>
       <title>Implementing a Regular Expression Engine</title>
-      <link>https://deniskyashif.com/implementing-a-regular-expression-engine/</link>
+      <link>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/implementing-a-regular-expression-engine/</guid>
+      <guid>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</guid>
       <description>Using Ken Thompson&#39;s construction algorithm.</description>
     </item>
     
     <item>
       <title>Impressions from EMEA Pug Challenge 2017</title>
-      <link>https://deniskyashif.com/impressions-from-emea-pug-challenge-2017/</link>
+      <link>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</link>
       <pubDate>Tue, 21 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/impressions-from-emea-pug-challenge-2017/</guid>
+      <guid>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</guid>
       <description>I had the pleasure to speak at the annual EMEA PUG Challenge conference in Prague. This is my second visit to this event. I was very excited about it because I already had fond memories of the last year&#39;s one in the Netherlands.</description>
     </item>
     
     <item>
       <title>KendoUI TreeList Load on Demand</title>
-      <link>https://deniskyashif.com/kendoui-treelist-load-on-demand/</link>
+      <link>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/kendoui-treelist-load-on-demand/</guid>
+      <guid>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</guid>
       <description>How to lazily load the descendant items of a record in a TreeList.</description>
     </item>
     
     <item>
       <title>Validate any DOM element with the KendoUI validator</title>
-      <link>https://deniskyashif.com/validate-any-dom-element-with-the-kendoui-validator/</link>
+      <link>https://deniskyashif.com/2016/05/30/validate-any-dom-element-with-the-kendoui-validator/</link>
       <pubDate>Mon, 30 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/validate-any-dom-element-with-the-kendoui-validator/</guid>
+      <guid>https://deniskyashif.com/2016/05/30/validate-any-dom-element-with-the-kendoui-validator/</guid>
       <description>Not only inputs.</description>
     </item>
     

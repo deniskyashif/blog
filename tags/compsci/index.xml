@@ -13,55 +13,55 @@
     
     <item>
       <title>A Practical Guide to  State Machines</title>
-      <link>https://deniskyashif.com/a-practical-guide-to-state-machines/</link>
+      <link>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</link>
       <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/a-practical-guide-to-state-machines/</guid>
+      <guid>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</guid>
       <description>Express application logic in a concise and declarative way using state machines and C#&amp;lsquo;s pattern matching.</description>
     </item>
     
     <item>
       <title>Translation using Syntactic Rules</title>
-      <link>https://deniskyashif.com/translation-using-syntactic-rules/</link>
+      <link>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</link>
       <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
       
-      <guid>https://deniskyashif.com/translation-using-syntactic-rules/</guid>
+      <guid>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</guid>
       <description>How to describe a formal language and build a translator with ANTLR and JavaScript.</description>
     </item>
     
     <item>
       <title>Computing Ranges in Constant Time</title>
-      <link>https://deniskyashif.com/computing-ranges-in-constant-time/</link>
+      <link>https://deniskyashif.com/2019/06/28/computing-ranges-in-constant-time/</link>
       <pubDate>Fri, 28 Jun 2019 13:26:25 +0300</pubDate>
       
-      <guid>https://deniskyashif.com/computing-ranges-in-constant-time/</guid>
+      <guid>https://deniskyashif.com/2019/06/28/computing-ranges-in-constant-time/</guid>
       <description>Range Minimum Query with Sparse Table and Dynamic Programming.</description>
     </item>
     
     <item>
       <title>Gödel&#39;s System T in TypeScript</title>
-      <link>https://deniskyashif.com/g%C3%B6dels-system-t-in-typescript/</link>
+      <link>https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/</link>
       <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
       
-      <guid>https://deniskyashif.com/g%C3%B6dels-system-t-in-typescript/</guid>
+      <guid>https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/</guid>
       <description>Experimenting with a rudimentary type system that ensures the programs always terminate.</description>
     </item>
     
     <item>
       <title>On Recursive Functions</title>
-      <link>https://deniskyashif.com/on-recursive-functions/</link>
+      <link>https://deniskyashif.com/2019/05/15/on-recursive-functions/</link>
       <pubDate>Wed, 15 May 2019 15:16:00 +0300</pubDate>
       
-      <guid>https://deniskyashif.com/on-recursive-functions/</guid>
+      <guid>https://deniskyashif.com/2019/05/15/on-recursive-functions/</guid>
       <description>Lambda Calculus and the Y combinator in JavaScript.</description>
     </item>
     
     <item>
       <title>Implementing a Regular Expression Engine</title>
-      <link>https://deniskyashif.com/implementing-a-regular-expression-engine/</link>
+      <link>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/implementing-a-regular-expression-engine/</guid>
+      <guid>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</guid>
       <description>Using Ken Thompson&#39;s construction algorithm.</description>
     </item>
     

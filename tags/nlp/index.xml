@@ -13,10 +13,10 @@
     
     <item>
       <title>Statistical Machine Translation on Azure VM using Moses</title>
-      <link>https://deniskyashif.com/statistical-machine-translation-on-azure-vm-using-moses/</link>
+      <link>https://deniskyashif.com/2017/01/18/statistical-machine-translation-on-azure-vm-using-moses/</link>
       <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/statistical-machine-translation-on-azure-vm-using-moses/</guid>
+      <guid>https://deniskyashif.com/2017/01/18/statistical-machine-translation-on-azure-vm-using-moses/</guid>
       <description>Training a machine translation model on an Azure compute optimized VM.</description>
     </item>
     

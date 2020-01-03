@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Denis Kyashif" />
+	
+	<title>
+		C# Channels - Timeout and Cancellation &middot; Denis Kyashif&#39;s Blog
+	</title>
+	
+	
+  	<link rel="stylesheet" href="/css/style.css" />    
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/my.css">    
+	
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+	
+	
+	<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
+    <meta property="og:title" content="C# Channels - Timeout and Cancellation" />
+<meta property="og:description" content="Explore cancellation and timeout techniques with channels." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://deniskyashif.com/2019/12/11/csharp-channels-part-2/" />
+<meta property="og:image" content="https://deniskyashif.com/images/posts/2019-12-11-csharp-channels-part2/featured-image.png" />
+<meta property="article:published_time" content="2019-12-11T15:01:01+02:00" />
+<meta property="article:modified_time" content="2019-12-11T15:01:01+02:00" />
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-133185625-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+</head>
+
+    <body>
+        <a href="https://github.com/deniskyashif/blog" class="github-corner" target="_blank" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#4a9ae1; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<nav class="nav">
+	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
+		<ul>
+    <li><a href="/">Posts</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/about">About</a></li>
+</ul>
+
+	</div>
+</nav>
+
+        
+
+<main>
+	<div class="post">
+		<div class="post-info">
+    <time datetime="2019-12-11 15:01:01 &#43;0200 EET">December 11, 2019</time>
+    |
+    <a href="https://github.com/deniskyashif/blog/blob/master/content/posts/2019-12-11-csharp-channels-part-2.md" target="_blank">
+        <i class="fa fa-edit"></i>&nbsp;Edit
+    </a>
+
+    
+    <div class="tags">
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/software-design/" class="tag">software-design</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/csharp/" class="tag">csharp</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/concurrency/" class="tag">concurrency</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/dotnet/" class="tag">dotnet</a>
+        
+        
+    </div>
+</div>
+
+		<h1 class="post-title">C# Channels - Timeout and Cancellation</h1>
+<div class="post-line"></div>
+
+		
+
+		<p>This is a continuation of the article on <a href="/csharp-channels-part-1">how to build publish/subscribe workflows in C#</a> where we learned how to use channels in C#. We also went through some techniques about distributing computations among several workers to make use of the modern-day, multi-core CPUs.</p>
+<p>In this article, we'll build on top of that by exploring some cases where we have to &ldquo;exit&rdquo; a channel. In the last example, we'll put what we've covered so far in practice. You can check out the interactive version of the demos on <a href="https://github.com/deniskyashif/trydotnet-channels">GitHub</a>.</p>
+<h2 id="timeout">Timeout</h2>
+<p>We want to stop reading from a channel after a certain amount of time. This is quite simple because the channels&rsquo; async API supports cancellation.</p>
+<p><img src="/images/posts/2019-12-11-csharp-channels-part2/timeout-sketch.png" width="600" /></p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">1</span><span style="color:#f60">0</span>);
+<span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
+cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
+
+<span style="color:#069;font-weight:bold">try</span>
+{
+    <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> joe.ReadAllAsync(cts.Token))
+        Console.WriteLine(item);
+
+    Console.WriteLine(<span style="color:#c30">&#34;Joe sent all of his messages.&#34;</span>); 
+}
+<span style="color:#069;font-weight:bold">catch</span> (OperationCanceledException)
+{
+    Console.WriteLine(<span style="color:#c30">&#34;Joe, you are too slow!&#34;</span>);
+}
+</code></pre></div><pre><code>Joe 0
+Joe 1
+Joe 2
+Joe 3
+Joe, you are too slow!
+</code></pre><p>Joe was set to send 10 messages but over 5 seconds, we received only 4 and then canceled the reading operation. If we reduced the number of messages Joe sends or sufficiently increased the timeout duration, we'd read everything and thus avoid ending up in the <code>catch</code> block.</p>
+<h2 id="quit-channel">Quit Channel</h2>
+<p><img src="/images/posts/2019-12-11-csharp-channels-part2/quit-channel-sketch.png" width="600" /></p>
+<p>Let's go the other way around and tell Joe to stop talking. We need to modify our <code>CreateMessenger&lt;T&gt;()</code> generator so it supports cancellation.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">static</span> ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; CreateMessenger(
+    <span style="color:#078;font-weight:bold">string</span> msg, <span style="color:#078;font-weight:bold">int</span> count, CancellationToken token = <span style="color:#069;font-weight:bold">default</span>)
+{
+    <span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
+
+    Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
+    {
+        <span style="color:#078;font-weight:bold">var</span> rnd = <span style="color:#069;font-weight:bold">new</span> Random();
+        <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i &lt; count; i++)
+        {
+            <span style="color:#069;font-weight:bold">if</span> (token.IsCancellationRequested)
+            {
+                <span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">$&#34;{msg} says bye!&#34;</span>);
+                <span style="color:#069;font-weight:bold">break</span>;
+            }
+            <span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">$&#34;{msg} {i}&#34;</span>);
+            <span style="color:#069;font-weight:bold">await</span> Task.Delay(TimeSpan.FromSeconds(rnd.Next(<span style="color:#f60">0</span>, <span style="color:#f60">3</span>)));
+        }
+        ch.Writer.Complete();
+    });
+
+    <span style="color:#069;font-weight:bold">return</span> ch.Reader;
+}
+</code></pre></div><p>Now we need to pass our cancellation token to the generator which gives us control over the channel's longevity.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
+<span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">1</span><span style="color:#f60">0</span>, cts.Token);
+cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
+
+<span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> joe.ReadAllAsync())
+    Console.WriteLine(item);
+</code></pre></div><p>Joe had 10 messages to send, but we gave him only 5 seconds, for which he managed to send only 4. We can also manually send a cancellation request, for example, after reading <code>N</code> number of messages.</p>
+<pre><code>Joe 0
+Joe 1
+Joe 2
+Joe 3
+Joe says bye!
+</code></pre><h2 id="web-search">Web Search</h2>
+<p>We're given the task to query several data sources and mix the results. The queries should run concurrently and we should disregard the ones taking too long. Also, we should handle a query response at the time of arrival, instead of waiting for all of them to complete. Let's see how we can solve this using what we've learned so far:</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
+</code></pre></div><p>We create a local function that simulates a remote async API call and writes its result to the channel.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#069;font-weight:bold">async</span> Task Search(<span style="color:#078;font-weight:bold">string</span> source, <span style="color:#078;font-weight:bold">string</span> term, CancellationToken token)
+{
+    <span style="color:#069;font-weight:bold">await</span> Task.Delay(TimeSpan.FromSeconds(<span style="color:#069;font-weight:bold">new</span> Random().Next(<span style="color:#f60">5</span>)), token);
+    <span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">$&#34;Result from {source} for {term}&#34;</span>, token);
+}
+</code></pre></div><p>Now we query several data sources by passing a search term and a cancellation token.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> term = <span style="color:#c30">&#34;Milky Way&#34;</span>;
+<span style="color:#078;font-weight:bold">var</span> token = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource(TimeSpan.FromSeconds(<span style="color:#f60">3</span>)).Token;
+
+<span style="color:#078;font-weight:bold">var</span> search1 = Search(<span style="color:#c30">&#34;Google&#34;</span>, term, token);
+<span style="color:#078;font-weight:bold">var</span> search2 = Search(<span style="color:#c30">&#34;Quora&#34;</span>, term, token);
+<span style="color:#078;font-weight:bold">var</span> search3 = Search(<span style="color:#c30">&#34;Wikipedia&#34;</span>, term, token);
+</code></pre></div><p>We wait and process the results one at a time. We break from the loop once the cancellation kicks in.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#069;font-weight:bold">try</span>
+{
+    <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i &lt; <span style="color:#f60">3</span>; i++)
+        Console.WriteLine(<span style="color:#069;font-weight:bold">await</span> ch.Reader.ReadAsync(token));
+
+    Console.WriteLine(<span style="color:#c30">&#34;All searches have completed.&#34;</span>);
+}
+<span style="color:#069;font-weight:bold">catch</span> (OperationCanceledException)
+{
+    Console.WriteLine(<span style="color:#c30">&#34;Timeout.&#34;</span>);
+}
+
+ch.Writer.Complete();
+</code></pre></div><p>Depending on the timeout interval we might end up receiving responses for all of the queries,</p>
+<pre><code>[9:09:14 AM] Result from Google for Milky Way
+[9:09:14 AM] Result from Wikipedia for Milky Way
+[9:09:16 AM] Result from Quora for Milky Way
+All searches have completed.
+</code></pre><p>or cut off the ones that are too slow.</p>
+<pre><code>[9:09:19 AM] Result from Quora for Milky Way
+[9:09:20 AM] Result from Wikipedia for Milky Way
+Timeout.
+</code></pre><p>Again - our code is non-blocking concurrent, thus there's no need to use locks, callbacks or any kind of conditional statements.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://github.com/deniskyashif/trydotnet-channels">GitHub Repo</a> with the interactive examples</li>
+<li>Part 1: <a href="/csharp-channels-part-1">C# Channels - Publish / Subscribe workflows</a></li>
+</ul>
+<!-- - Part 3: [C# Channels - Async Data Pipelines](/csharp-channels-part-3) -->
+<ul>
+<li>The graphics are implemented using <a href="https://sketch.io/sketchpad/">sketch.io</a></li>
+</ul>
+
+
+		<section class="social-share">
+    
+    
+    <a href="//twitter.com/share?url=https%3a%2f%2fdeniskyashif.com%2f2019%2f12%2f11%2fcsharp-channels-part-2%2f&amp;text=C%23%20Channels%20-%20Timeout%20and%20Cancellation&amp;via=deniskyashif" target="_blank" class="share-btn twitter">
+        <i class="fa fa-2x fa-twitter"></i>
+    </a>
+    
+    
+    
+    <a href="//reddit.com/submit?url=https%3a%2f%2fdeniskyashif.com%2f2019%2f12%2f11%2fcsharp-channels-part-2%2f&amp;title=C%23%20Channels%20-%20Timeout%20and%20Cancellation" target="_blank" class="share-btn reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    
+    
+    
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdeniskyashif.com%2f2019%2f12%2f11%2fcsharp-channels-part-2%2f" target="_blank" class="share-btn facebook">
+        <i class="fa fa-2x fa-facebook"></i>
+    </a>
+    
+    
+    
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fdeniskyashif.com%2f2019%2f12%2f11%2fcsharp-channels-part-2%2f&amp;title=C%23%20Channels%20-%20Timeout%20and%20Cancellation" target="_blank" class="share-btn linkedin">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:?subject=Check out 'C%23%20Channels%20-%20Timeout%20and%20Cancellation' by Denis%20Kyashif&amp;body=https%3a%2f%2fdeniskyashif.com%2f2019%2f12%2f11%2fcsharp-channels-part-2%2f" target="_blank" class="share-btn email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    
+</section>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "deniskyashif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	</div>
+
+	<div class="pagination">
+		<a href="/2019/12/08/csharp-channels-part-1/" class="left arrow">&#8592;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+</main>
+
+
+        <footer>
+	<span>
+		&copy; <time datetime="2020-01-03 19:31:26.865406 &#43;0200 EET m=&#43;0.085967624">2020</time> Denis Kyashif
+	</span>
+    <br/>
+</footer>
+
+    </body>
+</html>

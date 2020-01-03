@@ -13,19 +13,19 @@
     
     <item>
       <title>Translation using Syntactic Rules</title>
-      <link>https://deniskyashif.com/translation-using-syntactic-rules/</link>
+      <link>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</link>
       <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
       
-      <guid>https://deniskyashif.com/translation-using-syntactic-rules/</guid>
+      <guid>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</guid>
       <description>How to describe a formal language and build a translator with ANTLR and JavaScript.</description>
     </item>
     
     <item>
       <title>Implementing a Regular Expression Engine</title>
-      <link>https://deniskyashif.com/implementing-a-regular-expression-engine/</link>
+      <link>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/implementing-a-regular-expression-engine/</guid>
+      <guid>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</guid>
       <description>Using Ken Thompson&#39;s construction algorithm.</description>
     </item>
     

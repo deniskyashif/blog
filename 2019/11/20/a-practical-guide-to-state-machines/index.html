@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Denis Kyashif" />
+	
+	<title>
+		A Practical Guide to  State Machines &middot; Denis Kyashif&#39;s Blog
+	</title>
+	
+	
+  	<link rel="stylesheet" href="/css/style.css" />    
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/my.css">    
+	
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+	
+	
+	<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
+    <meta property="og:title" content="A Practical Guide to  State Machines" />
+<meta property="og:description" content="Express application logic in a concise and declarative way using state machines and C#&lsquo;s pattern matching." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/" />
+<meta property="og:image" content="https://deniskyashif.com/images/posts/2019-11-20-guide-to-fsm/smiling-fsm.jpeg" />
+<meta property="article:published_time" content="2019-11-20T07:28:47+02:00" />
+<meta property="article:modified_time" content="2019-11-20T07:28:47+02:00" />
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-133185625-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+</head>
+
+    <body>
+        <a href="https://github.com/deniskyashif/blog" class="github-corner" target="_blank" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#4a9ae1; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<nav class="nav">
+	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
+		<ul>
+    <li><a href="/">Posts</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/about">About</a></li>
+</ul>
+
+	</div>
+</nav>
+
+        
+
+<main>
+	<div class="post">
+		<div class="post-info">
+    <time datetime="2019-11-20 07:28:47 &#43;0200 EET">November 20, 2019</time>
+    |
+    <a href="https://github.com/deniskyashif/blog/blob/master/content/posts/2019-11-20-a-practical-gruide-to-state-machines.md" target="_blank">
+        <i class="fa fa-edit"></i>&nbsp;Edit
+    </a>
+
+    
+    <div class="tags">
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/software-design/" class="tag">software-design</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/compsci/" class="tag">compsci</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/csharp/" class="tag">csharp</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/dotnet/" class="tag">dotnet</a>
+        
+        
+    </div>
+</div>
+
+		<h1 class="post-title">A Practical Guide to  State Machines</h1>
+<div class="post-line"></div>
+
+		
+
+		<p>In this article, we'll examine some examples of real-world problems that can be expressed and solved using finite state machines. We'll take the opportunity to explore some of the C#&lsquo;s pattern matching capabilities an see how they come handy for implementing them. In the second part, we'll see how to combine multiple state machines to form a cohesive workflow.</p>
+<h2 id="an-informal-definition">An Informal Definition</h2>
+<p>A finite state machine is an abstract device that has states and transitions between those states. It's always in one of its states and while it reads an input, it switches from state to state. Think of it as a directed graph. A state machine has no memory, that is, it does not keep track of the previous states it has been in. It only knows its current state. If there's no transition on a given input, the machine terminates.<br>
+For a state machine to be deterministic means that on each input there is one and only one state to which it can transition from its current state. All of the examples in this article are of deterministic state machines.</p>
+<p><img src="/images/posts/2019-11-20-guide-to-fsm/1.svg" /></p>
+<p class="text-center"><small>Figure 1: Representation of a door using a state machine</small></p>
+<p>The state machine in Figure 1 has:</p>
+<ul>
+<li>a set of states: <code>Open</code>, <code>Closed</code>, <code>Locked</code></li>
+<li>a set of inputs: <code>open</code>, <code>close</code>, <code>lock</code>, <code>unlock</code></li>
+<li>a transition function of type: <code>State x Input -&gt; State</code></li>
+</ul>
+<p>Besides, state machines have an <strong>initial state</strong> (we can pick an arbitrary one in Figure 1) and a <strong>set of final states</strong> (which is empty in Figure 1).</p>
+<h2 id="representing-state-machines-in-c">Representing State Machines in C#</h2>
+<p>State machines are simply directed graphs and there're various ways to construct one. We can use an <a href="https://en.wikipedia.org/wiki/Adjacency_matrix">adjacency matrix</a>, or go with an object-oriented approach via <a href="https://en.wikipedia.org/wiki/State_pattern">the state pattern</a> or encode the state and the transitions in a map structure such as C#&lsquo;s <code>Dictionary&lt;TKey, TValue&gt;</code> where the keys are the states and their values are the sets of transitions from these states.</p>
+<p>The recent developments in version 8 of C# added significant improvements in its pattern matching capabilities and the <strong>switch expressions</strong> in particular (which provided some inspiration for this article). If you haven't checked them out, I recommend <a href="https://devblogs.microsoft.com/dotnet/do-more-with-patterns-in-c-8-0/">this article</a> by Mads Torgersen, but long story short - we can now return values from switches, thus using it for conditional assignment.</p>
+<p>We implement the state machine in Figure 1 as:</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">enum</span> State { Open, Closed, Locked }
+<span style="color:#069;font-weight:bold">enum</span> Input { Open, Close, Lock, Unlock }
+
+State ChangeState(State current, Input input) =&gt; 
+    (current, input) <span style="color:#069;font-weight:bold">switch</span>
+	{
+        (State.Closed, Input.Open) =&gt; State.Open,
+        (State.Open, Input.Close) =&gt; State.Closed,
+        (State.Closed, Input.Lock) =&gt; State.Locked,
+        (State.Locked, Input.Unlock) =&gt; State.Closed,
+        _ =&gt; <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> NotSupportedException(
+            <span style="color:#c30">$&#34;{current} has no transition on {input}&#34;</span>)
+	};
+</code></pre></div><p>That's how we &ldquo;run&rdquo; our machine:</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> current = State.Closed; <span style="color:#09f;font-style:italic">// the initial state
+</span><span style="color:#09f;font-style:italic"></span>current = ChangeState(current, Input.Open); <span style="color:#09f;font-style:italic">// Opened
+</span><span style="color:#09f;font-style:italic"></span>current = ChangeState(current, Input.Close); <span style="color:#09f;font-style:italic">// Closed
+</span><span style="color:#09f;font-style:italic"></span>current = ChangeState(current, Input.Lock); <span style="color:#09f;font-style:italic">// Locked
+</span><span style="color:#09f;font-style:italic"></span>current = ChangeState(current, Input.Open); <span style="color:#09f;font-style:italic">// throws
+</span></code></pre></div><h2 id="state-machines-with-async-actions">State Machines with Async Actions</h2>
+<p>Let's take a look at another example. This time we'll implement a process scheduler.</p>
+<p><img src="/images/posts/2019-11-20-guide-to-fsm/2.svg" /></p>
+<p class="text-center"><small>Figure 2: The states of a process</small></p>
+<p>In Figure 2 we have the following sets of states and inputs:</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">enum</span> State { Created, Ready, Running, Waiting, Terminated }
+<span style="color:#069;font-weight:bold">enum</span> Input { 
+    Admit, ScheduleDispatch, Interrupt,
+    IOorEventWait, IOorEventComplete, Exit 
+}
+</code></pre></div><p>That's how we implement the transition function:</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">State ChangeState(State current, Input input) =&gt;
+    (current, input) <span style="color:#069;font-weight:bold">switch</span>
+    {
+        (State.Created, Input.Admit) =&gt; State.Ready,
+        (State.Ready, Input.ScheduleDispatch) =&gt; State.Running,
+        (State.Running, Input.IOorEventWait) =&gt; State.Waiting,
+        (State.Waiting, Input.IOorEventComplete) =&gt; State.Ready,
+        (State.Running, Input.Interrupt) =&gt; State.Ready,
+        (State.Running, Input.Exit) =&gt; State.Terminated,
+        _ =&gt; <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> NotSupportedException(
+            <span style="color:#c30">$&#34;{current} has no transition on {input}&#34;</span>)
+    };
+</code></pre></div><p>We can also create conditional transitions using the <code>when</code> keyword.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">State ChangeState(State current, Input input, <span style="color:#078;font-weight:bold">bool</span> hasPermission) =&gt;
+    (current, input) <span style="color:#069;font-weight:bold">switch</span>
+    {
+        (State.New, Input.Admit) when hasPermission =&gt; State.Ready
+        <span style="color:#09f;font-style:italic">// ...
+</span><span style="color:#09f;font-style:italic"></span>    };
+</code></pre></div><p>Suppose we want to execute some transition action on state change. Keep in mind that what comes after the <code>=&gt;</code> is an expression. So far we were simply returning values, now we want to run some arbitrary code. The approach might not seem very intuitive, but for those familiar with JavaScript it should ring a bell. We're going to wrap our code in an <em>immediately invoked function expression <a href="https://developer.mozilla.org/en-US/docs/Glossary/IIFE">(IIFE)</a></em> using C#&lsquo;s lambda syntax.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">State ChangeState(State current, Input input) =&gt;
+    (current, input) <span style="color:#069;font-weight:bold">switch</span>
+	{
+        (State.New, Input.Admit) =&gt; ((Func&lt;State&gt;)(() =&gt; {
+            ExecuteSomeAction();
+            <span style="color:#069;font-weight:bold">return</span> State.Ready;
+        }))(),
+        <span style="color:#09f;font-style:italic">// ...
+</span><span style="color:#09f;font-style:italic"></span>    };
+</code></pre></div><p>The usage of our <code>ChangeState</code> method remains the same.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> current = ChangeState(State.New, Input.Admit); <span style="color:#09f;font-style:italic">// Ready
+</span></code></pre></div><p>If <code>ExecuteSomeAction()</code> is a long-running operation, it would make sense to unblock the current thread by making it asynchronous. That requires us to refactor our state machine.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">async</span> Task&lt;State&gt; ChangeState(State current, Input input) =&gt;
+    (current, input) <span style="color:#069;font-weight:bold">switch</span>
+    {
+        (State.New, Input.Admit) =&gt; 
+            <span style="color:#069;font-weight:bold">await</span> ((Func&lt;Task&lt;State&gt;&gt;)(<span style="color:#069;font-weight:bold">async</span> () =&gt; {
+                <span style="color:#069;font-weight:bold">await</span> ExecuteSomeActionAsync();
+                <span style="color:#069;font-weight:bold">return</span> State.Ready;
+            }))(),
+        (State.Ready, Input.ScheduleDispatch) =&gt; 
+            <span style="color:#069;font-weight:bold">await</span> Task.FromResult(State.Running),
+        <span style="color:#09f;font-style:italic">// ...
+</span><span style="color:#09f;font-style:italic"></span>   	};
+</code></pre></div><div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> current = <span style="color:#069;font-weight:bold">await</span> ChangeState(State.New, Input.Admit); <span style="color:#09f;font-style:italic">// Ready
+</span></code></pre></div><h2 id="combining-state-machines">Combining State Machines</h2>
+<p>In this example, we'll see how separate state machines can interact with each other to form a unified workflow.</p>
+<p>We're given the task to design an online store where customers can purchase items by paying online through a bank. The system has three participants: the customer, the store and the bank, with the following requirements:</p>
+<ul>
+<li>The customer may <em>pay</em> or <em>cancel</em> at any given time.</li>
+<li>The store may <em>ship</em> items to the customer.</li>
+<li>The store may <em>redeem</em> the money from the bank.</li>
+<li>The bank may <em>transfer</em> any redeemed money (e.g. to the store).</li>
+</ul>
+<p>We have to ensure that the customer cannot use one issued payment multiple times, or <em>pay</em> and immediately <em>cancel</em>, thus getting the items for free. The bank must ensure that money cannot be <em>canceled</em> and <em>redeemed</em> at the same time. The store should <em>ship</em> the items only when it gets the payment.</p>
+<p>We model a separate state machine for each participant. Let's start with the bank.</p>
+<p><img src="/images/posts/2019-11-20-guide-to-fsm/31.svg" /></p>
+<p class="text-center"><small>Figure 3.1: The Bank</small></p>
+<p>The initial state <code>1</code> represents the situation when the bank has issued the money but has not been requested to either <em>redeem</em> it (by the store) or <em>cancel</em> it (by the customer). Once the store <em>redeems</em> the money, the bank enters state <code>3</code> and thus can to <em>transfer</em> it to the store's account. When it's in state <code>2</code>, it restores the money to the customer's account. The fact that we don't allow the bank to leave state <code>2</code> prevents restoring the customer's money multiple times.</p>
+<p><img src="/images/posts/2019-11-20-guide-to-fsm/32.svg" /></p>
+<p class="text-center"><small>Figure 3.2: The Store</small></p>
+<p>When the <em>pay</em> action is performed (by the customer), the store enters state <code>b</code>. It can then either <em>ship</em> the items or <em>redeem</em> the money from the bank. It can also ship when it has made a <em>redeem</em> request and before the money is <em>transferred</em>, or at the end when the money is <em>transferred</em> by the bank.</p>
+<p><img src="/images/posts/2019-11-20-guide-to-fsm/33.svg" /></p>
+<p class="text-center"><small>Figure 3.3: The Customer</small></p>
+<p>The customer's state machine has only one state and two input actions that lead back to the same state. This means that the customer <strong>can do anything</strong> any number of times.</p>
+<h3 id="dealing-with-the-missing-action-inputs">Dealing with the Missing Action Inputs</h3>
+<p>To combine these state machines, they should be able to process action inputs &ldquo;in parallel&rdquo;. We observe that some transitions are missing on some of the machines. For example, the store doesn't have a notion of the <em>cancel</em> action. For the bank, <em>pay</em> and <em>ship</em> are irrelevant. To make the store &ldquo;ignore&rdquo; the <em>cancel</em> action, we simply have to add a transition from each of its states to itself on <em>cancel</em>.
+Another potential problem would be when the customer executes <em>pay</em> for a second time, while the store is in state <code>e</code>. We need to add a transition on <code>e</code> to itself on <em>pay</em>.</p>
+<p><img src="/images/posts/2019-11-20-guide-to-fsm/341.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/342.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/343.svg" /></p>
+<p class="text-center"><small>Figure 3.4: The complete sets of transitions for the bank, the store and the customer</small></p>
+<p>We added self-transitions to each of the participants&rsquo; states for the actions that:</p>
+<ul>
+<li>are irrelevant to the participant (e.g. <em>cancel</em> to the store).</li>
+<li>can potentially &ldquo;terminate&rdquo; the machine (e.g. executing <em>pay</em> while the store is in a state other than <code>a</code>)</li>
+</ul>
+<p>Keep in mind that the behavior of the state machines does not depend on who initiates the action.</p>
+<h3 id="constructing-the-product">Constructing the Product</h3>
+<p>It's still not quite obvious how the states in the store and the bank interact. To see this more clearly, we need to construct <strong>the product</strong> of those state machines. The product is a state machine itself, and since the customer automaton only has one state, the states of the product are <strong>pairs of states from the bank and from the store</strong>.
+For example, the state <code>(3,d)</code> represents the situation where the bank is in state <code>3</code> and the store is in state <code>d</code>. The total amount of states is 4x7=28. We group them in a table where the row corresponds to the state of the bank and the column to the state of the store. The initial state is the pair, both items of which are initial states of their respective machines - in our case <code>(1,a)</code>.</p>
+<p><img src="/images/posts/2019-11-20-guide-to-fsm/35.svg" /></p>
+<p class="text-center"><small>Figure 3.5: The product of the bank's and the store's state machines; the reachable states are marked in green. <br />
+P - <em>pay</em>, C - <em>cancel</em>, R - <em>redeem</em>, S - <em>ship</em>, T - <em>transfer</em>
+</small></p>
+<p>We've drawn all of the state pairs and the transitions amongst them. We can now clearly see how the inputs affect the system as a whole. For instance, on <em>pay</em>, the store goes from <code>a</code> to <code>b</code>, whereas the bank stays put, therefore, <code>change_state((1,a), &quot;pay&quot;) -&gt; (1,b)</code>. From state <code>(1,b)</code>, on <em>redeem</em>, the store goes from state <code>b</code> to <code>d</code> and the bank from <code>1</code> to <code>3</code>, therefore, we end up in <code>change_state((1,b), &quot;redeem&quot;) -&gt; (3,d)</code>.</p>
+<h3 id="eliminating-the-unreachable-states">Eliminating the Unreachable States</h3>
+<p>We observe that not all states are reachable from the initial state <code>(1,a)</code>. For example, we cannot go to <code>(1,g)</code> where the store has shipped the goods after the money is transferred, but the bank is still waiting for a redeem - this makes no sense! We've modeled our system such that a case like this cannot occur. We also found a flaw in our logic, that is, when the machine is in <code>(2,c)</code>, the items have been shipped but the money hasn't been transferred because the customer has issued <em>cancel</em>.</p>
+<p><img src="/images/posts/2019-11-20-guide-to-fsm/36.svg" /></p>
+<p class="text-center"><small>Figure 3.6: The combined state machine for the bank and the store.
+<br />
+P - <em>pay</em>, C - <em>cancel</em>, R - <em>redeem</em>, S - <em>ship</em>, T - <em>transfer</em></small>
+</p>
+<p>After discarding the unreachable states and all of their outgoing transitions, we end up with a much clearer picture, that is, a state machine that is easy to understand yet encodes complex business logic.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this article, we've informally introduced the concept of finite state machines and a new way to implement them in C# using pattern matching. We examined a scenario with multiple participants whose behavior we can model as state machines. We learned how to combine those state machines and establish a unified workflow. This made it much easier to reason about the soundness of our system and depict its possible use cases.</p>
+<p>State machines present a powerful way to express application logic. That way, seemingly complex set business rules can be reduced to something easy to comprehend, extend and modify.
+They are no silver bullet though. Not every domain is suitable to be modeled in such a way. When we have to deal with a system which oftentimes involves human interaction and its events do not always occur in a prescribed order, state machines are a powerful tool in our toolbox - well worth exploring.</p>
+<h2 id="references-and-further-reading">References and Further Reading</h2>
+<ul>
+<li><em>&ldquo;Introduction To Automata Theory Languages, and Computation&rdquo;</em> Hopcroft, Ullmann, Motwani; Chapter 2 - Finite Automata</li>
+<li><a href="https://devblogs.microsoft.com/dotnet/do-more-with-patterns-in-c-8-0/">Do more with patterns in C# 8.0</a></li>
+<li><a href="https://css-tricks.com/robust-react-user-interfaces-with-finite-state-machines/">Robust React User Interfaces with Finite State Machines</a></li>
+<li><a href="http://madebyevan.com/fsm/">Finite State Machine Desigher</a></li>
+<li><a href="https://github.com/dotnet-state-machine/stateless">stateless</a> - a state machine library for .NET</li>
+<li><a href="https://github.com/danielgerlag/workflow-core">workflow-core</a> - a .NET workflow engine</li>
+</ul>
+
+
+		<section class="social-share">
+    
+    
+    <a href="//twitter.com/share?url=https%3a%2f%2fdeniskyashif.com%2f2019%2f11%2f20%2fa-practical-guide-to-state-machines%2f&amp;text=A%20Practical%20Guide%20to%20%20State%20Machines&amp;via=deniskyashif" target="_blank" class="share-btn twitter">
+        <i class="fa fa-2x fa-twitter"></i>
+    </a>
+    
+    
+    
+    <a href="//reddit.com/submit?url=https%3a%2f%2fdeniskyashif.com%2f2019%2f11%2f20%2fa-practical-guide-to-state-machines%2f&amp;title=A%20Practical%20Guide%20to%20%20State%20Machines" target="_blank" class="share-btn reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    
+    
+    
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdeniskyashif.com%2f2019%2f11%2f20%2fa-practical-guide-to-state-machines%2f" target="_blank" class="share-btn facebook">
+        <i class="fa fa-2x fa-facebook"></i>
+    </a>
+    
+    
+    
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fdeniskyashif.com%2f2019%2f11%2f20%2fa-practical-guide-to-state-machines%2f&amp;title=A%20Practical%20Guide%20to%20%20State%20Machines" target="_blank" class="share-btn linkedin">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:?subject=Check out 'A%20Practical%20Guide%20to%20%20State%20Machines' by Denis%20Kyashif&amp;body=https%3a%2f%2fdeniskyashif.com%2f2019%2f11%2f20%2fa-practical-guide-to-state-machines%2f" target="_blank" class="share-btn email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    
+</section>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "deniskyashif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	</div>
+
+	<div class="pagination">
+		<a href="/2019/09/13/translation-using-syntactic-rules/" class="left arrow">&#8592;</a>
+		<a href="/2019/12/08/csharp-channels-part-1/" class="right arrow">&#8594;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+</main>
+
+
+        <footer>
+	<span>
+		&copy; <time datetime="2020-01-03 19:31:26.879927 &#43;0200 EET m=&#43;0.100489006">2020</time> Denis Kyashif
+	</span>
+    <br/>
+</footer>
+
+    </body>
+</html>

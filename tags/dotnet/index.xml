@@ -13,46 +13,46 @@
     
     <item>
       <title>C# Channels - Timeout and Cancellation</title>
-      <link>https://deniskyashif.com/csharp-channels-part-2/</link>
+      <link>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</link>
       <pubDate>Wed, 11 Dec 2019 15:01:01 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/csharp-channels-part-2/</guid>
+      <guid>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</guid>
       <description>Explore cancellation and timeout techniques with channels.</description>
     </item>
     
     <item>
       <title>C# Channels - Publish / Subscribe Workflows</title>
-      <link>https://deniskyashif.com/csharp-channels-part-1/</link>
+      <link>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</link>
       <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/csharp-channels-part-1/</guid>
+      <guid>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</guid>
       <description>Concurrency patterns using channels.</description>
     </item>
     
     <item>
       <title>A Practical Guide to  State Machines</title>
-      <link>https://deniskyashif.com/a-practical-guide-to-state-machines/</link>
+      <link>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</link>
       <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
       
-      <guid>https://deniskyashif.com/a-practical-guide-to-state-machines/</guid>
+      <guid>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</guid>
       <description>Express application logic in a concise and declarative way using state machines and C#&amp;lsquo;s pattern matching.</description>
     </item>
     
     <item>
       <title>Setting Up a Project With Telerik UI for ASP.NET MVC</title>
-      <link>https://deniskyashif.com/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</link>
+      <link>https://deniskyashif.com/2018/03/06/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</link>
       <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</guid>
+      <guid>https://deniskyashif.com/2018/03/06/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</guid>
       <description>This is a step by step guide on how to setup a project from scratch with the Telerik UI for ASP.NET MVC component suite or integrate it to an existing one.</description>
     </item>
     
     <item>
       <title>Bring .NET Development into your favourite editor with Omnisharp</title>
-      <link>https://deniskyashif.com/bring-.net-development-into-your-favourite-editor-with-omnisharp/</link>
+      <link>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</link>
       <pubDate>Wed, 09 Dec 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://deniskyashif.com/bring-.net-development-into-your-favourite-editor-with-omnisharp/</guid>
+      <guid>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</guid>
       <description>IntelliSense as a service.</description>
     </item>
     
