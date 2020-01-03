@@ -3,7 +3,9 @@ title: "C# Channels - Timeout and Cancellation"
 date: 2019-12-11T15:01:01+02:00
 draft: false
 summary: "Explore cancellation and timeout techniques with channels."
-url: "csharp-channels-part-2"
+url: "/2019/12/11/csharp-channels-part-2"
+aliases:
+- "/csharp-channels-part-2"
 images: 
 - "/images/posts/2019-12-11-csharp-channels-part2/featured-image.png"
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-12-11-csharp-channels-part-2.md"

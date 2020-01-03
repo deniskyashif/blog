@@ -26,7 +26,7 @@ googleAnalytics = "UA-133185625-1"
   tags = "tags"
 
 [permalinks]
-  posts = "/:title/"
+  posts = "/:year/:month/:day/:title/"
 
 enableEmoji = true
 

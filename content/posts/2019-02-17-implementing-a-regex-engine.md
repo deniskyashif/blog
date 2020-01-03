@@ -7,7 +7,7 @@ useMath: true
 summary: "Using Ken Thompson's construction algorithm."
 description: "This article describes how to implement a simple and efficient regular expression engine following the Thompson's construction algorithm."
 aliases: 
-    - /2019/02/17/implementing-a-regular-expression-engine/
+    - /implementing-a-regular-expression-engine/
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-02-17-implementing-a-regex-engine.md"
 ---
     

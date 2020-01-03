@@ -5,7 +5,7 @@ draft: false
 tags: ["csharp", "dotnet"]
 summary: "IntelliSense as a service."
 aliases: 
-    - /2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp
+    - /bring-.net-development-into-your-favourite-editor-with-omnisharp
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2015-12-09-bring-dotnet-into-your-editor-omnisharp.md"
 ---
 

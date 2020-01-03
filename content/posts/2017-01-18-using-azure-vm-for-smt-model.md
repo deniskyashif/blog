@@ -5,7 +5,7 @@ draft: false
 tags: ["nlp", "azure"]
 summary: "Training a machine translation model on an Azure compute optimized VM."
 aliases:
-    - /2017/01/18/statistical-machine-translation-on-azure-vm-using-moses
+    - /statistical-machine-translation-on-azure-vm-using-moses
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2017-01-18-using-azure-vm-for-smt-model.md"
 ---
 

@@ -2,10 +2,10 @@
 title: "Validate any DOM element with the KendoUI validator"
 date: 2016-05-30
 draft: false
-tags: ["javascript", "kendo-ui"]
+tags: ["javascript", "kendoui"]
 summary: "Not only inputs."
 aliases:
-    - /2016/05/30/validate-any-dom-element-with-the-kendoui-validator
+    - /validate-any-dom-element-with-the-kendoui-validator
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2016-05-30-validate-any-dom-element-kendoui.md"
 ---
 

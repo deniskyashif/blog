@@ -9,6 +9,8 @@ images:
 - "/images/posts/2019-05-15-on-recursion/matryoshka1200x1200.jpg"
 description: "How to define a recursive function in a language which doesn't support recursion using the Y combinator."
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-05-15-on-recursive-functions.md"
+aliases:
+- "/on-recursive-functions"
 ---
 
 In this article, we'll explore one of the most fascinating concepts in computer science, namely the **Y combinator**. It can simulate recursion in a language that doesn't support it.  

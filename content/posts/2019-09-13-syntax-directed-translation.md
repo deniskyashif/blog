@@ -6,6 +6,8 @@ useMath: true
 tags: ["compsci", "compilers", "javascript"]
 summary: "How to describe a formal language and build a translator with ANTLR and JavaScript."
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-09-13-syntax-directed-translation.md"
+aliases:
+- /translation-using-syntactic-rules
 ---
 
 Often, when we build applications we have to deal with some kind of a non-trivial input or come up with a standardized way of passing information between the components of a system. In cases like this, a rudimentary approach like using regular expressions, combined with control flow statements can quickly turn out messy, error-prone and leave little to no room for extension.

@@ -2,9 +2,9 @@
 title: "C# Channels - Async Data Pipelines"
 date: 2020-01-08T08:42:15+02:00
 draft: false
-url: "csharp-channels-part-3"
+url: "/2020/01/08/csharp-channels-part-3"
 tags: ["software-design", "csharp", "concurrency", "dotnet"]
-summary: "How to implement an \"assembly line\" concurrency model using channels."
+summary: "How to implement an assembly line concurrency model using channels."
 images: 
 - "/images/posts/2020-01-08-csharp-channels-part3/featured-image.png"
 ---
