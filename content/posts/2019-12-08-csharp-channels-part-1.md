@@ -2,7 +2,7 @@
 title: "C# Channels - Publish / Subscribe Workflows"
 date: 2019-12-08T08:02:09+02:00
 draft: false
-summary: "Concurrency patterns using channels."
+summary: "Concurrency patterns in .NET using channels."
 url: "/2019/12/08/csharp-channels-part-1"
 aliases: 
 - "/csharp-concurrency-patterns-using-channels"

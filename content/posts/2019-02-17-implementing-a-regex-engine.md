@@ -5,7 +5,7 @@ draft: false
 tags: ["compsci", "compilers", "algorithms", "javascript"]
 useMath: true
 summary: "Using Ken Thompson's construction algorithm."
-description: "This article describes how to implement a simple and efficient regular expression engine following the Thompson's construction algorithm."
+description: "In this article we learn how to implement a simple and efficient regular expression engine following the Thompson's construction algorithm."
 aliases: 
     - /implementing-a-regular-expression-engine/
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-02-17-implementing-a-regex-engine.md"

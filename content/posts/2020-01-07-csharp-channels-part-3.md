@@ -1,12 +1,15 @@
 ---
 title: "C# Channels - Async Data Pipelines"
-date: 2020-01-08T08:42:15+02:00
+date: 2020-01-07T08:42:15+02:00
 draft: false
-url: "/2020/01/08/csharp-channels-part-3"
+url: "/2020/01/07/csharp-channels-part-3"
 tags: ["software-design", "csharp", "concurrency", "dotnet"]
-summary: "How to implement an assembly line concurrency model using channels."
+summary: "How to implement an assembly line concurrency model in .NET using channels."
 images: 
-- "/images/posts/2020-01-08-csharp-channels-part3/featured-image.png"
+- "/images/posts/2020-01-07-csharp-channels-part3/featured-image.png"
+aliases:
+- "/csharp-channels-part-3"
+editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2020-01-07-csharp-channels-part-3.md"
 ---
 
 In this article, we'll learn how to efficiently process data in a non-blocking way using the pipeline pattern. We'll construct composable and testable pipelines using C#'s channels, and see how to perform cancellation and deal with errors. If you're new to the concept of channels in C#, I suggest checking out [part 1](/c-sharp-channels-part-1) and [part 2](/c-sharp-channels-part-2) of the series first.
@@ -15,7 +18,7 @@ In this article, we'll learn how to efficiently process data in a non-blocking w
 
 A pipeline is a concurrency model where a job is handled through several processing stages. Each stage performs a part of the full job and when it's done, it forwards it to the next stage. It also runs in a separate thread and **shares no state** with the other stages. 
 
-<img src="/images/posts/2020-01-08-csharp-channels-part3/pipeline.png" />
+<img src="/images/posts/2020-01-07-csharp-channels-part3/pipeline.png" />
 
 The generator delegates the jobs, which are being processed through the pipeline. For example, we can represent the pizza preparation as a pipeline, consisting of the following stages:
 
@@ -31,7 +34,7 @@ Stages start executing as soon as their input is ready, e.g., when stage 2 adds 
 
 Each pipeline starts with a generator method, which initiates jobs by passing it to the stages. The intermediate stages are also methods that run on separate threads. Channels serve as a transport mechanism between the stages. A stage takes a channel as an input, performs some work on each data item it asynchronously reads, and passes the result to an output channel. The purpose of a stage is to do one job and do it well.
 
-<img src="/images/posts/2020-01-08-csharp-channels-part3/pipeline-channels.png" />
+<img src="/images/posts/2020-01-07-csharp-channels-part3/pipeline-channels.png" />
 
 To see it in action, we're going to implement a program that efficiently counts the lines of code in a project.
 
@@ -265,7 +268,7 @@ var fileSource = GetFilesRecursively("path_to/node_modules", cts.Token);
 
 The term [backpressure](https://en.wikipedia.org/wiki/Back_pressure) is borrowed from fluid dynamics and relates to to the software systems' dataflow. In our examples, the stages execute concurrently but this doesn't guarantee an optimal performance. Let's revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we're going to end up with many pizzas with their toppings added, waiting to be baked, but our oven bakes in only one at a time. We can solve this by getting a larger oven, or even multiple ovens.
 
-<img src="/images/posts/2020-01-08-csharp-channels-part3/bottleneck.png" />
+<img src="/images/posts/2020-01-07-csharp-channels-part3/bottleneck.png" />
 
 In the line-counter example, the stage where we read the file and count its lines might cause might experience backpressure because reading a sufficiently large file is slower than retreiving a file metadata (the previous stage). It makes sense to increase the capacity of this stage and that's where `Split<T>` and `Merge<T>` which we discussed in [part 1](/csharp-channels-part-1#multiplexer) come into use. We'll summarize them.
 
@@ -273,7 +276,7 @@ In the line-counter example, the stage where we read the file and count its line
 
 `Split<T>` is a method that takes an input channel and distributes its messages amongst several outputs. That way we can let several threads concurrently handle the message processing.
 
-<img src="/images/posts/2020-01-08-csharp-channels-part3/split.png" />
+<img src="/images/posts/2020-01-07-csharp-channels-part3/split.png" />
 
 <details>
   <summary>Expand <code>Split&lt;T&gt;</code> implementation</summary>
@@ -317,7 +320,7 @@ var splitter = Split(sourceCodeFiles, 5);
 
 `Merge<T>` is the opposite operation. It takes multiple input channels and consolidates them in a single output.
 
-<img src="/images/posts/2020-01-08-csharp-channels-part3/merge.png" />
+<img src="/images/posts/2020-01-07-csharp-channels-part3/merge.png" />
 
 <details>
   <summary>Expand <code>Merge&lt;T&gt;</code> implementation</summary>
