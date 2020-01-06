@@ -26,7 +26,7 @@
       <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
       
       <guid>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</guid>
-      <description>Concurrency patterns using channels.</description>
+      <description>Concurrency patterns in .NET using channels.</description>
     </item>
     
   </channel>

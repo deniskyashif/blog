@@ -166,13 +166,18 @@ section > div:last-child {
 }
 
 @media print {
+    .exp-nvs {
+        margin-top: 100px;
+    }
+    
     .wrapper {
-        padding: 1rem 0;
+        /* padding: 1rem 0; */
+        margin-top: 0px;
     }
 
     .export {
         display: none;
     }
 
-
+    
 }
