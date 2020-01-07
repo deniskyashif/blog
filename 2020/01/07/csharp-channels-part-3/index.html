@@ -134,7 +134,7 @@ if (!doNotTrack) {
             <span style="color:#069;font-weight:bold">await</span> output.Writer.WriteAsync(file);
 
         <span style="color:#078;font-weight:bold">var</span> tasks = Directory.GetDirectories(path).Select(WalkDir);
-        <span style="color:#069;font-weight:bold">await</span> Task.WhenAll(tasks);
+        <span style="color:#069;font-weight:bold">await</span> Task.WhenAll(tasks.ToArray());
     }
 
     Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
@@ -280,7 +280,7 @@ Console.WriteLine(<span style="color:#c30">$&#34;Total lines: {totalLines}&#34;<
             <span style="color:#069;font-weight:bold">await</span> output.Writer.WriteAsync(file, token);
             
         <span style="color:#078;font-weight:bold">var</span> tasks = Directory.GetDirectories(path).Select(WalkDir);
-        <span style="color:#069;font-weight:bold">await</span> Task.WhenAll(tasks);
+        <span style="color:#069;font-weight:bold">await</span> Task.WhenAll(tasks.ToArray()));
     }
 
     Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
@@ -475,7 +475,7 @@ var sourceCodeFiles =
 
         <footer>
 	<span>
-		&copy; <time datetime="2020-01-07 20:23:51.583348 &#43;0200 EET m=&#43;0.110948623">2020</time> Denis Kyashif
+		&copy; <time datetime="2020-01-07 21:30:05.673583 &#43;0200 EET m=&#43;0.105101019">2020</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
