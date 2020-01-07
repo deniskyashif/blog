@@ -128,18 +128,18 @@ if (!doNotTrack) {
 {
     <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
     
-    <span style="color:#069;font-weight:bold">void</span> WalkDir(<span style="color:#078;font-weight:bold">string</span> path)
+    <span style="color:#069;font-weight:bold">async</span> Task WalkDir(<span style="color:#078;font-weight:bold">string</span> path)
     {
         <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> file <span style="color:#069;font-weight:bold">in</span> Directory.GetFiles(path))
-            output.Writer.WriteAsync(file);
+            <span style="color:#069;font-weight:bold">await</span> output.Writer.WriteAsync(file);
 
-        <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> dir <span style="color:#069;font-weight:bold">in</span> Directory.GetDirectories(path))
-            WalkDir(dir);
+        <span style="color:#078;font-weight:bold">var</span> tasks = Directory.GetDirectories(path).Select(WalkDir);
+        <span style="color:#069;font-weight:bold">await</span> Task.WhenAll(tasks);
     }
 
-    Task.Run(() =&gt;
+    Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
     {
-        WalkDir(root);
+        <span style="color:#069;font-weight:bold">await</span> WalkDir(root);
         output.Writer.Complete();
     });
 
@@ -271,21 +271,23 @@ Console.WriteLine(<span style="color:#c30">$&#34;Total lines: {totalLines}&#34;<
 {
     <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
 
-    <span style="color:#069;font-weight:bold">void</span> WalkDir(<span style="color:#078;font-weight:bold">string</span> path)
+    <span style="color:#069;font-weight:bold">async</span> Task WalkDir(<span style="color:#078;font-weight:bold">string</span> path)
     {
         <span style="color:#069;font-weight:bold">if</span> (token.IsCancellationRequested)
             <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> OperationCanceledException();
+            
         <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> file <span style="color:#069;font-weight:bold">in</span> Directory.GetFiles(path))
-            output.Writer.WriteAsync(file, token);
-        <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> dir <span style="color:#069;font-weight:bold">in</span> Directory.GetDirectories(path))
-            WalkDir(dir);
+            <span style="color:#069;font-weight:bold">await</span> output.Writer.WriteAsync(file, token);
+            
+        <span style="color:#078;font-weight:bold">var</span> tasks = Directory.GetDirectories(path).Select(WalkDir);
+        <span style="color:#069;font-weight:bold">await</span> Task.WhenAll(tasks);
     }
 
-    Task.Run(() =&gt;
+    Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
     {
         <span style="color:#069;font-weight:bold">try</span>
         {
-            WalkDir(root);
+            <span style="color:#069;font-weight:bold">await</span> WalkDir(root);
         }
         <span style="color:#069;font-weight:bold">catch</span> (OperationCanceledException) { Console.WriteLine(<span style="color:#c30">&#34;Cancelled.&#34;</span>); }
         <span style="color:#069;font-weight:bold">finally</span> { output.Writer.Complete(); }
@@ -473,7 +475,7 @@ var sourceCodeFiles =
 
         <footer>
 	<span>
-		&copy; <time datetime="2020-01-07 18:32:24.761399 &#43;0200 EET m=&#43;0.100533577">2020</time> Denis Kyashif
+		&copy; <time datetime="2020-01-07 20:23:51.583348 &#43;0200 EET m=&#43;0.110948623">2020</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
