@@ -47,18 +47,18 @@ ChannelReader<string> GetFilesRecursively(string root)
 {
     var output = Channel.CreateUnbounded<string>();
     
-    void WalkDir(string path)
+    async Task WalkDir(string path)
     {
         foreach (var file in Directory.GetFiles(path))
-            output.Writer.WriteAsync(file);
+            await output.Writer.WriteAsync(file);
 
-        foreach (var dir in Directory.GetDirectories(path))
-            WalkDir(dir);
+        var tasks = Directory.GetDirectories(path).Select(WalkDir);
+        await Task.WhenAll(tasks.ToArray());
     }
 
-    Task.Run(() =>
+    Task.Run(async () =>
     {
-        WalkDir(root);
+        await WalkDir(root);
         output.Writer.Complete();
     });
 
@@ -231,21 +231,23 @@ ChannelReader<string> GetFilesRecursively(
 {
     var output = Channel.CreateUnbounded<string>();
 
-    void WalkDir(string path)
+    async Task WalkDir(string path)
     {
         if (token.IsCancellationRequested)
             throw new OperationCanceledException();
+            
         foreach (var file in Directory.GetFiles(path))
-            output.Writer.WriteAsync(file, token);
-        foreach (var dir in Directory.GetDirectories(path))
-            WalkDir(dir);
+            await output.Writer.WriteAsync(file, token);
+            
+        var tasks = Directory.GetDirectories(path).Select(WalkDir);
+        await Task.WhenAll(tasks.ToArray()));
     }
 
-    Task.Run(() =>
+    Task.Run(async () =>
     {
         try
         {
-            WalkDir(root);
+            await WalkDir(root);
         }
         catch (OperationCanceledException) { Console.WriteLine("Cancelled."); }
         finally { output.Writer.Complete(); }
