@@ -352,13 +352,13 @@ Reader 0: Joe 9
 
 In this article, we defined the term concurrency and discussed how it relates to parallelism. We explained why the two terms should not be confused. Then we explored C#'s channel data structure and learned how to use it to implement publish/subscribe workflows. We've seen how to make an efficient use multiple CPUs by distrubuting the reading/writing operations amongst several workers.
 
-_Check out [part 2](/csharp-channels-part-2) where we discuss some cancellation techniques and put what we've learned into practice._
+_Check out [part 2](/csharp-channels-part-2) where we discuss some cancellation techniques and [part 3](/csharp-channels-part-3) where we put what we've learned into practice._
 
 ## References & Further Reading
 
 - [GitHub Repo](https://github.com/deniskyashif/trydotnet-channels) with the interactive examples
 - Part 2: [C# Channels - Timeout and Cancellation](/csharp-channels-part-2)
-<!-- - Part 3: [C# Channels - Async Data Pipelines](/csharp-channels-part-3) -->
+- Part 3: [C# Channels - Async Data Pipelines](/csharp-channels-part-3)
 - [An Introduction to System.Threading.Channels](https://devblogs.microsoft.com/dotnet/an-introduction-to-system-threading-channels/) on the .NET Blog
 - [Concurrency in C# Cookbook](https://stephencleary.com/book/) by Stephen Cleary - my highly recommended go-to reference for concurrent C#
 - The graphics are implemented using [sketch.io](https://sketch.io/sketchpad/)
