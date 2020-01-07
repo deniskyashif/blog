@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Denis Kyashif" />
+	
+	<title>
+		C# Channels - Async Data Pipelines &middot; Denis Kyashif&#39;s Blog
+	</title>
+	
+	
+  	<link rel="stylesheet" href="/css/style.css" />    
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/my.css">    
+	
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+	
+	
+	<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
+    <meta property="og:title" content="C# Channels - Async Data Pipelines" />
+<meta property="og:description" content="How to implement an assembly line concurrency model in .NET using channels." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://deniskyashif.com/2020/01/07/csharp-channels-part-3/" />
+<meta property="og:image" content="https://deniskyashif.com/images/posts/2020-01-07-csharp-channels-part3/featured-image.png" />
+<meta property="article:published_time" content="2020-01-07T07:42:15+02:00" />
+<meta property="article:modified_time" content="2020-01-07T07:42:15+02:00" />
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-133185625-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+</head>
+
+    <body>
+        <a href="https://github.com/deniskyashif/blog" class="github-corner" target="_blank" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#4a9ae1; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<nav class="nav">
+	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
+		<ul>
+    <li><a href="/">Posts</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/about">About</a></li>
+</ul>
+
+	</div>
+</nav>
+
+        
+
+<main>
+	<div class="post">
+		<div class="post-info">
+    <time datetime="2020-01-07 07:42:15 &#43;0200 EET">January 7, 2020</time>
+    |
+    <a href="https://github.com/deniskyashif/blog/blob/master/content/posts/2020-01-07-csharp-channels-part-3.md" target="_blank">
+        <i class="fa fa-edit"></i>&nbsp;Edit
+    </a>
+
+    
+    <div class="tags">
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/software-design/" class="tag">software-design</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/csharp/" class="tag">csharp</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/concurrency/" class="tag">concurrency</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/dotnet/" class="tag">dotnet</a>
+        
+        
+    </div>
+</div>
+
+		<h1 class="post-title">C# Channels - Async Data Pipelines</h1>
+<div class="post-line"></div>
+
+		
+
+		<p>In this article, we'll learn how to efficiently process data in a non-blocking way using the pipeline pattern. We'll construct composable and testable pipelines using .NET's channels, and see how to perform cancellation and deal with errors. If you're new to the concept of channels, I suggest checking out <a href="/c-sharp-channels-part-1">part 1</a> and <a href="/c-sharp-channels-part-2">part 2</a> of the series first.</p>
+<h2 id="pipelines">Pipelines</h2>
+<p>A pipeline is a concurrency model where a job is handled through several processing stages. Each stage performs a part of the full job and when it's done, it forwards it to the next stage. It also runs in a separate thread and <strong>shares no state</strong> with the other stages.</p>
+<p><img src="/images/posts/2020-01-07-csharp-channels-part3/pipeline.png" /></p>
+<p>The generator delegates the jobs, which are being processed through the pipeline. For example, we can represent the pizza preparation as a pipeline, consisting of the following stages:</p>
+<ol start="0">
+<li>Pizza order (Generator)</li>
+<li>Prepare dough</li>
+<li>Add toppings</li>
+<li>Bake in oven</li>
+<li>Put in a box</li>
+</ol>
+<p>Stages start executing as soon as their input is ready, that is, when stage 2 adds toppings to pizza 1, stage 1 can prepare the dough for pizza 2, when stage 4 puts the baked pizza 1 in a box, stage 1 might be preparing the dough for pizza 3 and so on.</p>
+<h2 id="implementing-a-channel-based-pipeline">Implementing a Channel-based Pipeline</h2>
+<p>Each pipeline starts with a generator method, which initiates jobs by passing it to the stages. The intermediate stages are also methods that run concurrently. Channels serve as a transport mechanism between the stages. A stage takes a channel as an input, performs some work on each data item it asynchronously reads, and passes the result to an output channel. The purpose of a stage is to do one job and do it well.</p>
+<p><img src="/images/posts/2020-01-07-csharp-channels-part3/pipeline-channels.png" /></p>
+<p>To see it in action, we're going to implement a program that efficiently counts the lines of code in a project.</p>
+<h3 id="the-generator---enumerate-the-files">The Generator - Enumerate the Files</h3>
+<p>The initial stage of our pipeline would be to enumerate recursively the files in the workspace. We implement it as a generator.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; GetFilesRecursively(<span style="color:#078;font-weight:bold">string</span> root)
+{
+    <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
+    
+    <span style="color:#069;font-weight:bold">void</span> WalkDir(<span style="color:#078;font-weight:bold">string</span> path)
+    {
+        <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> file <span style="color:#069;font-weight:bold">in</span> Directory.GetFiles(path))
+            output.Writer.WriteAsync(file);
+
+        <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> dir <span style="color:#069;font-weight:bold">in</span> Directory.GetDirectories(path))
+            WalkDir(dir);
+    }
+
+    Task.Run(() =&gt;
+    {
+        WalkDir(root);
+        output.Writer.Complete();
+    });
+
+    <span style="color:#069;font-weight:bold">return</span> output;
+}
+</code></pre></div><p>We perform a depth-first traversal of the directory and its subdirectories and write each file name we encounter to the output channel. When we're done with the traversal, we mark the channel as complete so the consumer (the next stage) knows when to stop reading from it.</p>
+<h3 id="stage-1---keep-the-source-files">Stage 1 - Keep the Source Files</h3>
+<p>Stage 1 is going to determine whether the file contains source code or not. The ones that don't should be discarded.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">ChannelReader&lt;FileInfo&gt; FilterByExtension(
+    ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; input, HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; exts)
+{
+    <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;FileInfo&gt;();
+    
+    Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
+    {
+        <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> file <span style="color:#069;font-weight:bold">in</span> input.ReadAllAsync())
+        {
+            <span style="color:#078;font-weight:bold">var</span> fileInfo = <span style="color:#069;font-weight:bold">new</span> FileInfo(file);
+            <span style="color:#069;font-weight:bold">if</span> (exts.Contains(fileInfo.Extension))
+                <span style="color:#069;font-weight:bold">await</span> output.Writer.WriteAsync(fileInfo);
+        }
+        output.Writer.Complete();
+    });
+
+    <span style="color:#069;font-weight:bold">return</span> output;
+}
+</code></pre></div><p>This stage takes an input channel (produced by the generator) from which it asynchronously reads the file names. For each file, it gets its metadata and checks whether the extension belongs to the set of the source code file extensions. It also transforms the input, that is, for each file that satisfies the condition, it writes a <code>FileInfo</code> object to the output channel.</p>
+<h3 id="stage-2---get-the-line-count">Stage 2 - Get the Line Count</h3>
+<p>This stage is responsible for counting the number of lines in each file.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">ChannelReader&lt;(FileInfo file, <span style="color:#078;font-weight:bold">int</span> lines)&gt; 
+    GetLineCount(ChannelReader&lt;FileInfo&gt; input)
+{
+    <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;(FileInfo, <span style="color:#078;font-weight:bold">int</span>)&gt;();
+
+    Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
+    {
+        <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> file <span style="color:#069;font-weight:bold">in</span> input.ReadAllAsync())
+        {
+            <span style="color:#078;font-weight:bold">var</span> lines = CountLines(file);
+            <span style="color:#069;font-weight:bold">await</span> output.Writer.WriteAsync((file, lines));
+        }
+        output.Writer.Complete();
+    });
+
+    <span style="color:#069;font-weight:bold">return</span> output;
+}
+</code></pre></div><p>We write a tuple of type <code>(FileInfo, int)</code> which is a pair of the file metadata and its number of lines. The <code>int CountLines(FileInfo file)</code> method is straightforward, you can check out the implementation below.</p>
+<details>
+  <summary>Expand <code>CountLines</code></summary>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">int</span> CountLines(FileInfo file)
+{
+    <span style="color:#069;font-weight:bold">using</span> <span style="color:#0cf;font-weight:bold">var</span> sr = <span style="color:#069;font-weight:bold">new</span> StreamReader(file.FullName);
+    <span style="color:#078;font-weight:bold">var</span> lines = <span style="color:#f60">0</span>;
+    
+    <span style="color:#069;font-weight:bold">while</span> (sr.ReadLine() != <span style="color:#069;font-weight:bold">null</span>)
+        lines++;
+
+    <span style="color:#069;font-weight:bold">return</span> lines;
+}
+</code></pre></div></details>
+<h2 id="the-sink-stage">The Sink Stage</h2>
+<p>Now we've implemented the stages of our pipeline, we are ready to put them all together.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> fileGen = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
+<span style="color:#078;font-weight:bold">var</span> sourceCodeFiles = FilterByExtension(
+    fileGen, <span style="color:#069;font-weight:bold">new</span> HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; { <span style="color:#c30">&#34;.js&#34;</span>, <span style="color:#c30">&#34;.ts&#34;</span> });
+<span style="color:#078;font-weight:bold">var</span> counter = GetLineCount(sourceCodeFiles);
+</code></pre></div><p>The sink stage processes the output from the last stage of the pipeline. Unlike the generator, which doesn't consume, but only produces, the sink only consumes but doesn't produce. That's where our pipeline comes to an end.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> totalLines = <span style="color:#f60">0</span>;
+<span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> counter.ReadAllAsync())
+{
+    Console.WriteLine(<span style="color:#c30">$&#34;{item.file.FullName} {item.lines}&#34;</span>);
+    totalLines += item.lines;
+}
+
+Console.WriteLine(<span style="color:#c30">$&#34;Total lines: {totalLines}&#34;</span>);
+</code></pre></div><h2 id="error-handling">Error Handling</h2>
+<p>We've covered the happy path, however, our pipeline might encounter malformed or erroneous inputs. Each stage has its own notion of what an invalid input is, so it's its own
+responsibility to deal with it. To achieve good error handling, our pipeline needs to satisfy the following:</p>
+<ol>
+<li>Invalid input should not propagate to the next stage</li>
+<li>Invalid input should not cause the pipeline to stop. The pipeline should continue to process the inputs thereafter.</li>
+<li>The pipeline should not swallow errors. All the errors should be reported.</li>
+</ol>
+<p>We're going to modify stage 2 which counts the lines in a file. Our definition for invalid input is an empty file. Our pipeline should not pass them forward and instead, it should report the existence of such files. We solve that by introducing a second channel that emits the errors.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="background-color:#fcc">- ChannelReader&lt;(FileInfo file, int lines)&gt; GetLineCount(
+</span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+     (ChannelReader&lt;(FileInfo file, int lines)&gt; output,
+</span><span style="background-color:#cfc"></span><span style="background-color:#cfc">+      ChannelReader&lt;string&gt; errors)
+</span><span style="background-color:#cfc"></span>    GetLineCount(ChannelReader&lt;FileInfo&gt; input)
+    {
+        var output = Channel.CreateUnbounded&lt;(FileInfo, int)&gt;();
+<span style="background-color:#cfc">+       var errors = Channel.CreateUnbounded&lt;string&gt;();
+</span><span style="background-color:#cfc"></span>
+        Task.Run(async () =&gt;
+        {
+            await foreach (var file in input.ReadAllAsync())
+            {
+                var lines = CountLines(file);
+<span style="background-color:#fcc">-               await output.Writer.WriteAsync((file, lines));
+</span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+               if (lines == 0)
+</span><span style="background-color:#cfc"></span><span style="background-color:#cfc">+                   await errors.Writer.WriteAsync(
+</span><span style="background-color:#cfc"></span><span style="background-color:#cfc">+                       $&#34;[Error] Empty file {file}&#34;);
+</span><span style="background-color:#cfc"></span><span style="background-color:#cfc">+               else
+</span><span style="background-color:#cfc"></span><span style="background-color:#cfc">+                   await output.Writer.WriteAsync((file, lines));
+</span><span style="background-color:#cfc"></span>            }
+            output.Writer.Complete();
+<span style="background-color:#cfc">+           errors.Writer.Complete();
+</span><span style="background-color:#cfc"></span>        });
+<span style="background-color:#fcc">-       return output;
+</span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+       return (output, errors);
+</span><span style="background-color:#cfc"></span>    }
+</code></pre></div><p>We've created a second channel for errors and changed the signature of the method so it returns both the output and the error channels. Empty files are not passed to the next stage, we've provided a mechanism to report them using the error channel and after we get an invalid input, our pipeline continues processing the next ones.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> fileGen = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
+<span style="color:#078;font-weight:bold">var</span> sourceCodeFiles = FilterByExtension(
+    fileGen, <span style="color:#069;font-weight:bold">new</span> HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; { <span style="color:#c30">&#34;.js&#34;</span>, <span style="color:#c30">&#34;.ts&#34;</span> });
+<span style="color:#078;font-weight:bold">var</span> (counter, errors) = GetLineCount(sourceCodeFiles);
+<span style="color:#078;font-weight:bold">var</span> totalLines = <span style="color:#f60">0</span>;
+
+<span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> counter.ReadAllAsync())
+    totalLines += item.lines;
+
+Console.WriteLine(<span style="color:#c30">$&#34;Total lines: {totalLines}&#34;</span>);
+
+<span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> errMessage <span style="color:#069;font-weight:bold">in</span> errors.ReadAllAsync())
+    Console.WriteLine(errMessage);
+</code></pre></div><h2 id="cancellation">Cancellation</h2>
+<p>Similarily to the error handling, the stages being independent means that each has to handle cancellation on their own. To stop the pipeline, we need to prevent the generator from delegating new jobs. Let's make it cancellable.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; GetFilesRecursively(
+    <span style="color:#078;font-weight:bold">string</span> root, CancellationToken token = <span style="color:#069;font-weight:bold">default</span>)
+{
+    <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
+
+    <span style="color:#069;font-weight:bold">void</span> WalkDir(<span style="color:#078;font-weight:bold">string</span> path)
+    {
+        <span style="color:#069;font-weight:bold">if</span> (token.IsCancellationRequested)
+            <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> OperationCanceledException();
+        <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> file <span style="color:#069;font-weight:bold">in</span> Directory.GetFiles(path))
+            output.Writer.WriteAsync(file, token);
+        <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> dir <span style="color:#069;font-weight:bold">in</span> Directory.GetDirectories(path))
+            WalkDir(dir);
+    }
+
+    Task.Run(() =&gt;
+    {
+        <span style="color:#069;font-weight:bold">try</span>
+        {
+            WalkDir(root);
+        }
+        <span style="color:#069;font-weight:bold">catch</span> (OperationCanceledException) { Console.WriteLine(<span style="color:#c30">&#34;Cancelled.&#34;</span>); }
+        <span style="color:#069;font-weight:bold">finally</span> { output.Writer.Complete(); }
+    });
+
+    <span style="color:#069;font-weight:bold">return</span> output;
+}
+</code></pre></div><p>The change is straightforward, we need to handle the cancellation in a <code>try/catch</code> block and not forget to close the output channel. Keep in mind that canceling only the initial stage will leave the next stages running with the existing jobs which might not always be desired, especially if the stages are long-running. Therefore, we have to make them able to handle cancellation as well.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
+cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
+<span style="color:#078;font-weight:bold">var</span> fileSource = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>, cts.Token);
+...
+</code></pre></div><h2 id="dealing-with-backpressure">Dealing with Backpressure</h2>
+<p>The term <a href="https://en.wikipedia.org/wiki/Back_pressure">backpressure</a> is borrowed from fluid dynamics and relates to to the software systems&rsquo; dataflow. In our examples, the stages execute concurrently but this doesn't guarantee an optimal performance. Let's revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we're going to end up with many pizzas with their toppings added, waiting to be baked, but our oven bakes only one at a time. We can solve this by getting a larger oven, or even multiple ovens.</p>
+<p><img src="/images/posts/2020-01-07-csharp-channels-part3/bottleneck.png" /></p>
+<p>In the line-counter example, the stage where we read the file and count its lines might cause might experience backpressure because reading a sufficiently large file (stage 2) is slower than retreiving a file metadata (stage 1). It makes sense to increase the capacity of this stage and that's where <code>Split&lt;T&gt;</code> and <code>Merge&lt;T&gt;</code> which we discussed in <a href="/csharp-channels-part-1#multiplexer">part 1</a> come into use. We'll summarize them.</p>
+<h3 id="split">Split</h3>
+<p><code>Split&lt;T&gt;</code> is a method that takes an input channel and distributes its messages amongst several outputs. That way we can let several threads concurrently handle the message processing.</p>
+<p><img src="/images/posts/2020-01-07-csharp-channels-part3/split.png" /></p>
+<details>
+  <summary>Expand <code>Split&lt;T&gt;</code> implementation</summary>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">IList&lt;ChannelReader&lt;T&gt;&gt; Split&lt;T&gt;(ChannelReader&lt;T&gt; input, <span style="color:#078;font-weight:bold">int</span> n)
+{
+    <span style="color:#078;font-weight:bold">var</span> outputs = <span style="color:#069;font-weight:bold">new</span> Channel&lt;T&gt;[n];
+    <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">var</span> i = <span style="color:#f60">0</span>; i &lt; n; i++)
+        outputs[i] = Channel.CreateUnbounded&lt;T&gt;();
+
+    Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
+    {
+        <span style="color:#078;font-weight:bold">var</span> index = <span style="color:#f60">0</span>;
+        <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> input.ReadAllAsync())
+        {
+            <span style="color:#069;font-weight:bold">await</span> outputs[index].Writer.WriteAsync(item);
+            index = (index + <span style="color:#f60">1</span>) % n;
+        }
+
+        <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> ch <span style="color:#069;font-weight:bold">in</span> outputs)
+            ch.Writer.Complete();
+    });
+
+    <span style="color:#069;font-weight:bold">return</span> outputs.Select(ch =&gt; ch.Reader).ToArray();
+}
+</code></pre></div></details>
+<br />
+<p>We're going to use it to distribute the source code files among 5 channels which will let us process up to 5 files simultaneously. This is similar to when supermarkets open additional checkout lines when there're a lot of customers waiting.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> fileSource = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
+<span style="color:#078;font-weight:bold">var</span> sourceCodeFiles =
+    FilterByExtension(fileSource, <span style="color:#069;font-weight:bold">new</span> HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; {<span style="color:#c30">&#34;.js&#34;</span>, <span style="color:#c30">&#34;.ts&#34;</span> });
+<span style="color:#078;font-weight:bold">var</span> splitter = Split(sourceCodeFiles, <span style="color:#f60">5</span>);
+</code></pre></div><h3 id="merge">Merge</h3>
+<p><code>Merge&lt;T&gt;</code> is the opposite operation. It takes multiple input channels and consolidates them in a single output.</p>
+<p><img src="/images/posts/2020-01-07-csharp-channels-part3/merge.png" /></p>
+<details>
+  <summary>Expand <code>Merge&lt;T&gt;</code> implementation</summary>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">ChannelReader&lt;T&gt; Merge&lt;T&gt;(<span style="color:#069;font-weight:bold">params</span> ChannelReader&lt;T&gt;[] inputs)
+{
+    <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;T&gt;();
+
+    Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
+    {
+        <span style="color:#069;font-weight:bold">async</span> Task Redirect(ChannelReader&lt;T&gt; input)
+        {
+            <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> input.ReadAllAsync())
+                <span style="color:#069;font-weight:bold">await</span> output.Writer.WriteAsync(item);
+    	}
+            
+        <span style="color:#069;font-weight:bold">await</span> Task.WhenAll(inputs.Select(i =&gt; Redirect(i)).ToArray());
+        output.Writer.Complete();
+    });
+
+    <span style="color:#069;font-weight:bold">return</span> output;
+}
+</code></pre></div></details>
+<br />
+<p>During <code>Merge&lt;T&gt;</code>, we read concurrently from several channels, so this is the stage that we need to tweak a little bit and perform the line counting.</p>
+<p>We introduce, <code>CountLinesAndMerge</code> which doesn't only redirect, but also transforms.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">ChannelReader&lt;(FileInfo file, <span style="color:#078;font-weight:bold">int</span> lines)&gt;
+    CountLinesAndMerge(IList&lt;ChannelReader&lt;FileInfo&gt;&gt; inputs)
+{
+    <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;(FileInfo file, <span style="color:#078;font-weight:bold">int</span> lines)&gt;();
+
+    Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
+    {
+        <span style="color:#069;font-weight:bold">async</span> Task Redirect(ChannelReader&lt;FileInfo&gt; input)
+        {
+            <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> file <span style="color:#069;font-weight:bold">in</span> input.ReadAllAsync())
+<span style="display:block;width:100%;background-color:#d8dada">                <span style="color:#069;font-weight:bold">await</span> output.Writer.WriteAsync((file, CountLines(file)));
+</span>        }
+            
+        <span style="color:#069;font-weight:bold">await</span> Task.WhenAll(inputs.Select(Redirect).ToArray());
+        output.Writer.Complete();
+    });
+
+    <span style="color:#069;font-weight:bold">return</span> output;
+}
+</code></pre></div><p>The error handling and the cancellation are omitted for the sake of brevity, however, we've already seen how to implement them. Now we're ready to build our pipeline.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">var fileSource = GetFilesRecursively(&#34;path_to/node_modules&#34;);
+var sourceCodeFiles =
+    FilterByExtension(fileSource, new HashSet&lt;string&gt; {&#34;.js&#34;, &#34;.ts&#34;});
+<span style="background-color:#fcc">- var counter = GetLineCount(sourceCodeFiles);
+</span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+ var counter = CountLinesAndMerge(Split(sourceCodeFiles, 5));
+</span></code></pre></div><h2 id="tpl-dataflow">TPL Dataflow</h2>
+<p>The TPL Dataflow library is another option for implementing pipelines or even meshes in .NET. It has a powerful, high-level API but compared to the channel-based approach also comes with a steeper learning curve and provides less control. Personally, I think that deciding between the two should strongly depend on the case. If you prefer a simpler API and more control, the lightweight channels would be the way to go. If you want a high-level API with more features, check out TPL Dataflow.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>We defined the pipeline concurrency model and learned how to use it to implement flexible, high-performance data processing workflows. We learned how to deal with errors, perform cancellation as well as how to apply some of the channel techniques (multiplexing and demultiplexing), described in the previous articles, to handle backpressure.</p>
+<p>Besides performance, pipelines are also easy to change. Each stage is an atomic part of the whole composition that can be independently modified, replaced, or removed as long as we keep the method (stage) signatures intact. For example, it's trivial to convert the line counter pipeline to search for patterns in text, say pasing log files etc.</p>
+<p>We can see how it can lead to a significant reduction in our code's cyclomatic complexity as well as making it easier to test. Each stage is simply a method with no side effects, which can be unit tested in isolation. Stages have a <strong>single responsibility</strong>, which makes them easier to reason about, thus we can cover all the possible cases.</p>
+<h2 id="references--further-reading">References &amp; Further Reading</h2>
+<ul>
+<li><a href="https://github.com/deniskyashif/trydotnet-channels">GitHub Repo</a> with the interactive examples</li>
+<li>Part 1: <a href="/csharp-channels-part-1">C# Channels - Publish / Subscribe workflows</a></li>
+<li>Part 2: <a href="/csharp-channels-part-2">C# Channels - Timeout and Cancellation</a></li>
+<li>The graphics are implemented using <a href="https://www.lucidchart.com/">Lucidchart</a></li>
+</ul>
+
+
+		<section class="social-share">
+    
+    
+    <a href="//twitter.com/share?url=https%3a%2f%2fdeniskyashif.com%2f2020%2f01%2f07%2fcsharp-channels-part-3%2f&amp;text=C%23%20Channels%20-%20Async%20Data%20Pipelines&amp;via=deniskyashif" target="_blank" class="share-btn twitter">
+        <i class="fa fa-2x fa-twitter"></i>
+    </a>
+    
+    
+    
+    <a href="//reddit.com/submit?url=https%3a%2f%2fdeniskyashif.com%2f2020%2f01%2f07%2fcsharp-channels-part-3%2f&amp;title=C%23%20Channels%20-%20Async%20Data%20Pipelines" target="_blank" class="share-btn reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    
+    
+    
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdeniskyashif.com%2f2020%2f01%2f07%2fcsharp-channels-part-3%2f" target="_blank" class="share-btn facebook">
+        <i class="fa fa-2x fa-facebook"></i>
+    </a>
+    
+    
+    
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fdeniskyashif.com%2f2020%2f01%2f07%2fcsharp-channels-part-3%2f&amp;title=C%23%20Channels%20-%20Async%20Data%20Pipelines" target="_blank" class="share-btn linkedin">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:?subject=Check out 'C%23%20Channels%20-%20Async%20Data%20Pipelines' by Denis%20Kyashif&amp;body=https%3a%2f%2fdeniskyashif.com%2f2020%2f01%2f07%2fcsharp-channels-part-3%2f" target="_blank" class="share-btn email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    
+</section>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "deniskyashif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	</div>
+
+	<div class="pagination">
+		<a href="/2019/12/11/csharp-channels-part-2/" class="left arrow">&#8592;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+</main>
+
+
+        <footer>
+	<span>
+		&copy; <time datetime="2020-01-07 09:58:02.722329 &#43;0200 EET m=&#43;0.145301930">2020</time> Denis Kyashif
+	</span>
+    <br/>
+</footer>
+
+    </body>
+</html>
