@@ -42,7 +42,7 @@ To see it in action, we're going to implement a program that efficiently counts 
 
 The initial stage of our pipeline would be to enumerate recursively the files in the workspace. We implement it as a generator.
 
-```cs
+```csharp
 ChannelReader<string> GetFilesRecursively(string root)
 {
     var output = Channel.CreateUnbounded<string>();
@@ -72,7 +72,7 @@ We perform a depth-first traversal of the directory and its subdirectories and w
 
 Stage 1 is going to determine whether the file contains source code or not. The ones that don't should be discarded.
 
-```cs
+```csharp
 ChannelReader<FileInfo> FilterByExtension(
     ChannelReader<string> input, HashSet<string> exts)
 {
@@ -99,7 +99,7 @@ This stage takes an input channel (produced by the generator) from which it asyn
 
 This stage is responsible for counting the number of lines in each file.
 
-```cs
+```csharp
 ChannelReader<(FileInfo file, int lines)> 
     GetLineCount(ChannelReader<FileInfo> input)
 {
@@ -124,7 +124,7 @@ We write a tuple of type `(FileInfo, int)` which is a pair of the file metadata 
 <details>
   <summary>Expand <code>CountLines</code></summary>
 
-```cs
+```csharp
 int CountLines(FileInfo file)
 {
     using var sr = new StreamReader(file.FullName);
@@ -143,7 +143,7 @@ int CountLines(FileInfo file)
 
 Now we've implemented the stages of our pipeline, we are ready to put them all together.
 
-```cs
+```csharp
 var fileGen = GetFilesRecursively("path_to/node_modules");
 var sourceCodeFiles = FilterByExtension(
     fileGen, new HashSet<string> { ".js", ".ts" });
@@ -152,7 +152,7 @@ var counter = GetLineCount(sourceCodeFiles);
 
 The sink stage processes the output from the last stage of the pipeline. Unlike the generator, which doesn't consume, but only produces, the sink only consumes but doesn't produce. That's where our pipeline comes to an end.
 
-```cs
+```csharp
 var totalLines = 0;
 await foreach (var item in counter.ReadAllAsync())
 {
@@ -161,6 +161,14 @@ await foreach (var item in counter.ReadAllAsync())
 }
 
 Console.WriteLine($"Total lines: {totalLines}");
+```
+
+```sh
+/Users/denis/Workspace/proj/index.js 155
+/Users/denis/Workspace/proj/main.ts 97
+/Users/denis/Workspace/proj/tree.ts 0
+/Users/denis/Workspace/proj/lib/index.ts 210
+Total lines: 462
 ```
 
 ## Error Handling
@@ -205,7 +213,7 @@ We're going to modify stage 2 which counts the lines in a file. Our definition f
 
 We've created a second channel for errors and changed the signature of the method so it returns both the output and the error channels. Empty files are not passed to the next stage, we've provided a mechanism to report them using the error channel and after we get an invalid input, our pipeline continues processing the next ones.
 
-```cs
+```csharp
 var fileGen = GetFilesRecursively("path_to/node_modules");
 var sourceCodeFiles = FilterByExtension(
     fileGen, new HashSet<string> { ".js", ".ts" });
@@ -220,12 +228,19 @@ Console.WriteLine($"Total lines: {totalLines}");
 await foreach (var errMessage in errors.ReadAllAsync())
     Console.WriteLine(errMessage);
 ```
+```sh
+/Users/denis/Workspace/proj/index.js 155
+/Users/denis/Workspace/proj/main.ts 97
+/Users/denis/Workspace/proj/lib/index.ts 210
+Total lines: 462
+[Error] Empty file /Users/denis/Workspace/proj/tree.ts
+```
 
 ## Cancellation
 
 Similarily to the error handling, the stages being independent means that each has to handle cancellation on their own. To stop the pipeline, we need to prevent the generator from delegating new jobs. Let's make it cancellable.
 
-```cs
+```csharp
 ChannelReader<string> GetFilesRecursively(
     string root, CancellationToken token = default)
 {
@@ -259,7 +274,7 @@ ChannelReader<string> GetFilesRecursively(
 
 The change is straightforward, we need to handle the cancellation in a `try/catch` block and not forget to close the output channel. Keep in mind that canceling only the initial stage will leave the next stages running with the existing jobs which might not always be desired, especially if the stages are long-running. Therefore, we have to make them able to handle cancellation as well.
 
-```cs
+```csharp
 var cts = new CancellationTokenSource();
 cts.CancelAfter(TimeSpan.FromSeconds(2));
 var fileSource = GetFilesRecursively("path_to/node_modules", cts.Token);
@@ -283,7 +298,7 @@ In the line-counter example, the stage where we read the file and count its line
 <details>
   <summary>Expand <code>Split&lt;T&gt;</code> implementation</summary>
 
-```cs
+```csharp
 IList<ChannelReader<T>> Split<T>(ChannelReader<T> input, int n)
 {
     var outputs = new Channel<T>[n];
@@ -311,7 +326,7 @@ IList<ChannelReader<T>> Split<T>(ChannelReader<T> input, int n)
 
 We're going to use it to distribute the source code files among 5 channels which will let us process up to 5 files simultaneously. This is similar to when supermarkets open additional checkout lines when there're a lot of customers waiting.
 
-```cs
+```csharp
 var fileSource = GetFilesRecursively("path_to/node_modules");
 var sourceCodeFiles =
     FilterByExtension(fileSource, new HashSet<string> {".js", ".ts" });
@@ -327,7 +342,7 @@ var splitter = Split(sourceCodeFiles, 5);
 <details>
   <summary>Expand <code>Merge&lt;T&gt;</code> implementation</summary>
 
-```cs
+```csharp
 ChannelReader<T> Merge<T>(params ChannelReader<T>[] inputs)
 {
     var output = Channel.CreateUnbounded<T>();
@@ -354,7 +369,7 @@ During `Merge<T>`, we read concurrently from several channels, so this is the st
 
 We introduce, `CountLinesAndMerge` which doesn't only redirect, but also transforms.
 
-```cs {hl_lines=[11]}
+```csharp {hl_lines=[11]}
 ChannelReader<(FileInfo file, int lines)>
     CountLinesAndMerge(IList<ChannelReader<FileInfo>> inputs)
 {
@@ -394,7 +409,7 @@ The TPL Dataflow library is another option for implementing pipelines or even me
 
 We defined the pipeline concurrency model and learned how to use it to implement flexible, high-performance data processing workflows. We learned how to deal with errors, perform cancellation as well as how to apply some of the channel techniques (multiplexing and demultiplexing), described in the previous articles, to handle backpressure.
 
-Besides performance, pipelines are also easy to change. Each stage is an atomic part of the whole composition that can be independently modified, replaced, or removed as long as we keep the method (stage) signatures intact. For example, it's trivial to convert the line counter pipeline to search for patterns in text, say pasing log files etc.
+Besides performance, pipelines are also easy to change. Each stage is an atomic part of the whole composition that can be independently modified, replaced, or removed as long as we keep the method (stage) signatures intact. For example, it's trivial to convert the line counter pipeline to search for patterns in text, say parsing log files etc.
 
 We can see how it can lead to a significant reduction in our code's cyclomatic complexity as well as making it easier to test. Each stage is simply a method with no side effects, which can be unit tested in isolation. Stages have a **single responsibility**, which makes them easier to reason about, thus we can cover all the possible cases.
 
