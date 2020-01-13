@@ -218,7 +218,7 @@ State ChangeState(State current, Input input) =&gt;
 <p class="text-center"><small>Figure 3.3: The Customer</small></p>
 <p>The customer's state machine has only one state and two input actions that lead back to the same state. This means that the customer <strong>can do anything</strong> any number of times.</p>
 <h3 id="dealing-with-the-missing-action-inputs">Dealing with the Missing Action Inputs</h3>
-<p>To combine these state machines, they should be able to process action inputs &ldquo;in parallel&rdquo;. We observe that some transitions are missing on some of the machines. For example, the store doesn't have a notion of the <em>cancel</em> action. For the bank, <em>pay</em> and <em>ship</em> are irrelevant. To make the store &ldquo;ignore&rdquo; the <em>cancel</em> action, we simply have to add a transition from each of its states to itself on <em>cancel</em>.
+<p>To combine these state machines, they should be able to process action inputs simultaneously. We observe that some transitions are missing on some of the machines. For example, the store doesn't have a notion of the <em>cancel</em> action. For the bank, <em>pay</em> and <em>ship</em> are irrelevant. To make the store &ldquo;ignore&rdquo; the <em>cancel</em> action, we simply have to add a transition from each of its states to itself on <em>cancel</em>.
 Another potential problem would be when the customer executes <em>pay</em> for a second time, while the store is in state <code>e</code>. We need to add a transition on <code>e</code> to itself on <em>pay</em>.</p>
 <p><img src="/images/posts/2019-11-20-guide-to-fsm/341.svg" />
 <img src="/images/posts/2019-11-20-guide-to-fsm/342.svg" />
@@ -229,7 +229,7 @@ Another potential problem would be when the customer executes <em>pay</em> for a
 <li>are irrelevant to the participant (e.g. <em>cancel</em> to the store).</li>
 <li>can potentially &ldquo;terminate&rdquo; the machine (e.g. executing <em>pay</em> while the store is in a state other than <code>a</code>)</li>
 </ul>
-<p>Keep in mind that the behavior of the state machines does not depend on who initiates the action.</p>
+<p>Keep in mind that the behavior of the state machines does not depend on who initiates the action. The actions are independent events that occur in our system. The complete state of the system is a combination of the current states these three automatons. On each event they either traisition into a state of their own or stay in the same state.</p>
 <h3 id="constructing-the-product">Constructing the Product</h3>
 <p>It's still not quite obvious how the states in the store and the bank interact. To see this more clearly, we need to construct <strong>the product</strong> of those state machines. The product is a state machine itself, and since the customer automaton only has one state, the states of the product are <strong>pairs of states from the bank and from the store</strong>.
 For example, the state <code>(3,d)</code> represents the situation where the bank is in state <code>3</code> and the store is in state <code>d</code>. The total amount of states is 4x7=28. We group them in a table where the row corresponds to the state of the bank and the column to the state of the store. The initial state is the pair, both items of which are initial states of their respective machines - in our case <code>(1,a)</code>.</p>
@@ -333,7 +333,7 @@ They are no silver bullet though. Not every domain is suitable to be modeled in 
 
         <footer>
 	<span>
-		&copy; <time datetime="2020-01-12 21:35:53.090777 &#43;0200 EET m=&#43;0.089932037">2020</time> Denis Kyashif
+		&copy; <time datetime="2020-01-13 23:40:46.672207 &#43;0200 EET m=&#43;0.148186930">2020</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
