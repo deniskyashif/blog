@@ -182,7 +182,7 @@ The customer's state machine has only one state and two input actions that lead 
 
 ### Dealing with the Missing Action Inputs
 
-To combine these state machines, they should be able to process action inputs "in parallel". We observe that some transitions are missing on some of the machines. For example, the store doesn't have a notion of the _cancel_ action. For the bank, _pay_ and _ship_ are irrelevant. To make the store "ignore" the _cancel_ action, we simply have to add a transition from each of its states to itself on _cancel_.
+To combine these state machines, they should be able to process action inputs simultaneously. We observe that some transitions are missing on some of the machines. For example, the store doesn't have a notion of the _cancel_ action. For the bank, _pay_ and _ship_ are irrelevant. To make the store "ignore" the _cancel_ action, we simply have to add a transition from each of its states to itself on _cancel_.
 Another potential problem would be when the customer executes _pay_ for a second time, while the store is in state `e`. We need to add a transition on `e` to itself on _pay_.
 
 <img src="/images/posts/2019-11-20-guide-to-fsm/341.svg" />
@@ -195,7 +195,7 @@ We added self-transitions to each of the participants' states for the actions th
 - are irrelevant to the participant (e.g. _cancel_ to the store).
 - can potentially "terminate" the machine (e.g. executing _pay_ while the store is in a state other than `a`)
 
-Keep in mind that the behavior of the state machines does not depend on who initiates the action.
+Keep in mind that the behavior of the state machines does not depend on who initiates the action. The actions are independent events that occur in our system. The complete state of the system is a combination of the current states these three automatons. On each event they either traisition into a state of their own or stay in the same state.
 
 ### Constructing the Product
 
