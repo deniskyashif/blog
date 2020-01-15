@@ -58,7 +58,7 @@ while (await ch.Reader.WaitToReadAsync())
 
 The reader's `WaitToReadAsync()` will complete with `true` when data is available to read, or with `false` when no further data will ever be read, that is, after the writer invokes `Complete()`. The reader also provides an option to consume the data as an async stream by exposing a method that returns `IAsyncEnumerable<T>`:
 
-```cs
+```csharp
 await foreach (var item in ch.Reader.ReadAllAsync())
     Console.WriteLine(item);
 ```
@@ -69,7 +69,7 @@ Channels also have a blocking API which we won't cover in this article.
 
 Here's a basic example when we have a separate producer and consumer threads which communicate through a channel.
 
-```cs
+```csharp
 var ch = Channel.CreateUnbounded<string>();
 
 var consumer = Task.Run(async () =>
@@ -90,7 +90,7 @@ var producer = Task.Run(async () =>
 
 await Task.WhenAll(producer, consumer);
 ```
-```
+```sh
 [12:27:16 PM] Message 0
 [12:27:18 PM] Message 1
 [12:27:19 PM] Message 2
@@ -101,7 +101,7 @@ await Task.WhenAll(producer, consumer);
 The consumer (reader) waits until there's an available message to read. On the other side, the producer (writer) waits until it's able to send a message, hence, we say that **channels both communicate and synchronize**. Both operations are non-blocking, that is, while we wait, the thread is free to do some other work.  
 Notice that we have created an **unbounded** channel, meaning that it accepts as many messages as it can with regards to the available memory. With **bounded** channels, however, we can limit the number of messages that can be processed at a time. 
 
-```cs
+```csharp
 var ch = Channel.CreateBounded<string>(capacity: 10);
 ```
 
@@ -144,7 +144,7 @@ var joe = CreateMessenger("Joe", 5);
 await foreach (var item in joe.ReadAllAsync())
     Console.WriteLine(item);
 ```
-```
+```sh
 [7:31:39 AM] Joe 0
 [7:31:40 AM] Joe 1
 [7:31:42 AM] Joe 2
@@ -164,7 +164,7 @@ while (await joe.WaitToReadAsync() || await ann.WaitToReadAsync())
     Console.WriteLine(await ann.ReadAsync());
 }
 ```
-```
+```sh
 [8:00:51 AM] Joe 0
 [8:00:51 AM] Ann 0
 [8:00:52 AM] Joe 1
@@ -182,7 +182,7 @@ var ann = CreateMessenger("Ann", 5);
 
 We're still going to try and read from Joe, even when his channel is completed which is going to throw an exception.
 
-```
+```sh
 [8:05:01 AM] Joe 0
 [8:05:01 AM] Ann 0
 [8:05:02 AM] Joe 1
@@ -242,7 +242,7 @@ await foreach (var item in ch.ReadAllAsync())
     Console.WriteLine(item);
 ```
 
-```
+```sh
 [8:39:32 AM] Ann 0
 [8:39:32 AM] Joe 0
 [8:39:32 AM] Ann 1
@@ -287,7 +287,7 @@ Joe talks too much and we cannot handle all of his messages. We want to distribu
 
 <img src="/images/posts/2019-12-08-csharp-channels-part1/split-sketch.png" width="600" />
 
-```cs
+```csharp
 static IList<ChannelReader<T>> Split<T>(ChannelReader<T> ch, int n)
 {
     var outputs = new Channel<T>[n];
@@ -314,7 +314,7 @@ static IList<ChannelReader<T>> Split<T>(ChannelReader<T> ch, int n)
 
 `Split<T>` takes a channel and redirects its messages to `n` number of newly created channels in a round-robin fashion. Here's how to use it:
 
-```cs
+```csharp
 var joe = CreateMessenger("Joe", 10);
 var readers = Split(joe, 3);
 var tasks = new List<Task>();
@@ -335,7 +335,7 @@ await Task.WhenAll(tasks);
 
 Joe sends 10 messages which we distribute amongst 3 channels. Below is a possible output we can get. Some channels may take longer to process a message, therefore, we have no guarantee that the order of emission is going to be preserved. Our code is structured so that we process (in this case log) a message as soon as it arrives.
 
-```
+```sh
 Reader 0: Joe 0
 Reader 1: Joe 1
 Reader 0: Joe 3

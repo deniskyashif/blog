@@ -409,7 +409,7 @@ The TPL Dataflow library is another option for implementing pipelines or even me
 
 We defined the pipeline concurrency model and learned how to use it to implement flexible, high-performance data processing workflows. We learned how to deal with errors, perform cancellation as well as how to apply some of the channel techniques (multiplexing and demultiplexing), described in the previous articles, to handle backpressure.
 
-Besides performance, pipelines are also easy to change. Each stage is an atomic part of the whole composition that can be independently modified, replaced, or removed as long as we keep the method (stage) signatures intact. For example, it's trivial to convert the line counter pipeline to search for patterns in text, say parsing log files etc.
+Besides performance, pipelines are also easy to change. Each stage is an atomic part of the composition that can be independently modified, replaced, or removed as long as we keep the method (stage) signatures intact. For example, it's trivial to convert the line counter pipeline to search for patterns in text, say parsing log files etc. by replacing the line counter stage with another one.
 
 We can see how it can lead to a significant reduction in our code's cyclomatic complexity as well as making it easier to test. Each stage is simply a method with no side effects, which can be unit tested in isolation. Stages have a **single responsibility**, which makes them easier to reason about, thus we can cover all the possible cases.
 
