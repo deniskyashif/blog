@@ -125,12 +125,12 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
 {
     Console.WriteLine(<span style="color:#c30">&#34;Joe, you are too slow!&#34;</span>);
 }
-</code></pre></div><pre><code>Joe 0
-Joe 1
-Joe 2
-Joe 3
+</code></pre></div><div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Joe <span style="color:#f60">0</span>
+Joe <span style="color:#f60">1</span>
+Joe <span style="color:#f60">2</span>
+Joe <span style="color:#f60">3</span>
 Joe, you are too slow!
-</code></pre><p>Joe was set to send 10 messages but over 5 seconds, we received only 4 and then canceled the reading operation. If we reduced the number of messages Joe sends or sufficiently increased the timeout duration, we'd read everything and thus avoid ending up in the <code>catch</code> block.</p>
+</code></pre></div><p>Joe was set to send 10 messages but over 5 seconds, we received only 4 and then canceled the reading operation. If we reduced the number of messages Joe sends or sufficiently increased the timeout duration, we'd read everything and thus avoid ending up in the <code>catch</code> block.</p>
 <h2 id="quit-channel">Quit Channel</h2>
 <p><img src="/images/posts/2019-12-11-csharp-channels-part2/quit-channel-sketch.png" width="600" /></p>
 <p>Let's go the other way around and tell Joe to stop talking. We need to modify our <code>CreateMessenger&lt;T&gt;()</code> generator so it supports cancellation.</p>
@@ -165,12 +165,12 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
 <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> joe.ReadAllAsync())
     Console.WriteLine(item);
 </code></pre></div><p>Joe had 10 messages to send, but we gave him only 5 seconds, for which he managed to send only 4. We can also manually send a cancellation request, for example, after reading <code>N</code> number of messages.</p>
-<pre><code>Joe 0
-Joe 1
-Joe 2
-Joe 3
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Joe <span style="color:#f60">0</span>
+Joe <span style="color:#f60">1</span>
+Joe <span style="color:#f60">2</span>
+Joe <span style="color:#f60">3</span>
 Joe says bye!
-</code></pre><h2 id="web-search">Web Search</h2>
+</code></pre></div><h2 id="web-search">Web Search</h2>
 <p>We're given the task to query several data sources and mix the results. The queries should run concurrently and we should disregard the ones taking too long. Also, we should handle a query response at the time of arrival, instead of waiting for all of them to complete. Let's see how we can solve this using what we've learned so far:</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
 </code></pre></div><p>We create a local function that simulates a remote async API call and writes its result to the channel.</p>
@@ -201,15 +201,15 @@ Joe says bye!
 
 ch.Writer.Complete();
 </code></pre></div><p>Depending on the timeout interval we might end up receiving responses for all of the queries,</p>
-<pre><code>[9:09:14 AM] Result from Google for Milky Way
-[9:09:14 AM] Result from Wikipedia for Milky Way
-[9:09:16 AM] Result from Quora for Milky Way
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#555">[</span>9:09:14 AM<span style="color:#555">]</span> Result from Google <span style="color:#069;font-weight:bold">for</span> Milky Way
+<span style="color:#555">[</span>9:09:14 AM<span style="color:#555">]</span> Result from Wikipedia <span style="color:#069;font-weight:bold">for</span> Milky Way
+<span style="color:#555">[</span>9:09:16 AM<span style="color:#555">]</span> Result from Quora <span style="color:#069;font-weight:bold">for</span> Milky Way
 All searches have completed.
-</code></pre><p>or cut off the ones that are too slow.</p>
-<pre><code>[9:09:19 AM] Result from Quora for Milky Way
-[9:09:20 AM] Result from Wikipedia for Milky Way
+</code></pre></div><p>or cut off the ones that are too slow.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#555">[</span>9:09:19 AM<span style="color:#555">]</span> Result from Quora <span style="color:#069;font-weight:bold">for</span> Milky Way
+<span style="color:#555">[</span>9:09:20 AM<span style="color:#555">]</span> Result from Wikipedia <span style="color:#069;font-weight:bold">for</span> Milky Way
 Timeout.
-</code></pre><p>Again - our code is non-blocking concurrent, thus there's no need to use locks, callbacks or any kind of conditional statements.</p>
+</code></pre></div><p>Again - our code is non-blocking concurrent, thus there's no need to use locks, callbacks or any kind of conditional statements.</p>
 <h2 id="references">References</h2>
 <ul>
 <li><a href="https://github.com/deniskyashif/trydotnet-channels">GitHub Repo</a> with the interactive examples</li>
@@ -291,7 +291,7 @@ Timeout.
 
         <footer>
 	<span>
-		&copy; <time datetime="2020-01-13 23:40:46.671329 &#43;0200 EET m=&#43;0.147308778">2020</time> Denis Kyashif
+		&copy; <time datetime="2020-01-15 10:00:56.539833 &#43;0200 EET m=&#43;0.088927859">2020</time> Denis Kyashif
 	</span>
     <br/>
 </footer>
