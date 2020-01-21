@@ -62,17 +62,11 @@
                                 Coursedot Instructor Hub is a single-page web application for providing and applying for technical training opportunities.
                             </p>
                             <ul>
-                                <li>
-                                    Introduce a process for design, implementation, quality assurance and delivery (Azure Pipelines) of the features
-                                    required by the business.
-                                </li>
-                                <li>
-                                    Work closely with the business to define the roadmap and the features of the
-                                    application.
-                                </li>
+                                <li>Introduce a process for design, implementation, quality assurance and delivery (Azure Pipelines) of the features required by the business.</li>
+                                <li>Work closely with the business to define the roadmap and the features of the application.</li>
                                 <li>Have full technical ownership of the platform.</li>
                                 <li>Perform code reviews and onboard fellow team members.</li>
-                                <li>Implement (C#) and test (xUnit + Moq) the core backend features such as the training application workflow, roles & permissions, the course search and message template engines, the certificate validation API etc.</li>
+                                <li>Implement (C#) and test (xUnit + Moq) the core backend features such as the training application workflow, roles & permissions, the training search and message template engines, the certificate verification API etc.</li>
                                 <li>Integrate the app with the Pipedrive CRM.</li>
                             </ul>
                             <div class="tools-list"><span>SQL Server</span><span>ASP.NET Core</span><span>Entity Framework</span><span>Angular</span><span>Azure</span></div>
@@ -80,7 +74,7 @@
                         <div>
                             <h3>Software Engineer</h3>
                             <h4 class="accent">Prevalent Inc.</h4>
-                            <small><i class="fa fa-calendar" aria-hidden="true"></i> 10/2018 - 03/2019</small>
+                            <small><i class="fa fa-calendar" aria-hidden="true"></i>10/2018 - 03/2019</small>
                             <small><i class="fa fa-link" aria-hidden="true"></i>
                                 <a href="https://www.prevalent.net/" target="_blank">prevalent.net</a></small>
                             <small><i class="fa fa-map-marker" aria-hidden="true"></i>
