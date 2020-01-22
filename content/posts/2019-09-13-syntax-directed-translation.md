@@ -3,7 +3,7 @@ title: "Translation using Syntactic Rules"
 date: 2019-09-13T17:14:58-07:00
 draft: false
 useMath: true
-tags: ["compsci", "compilers", "javascript"]
+tags: ["compsci", "compilers", "nlp", "javascript"]
 summary: "How to describe a formal language and build a translator with ANTLR and JavaScript."
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-09-13-syntax-directed-translation.md"
 aliases:

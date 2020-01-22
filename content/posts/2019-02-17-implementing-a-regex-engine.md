@@ -2,7 +2,7 @@
 title: "Implementing a Regular Expression Engine"
 date: 2019-02-17T15:05:00+02:00
 draft: false
-tags: ["compsci", "compilers", "algorithms", "javascript"]
+tags: ["compsci", "compilers", "algorithms", "nlp", "javascript"]
 useMath: true
 summary: "Using Ken Thompson's construction algorithm."
 description: "In this article we learn how to implement a simple and efficient regular expression engine following the Thompson's construction algorithm."
@@ -282,7 +282,7 @@ The simplest way to check if a string is recognized by automaton is by computing
 <img id="fig5.1" src="/images/posts/2019-02-20-regex/nfa-search.png" />
 <p class="text-center"><small>Figure 5.1: NFA for the expression (aba)&#8739;(abb)</small></p>
 
-The automaton in [Fig. 5.1](#fig5.1) recognizes either the string **"aba"** or **"abb"**. If we want to process **"abb"**, our simulation with recursive backtracking would process the input **one state at a time** so we'll first end up reaching \\(q_3\\) after reading **"ab"** from the input string. The next symbol is **'b'** but there's no transition from \\(q_3\\) on **'b'**, therefore, we backtrack to \\(q_0\\) and take the other path which leads us to the accepting state. You can check out my implementation on [GitHub](https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L134).
+The automaton in [Fig. 5.1](#fig5.1) recognizes either the string **"aba"** or **"abb"**. If we want to process **"abb"**, our simulation with recursive backtracking would process the input **one state at a time** so we'll first end up reaching \\(q_3\\) after reading **"ab"** from the input string. The next symbol is **'b'** but there's no transition from \\(q_3\\) on **'b'**, therefore, we backtrack to \\(q_0\\) and take the other path which leads us to the accepting state. You can check out my implementation on [GitHub](https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L189).
 
 For the automaton on [Fig 5.1](fig#5.1) we ended up going through all of the possible two paths. This doesn't seem like a big deal but in a more complex scenario, there might be considerable performance implications.
 
