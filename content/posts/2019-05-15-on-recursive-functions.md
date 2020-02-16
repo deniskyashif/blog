@@ -4,7 +4,7 @@ date: 2019-05-15T15:16:00+03:00
 draft: false
 tags: ["compsci", "javascript"]
 useMath: true
-summary: "Lambda Calculus and the Y combinator in JavaScript."
+summary: "The Y combinator or how to implement recursion in a language that doesn't support it."
 images: 
 - "/images/posts/2019-05-15-on-recursion/matryoshka1200x1200.jpg"
 description: "How to define a recursive function in a language which doesn't support recursion using the Y combinator."

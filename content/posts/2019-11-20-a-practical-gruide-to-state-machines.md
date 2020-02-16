@@ -233,6 +233,6 @@ They are no silver bullet though. Not every domain is suitable to be modeled in 
 * _"Introduction To Automata Theory Languages, and Computation"_ Hopcroft, Ullmann, Motwani; Chapter 2 - Finite Automata
 * [Do more with patterns in C# 8.0](https://devblogs.microsoft.com/dotnet/do-more-with-patterns-in-c-8-0/)
 * [Robust React User Interfaces with Finite State Machines](https://css-tricks.com/robust-react-user-interfaces-with-finite-state-machines/)
-* [Finite State Machine Desigher](http://madebyevan.com/fsm/)
+* [Finite State Machine Designer](http://madebyevan.com/fsm/)
 * [stateless](https://github.com/dotnet-state-machine/stateless) - a state machine library for .NET
 * [workflow-core](https://github.com/danielgerlag/workflow-core) - a .NET workflow engine
