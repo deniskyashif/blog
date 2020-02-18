@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg width="800" height="600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="82.5" cy="47.5" rx="30" ry="30"/>
+	<text x="73.5" y="53.5" font-family="Times New Roman" font-size="20">q&#8320;</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="82.5" cy="47.5" rx="24" ry="24"/>
+	<path stroke="black" stroke-width="1" fill="none" d="M 109.297,34.275 A 22.5,22.5 0 1 1 109.297,60.725"/>
+	<text x="155.5" y="53.5" font-family="Times New Roman" font-size="20">a:a, b:b, c:c, d:d</text>
+	<polygon fill="black" stroke-width="1" points="109.297,60.725 112.83,69.473 118.708,61.382"/>
+</svg>

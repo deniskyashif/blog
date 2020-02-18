@@ -6,10 +6,19 @@
     <description>Recent content on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 07 Jan 2020 07:42:15 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 18 Feb 2020 10:00:32 +0200</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Finite State Transducers for Text Rewriting</title>
+      <link>https://deniskyashif.com/2020/02/18/finite-state-transducers-for-text-rewriting/</link>
+      <pubDate>Tue, 18 Feb 2020 10:00:32 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/2020/02/18/finite-state-transducers-for-text-rewriting/</guid>
+      <description>An overview from set-theoretic perspective and constructions for powerful, linear-time text rewriting.</description>
+    </item>
     
     <item>
       <title>C# Channels - Async Data Pipelines</title>
@@ -80,7 +89,7 @@
       <pubDate>Wed, 15 May 2019 15:16:00 +0300</pubDate>
       
       <guid>https://deniskyashif.com/2019/05/15/on-recursive-functions/</guid>
-      <description>Lambda Calculus and the Y combinator in JavaScript.</description>
+      <description>The Y combinator or how to implement recursion in a language that doesn&#39;t support it.</description>
     </item>
     
     <item>

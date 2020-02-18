@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg width="400" height="100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="104.5" cy="52.5" rx="30" ry="30"/>
+	<text x="95.5" y="58.5" font-family="Times New Roman" font-size="20">q&#8320;</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="235.5" cy="52.5" rx="30" ry="30"/>
+	<text x="226.5" y="58.5" font-family="Times New Roman" font-size="20">q&#8321;</text>
+	<ellipse stroke="black" stroke-width="1" fill="none" cx="235.5" cy="52.5" rx="24" ry="24"/>
+	<polygon stroke="black" stroke-width="1" points="134.5,52.5 205.5,52.5"/>
+	<polygon fill="black" stroke-width="1" points="205.5,52.5 197.5,47.5 197.5,57.5"/>
+	<text x="157.5" y="73.5" font-family="Times New Roman" font-size="20">a:x</text>
+	<path stroke="black" stroke-width="1" fill="none" d="M 262.297,39.275 A 22.5,22.5 0 1 1 262.297,65.725"/>
+	<text x="308.5" y="58.5" font-family="Times New Roman" font-size="20">b:y</text>
+	<polygon fill="black" stroke-width="1" points="262.297,65.725 265.83,74.473 271.708,66.382"/>
+</svg>

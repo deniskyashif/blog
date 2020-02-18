@@ -3,6 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://deniskyashif.com/tags/compsci/</loc>
+    <lastmod>2020-02-18T10:00:32+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/</loc>
+    <lastmod>2020-02-18T10:00:32+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/2020/02/18/finite-state-transducers-for-text-rewriting/</loc>
+    <lastmod>2020-02-18T10:00:32+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/nlp/</loc>
+    <lastmod>2020-02-18T10:00:32+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/posts/</loc>
+    <lastmod>2020-02-18T10:00:32+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://deniskyashif.com/tags/</loc>
+    <lastmod>2020-02-18T10:00:32+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</loc>
     <lastmod>2020-01-07T07:42:15+02:00</lastmod>
   </url>
@@ -18,27 +48,12 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/</loc>
-    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://deniskyashif.com/tags/dotnet/</loc>
     <lastmod>2020-01-07T07:42:15+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/posts/</loc>
-    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://deniskyashif.com/tags/software-design/</loc>
-    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/</loc>
     <lastmod>2020-01-07T07:42:15+02:00</lastmod>
   </url>
   
@@ -58,22 +73,12 @@
   </url>
   
   <url>
-    <loc>https://deniskyashif.com/tags/compsci/</loc>
-    <lastmod>2019-11-20T07:28:47+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://deniskyashif.com/tags/compilers/</loc>
     <lastmod>2019-09-13T17:14:58-07:00</lastmod>
   </url>
   
   <url>
     <loc>https://deniskyashif.com/tags/javascript/</loc>
-    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/nlp/</loc>
     <lastmod>2019-09-13T17:14:58-07:00</lastmod>
   </url>
   
