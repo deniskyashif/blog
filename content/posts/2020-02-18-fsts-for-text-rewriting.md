@@ -140,7 +140,7 @@ We can partition the input text into segments:
 
 \\[ u_0 \cdot v_1 \cdot u_1 \cdot v_2 \cdot u_2 \cdots v_n \cdot u_n \\]
 
-such that the \\(v_i\\)'s belong to the domain of the transducer (in our case \\( dom(T) = \\{ ab, bc \\} \\)). The \\(u_i\\)'s are arbitrary strings from \\( \Sigma^* \\) and for those strings, we want them to be appended to the output as they are. Before we formalize this procedure, let's introduce the identity function on a set of strings.
+such that the \\(v_i\\)'s belong to the domain of the transducer (in our case \\( dom(T) = \\{ ab, bc \\} \\)). The \\(u_i\\)'s are arbitrary strings from \\( \Sigma^* \setminus dom(T) \\) and for those strings, we want them to be appended to the output as they are. Before we formalize this procedure, let's introduce the identity function on a set of strings.
 
 \\[ \Sigma = \\{ a,b,c,d \\} \\]
 \\[ Id(\Sigma^*) = \\{ \langle \epsilon, \epsilon \rangle, \langle a,a \rangle, \langle b,b \rangle, \langle c,c \rangle, \langle d,d \rangle \\}^* \\]
