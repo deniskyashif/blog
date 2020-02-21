@@ -1,51 +1,56 @@
 ---
 title: "Resolving Ambiguity in Text Rewriting"
-date: 2020-02-21T09:10:37+02:00
-draft: false
+date: 2020-02-22T09:10:37+02:00
+draft: true
 useMath: true
 summary: "Strategies for resolving conflicts that occur in text rewriting."
+tags: ["compsci", "nlp"]
+editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2020-02-22-ambiguity-in-text-rewriting.md"
+images: 
+- "/images/posts/2020-02-22-ambiguity-text-rewriting/overlap.png"
 ---
 
-In text rewriting we replace parts of a text that matches a rewrite rule with other text. In some cases, however, these parts might overlap so we have to come up with a way to decide which one is to be replaced. In this article, we'll discuss several conflict resolution strategies and provide formal definitions. We build on top of the approach to text rewriting described in the previous article about [Finite-State Transducers for Text-Rewriting](/2020/02/18/finite-state-transducers-for-text-rewriting/).
+In text rewriting we replace parts of a text matching a rewrite rule with other text. In some cases, however, these parts might overlap so we have to come up with a way to decide which one is to be replaced. In this article, we'll discuss several conflict resolution strategies and describe their implementations from a formal standpoint.  
+This article builds on top of [Finite-State Transducers for Text-Rewriting](/2020/02/18/finite-state-transducers-for-text-rewriting/) and I recommend checking it out first, before proceeding with this one.
 
 ## Ambiguity
 
 Consider the following rewrite rule and suppose we have build a finite-state transducer for obligatory replacement based on it.
 
 \\[ 
-ab|bc \to x
+R_1 = ab|bc \to x
 \\]
 
 and the following input text.
 
 \\[ aabcb \\]
 
-If we don't specify a conflict resolution strategy, the rewrite will result in two distinct translations because the matches "ab" and "bc" clearly overlap.
+If we don't specify a conflict resolution strategy, the obligatory rewrite transducer for \\(R_1\\) will result in two distinct translations because the matches "ab" and "bc" clearly overlap.
 
 \\[ 
-a \cdot ab \cdot cb \to axcb \\\\
-aa \cdot bc \cdot b \to aaxb
+a \cdot ab \cdot cb \longmapsto_{R(T_{R_1})} axcb \\\\
+aa \cdot bc \cdot b \longmapsto_{R(T_{R_1})} aaxb
 \\]
 
 Let's see another example. A rewrite rule
 
 \\[ 
-aa*b|aa \to x
+R_2 = aa*b|aa \to x
 \\]
 
-and an input text.
+and an input text
 
 \\[ aaaaabbaa \\]
 
-There are even more ways in which this text can be decomposed and some may not even be that obvious.
+that results in even more potential decompositions.
 
 \\[ 
-aaaaab \cdot b \cdot aa \to xby \\\\
-aa \cdot aaab \cdot b \cdot aa \to yxby \\\\
-aa \cdot aa \cdot ab \cdot b \cdot aa \to yyxby
+aaaaab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xbx \\\\
+aa \cdot aaab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xxbx \\\\
+aa \cdot aa \cdot ab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xxxbx
 \\]
 
-A proper conflict resolution strategy would ensure that for each input text, we'll get a single output complying to this strategy.
+A proper conflict resolution strategy would ensure that for each input text, we'll get a single output in accordance to this strategy.
 
 ## Definitions
 
@@ -53,12 +58,15 @@ Let's provide some formal definitions that will make it easier for us reason abo
 
 Given two strings \\( u, v \in \Sigma^* \\) we write \\( u < v \\) if \\( u \\) is a <strong>prefix</strong> of \\( v \\) and \\( u \leq v \\) if \\( u \\) is a <strong>proper prefix</strong> of \\( v \\).
 
-An **infix occurence** of an string \\( v \\) in text \\( t \\) is a triple \\( \langle u, v, w \rangle \\) such that \\( t = u \cdot v \cdot w \\). For example in text \\( t = aabcb, \langle a, ab, cb \rangle \\) and \\( \langle ab, bc, b \rangle \\) infix occurences of the strings "ab" and "bc" respectively.
+An **infix occurence** of an string \\( v \\) in text \\( t \\) is a triple \\( \langle u, v, w \rangle \\) such that \\( t = u \cdot v \cdot w \\). For example in text \\( t = aabcb, \langle a, ab, cb \rangle \\) and \\( \langle aa, bc, b \rangle \\) infix occurences of the strings "ab" and "bc" respectively.
 
 Two **infix occurences** \\( \langle u_1, v_1, w_1 \rangle \\) and \\( \langle u_2, v_2, w_2 \rangle \\) of a text **overlap** if \\( u_1 < u_2 < u_1 \cdot v_1 \\)  
 A set of infix occurrences \\(A\\) of the text t is said to be **non-overlapping** if two distinct infix occurrences of \\(A\\) never overlap. 
 
-<img src="/images/posts/2020-02-22-ambiguity-text-rewriting/overlap.png" alt="infix overlap" />
+<img src="/images/posts/2020-02-22-ambiguity-text-rewriting/overlap.png" alt="infix overlap" width="500"/>
+<p class="text-center">
+    <small>Figure 1: Overlapping infix occurences</small>
+</p>
 
 Let's see an example.
 
@@ -77,8 +85,8 @@ The _leftmost-longest_ match resolution strategy consists of two parts:
 By applying the _leftmost-longest_ strategy in the example above, we get rid of the ambiguity and, thus, end up with the following translations:
 
 \\[ 
-aabcb \to_{ab|bc \to x} axcb \\\\
-aaaaabbaa \to_{aa*b|aa \to x} xby \\\\
+aabcb \to_{R^{LML}(T_{R_1})} axcb \\\\
+aaaaabbaa \to_{R^{LML}(T_{R_2})} xby
 \\]
 
 ### Formal Description
@@ -109,16 +117,16 @@ Now we can define the function \\( LML(A) \\) which given a set of infix ocurran
 LML(A) := \bigcup\limits_{i=0}^{\infty} V_{i}
 \\]
 
-where the intermediate sets \\( V_i \\) are defined inductively
+Where the intermediate sets \\( V_i \\) are defined inductively.
 
 \\[
 V_0 = \emptyset \\\\
 V_{i+1} = V_i \cup LONGEST(LEFTMOST(AFTER(V_i, A)))
 \\]
 
-\\( LML(A) \\) is always finite because \\( A \\) is finite. That is, after a certain iteration \\( i, V_i \\) will remain unchanged and that's when we break from the loop. At each iteration we add at most 1 element to the resulting set.
+\\( LML(A) \\) is always finite because \\( A \\) is finite. That is, after a certain induction step \\( i, V_i \\) will remain unchanged and that's when we break from the loop. At each step we add at most 1 element to the resulting set.
 
-Note that also all the infix occurences in \\( LML(A) \\) are **non-overlapping** which means that for an input text \\(t\\) we're going to have only one output string. This leads to another useful property, that is, given a rewrite function \\( T: \Sigma^+ \to \Sigma^* \\) the obligatory rewrite relation \\( R^{LML}(T) \\) under the leftmost-longest match strategy is also a function.
+Note that also all the infix occurences in \\( LML(A) \\) are **non-overlapping** which means that for an input text \\(t\\) we're going to have only one output string. This leads to another useful property, that is, given a rewrite function \\( T: \Sigma^+ \to \Sigma^* \\) the obligatory rewrite relation \\( R^{LML}(T) \\) under the <em>leftmost-longest</em> match strategy is also a function.
 
 ## Other Conflict Resolution Strategies
 
@@ -138,12 +146,14 @@ By combining those functinos, we can define any strategy we want, however, from 
 
 ## Conclusion
 
-In this article, we discussed the problem of having overlapping replacement candidates in text rewriting. We defined the _leftmost-longest_ match strategy for resolving such conflicts and learned how to implement it from a formal standpoint. By performing small modifications, we saw how to define other kinds of strategies likes _leftmost-shortest_, _rightmost-longest_ etc.
+In this article, we discussed the problem of having overlapping replacement candidates in text rewriting. We defined the _leftmost-longest_ match strategy for resolving such conflicts and learned how to implement it from a formal standpoint. By performing small modifications, we saw how to define other kinds of strategies likes _leftmost-shortest_, _rightmost-longest_ etc.  
+
+In the following article we'll put what we've learned into practice by converting these formalisms into code and implement a text rewriter for obligatory, _leftmost-longest_ match replacement.
 
 ## References
 
 * [Finite-State Transducers for Text Rewriting](/2020/02/18/finite-state-transducers-for-text-rewriting/)
 * ["Finite State Techniques - Automata, Transducers and Bimachines" by Mihov &
-Schulz](https://www.cambridge.org/core/books/finitestate-techniques/E21E748468F0310DA12A2CFAEB989185) Chapters 11
+Schulz](https://www.cambridge.org/core/books/finitestate-techniques/E21E748468F0310DA12A2CFAEB989185) Chapter 11.3 - Letmost-Longest Match Text Rewriting
 * [N-Way Composition of Weighted Finite-State Transducers](https://cs.nyu.edu/~mohri/pub/nway.pdf)
 * ["Regular Models for Phonological Rule Systems" by Kaplan & Kay](https://web.stanford.edu/~mjkay/Kaplan%26Kay.pdf)

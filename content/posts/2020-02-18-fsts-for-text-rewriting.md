@@ -165,7 +165,7 @@ Since in the above expression \\(T\\) is surrounded by expressions \\( Id(\Sigma
 
 Let's process the following text through the optional rewrite transducer.
 
-\\[ \underline{ab}ac\underline{bc}a \longmapsto_{T_{R^{opt}(T)}} \\{ abacbca, dacbca, abacda, dacda \\} \\]
+\\[ \underline{ab}ac\underline{bc}a \longmapsto_{R^{opt}(T)} \\{ abacbca, dacbca, abacda, dacda \\} \\]
 
 The transducer will result in 4 successful paths for this text, hence we have 4 different translations. The optional rewrite relation is simple, yet not very practical because realistically we'd rarely want to skip rewrites.  
 Now, let's define the **obligatory rewrite relation** induced by the transducer \\(T\\) for the rewrite rule \\(ab|bc \to d\\).
@@ -185,7 +185,7 @@ The obligatory rewrite relation \\(R(T)\\) is also regular, thus we can build th
 
 This is the result of performing an obligatory rewrite of the text
 
-\\[ \underline{ab}ac\underline{bc}a \longmapsto_{T_{R(T)}} \\{ dacda \\} \\]
+\\[ \underline{ab}ac\underline{bc}a \longmapsto_{R(T)} \\{ dacda \\} \\]
 
 with a state path 
 
@@ -232,18 +232,16 @@ Some text can contain conflicting parts. Consider the "abc" and the rule \\( ab|
 
 You can find examples and resources on how to efficiently construct FSTs in the references below.
 
-If you're interested in formal language theory, you can check out these articles as well.
+**Part 2:** [Resolving Ambiguity in Text Rewriting](/2020/02/22/resolving-ambiguity-in-text-rewriting/)
 
-* [Implementing a Regular Expression Engine](/2019/02/17/implementing-a-regular-expression-engine/)
-* [Translation using Syntactic Rules](/2019/09/13/translation-using-syntactic-rules/)
-* [A Practical Guide to State Machines](https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/)
+If you're interested in formal language theory & language processing, you can check out [these articles](http://localhost:1313/tags/nlp/) as well.
 
 ## References and Further Reading
 
 * Implementation of a [Subsetequential Transducer for Dictionary-Based Text Rewriting](https://github.com/deniskyashif/ssfst)
 * ["Direct Construction of Minimal Acyclic Subsequential Transducers" by Mihov & Maurel](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.24.3698&rep=rep1&type=pdf)
 * Chapters 4 and 11 of ["Finite State Techniques - Automata, Transducers and Bimachines" by Mihov & Schulz](https://www.cambridge.org/core/books/finitestate-techniques/E21E748468F0310DA12A2CFAEB989185)
-* [N-Way Composition of Weighted Finite-State Transducers](https://cs.nyu.edu/~mohri/pub/nway.pdf)
+* ["N-Way Composition of Weighted Finite-State Transducers" by Allauzen & Mohri](https://cs.nyu.edu/~mohri/pub/nway.pdf)
 * ["Regular Models for Phonological Rule Systems" by Kaplan & Kay](https://web.stanford.edu/~mjkay/Kaplan%26Kay.pdf)
 * The graphics are implemented using the [Finite State Machine Designer](http://madebyevan.com/fsm/)
 
