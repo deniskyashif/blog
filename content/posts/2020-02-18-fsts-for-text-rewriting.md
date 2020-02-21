@@ -191,11 +191,11 @@ with a state path
 
 \\[ q_0 q_1 q_0 q_3 q_0 q_2 q_0 q_3 \\]
 
-## Rewrite Rule Sets
+## Rewrite Grammars
 
 In practice, we might want to have multiple rewrite rules. So far we've learned that each rewrite rule is a binary regular string relation and that these relations can be represented by finite-state transducers. Suppose we have the rewrite rules
 
-\\[ R_1, R_2, R_3 \\]
+\\[ G = \langle R_1, R_2, R_3 \rangle \\]
 
 then for each rule, we can construct a corresponding FST
 
