@@ -185,12 +185,12 @@ RIGHTMOST(A) = \{ \langle u, v, w \rangle \in A | \forall \langle u&rsquo;, v&rs
 <h2 id="conclusion">Conclusion</h2>
 <p>In this article, we discussed the problem of having overlapping replacement candidates in text rewriting. We defined the <em>leftmost-longest</em> match strategy for resolving such conflicts and learned how to implement it from a formal standpoint. By performing small modifications, we saw how to define other kinds of strategies like the <em>leftmost-shortest</em>, <em>rightmost-longest</em>, etc.</p>
 <p>In the following article, we&rsquo;ll put what we&rsquo;ve learned into practice. We&rsquo;ll transform these formalisms into code and learn how to build such machines that perform obligatory, <em>leftmost-longest</em> match text rewriting in a single input text scan.</p>
+<p><strong>Part 1:</strong> <a href="/2020/02/18/finite-state-transducers-for-text-rewriting/">Finite-State Transducers for Text Rewriting</a></p>
 <h2 id="references">References</h2>
 <ul>
-<li><a href="/2020/02/18/finite-state-transducers-for-text-rewriting/">Finite-State Transducers for Text Rewriting</a></li>
+<li>Implementation of a <a href="https://github.com/deniskyashif/ssfst">Subsetequential Transducer for Dictionary-Based Text Rewriting</a></li>
 <li><a href="https://www.cambridge.org/core/books/finitestate-techniques/E21E748468F0310DA12A2CFAEB989185">&ldquo;Finite State Techniques - Automata, Transducers and Bimachines&rdquo; by Mihov &amp;
-Schulz</a> Chapter 11.3 - Leftmost-Longest Match Text Rewriting</li>
-<li><a href="https://cs.nyu.edu/~mohri/pub/nway.pdf">N-Way Composition of Weighted Finite-State Transducers</a></li>
+Schulz</a> Chapter 11.4 - Regular relations for left-most-longest match rewriting</li>
 <li><a href="https://web.stanford.edu/~mjkay/Kaplan%26Kay.pdf">&ldquo;Regular Models for Phonological Rule Systems&rdquo; by Kaplan &amp; Kay</a></li>
 </ul>
 
@@ -269,7 +269,7 @@ Schulz</a> Chapter 11.3 - Leftmost-Longest Match Text Rewriting</li>
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-02-22 10:36:28.574954 &#43;0200 EET m=&#43;0.098575718">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-02-22 11:02:45.709696 &#43;0200 EET m=&#43;0.097698967">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
