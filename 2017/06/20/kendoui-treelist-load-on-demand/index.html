@@ -95,11 +95,11 @@ if (!doNotTrack) {
 
 		
 
-		<p>The <a href="http://demos.telerik.com/kendo-ui/treelist/index">TreeList</a> isn't among the most popular KendoUI widgets, yet it's very useful and functional. It displays a hierarchically structured data, where each record has an optional relation to another record. The output is a grid which renders its rows in a tree-like fashion. In this blog post we'll see how to load the descendant items of a record on demand.</p>
+		<p>The <a href="http://demos.telerik.com/kendo-ui/treelist/index">TreeList</a> isn&rsquo;t among the most popular KendoUI widgets, yet it&rsquo;s very useful and functional. It displays a hierarchically structured data, where each record has an optional relation to another record. The output is a grid which renders its rows in a tree-like fashion. In this blog post we&rsquo;ll see how to load the descendant items of a record on demand.</p>
 <h2 id="the-problem">The Problem</h2>
-<p>By default the TreeList expects us to provide the complete data set on initial load. In a real-world scenario, however, the amount of records tends to get quite large thus loading everything within a single API call would be inefficient and might hinder the app's usability. A common way to tackle such case is by adapting the widget to <strong>load the data on demand</strong>, that is we fetch and render the descendant items of a record only when the user has intended to see them. Being familiar with other KendoUI widgets like the TreeView or the Grid one might assume that there's an obvious and straightforward way to achieve this, but that's not the case with the TreeList.</p>
+<p>By default the TreeList expects us to provide the complete data set on initial load. In a real-world scenario, however, the amount of records tends to get quite large thus loading everything within a single API call would be inefficient and might hinder the app&rsquo;s usability. A common way to tackle such case is by adapting the widget to <strong>load the data on demand</strong>, that is we fetch and render the descendant items of a record only when the user has intended to see them. Being familiar with other KendoUI widgets like the TreeView or the Grid one might assume that there&rsquo;s an obvious and straightforward way to achieve this, but that&rsquo;s not the case with the TreeList.</p>
 <h3 id="no-loadondemand-congfiguration-flag">No <code>loadOnDemand</code> congfiguration flag</h3>
-<p>Unlike the <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/treeview#configuration-loadOnDemand">TreeView</a>, the <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/treelist">TreeList</a> <strong>doesn't</strong> provide a configuration option to indicate that we're going to lazily load the widget data. Instead we have to resort to its data source.</p>
+<p>Unlike the <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/treeview#configuration-loadOnDemand">TreeView</a>, the <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/treelist">TreeList</a> <strong>doesn&rsquo;t</strong> provide a configuration option to indicate that we&rsquo;re going to lazily load the widget data. Instead we have to resort to its data source.</p>
 <h2 id="treelistdatasource">TreeListDataSource</h2>
 <p>The TreeList has its own DataSource implementation, which extends the KendoUI DataSource. Unlike the TreeView which works with a hierarchical data structure, it expects a linear data structure, i.e. JavaScript array, and the relations are described using property references. So for example the following collection:</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
@@ -116,7 +116,7 @@ if (!doNotTrack) {
 |   +-- Homer Simpson  
 |   +-- Lenford Leonard
 </code></pre><h3 id="remote-data-binding">Remote Data Binding</h3>
-<p>For remote data binding we need to use the DataSource's <code>transport</code> property. This is straightforward as in any other Kendo widget:</p>
+<p>For remote data binding we need to use the DataSource&rsquo;s <code>transport</code> property. This is straightforward as in any other Kendo widget:</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">var</span> treeListDataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
     transport<span style="color:#555">:</span> {
         read<span style="color:#555">:</span> {
@@ -162,7 +162,7 @@ if (!doNotTrack) {
 }
 
 </code></pre></div><h2 id="the-endpoint">The Endpoint</h2>
-<p>On initial load the widget's data soruce will make an API call to the url we've defined, e.g.</p>
+<p>On initial load the widget&rsquo;s data soruce will make an API call to the url we&rsquo;ve defined, e.g.</p>
 <pre><code>GET 'api/employees'
 RESPONSE: [{ employeeId: 1, name: 'Montgomery Burns', reportsTo: null, hasSubordinates: true }]
 </code></pre><p>thus retrieving and populating the widget with the top-level records, namely the ones the <code>parentId</code> of which is null or not defined. After that when a record is expanded and its <code>hasChildren</code> property is ```true`` the data source will perform an API call but this time by also providing an additional id query parameter, e.g.</p>
@@ -246,7 +246,7 @@ You can find the complete example <a href="https://jsfiddle.net/8xwhv0Le/1/">her
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-02-19 10:26:58.816479 &#43;0200 EET m=&#43;0.176836634">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-02-22 10:36:28.631063 &#43;0200 EET m=&#43;0.154686051">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

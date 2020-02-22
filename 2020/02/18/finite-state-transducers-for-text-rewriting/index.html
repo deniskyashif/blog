@@ -97,11 +97,11 @@ if (!doNotTrack) {
 		
 
 		<p>Text rewriting is a programming task when parts of a given input string are replaced with other strings. Applications of this process include text highlighting, annotation, lexical analysis, normalization, etc. Because such tasks arise quite often in practice, many programming languages provide built-in text rewriting APIs. Those APIs, however, often go beyond the realm of regular languages, but rewriters based on regular expressions are still very powerful and can to solve most of the translation tasks that occur in practice.<br>
-In this article, we'll describe the process of text rewriting from a set-theoretic perspective and define the relevant formalisms. We'll see how they can be applied to implement powerful text rewrites that replace the matching parts of the input string in a single scan.</p>
+In this article, we&rsquo;ll describe the process of text rewriting from a set-theoretic perspective and define the relevant formalisms. We&rsquo;ll see how they can be applied to implement powerful text rewrites that replace the matching parts of the input string in a single scan.</p>
 <h2 id="formal-preliminaries">Formal Preliminaries</h2>
-<p>Let's introduce some definitions before proceeding to the main part.</p>
+<p>Let&rsquo;s introduce some definitions before proceeding to the main part.</p>
 <h3 id="finite-automata">Finite Automata</h3>
-<p>A <strong>finite-state automaton</strong> (FSA) is an abstract device  that has states and transitions between those states. It's always in one of its states and while it reads an input, it switches from state to state. Think of it as a directed graph. A state machine has no memory, that is, it does not keep track of the previous states it has been in. It only knows its current state. If there's no transition on a given input, the machine terminates.</p>
+<p>A <strong>finite-state automaton</strong> (FSA) is an abstract device  that has states and transitions between those states. It&rsquo;s always in one of its states and while it reads an input, it switches from state to state. Think of it as a directed graph. A state machine has no memory, that is, it does not keep track of the previous states it has been in. It only knows its current state. If there&rsquo;s no transition on a given input, the machine terminates.</p>
 <p><img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fsa.png" alt="Finite State Automaton" /></p>
 <p class="text-center">
     <small>Figure 1: Finite automaton for the expression <strong>ab*</strong></small>
@@ -114,12 +114,12 @@ In this article, we'll describe the process of text rewriting from a set-theoret
 <li>\( F \subseteq Q \) is a set of final (accepting) states</li>
 <li>\( \Delta \subseteq Q \times \Sigma \to 2^Q \) is a transition relation</li>
 </ul>
-<p>The transition relation means that from a given state on a symbol from the alphabet we transition into a set of states (non-determinism). FSAs are used for recognizing patterns in text. For example, the machine in Figure 1 recognizes strings that start with an &lsquo;a&rsquo; and are followed by an arbitrary number of &lsquo;b's.</p>
+<p>The transition relation means that from a given state on a symbol from the alphabet we transition into a set of states (non-determinism). FSAs are used for recognizing patterns in text. For example, the machine in Figure 1 recognizes strings that start with an &lsquo;a&rsquo; and are followed by an arbitrary number of &lsquo;b&rsquo;s.</p>
 <p>We denote the <strong>empty string</strong> as \( \epsilon \) and \( \Sigma^* \) as the set of all words over an alphabet \( \Sigma \). For example, for \( \Sigma = \{ a,b \}  \)</p>
 <p>\[ \Sigma^* = \{ \epsilon, a, b, ab, aa, bb, ba, aab, bab &hellip; \} \]</p>
 <p><strong>The language of an FSA</strong> \(A\), denoted as  \(L(A)\), is the set of all strings recognized by the automaton. The language of the automaton in Figure 1 is:</p>
 <p>\[ L(A) = \{ a, ab, abb, abbb, abbbb &hellip; \}  \]</p>
-<p>If a language can be recognized by a <strong>finite automaton</strong> then there's is a corresponding <strong>regular expression</strong> that denotes the same language and vice versa (<a href="http://www.cs.may.ie/staff/jpower/Courses/Previous/parsing/node6.html">Kleene's Theorem</a>). The regular expression for the FSA in Figure 1 is <code>ab*</code>.</p>
+<p>If a language can be recognized by a <strong>finite automaton</strong> then there&rsquo;s is a corresponding <strong>regular expression</strong> that denotes the same language and vice versa (<a href="http://www.cs.may.ie/staff/jpower/Courses/Previous/parsing/node6.html">Kleene&rsquo;s Theorem</a>). The regular expression for the FSA in Figure 1 is <code>ab*</code>.</p>
 <h3 id="string-relations">String Relations</h3>
 <p>A <strong>binary string relation</strong> \( R \subseteq \Sigma^* \times \Sigma^* \) is a set of word tuples over some alphabet \( \Sigma \). For example</p>
 <p>\[ R := \{ \langle a, xy \rangle, \langle ab, z \rangle, \langle ab, xy \rangle, \langle abbb, xy \rangle \} \]</p>
@@ -128,7 +128,7 @@ In this article, we'll describe the process of text rewriting from a set-theoret
 \[ \langle u_1, u_2 \rangle \cdot \langle v_1, v_2 \rangle := \langle u_1 \cdot v_1, u_2 \cdot v_2 \rangle \]</p>
 <p>and the concatenation of binary string relations \(R_1\) and \(R_2\) as</p>
 <p>\[ R_1 \cdot R_2 := \{ \bar{u} \cdot \bar{v} | \bar{u} \in R_1, \bar{v} \in R_2 \}  \]</p>
-<p>where \( \bar{u} \) and \( \bar{v} \) are word tuples. Let's see an example.</p>
+<p>where \( \bar{u} \) and \( \bar{v} \) are word tuples. Let&rsquo;s see an example.</p>
 <p>\[
 R_1 := \{ \langle ab, d \rangle, \langle bc, d \rangle \} \\<br>
 R_2 := \{ \langle xy, zzz \rangle, \langle y, x \rangle \} \\<br>
@@ -141,7 +141,7 @@ R_1 \cdot R_2 := \{ \langle abxy, dzzz \rangle, \langle bcxy, dzzz \rangle, \lan
     <small>Figure 2: Finite-state transducer translating words in <strong>ab*</strong> to words in <strong>xy*</strong></small>
 </p>
 <p>Formally an FST \(T\) is a 5-tuple \( T = \langle \Sigma \times \Gamma, Q, I, F, \Delta \rangle  \) where the transition relation \( \Delta \subseteq Q \times (\Sigma \times \Gamma) \times Q \) and \( \Sigma \) and \( \Gamma \) are the input and output alphabets respectively.</p>
-<p>The FST in Figure 2 replaces the input symbol &lsquo;a&rsquo; with &lsquo;x&rsquo; and &lsquo;b&rsquo; with &lsquo;y&rsquo;. The alphabet of the first (input) tape is \( \Sigma = \{ a, b \} \) and of the second (output) tape is \( \Gamma = \{ x, y \} \). If we discard, we'll end up with an FSA, equivalent to the one in Figure 1. The transducer performs the following mapping:</p>
+<p>The FST in Figure 2 replaces the input symbol &lsquo;a&rsquo; with &lsquo;x&rsquo; and &lsquo;b&rsquo; with &lsquo;y&rsquo;. The alphabet of the first (input) tape is \( \Sigma = \{ a, b \} \) and of the second (output) tape is \( \Gamma = \{ x, y \} \). If we discard, we&rsquo;ll end up with an FSA, equivalent to the one in Figure 1. The transducer performs the following mapping:</p>
 <p>\[
 a \longmapsto_T x \\<br>
 ab \longmapsto_T xy \\<br>
@@ -161,22 +161,22 @@ dom(T) = \{ a, ab, abb, abbb, &hellip; \}
 <p>A text rewriter contains a finite set of rewrite rules in the form</p>
 <p>\[ E \to \beta \]</p>
 <p>where \(E\) is a regular expression and \( \beta \) is a word. During the scan, when the rewriter recognizes a string from the language of \(E\), it replaces it with \( \beta \).
-We can represent a rewrite rule as a regular relation and thus we can build a corresponding finite-state transducer. Let's see an example.</p>
+We can represent a rewrite rule as a regular relation and thus we can build a corresponding finite-state transducer. Let&rsquo;s see an example.</p>
 <p><img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst2.png" alt="Finite State Transducer" /></p>
 <p class="text-center">
     <small>Figure 3.1: FST for the rewrite rule ab|bc -> d</small>
 </p>
 <p>The transducer of Figure 3.1 represents the rewrite rule \( ab|bc \to d \) which is equivalent to the regular function \( \{ \langle ab, d \rangle, \langle bc, d \rangle \} \)</p>
 <h3 id="optional-and-obligatory-rewrite-rules">Optional and Obligatory Rewrite Rules</h3>
-<p>The FST from Figure 3.1 serves of a little practical use because it translates exactly the words in the function's domain \( \{ ab, bc \} \). We want to build a transducer such that it would work on arbitrary texts and translate multiple occurrences of words in this domain. Consider the text</p>
+<p>The FST from Figure 3.1 serves of a little practical use because it translates exactly the words in the function&rsquo;s domain \( \{ ab, bc \} \). We want to build a transducer such that it would work on arbitrary texts and translate multiple occurrences of words in this domain. Consider the text</p>
 <p>\[ abacbcaab \]</p>
-<p>now let's underline the replacement candidates, according to the rewrite rule \( ab|bc \to d \)</p>
+<p>now let&rsquo;s underline the replacement candidates, according to the rewrite rule \( ab|bc \to d \)</p>
 <p>\[ \underline{ab}ac\underline{bc}a\underline{ab} \]</p>
 <p>We want to build a transducer that can process this text and apply the rewrite rule by producing the following output</p>
 <p>\[ dacdad \]</p>
 <p>We can partition the input text into segments:</p>
 <p>\[ u_0 \cdot v_1 \cdot u_1 \cdot v_2 \cdot u_2 \cdots v_n \cdot u_n \]</p>
-<p>such that the \(v_i\)&lsquo;s belong to the domain of the transducer (in our case \( dom(T) = \{ ab, bc \} \)). The \(u_i\)&lsquo;s are arbitrary strings from \( \Sigma^* \setminus dom(T) \) and for those strings, we want them to be appended to the output as they are. Before we formalize this procedure, let's introduce the identity function on a set of strings.</p>
+<p>such that the \(v_i\)&lsquo;s belong to the domain of the transducer (in our case \( dom(T) = \{ ab, bc \} \)). The \(u_i\)&lsquo;s are arbitrary strings from \( \Sigma^* \setminus dom(T) \) and for those strings, we want them to be appended to the output as they are. Before we formalize this procedure, let&rsquo;s introduce the identity function on a set of strings.</p>
 <p>\[ \Sigma = \{ a,b,c,d \} \]
 \[ Id(\Sigma^*) = \{ \langle \epsilon, \epsilon \rangle, \langle a,a \rangle, \langle b,b \rangle, \langle c,c \rangle, \langle d,d \rangle \}^* \]</p>
 <p>Intuitively \( Id(\Sigma^*) \) is the set of all possible same string tuples over the alphabet \(\Sigma\). For example, the tuples \( \langle ac, ac \rangle, \langle cccd, cccd \rangle, \langle dba, dba \rangle \) are all in \( Id(\Sigma^*) \).</p>
@@ -184,17 +184,17 @@ We can represent a rewrite rule as a regular relation and thus we can build a co
 <p class="text-center">
     <small>Figure 3.2: FST for Id({a,b,c,d}*)</small>
 </p>
-<p>Now we're ready to define the optional regular rewrite relation \(R^{opt}(T)\) induced by \(T\) for the rewrite rule \(ab|bc \to d\).</p>
+<p>Now we&rsquo;re ready to define the optional regular rewrite relation \(R^{opt}(T)\) induced by \(T\) for the rewrite rule \(ab|bc \to d\).</p>
 <p>\[ R^{opt}(T) := Id(\Sigma^*) \cdot (T \cdot Id(\Sigma^*))^* \]</p>
 <p>Since in the above expression \(T\) is surrounded by expressions \( Id(\Sigma^*) \), any substring of a text \(t \in dom(T)\) can be replaced by its \(T\)-translations using \(R^{opt}(T)\). The final asterisk in the definition of \(R^{opt}(T)\) ensures that any number of substrings from \(dom(T)\) can be translated. The second \( Id(\Sigma^*) \) expression shows that subtexts between consecutive elements of \(dom(T)\) (the \(u_i\)&lsquo;s) are translated via identity. Text parts matching \( Id(\Sigma^*) \) expressions can contain entries from \(dom(T)\), as a consequence, the \(T\)-replacement is always optional.</p>
 <p><img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst4.png" alt="Finite State Transducer 4" /></p>
 <p class="text-center">
     <small>Figure 3.2: Transducer for the optional rewrite relation induced by T</small>
 </p>
-<p>Let's process the following text through the optional rewrite transducer.</p>
-<p>\[ \underline{ab}ac\underline{bc}a \longmapsto_{T_{R^{opt}(T)}} \{ abacbca, dacbca, abacda, dacda \} \]</p>
-<p>The transducer will result in 4 successful paths for this text, hence we have 4 different translations. The optional rewrite relation is simple, yet not very practical because realistically we'd rarely want to skip rewrites.<br>
-Now, let's define the <strong>obligatory rewrite relation</strong> induced by the transducer \(T\) for the rewrite rule \(ab|bc \to d\).</p>
+<p>Let&rsquo;s process the following text through the optional rewrite transducer.</p>
+<p>\[ \underline{ab}ac\underline{bc}a \longmapsto_{R^{opt}(T)} \{ abacbca, dacbca, abacda, dacda \} \]</p>
+<p>The transducer will result in 4 successful paths for this text, hence we have 4 different translations. The optional rewrite relation is simple, yet not very practical because realistically we&rsquo;d rarely want to skip rewrites.<br>
+Now, let&rsquo;s define the <strong>obligatory rewrite relation</strong> induced by the transducer \(T\) for the rewrite rule \(ab|bc \to d\).</p>
 <p>\[ R(T) := N(T) \cdot (T \cdot N(T))^* \]</p>
 <p>where \(N(T)\) is the identity function on all strings that <strong>do not contain</strong> any infix from \(dom(T)\), including \(\{ \langle \epsilon, \epsilon \rangle \}\)</p>
 <p>\[ N(T) = Id(\Sigma^* \setminus (\Sigma^* \cdot dom(T) \cdot \Sigma^* )) \cup \{ \langle \epsilon, \epsilon \rangle \} \]</p>
@@ -204,12 +204,12 @@ Now, let's define the <strong>obligatory rewrite relation</strong> induced by th
     <small>Figure 3.3: Transducer for the obligatory rewrite relation R(T) </small>
 </p>
 <p>This is the result of performing an obligatory rewrite of the text</p>
-<p>\[ \underline{ab}ac\underline{bc}a \longmapsto_{T_{R(T)}} \{ dacda \} \]</p>
+<p>\[ \underline{ab}ac\underline{bc}a \longmapsto_{R(T)} \{ dacda \} \]</p>
 <p>with a state path</p>
 <p>\[ q_0 q_1 q_0 q_3 q_0 q_2 q_0 q_3 \]</p>
-<h2 id="rewrite-rule-sets">Rewrite Rule Sets</h2>
-<p>In practice, we might want to have multiple rewrite rules. So far we've learned that each rewrite rule is a binary regular string relation and that these relations can be represented by finite-state transducers. Suppose we have the rewrite rules</p>
-<p>\[ R_1, R_2, R_3 \]</p>
+<h2 id="rewrite-grammars">Rewrite Grammars</h2>
+<p>In practice, we might want to have multiple rewrite rules. So far we&rsquo;ve learned that each rewrite rule is a binary regular string relation and that these relations can be represented by finite-state transducers. Suppose we have the rewrite rules</p>
+<p>\[ G = \langle R_1, R_2, R_3 \rangle \]</p>
 <p>then for each rule, we can construct a corresponding FST</p>
 <p>\[ T_1, T_2, T_3 \]</p>
 <p>extend each transducer so it can process arbitrary text \(t \in \Sigma^* \) performs obligatory replacement of multiple occurrences of substrings of \(t\) which are in \( dom(T_i) \) ending up with</p>
@@ -227,21 +227,17 @@ xcx
 \]</p>
 <p>Description of a direct composition algorithm is out of the scope of this article, but you can find some resources in the <a href="#references-and-further-reading">references</a>.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>In this article, we've overviewed the text rewriting problem from a set-theoretic perspective. We've seen how the rewrite rules can be represented as regular string relations which on the other hand have an equivalent formalism namely the finite-state transducers. We've covered the differences between automata and transducers and saw how the latter can be extended to work on a larger set of inputs via concatenating string relations. We've also learned that the transducers can be composed in a single transducer which applies a set of rewrite rules.</p>
-<p>Some text can contain conflicting parts. Consider the &ldquo;abc&rdquo; and the rule \( ab|bc \to d \). The transducer in Figure 3.3 is not able to make a unanimous decision, thus, it will output both &ldquo;dc&rdquo; and &ldquo;ad&rdquo;. In the following articles, we'll discuss some conflict resolution strategies and how to incorporate them within the means of regular sets and relations. We'll also narrow down the scope and work only with deterministic devices for obligatory text rewriting as they're more interesting from a practical standpoint.</p>
+<p>In this article, we&rsquo;ve overviewed the text rewriting problem from a set-theoretic perspective. We&rsquo;ve seen how the rewrite rules can be represented as regular string relations which on the other hand have an equivalent formalism namely the finite-state transducers. We&rsquo;ve covered the differences between automata and transducers and saw how the latter can be extended to work on a larger set of inputs via concatenating string relations. We&rsquo;ve also learned that the transducers can be composed in a single transducer which applies a set of rewrite rules.</p>
+<p>Some text can contain conflicting parts. Consider the &ldquo;abc&rdquo; and the rule \( ab|bc \to d \). The transducer in Figure 3.3 is not able to make a unanimous decision, thus, it will output both &ldquo;dc&rdquo; and &ldquo;ad&rdquo;. In the following articles, we&rsquo;ll discuss some conflict resolution strategies and how to incorporate them within the means of regular sets and relations. We&rsquo;ll also narrow down the scope and work only with deterministic devices for obligatory text rewriting as they&rsquo;re more interesting from a practical standpoint.</p>
 <p>You can find examples and resources on how to efficiently construct FSTs in the references below.</p>
-<p>If you're interested in formal language theory, you can check out these articles as well.</p>
-<ul>
-<li><a href="/2019/02/17/implementing-a-regular-expression-engine/">Implementing a Regular Expression Engine</a></li>
-<li><a href="/2019/09/13/translation-using-syntactic-rules/">Translation using Syntactic Rules</a></li>
-<li><a href="https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/">A Practical Guide to State Machines</a></li>
-</ul>
+<p><strong>Part 2:</strong> <a href="/2020/02/22/resolving-ambiguity-in-text-rewriting/">Resolving Ambiguity in Text Rewriting</a></p>
+<p>If you&rsquo;re interested in formal language theory &amp; language processing, you can check out <a href="http://localhost:1313/tags/nlp/">these articles</a> as well.</p>
 <h2 id="references-and-further-reading">References and Further Reading</h2>
 <ul>
 <li>Implementation of a <a href="https://github.com/deniskyashif/ssfst">Subsetequential Transducer for Dictionary-Based Text Rewriting</a></li>
 <li><a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.24.3698&amp;rep=rep1&amp;type=pdf">&ldquo;Direct Construction of Minimal Acyclic Subsequential Transducers&rdquo; by Mihov &amp; Maurel</a></li>
 <li>Chapters 4 and 11 of <a href="https://www.cambridge.org/core/books/finitestate-techniques/E21E748468F0310DA12A2CFAEB989185">&ldquo;Finite State Techniques - Automata, Transducers and Bimachines&rdquo; by Mihov &amp; Schulz</a></li>
-<li><a href="https://cs.nyu.edu/~mohri/pub/nway.pdf">N-Way Composition of Weighted Finite-State Transducers</a></li>
+<li><a href="https://cs.nyu.edu/~mohri/pub/nway.pdf">&ldquo;N-Way Composition of Weighted Finite-State Transducers&rdquo; by Allauzen &amp; Mohri</a></li>
 <li><a href="https://web.stanford.edu/~mjkay/Kaplan%26Kay.pdf">&ldquo;Regular Models for Phonological Rule Systems&rdquo; by Kaplan &amp; Kay</a></li>
 <li>The graphics are implemented using the <a href="http://madebyevan.com/fsm/">Finite State Machine Designer</a></li>
 </ul>
@@ -313,6 +309,7 @@ xcx
 
 	<div class="pagination">
 		<a href="/2020/01/07/csharp-channels-part-3/" class="left arrow">&#8592;</a>
+		<a href="/2020/02/22/resolving-ambiguity-in-text-rewriting/" class="right arrow">&#8594;</a>
 
 		<a href="#" class="top">Top</a>
 	</div>
@@ -321,7 +318,7 @@ xcx
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-02-19 10:26:58.711728 &#43;0200 EET m=&#43;0.072083334">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-02-22 10:36:28.572405 &#43;0200 EET m=&#43;0.096026899">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

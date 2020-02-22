@@ -105,9 +105,9 @@ if (!doNotTrack) {
 
 		
 
-		<p>In this article, we'll learn how to efficiently process data in a non-blocking way using the pipeline pattern. We'll construct composable and testable pipelines using .NET's channels, and see how to perform cancellation and deal with errors. If you're new to the concept of channels, I suggest checking out <a href="/csharp-channels-part-1">part 1</a> and <a href="/csharp-channels-part-2">part 2</a> of the series first.</p>
+		<p>In this article, we&rsquo;ll learn how to efficiently process data in a non-blocking way using the pipeline pattern. We&rsquo;ll construct composable and testable pipelines using .NET&rsquo;s channels, and see how to perform cancellation and deal with errors. If you&rsquo;re new to the concept of channels, I suggest checking out <a href="/csharp-channels-part-1">part 1</a> and <a href="/csharp-channels-part-2">part 2</a> of the series first.</p>
 <h2 id="pipelines">Pipelines</h2>
-<p>A pipeline is a concurrency model where a job is handled through several processing stages. Each stage performs a part of the full job and when it's done, it forwards it to the next stage. It also runs in a separate thread and <strong>shares no state</strong> with the other stages.</p>
+<p>A pipeline is a concurrency model where a job is handled through several processing stages. Each stage performs a part of the full job and when it&rsquo;s done, it forwards it to the next stage. It also runs in a separate thread and <strong>shares no state</strong> with the other stages.</p>
 <p><img src="/images/posts/2020-01-07-csharp-channels-part3/pipeline.png" /></p>
 <p>The generator delegates the jobs, which are being processed through the pipeline. For example, we can represent the pizza preparation as a pipeline, consisting of the following stages:</p>
 <ol start="0">
@@ -121,7 +121,7 @@ if (!doNotTrack) {
 <h2 id="implementing-a-channel-based-pipeline">Implementing a Channel-based Pipeline</h2>
 <p>Each pipeline starts with a generator method, which initiates jobs by passing it to the stages. The intermediate stages are also methods that run concurrently. Channels serve as a transport mechanism between the stages. A stage takes a channel as an input, performs some work on each data item it asynchronously reads, and passes the result to an output channel. The purpose of a stage is to do one job and do it well.</p>
 <p><img src="/images/posts/2020-01-07-csharp-channels-part3/pipeline-channels.png" /></p>
-<p>To see it in action, we're going to implement a program that efficiently counts the lines of code in a project.</p>
+<p>To see it in action, we&rsquo;re going to implement a program that efficiently counts the lines of code in a project.</p>
 <h3 id="the-generator---enumerate-the-files">The Generator - Enumerate the Files</h3>
 <p>The initial stage of our pipeline would be to enumerate recursively the files in the workspace. We implement it as a generator.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; GetFilesRecursively(<span style="color:#078;font-weight:bold">string</span> root)
@@ -145,9 +145,9 @@ if (!doNotTrack) {
 
     <span style="color:#069;font-weight:bold">return</span> output;
 }
-</code></pre></div><p>We perform a depth-first traversal of the directory and its subdirectories and write each file name we encounter to the output channel. When we're done with the traversal, we mark the channel as complete so the consumer (the next stage) knows when to stop reading from it.</p>
+</code></pre></div><p>We perform a depth-first traversal of the directory and its subdirectories and write each file name we encounter to the output channel. When we&rsquo;re done with the traversal, we mark the channel as complete so the consumer (the next stage) knows when to stop reading from it.</p>
 <h3 id="stage-1---keep-the-source-files">Stage 1 - Keep the Source Files</h3>
-<p>Stage 1 is going to determine whether the file contains source code or not. The ones that don't should be discarded.</p>
+<p>Stage 1 is going to determine whether the file contains source code or not. The ones that don&rsquo;t should be discarded.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;FileInfo&gt; FilterByExtension(
     ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; input, HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; exts)
 {
@@ -201,12 +201,12 @@ if (!doNotTrack) {
 }
 </code></pre></div></details>
 <h2 id="the-sink-stage">The Sink Stage</h2>
-<p>Now we've implemented the stages of our pipeline, we are ready to put them all together.</p>
+<p>Now we&rsquo;ve implemented the stages of our pipeline, we are ready to put them all together.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> fileGen = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
 <span style="color:#078;font-weight:bold">var</span> sourceCodeFiles = FilterByExtension(
     fileGen, <span style="color:#069;font-weight:bold">new</span> HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; { <span style="color:#c30">&#34;.js&#34;</span>, <span style="color:#c30">&#34;.ts&#34;</span> });
 <span style="color:#078;font-weight:bold">var</span> counter = GetLineCount(sourceCodeFiles);
-</code></pre></div><p>The sink stage processes the output from the last stage of the pipeline. Unlike the generator, which doesn't consume, but only produces, the sink only consumes but doesn't produce. That's where our pipeline comes to an end.</p>
+</code></pre></div><p>The sink stage processes the output from the last stage of the pipeline. Unlike the generator, which doesn&rsquo;t consume, but only produces, the sink only consumes but doesn&rsquo;t produce. That&rsquo;s where our pipeline comes to an end.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> totalLines = <span style="color:#f60">0</span>;
 <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> counter.ReadAllAsync())
 {
@@ -221,17 +221,17 @@ Console.WriteLine(<span style="color:#c30">$&#34;Total lines: {totalLines}&#34;<
 /Users/denis/Workspace/proj/lib/index.ts <span style="color:#f60">210</span>
 Total lines: <span style="color:#f60">462</span>
 </code></pre></div><h2 id="error-handling">Error Handling</h2>
-<p>We've covered the happy path, however, our pipeline might encounter malformed or erroneous inputs. Each stage has its own notion of what an invalid input is, so it's its own
+<p>We&rsquo;ve covered the happy path, however, our pipeline might encounter malformed or erroneous inputs. Each stage has its own notion of what an invalid input is, so it&rsquo;s its own
 responsibility to deal with it. To achieve good error handling, our pipeline needs to satisfy the following:</p>
 <ol>
 <li>Invalid input should not propagate to the next stage</li>
 <li>Invalid input should not cause the pipeline to stop. The pipeline should continue to process the inputs thereafter.</li>
 <li>The pipeline should not swallow errors. All the errors should be reported.</li>
 </ol>
-<p>We're going to modify stage 2 which counts the lines in a file. Our definition for invalid input is an empty file. Our pipeline should not pass them forward and instead, it should report the existence of such files. We solve that by introducing a second channel that emits the errors.</p>
+<p>We&rsquo;re going to modify stage 2 which counts the lines in a file. Our definition for invalid input is an empty file. Our pipeline should not pass them forward and instead, it should report the existence of such files. We solve that by introducing a second channel that emits the errors.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="background-color:#fcc">- ChannelReader&lt;(FileInfo file, int lines)&gt; GetLineCount(
 </span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+     (ChannelReader&lt;(FileInfo file, int lines)&gt; output,
-</span><span style="background-color:#cfc"></span><span style="background-color:#cfc">+      ChannelReader&lt;string&gt; errors)
+</span><span style="background-color:#cfc">+      ChannelReader&lt;string&gt; errors)
 </span><span style="background-color:#cfc"></span>    GetLineCount(ChannelReader&lt;FileInfo&gt; input)
     {
         var output = Channel.CreateUnbounded&lt;(FileInfo, int)&gt;();
@@ -244,10 +244,10 @@ responsibility to deal with it. To achieve good error handling, our pipeline nee
                 var lines = CountLines(file);
 <span style="background-color:#fcc">-               await output.Writer.WriteAsync((file, lines));
 </span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+               if (lines == 0)
-</span><span style="background-color:#cfc"></span><span style="background-color:#cfc">+                   await errors.Writer.WriteAsync(
-</span><span style="background-color:#cfc"></span><span style="background-color:#cfc">+                       $&#34;[Error] Empty file {file}&#34;);
-</span><span style="background-color:#cfc"></span><span style="background-color:#cfc">+               else
-</span><span style="background-color:#cfc"></span><span style="background-color:#cfc">+                   await output.Writer.WriteAsync((file, lines));
+</span><span style="background-color:#cfc">+                   await errors.Writer.WriteAsync(
+</span><span style="background-color:#cfc">+                       $&#34;[Error] Empty file {file}&#34;);
+</span><span style="background-color:#cfc">+               else
+</span><span style="background-color:#cfc">+                   await output.Writer.WriteAsync((file, lines));
 </span><span style="background-color:#cfc"></span>            }
             output.Writer.Complete();
 <span style="background-color:#cfc">+           errors.Writer.Complete();
@@ -255,7 +255,7 @@ responsibility to deal with it. To achieve good error handling, our pipeline nee
 <span style="background-color:#fcc">-       return output;
 </span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+       return (output, errors);
 </span><span style="background-color:#cfc"></span>    }
-</code></pre></div><p>We've created a second channel for errors and changed the signature of the method so it returns both the output and the error channels. Empty files are not passed to the next stage, we've provided a mechanism to report them using the error channel and after we get an invalid input, our pipeline continues processing the next ones.</p>
+</code></pre></div><p>We&rsquo;ve created a second channel for errors and changed the signature of the method so it returns both the output and the error channels. Empty files are not passed to the next stage, we&rsquo;ve provided a mechanism to report them using the error channel and after we get an invalid input, our pipeline continues processing the next ones.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> fileGen = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
 <span style="color:#078;font-weight:bold">var</span> sourceCodeFiles = FilterByExtension(
     fileGen, <span style="color:#069;font-weight:bold">new</span> HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; { <span style="color:#c30">&#34;.js&#34;</span>, <span style="color:#c30">&#34;.ts&#34;</span> });
@@ -275,7 +275,7 @@ Console.WriteLine(<span style="color:#c30">$&#34;Total lines: {totalLines}&#34;<
 Total lines: <span style="color:#f60">462</span>
 <span style="color:#555">[</span>Error<span style="color:#555">]</span> Empty file /Users/denis/Workspace/proj/tree.ts
 </code></pre></div><h2 id="cancellation">Cancellation</h2>
-<p>Similarily to the error handling, the stages being independent means that each has to handle cancellation on their own. To stop the pipeline, we need to prevent the generator from delegating new jobs. Let's make it cancellable.</p>
+<p>Similarily to the error handling, the stages being independent means that each has to handle cancellation on their own. To stop the pipeline, we need to prevent the generator from delegating new jobs. Let&rsquo;s make it cancellable.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; GetFilesRecursively(
     <span style="color:#078;font-weight:bold">string</span> root, CancellationToken token = <span style="color:#069;font-weight:bold">default</span>)
 {
@@ -311,9 +311,9 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 <span style="color:#078;font-weight:bold">var</span> fileSource = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>, cts.Token);
 ...
 </code></pre></div><h2 id="dealing-with-backpressure">Dealing with Backpressure</h2>
-<p>The term <a href="https://en.wikipedia.org/wiki/Back_pressure">backpressure</a> is borrowed from fluid dynamics and relates to to the software systems&rsquo; dataflow. In our examples, the stages execute concurrently but this doesn't guarantee an optimal performance. Let's revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we're going to end up with many pizzas with their toppings added, waiting to be baked, but our oven bakes only one at a time. We can solve this by getting a larger oven, or even multiple ovens.</p>
+<p>The term <a href="https://en.wikipedia.org/wiki/Back_pressure">backpressure</a> is borrowed from fluid dynamics and relates to to the software systems&rsquo; dataflow. In our examples, the stages execute concurrently but this doesn&rsquo;t guarantee an optimal performance. Let&rsquo;s revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we&rsquo;re going to end up with many pizzas with their toppings added, waiting to be baked, but our oven bakes only one at a time. We can solve this by getting a larger oven, or even multiple ovens.</p>
 <p><img src="/images/posts/2020-01-07-csharp-channels-part3/bottleneck.png" /></p>
-<p>In the line-counter example, the stage where we read the file and count its lines might cause might experience backpressure because reading a sufficiently large file (stage 2) is slower than retreiving a file metadata (stage 1). It makes sense to increase the capacity of this stage and that's where <code>Split&lt;T&gt;</code> and <code>Merge&lt;T&gt;</code> which we discussed in <a href="/csharp-channels-part-1#multiplexer">part 1</a> come into use. We'll summarize them.</p>
+<p>In the line-counter example, the stage where we read the file and count its lines might cause might experience backpressure because reading a sufficiently large file (stage 2) is slower than retreiving a file metadata (stage 1). It makes sense to increase the capacity of this stage and that&rsquo;s where <code>Split&lt;T&gt;</code> and <code>Merge&lt;T&gt;</code> which we discussed in <a href="/csharp-channels-part-1#multiplexer">part 1</a> come into use. We&rsquo;ll summarize them.</p>
 <h3 id="split">Split</h3>
 <p><code>Split&lt;T&gt;</code> is a method that takes an input channel and distributes its messages amongst several outputs. That way we can let several threads concurrently handle the message processing.</p>
 <p><img src="/images/posts/2020-01-07-csharp-channels-part3/split.png" /></p>
@@ -342,7 +342,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 }
 </code></pre></div></details>
 <br />
-<p>We're going to use it to distribute the source code files among 5 channels which will let us process up to 5 files simultaneously. This is similar to when supermarkets open additional checkout lines when there're a lot of customers waiting.</p>
+<p>We&rsquo;re going to use it to distribute the source code files among 5 channels which will let us process up to 5 files simultaneously. This is similar to when supermarkets open additional checkout lines when there&rsquo;re a lot of customers waiting.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> fileSource = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
 <span style="color:#078;font-weight:bold">var</span> sourceCodeFiles =
     FilterByExtension(fileSource, <span style="color:#069;font-weight:bold">new</span> HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; {<span style="color:#c30">&#34;.js&#34;</span>, <span style="color:#c30">&#34;.ts&#34;</span> });
@@ -373,7 +373,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 </code></pre></div></details>
 <br />
 <p>During <code>Merge&lt;T&gt;</code>, we read concurrently from several channels, so this is the stage that we need to tweak a little bit and perform the line counting.</p>
-<p>We introduce, <code>CountLinesAndMerge</code> which doesn't only redirect, but also transforms.</p>
+<p>We introduce, <code>CountLinesAndMerge</code> which doesn&rsquo;t only redirect, but also transforms.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;(FileInfo file, <span style="color:#078;font-weight:bold">int</span> lines)&gt;
     CountLinesAndMerge(IList&lt;ChannelReader&lt;FileInfo&gt;&gt; inputs)
 {
@@ -393,7 +393,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 
     <span style="color:#069;font-weight:bold">return</span> output;
 }
-</code></pre></div><p>The error handling and the cancellation are omitted for the sake of brevity, however, we've already seen how to implement them. Now we're ready to build our pipeline.</p>
+</code></pre></div><p>The error handling and the cancellation are omitted for the sake of brevity, however, we&rsquo;ve already seen how to implement them. Now we&rsquo;re ready to build our pipeline.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">var fileSource = GetFilesRecursively(&#34;path_to/node_modules&#34;);
 var sourceCodeFiles =
     FilterByExtension(fileSource, new HashSet&lt;string&gt; {&#34;.js&#34;, &#34;.ts&#34;});
@@ -403,8 +403,8 @@ var sourceCodeFiles =
 <p>The TPL Dataflow library is another option for implementing pipelines or even meshes in .NET. It has a powerful, high-level API but compared to the channel-based approach also comes with a steeper learning curve and provides less control. Personally, I think that deciding between the two should strongly depend on the case. If you prefer a simpler API and more control, the lightweight channels would be the way to go. If you want a high-level API with more features, check out TPL Dataflow.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>We defined the pipeline concurrency model and learned how to use it to implement flexible, high-performance data processing workflows. We learned how to deal with errors, perform cancellation as well as how to apply some of the channel techniques (multiplexing and demultiplexing), described in the previous articles, to handle backpressure.</p>
-<p>Besides performance, pipelines are also easy to change. Each stage is an atomic part of the composition that can be independently modified, replaced, or removed as long as we keep the method (stage) signatures intact. For example, it's trivial to convert the line counter pipeline to search for patterns in text, say parsing log files etc. by replacing the line counter stage with another one.</p>
-<p>We can see how it can lead to a significant reduction in our code's cyclomatic complexity as well as making it easier to test. Each stage is simply a method with no side effects, which can be unit tested in isolation. Stages have a <strong>single responsibility</strong>, which makes them easier to reason about, thus we can cover all the possible cases.</p>
+<p>Besides performance, pipelines are also easy to change. Each stage is an atomic part of the composition that can be independently modified, replaced, or removed as long as we keep the method (stage) signatures intact. For example, it&rsquo;s trivial to convert the line counter pipeline to search for patterns in text, say parsing log files etc. by replacing the line counter stage with another one.</p>
+<p>We can see how it can lead to a significant reduction in our code&rsquo;s cyclomatic complexity as well as making it easier to test. Each stage is simply a method with no side effects, which can be unit tested in isolation. Stages have a <strong>single responsibility</strong>, which makes them easier to reason about, thus we can cover all the possible cases.</p>
 <h2 id="references--further-reading">References &amp; Further Reading</h2>
 <ul>
 <li><a href="https://github.com/deniskyashif/trydotnet-channels">GitHub Repo</a> with the interactive examples</li>
@@ -486,7 +486,7 @@ var sourceCodeFiles =
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-02-19 10:26:58.738271 &#43;0200 EET m=&#43;0.098626666">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-02-22 10:36:28.586042 &#43;0200 EET m=&#43;0.109663726">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

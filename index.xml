@@ -6,10 +6,19 @@
     <description>Recent content on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 Feb 2020 10:00:32 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 22 Feb 2020 09:10:37 +0200</lastBuildDate>
     
 	<atom:link href="https://deniskyashif.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Resolving Ambiguity in Text Rewriting</title>
+      <link>https://deniskyashif.com/2020/02/22/resolving-ambiguity-in-text-rewriting/</link>
+      <pubDate>Sat, 22 Feb 2020 09:10:37 +0200</pubDate>
+      
+      <guid>https://deniskyashif.com/2020/02/22/resolving-ambiguity-in-text-rewriting/</guid>
+      <description>Strategies for resolving conflicts that occur in text rewriting.</description>
+    </item>
     
     <item>
       <title>Finite-State Transducers for Text Rewriting</title>
@@ -89,7 +98,7 @@
       <pubDate>Wed, 15 May 2019 15:16:00 +0300</pubDate>
       
       <guid>https://deniskyashif.com/2019/05/15/on-recursive-functions/</guid>
-      <description>The Y combinator or how to implement recursion in a language that doesn&#39;t support it.</description>
+      <description>The Y combinator or how to implement recursion in a language that doesn&amp;rsquo;t support it.</description>
     </item>
     
     <item>
@@ -98,7 +107,7 @@
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
       
       <guid>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</guid>
-      <description>Using Ken Thompson&#39;s construction algorithm.</description>
+      <description>Using Ken Thompson&amp;rsquo;s construction algorithm.</description>
     </item>
     
     <item>
@@ -125,7 +134,7 @@
       <pubDate>Tue, 21 Nov 2017 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</guid>
-      <description>I had the pleasure to speak at the annual EMEA PUG Challenge conference in Prague. This is my second visit to this event. I was very excited about it because I already had fond memories of the last year&#39;s one in the Netherlands.</description>
+      <description>I had the pleasure to speak at the annual EMEA PUG Challenge conference in Prague. This is my second visit to this event. I was very excited about it because I already had fond memories of the last year&amp;rsquo;s one in the Netherlands.</description>
     </item>
     
     <item>

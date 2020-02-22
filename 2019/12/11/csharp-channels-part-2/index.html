@@ -106,11 +106,11 @@ if (!doNotTrack) {
 		
 
 		<p>This is a continuation of the article on <a href="/csharp-channels-part-1">how to build publish/subscribe workflows in C#</a> where we learned how to use channels in C#. We also went through some techniques about distributing computations among several workers to make use of the modern-day, multi-core CPUs.</p>
-<p>In this article, we'll build on top of that by exploring some cases where we have to &ldquo;exit&rdquo; a channel. In the last example, we'll put what we've covered so far in practice. You can check out the interactive version of the demos on <a href="https://github.com/deniskyashif/trydotnet-channels">GitHub</a>.</p>
+<p>In this article, we&rsquo;ll build on top of that by exploring some cases where we have to &ldquo;exit&rdquo; a channel. In the last example, we&rsquo;ll put what we&rsquo;ve covered so far in practice. You can check out the interactive version of the demos on <a href="https://github.com/deniskyashif/trydotnet-channels">GitHub</a>.</p>
 <h2 id="timeout">Timeout</h2>
 <p>We want to stop reading from a channel after a certain amount of time. This is quite simple because the channels&rsquo; async API supports cancellation.</p>
 <p><img src="/images/posts/2019-12-11-csharp-channels-part2/timeout-sketch.png" width="600" /></p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">1</span><span style="color:#f60">0</span>);
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">10</span>);
 <span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
 cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
 
@@ -130,10 +130,10 @@ Joe <span style="color:#f60">1</span>
 Joe <span style="color:#f60">2</span>
 Joe <span style="color:#f60">3</span>
 Joe, you are too slow!
-</code></pre></div><p>Joe was set to send 10 messages but over 5 seconds, we received only 4 and then canceled the reading operation. If we reduced the number of messages Joe sends or sufficiently increased the timeout duration, we'd read everything and thus avoid ending up in the <code>catch</code> block.</p>
+</code></pre></div><p>Joe was set to send 10 messages but over 5 seconds, we received only 4 and then canceled the reading operation. If we reduced the number of messages Joe sends or sufficiently increased the timeout duration, we&rsquo;d read everything and thus avoid ending up in the <code>catch</code> block.</p>
 <h2 id="quit-channel">Quit Channel</h2>
 <p><img src="/images/posts/2019-12-11-csharp-channels-part2/quit-channel-sketch.png" width="600" /></p>
-<p>Let's go the other way around and tell Joe to stop talking. We need to modify our <code>CreateMessenger&lt;T&gt;()</code> generator so it supports cancellation.</p>
+<p>Let&rsquo;s go the other way around and tell Joe to stop talking. We need to modify our <code>CreateMessenger&lt;T&gt;()</code> generator so it supports cancellation.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">static</span> ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; CreateMessenger(
     <span style="color:#078;font-weight:bold">string</span> msg, <span style="color:#078;font-weight:bold">int</span> count, CancellationToken token = <span style="color:#069;font-weight:bold">default</span>)
 {
@@ -157,9 +157,9 @@ Joe, you are too slow!
 
     <span style="color:#069;font-weight:bold">return</span> ch.Reader;
 }
-</code></pre></div><p>Now we need to pass our cancellation token to the generator which gives us control over the channel's longevity.</p>
+</code></pre></div><p>Now we need to pass our cancellation token to the generator which gives us control over the channel&rsquo;s longevity.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
-<span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">1</span><span style="color:#f60">0</span>, cts.Token);
+<span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">10</span>, cts.Token);
 cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
 
 <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> joe.ReadAllAsync())
@@ -171,7 +171,7 @@ Joe <span style="color:#f60">2</span>
 Joe <span style="color:#f60">3</span>
 Joe says bye!
 </code></pre></div><h2 id="web-search">Web Search</h2>
-<p>We're given the task to query several data sources and mix the results. The queries should run concurrently and we should disregard the ones taking too long. Also, we should handle a query response at the time of arrival, instead of waiting for all of them to complete. Let's see how we can solve this using what we've learned so far:</p>
+<p>We&rsquo;re given the task to query several data sources and mix the results. The queries should run concurrently and we should disregard the ones taking too long. Also, we should handle a query response at the time of arrival, instead of waiting for all of them to complete. Let&rsquo;s see how we can solve this using what we&rsquo;ve learned so far:</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
 </code></pre></div><p>We create a local function that simulates a remote async API call and writes its result to the channel.</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#069;font-weight:bold">async</span> Task Search(<span style="color:#078;font-weight:bold">string</span> source, <span style="color:#078;font-weight:bold">string</span> term, CancellationToken token)
@@ -209,7 +209,7 @@ All searches have completed.
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#555">[</span>9:09:19 AM<span style="color:#555">]</span> Result from Quora <span style="color:#069;font-weight:bold">for</span> Milky Way
 <span style="color:#555">[</span>9:09:20 AM<span style="color:#555">]</span> Result from Wikipedia <span style="color:#069;font-weight:bold">for</span> Milky Way
 Timeout.
-</code></pre></div><p>Again - our code is non-blocking concurrent, thus there's no need to use locks, callbacks or any kind of conditional statements.</p>
+</code></pre></div><p>Again - our code is non-blocking concurrent, thus there&rsquo;s no need to use locks, callbacks or any kind of conditional statements.</p>
 <h2 id="references">References</h2>
 <ul>
 <li><a href="https://github.com/deniskyashif/trydotnet-channels">GitHub Repo</a> with the interactive examples</li>
@@ -291,7 +291,7 @@ Timeout.
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-02-19 10:26:58.736439 &#43;0200 EET m=&#43;0.096794959">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-02-22 10:36:28.570243 &#43;0200 EET m=&#43;0.093864841">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
