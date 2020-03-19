@@ -33,7 +33,7 @@ Productions consist of two types of lexical elements, namely **terminals** and *
 
 ### Formally
 
-A [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) \\(<\Sigma, N, S, P>\\) consists of four components:
+A [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) \\( \langle \Sigma, N, S, P \rangle \\) consists of four components:
 
 * Set of **terminals** \\( \Sigma \\).
 * Set of **nonterminals** \\(N\\). Each nonterminal represents sets of terminal 

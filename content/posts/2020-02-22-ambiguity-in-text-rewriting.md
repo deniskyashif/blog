@@ -3,7 +3,7 @@ title: "Resolving Ambiguity in Text Rewriting"
 date: 2020-02-22T09:10:37+02:00
 draft: false
 useMath: true
-summary: "Strategies for resolving conflicts that occur in text rewriting."
+summary: "Strategies for resolving conflicts that occur when two replacement substrings overlap."
 tags: ["compsci", "nlp"]
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2020-02-22-ambiguity-in-text-rewriting.md"
 images: 
@@ -42,7 +42,7 @@ and an input text
 
 \\[ aaaaabbaa \\]
 
-that results in even more potential decompositions.
+that results in even more valid decompositions.
 
 \\[ 
 aaaaab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xbx \\\\
@@ -148,7 +148,7 @@ By combining those functions, we can define any strategy we want, however, from 
 
 In this article, we discussed the problem of having overlapping replacement candidates in text rewriting. We defined the _leftmost-longest_ match strategy for resolving such conflicts and learned how to implement it from a formal standpoint. By performing small modifications, we saw how to define other kinds of strategies like the _leftmost-shortest_, _rightmost-longest_, etc.  
 
-In the following article, we'll put what we've learned into practice. We'll transform these formalisms into code and learn how to build such machines that perform obligatory, _leftmost-longest_ match text rewriting in a single input text scan.
+In the following article, we'll put what we've learned into practice. We'll transform these formalisms into code and learn how to build such machines that perform obligatory, _leftmost-longest_ match text rewriting in linear time.
 
 **Part 1:** [Finite-State Transducers for Text Rewriting](/2020/02/18/finite-state-transducers-for-text-rewriting/)
 
