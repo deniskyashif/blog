@@ -23,7 +23,7 @@
 	
 	<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
     <meta property="og:title" content="Resolving Ambiguity in Text Rewriting" />
-<meta property="og:description" content="Strategies for resolving conflicts that occur in text rewriting." />
+<meta property="og:description" content="Strategies for resolving conflicts that occur when two replacement substrings overlap." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/2020/02/22/resolving-ambiguity-in-text-rewriting/" />
 <meta property="og:image" content="https://deniskyashif.com/images/posts/2020-02-22-ambiguity-text-rewriting/featured.png" />
@@ -115,7 +115,7 @@ R_2 = aa*b|aa \to x
 \]</p>
 <p>and an input text</p>
 <p>\[ aaaaabbaa \]</p>
-<p>that results in even more potential decompositions.</p>
+<p>that results in even more valid decompositions.</p>
 <p>\[
 aaaaab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xbx \\<br>
 aa \cdot aaab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xxbx \\<br>
@@ -184,7 +184,7 @@ RIGHTMOST(A) = \{ \langle u, v, w \rangle \in A | \forall \langle u&rsquo;, v&rs
 <p>By combining those functions, we can define any strategy we want, however, from now on, we&rsquo;ll focus on the <em>leftmost-longest</em> as it is more applicable in practice. Most of the time, the reading order is from left to right and longer occurrences carry in general more information than the shorter ones.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>In this article, we discussed the problem of having overlapping replacement candidates in text rewriting. We defined the <em>leftmost-longest</em> match strategy for resolving such conflicts and learned how to implement it from a formal standpoint. By performing small modifications, we saw how to define other kinds of strategies like the <em>leftmost-shortest</em>, <em>rightmost-longest</em>, etc.</p>
-<p>In the following article, we&rsquo;ll put what we&rsquo;ve learned into practice. We&rsquo;ll transform these formalisms into code and learn how to build such machines that perform obligatory, <em>leftmost-longest</em> match text rewriting in a single input text scan.</p>
+<p>In the following article, we&rsquo;ll put what we&rsquo;ve learned into practice. We&rsquo;ll transform these formalisms into code and learn how to build such machines that perform obligatory, <em>leftmost-longest</em> match text rewriting in linear time.</p>
 <p><strong>Part 1:</strong> <a href="/2020/02/18/finite-state-transducers-for-text-rewriting/">Finite-State Transducers for Text Rewriting</a></p>
 <h2 id="references">References</h2>
 <ul>
@@ -269,7 +269,7 @@ Schulz</a> Chapter 11.4 - Regular relations for left-most-longest match rewritin
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-02-22 11:02:45.709696 &#43;0200 EET m=&#43;0.097698967">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-03-19 15:14:09.703606 &#43;0200 EET m=&#43;0.106022022">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
