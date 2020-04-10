@@ -24,12 +24,22 @@
   	<link rel="stylesheet" href="{{ $style.RelPermalink }}" />    
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
 	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ "assets/my.css" | relURL }}">    
+	<link rel="stylesheet" href="{{ "assets/my.css" | relURL }}">
+
 	<!-- Favicon -->
-	<link rel="icon" type="image/png" sizes="32x32" href="{{ "images/favicon-32x32.png" | relURL }}">
-	<link rel="icon" type="image/png" sizes="16x16" href="{{ "images/favicon-16x16.png" | relURL }}">
-	<link rel="apple-touch-icon" sizes="180x180" href="{{ "images/apple-touch-icon.png" | relURL }}">
-    <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
+	<link rel="shortcut icon" type="image/x-icon" sizes="64x64" href="{{ "images/favicon-64x64.ico" | relURL }}">
+
+	<link rel="apple-touch-icon" href="{{ "images/apple-touch-icon.png" | relURL }}" />
+	<link rel="apple-touch-icon" sizes="57x57" href="{{ "images/apple-touch-icon-57x57.png" | relURL }}" />
+	<link rel="apple-touch-icon" sizes="72x72" href="{{ "images/apple-touch-icon-72x72.png" | relURL }}" />
+	<link rel="apple-touch-icon" sizes="76x76" href="{{ "images/apple-touch-icon-76x76.png" | relURL }}" />
+	<link rel="apple-touch-icon" sizes="114x114" href="{{ "images/apple-touch-icon-114x114.png" | relURL }}" />
+	<link rel="apple-touch-icon" sizes="120x120" href="{{ "images/apple-touch-icon-120x120.png" | relURL }}" />
+	<link rel="apple-touch-icon" sizes="144x144" href="{{ "images/apple-touch-icon-144x144.png" | relURL }}" />
+	<link rel="apple-touch-icon" sizes="152x152" href="{{ "images/apple-touch-icon-152x152.png" | relURL }}" />
+	<link rel="apple-touch-icon" sizes="180x180" href="{{ "images/apple-touch-icon-180x180.png" | relURL }}" />
+	
+	<link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
 	
 	<!-- RSS -->
 	<link href="{{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
