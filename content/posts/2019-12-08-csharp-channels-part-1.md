@@ -316,7 +316,7 @@ static IList<ChannelReader<T>> Split<T>(ChannelReader<T> ch, int n)
 
 ```csharp
 var joe = CreateMessenger("Joe", 10);
-var readers = Split(joe, 3);
+var readers = Split<int>(joe, 3);
 var tasks = new List<Task>();
 
 for (int i = 0; i < readers.Count; i++)

@@ -344,7 +344,7 @@ function search(nfa, word) {
 
 The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on [Fig 5.1](#fig5.1) the start state \\(q_0\\) is an &epsilon;-transition state, so we follow the transitions recursively until reaching the symbol transition states \\(q_1\\) and \\(q_5\\) which become our initial set of states.
 
-Given a string of length _n_, on each iteration, this algorithm keeps two lists of states with a length of approximately _n_. This gives us a time complexity of \\(O(n^2)\\) which significantly outperforms the recursive backtracking approach.
+Given a string of length _n_, on each iteration, this algorithm keeps two lists of states with a length of approximately _n_. This gives us a time complexity of \\(O(n^2)\\) which significantly outperforms the recursive backtracking approach. We can optimize it by converting the NFA to an epsilon-free NFA and even further by converting it to a DFA. DFAs guarantee \\(O(n)\\) recognition complexity but we might end up having \\(2^n\\) states due to the _state explosion problem_.
 
 ## Putting it all together
 

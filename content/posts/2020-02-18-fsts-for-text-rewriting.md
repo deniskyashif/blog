@@ -3,7 +3,7 @@ title: "Finite-State Transducers for Text Rewriting"
 date: 2020-02-18T10:00:32+02:00
 draft: false
 useMath: true
-summary: "An overview from a set-theoretic perspective and constructions for powerful, linear-time text rewriting."
+summary: "An formal overview of regular expression-based text rewriters."
 description: "Text rewriting is a programming task when parts of a given input string are replaced with other strings. Applications of this process include text highlighting, annotation, lexical analysis, normalization, etc. Because such tasks arise quite often in practice, many programming languages provide built-in text rewriting APIs. Those APIs, however, often go beyond the realm of regular languages, but rewriters based on regular expressions are still very powerful and can to solve most of the translation tasks that occur in practice. In this article, we'll describe the process of text rewriting from a set-theoretic perspective and define the relevant formalisms. We'll see how they can be applied to implement powerful text rewrites that replace the matching parts of the input string in a single scan."
 tags: ["compsci", "nlp"]
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2020-02-18-fsts-for-text-rewriting.md"
