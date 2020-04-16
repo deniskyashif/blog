@@ -329,7 +329,7 @@ We&rsquo;ve created the local asynchronous <code>Redirect()</code> function whic
 }
 </code></pre></div><p><code>Split&lt;T&gt;</code> takes a channel and redirects its messages to <code>n</code> number of newly created channels in a round-robin fashion. Here&rsquo;s how to use it:</p>
 <div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">10</span>);
-<span style="color:#078;font-weight:bold">var</span> readers = Split(joe, <span style="color:#f60">3</span>);
+<span style="color:#078;font-weight:bold">var</span> readers = Split&lt;<span style="color:#078;font-weight:bold">int</span>&gt;(joe, <span style="color:#f60">3</span>);
 <span style="color:#078;font-weight:bold">var</span> tasks = <span style="color:#069;font-weight:bold">new</span> List&lt;Task&gt;();
 
 <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i &lt; readers.Count; i++)
@@ -441,7 +441,7 @@ Reader 0: Joe <span style="color:#f60">9</span>
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-04-11 23:15:29.244881 &#43;0300 EEST m=&#43;0.189053050">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-04-16 14:55:38.143327 &#43;0300 EEST m=&#43;0.192386140">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
