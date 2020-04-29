@@ -185,7 +185,7 @@ LML(A) := \bigcup\limits_{i=0}^{\infty} V_{i}
 <p>Where the intermediate sets \( V_i \) are defined inductively.</p>
 <p>\[
 V_0 = \emptyset \\<br>
-V_{i+1} = V_i \cup LONGEST(LEFTMOST(AFTER(V_i, A)))
+V_{i+1} = V_i \cup LONGEST(LEFTMOST(AFTER(A,V_i)))
 \]</p>
 <p>\( LML(A) \) is always finite because \( A \) is finite. That is, after a certain induction step \( i, V_i \) will remain unchanged and that&rsquo;s when we break from the loop. At each step, we add at most one element to the resulting set.</p>
 <p>Note that also all the infix occurrences in \( LML(A) \) are <strong>non-overlapping</strong> which leads to another useful property, that is, given a rewrite function \( T: \Sigma^+ \to \Sigma^* \) the obligatory rewrite relation \( R^{LML}(T) \) under the <em>leftmost-longest</em> match strategy is also a function. That is, because our replacement candidates don&rsquo;t overlap, we rewrite distinct regions in the input text. The original rewrite transducer representing a function means that we do not have the same rule mapping to more than one distinct outputs (e.g. \(ab \to x, ab \to y\)). This guarantees that given any input text, the obligatory rewrite transducer for _leftmost-longest_ match \( T_{R^{LML}(T)} \) is always going to produce a single output.</p>
@@ -286,7 +286,7 @@ Schulz</a> Chapter 11.4 - Regular relations for left-most-longest match rewritin
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-04-16 14:55:38.138856 &#43;0300 EEST m=&#43;0.187915394">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-04-29 12:57:30.11437 &#43;0300 EEST m=&#43;0.165157851">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
