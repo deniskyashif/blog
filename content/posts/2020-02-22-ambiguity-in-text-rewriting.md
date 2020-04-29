@@ -120,7 +120,7 @@ Where the intermediate sets \\( V_i \\) are defined inductively.
 
 \\[
 V_0 = \emptyset \\\\
-V_{i+1} = V_i \cup LONGEST(LEFTMOST(AFTER(V_i, A)))
+V_{i+1} = V_i \cup LONGEST(LEFTMOST(AFTER(A,V_i)))
 \\]
 
 \\( LML(A) \\) is always finite because \\( A \\) is finite. That is, after a certain induction step \\( i, V_i \\) will remain unchanged and that's when we break from the loop. At each step, we add at most one element to the resulting set.
