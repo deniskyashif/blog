@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Bimachines are deterministic finite-state devices that represent the class regular string functions and are commonly used for text rewriting. What is fascinating about them is that they process the input text in both directions - from left to right and from right to left which makes them very efficient in practice as they guarantee linear time input processing.">
+    <meta name="author" content="Denis Kyashif" />
+	
+	<title>
+		Introduction to Bimachines &middot; Denis Kyashif&#39;s Blog
+	</title>
+	
+	
+  	<link rel="stylesheet" href="/css/style.css" />    
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="/assets/my.css">
+
+	
+	<link rel="icon" type="image/png" sizes="192x192" href="/images/icons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon-16x16.png">
+	
+	<link rel="apple-touch-icon" href="/images/icons/apple-icon.png" />
+	<link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-57x57.png" />
+	<link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-60x60.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-icon-72x72.png" />
+	<link rel="apple-touch-icon" sizes="76x76" href="/images/icons/apple-icon-76x76.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-icon-114x114.png" />
+	<link rel="apple-touch-icon" sizes="120x120" href="/images/icons/apple-icon-120x120.png" />
+	<link rel="apple-touch-icon" sizes="144x144" href="/images/icons/apple-icon-144x144.png" />
+	<link rel="apple-touch-icon" sizes="152x152" href="/images/icons/apple-icon-152x152.png" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/icons/apple-icon-180x180.png" />
+
+	<link rel="manifest" href="/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/images/icons/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+	<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
+    <meta property="og:title" content="Introduction to Bimachines" />
+<meta property="og:description" content="Bimachines are deterministic finite-state devices that represent the class regular string functions and are commonly used for text rewriting. What is fascinating about them is that they process the input text in both directions - from left to right and from right to left which makes them very efficient in practice as they guarantee linear time input processing." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://deniskyashif.com/2020/06/12/introduction-to-bimachines/" />
+<meta property="og:image" content="https://deniskyashif.com/images/posts/2020-06-12-intro-bimachines/featured.png" />
+<meta property="article:published_time" content="2020-06-12T08:00:46+03:00" />
+<meta property="article:modified_time" content="2020-06-12T08:00:46+03:00" />
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-133185625-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+</head>
+
+    <body>
+        <a href="https://github.com/deniskyashif/blog" class="github-corner" target="_blank" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#4a9ae1; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<nav class="nav">
+	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
+		<ul>
+    <li><a href="/">Posts</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/about">About</a></li>
+</ul>
+
+	</div>
+</nav>
+
+        
+
+<main>
+	<div class="post">
+		<div class="post-info">
+    <time datetime="2020-06-12 08:00:46 &#43;0300 EEST">June 12, 2020</time>
+    |
+    <a href="https://github.com/deniskyashif/blog/blob/master/content/posts/2020-06-12-introduction-to-bimachines.md" target="_blank">
+        <i class="fa fa-edit"></i>&nbsp;Edit
+    </a>
+
+    
+    <div class="tags">
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/compsci/" class="tag">compsci</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/nlp/" class="tag">nlp</a>
+        
+        
+    </div>
+</div>
+
+		<h1 class="post-title">Introduction to Bimachines</h1>
+<div class="post-line"></div>
+
+		
+
+		<p>Bimachines are deterministic finite-state devices that represent the class regular string functions and are commonly used for text rewriting. What is fascinating about them is that they process the input text in both directions - from left to right (→) and from right to left (←) which makes them very efficient in practice as they guarantee linear time input processing.</p>
+<p>Bimachines have less expressive power that the <a href="/2020/02/18/finite-state-transducers-for-text-rewriting/">finite-state transducers</a> (FST) because FSTs can also model the class of regular relations (for one input we may have more that one output). FSTs, however, are generally non-deterministic, which means that, unlike bimachines, they might not be as efficient. Unlike finite automata, not every non-deterministic transducer can be converted to an equivalent deterministic one. Also, deterministic FSTs are not powerful enough to cover the class of regular functions, so bimachines stand in-between.</p>
+<p>In practice, when implementing algorithms, we are typically more interested in deterministic outputs, which makes the bimachines suitable for a variety of tasks due to also their high performance. In this article, we&rsquo;ll introduce the concept of a bimachine and see how they work.</p>
+<h2 id="bimachines">Bimachines</h2>
+<p>A classical bimachine is a triple \( \mathcal{B} = \langle \mathcal{A}_L, \mathcal{A}_R, \psi \rangle \), where \( \mathcal{A}_L, \mathcal{A}_R \) are deterministic finite automata and \( \psi: Q_L \times \Sigma \times Q_R \to \Sigma^* \) is called the output function of the bimachine which given a state of the left automaton, an input symbol and a state of the right automaton, it returns a string. The left automaton of the bimachine scans the text from left to right, whereas the right automaton scans from right to left. Once we get the two paths, we construct the output by concatenating the results of the output function.</p>
+<h3 id="example-1">Example 1</h3>
+<p>Let&rsquo;s go through an example. We have the simple regular string relation \( R_1 = \{ \langle a, x \rangle, \langle ab, y \rangle \} \). What is represents is two text rewritings - either <em>a</em> gets replaced by <em>x</em> or <em>ab</em> gets replaced by <em>y</em>. This s a regular string function which can be expressed as a bimachine (<a href="#fig1.1">Figure 1.1</a>).</p>
+<p><img id="fig1.1" src="/images/posts/2020-06-12-intro-bimachines/bm1.png" alt="bm-1" /></p>
+<p class="text-center"><small>Figure 1.1: Bimachine representing R<sub>1</sub></small></p>
+<p>Note that the right and left automata&rsquo;s all states are final, \(\epsilon\) represents the empty string. There are two possible successful simulations of the bimachine - one for the word <em>a</em> and one for the word <em>ab</em>.</p>
+<p><img src="/images/posts/2020-06-12-intro-bimachines/bm1paths.png" alt="bm-1-paths" /></p>
+<p>The top row depicts the recognition path in the left automaton while the text is being scanned from left to right, whereas the bottom row is the path of the right automaton while reading the text in the opposite direction. In <a href="#fig1.2">Figure 1.2</a> we depict the equivalent FST.</p>
+<p><img id="fig1.2" src="/images/posts/2020-06-12-intro-bimachines/fst1.png" alt="fst-1" /></p>
+<p class="text-center"><small>Figure 1.2: Finite-state transducer representing R<sub>1</sub></small></p>
+<h3 id="example-2">Example 2</h3>
+<p>Let&rsquo;s take a look at another example where bimachines are particularly useful. We want to mark (<em>&lt;, &gt;</em>) substrings in a text and we have the following two patterns:</p>
+<ul>
+<li><code>a+b</code> - a substring consists of one or more <em>a</em>&rsquo;s followed by a <em>b</em></li>
+<li><code>a</code> - a substring contains the single character <em>a</em></li>
+</ul>
+<p>Obviously the rules overlap, so in this case we pick the longest matched substring (this makes the relation functional). Let&rsquo;s mark this string relation as \( R_2 \) and see a few examples:</p>
+<ol>
+<li>    \( R_2(a) = &lt;a&gt; \)</li>
+<li>    \( R_2(aab) = &lt;aab&gt; \)</li>
+<li>    \( R_2(baaaabba) = b&lt;aaaab&gt;b&lt;a&gt; \)</li>
+<li>    \( R_2(aaaaa) = &lt;a&gt;&lt;a&gt;&lt;a&gt;&lt;a&gt;&lt;a&gt; \)</li>
+</ol>
+<p>The challenge here occurs in the case where we read an <em>a</em> - we can either directly output <em>&lt;a&gt;</em>, or we&rsquo;d have to continue reading the text until we see a <em>b</em>. In the case when there is no <em>b</em> (example 4), we&rsquo;d end up reading the whole text and then backtrack all the way which would lead to \( \mathcal{O}(n^2) \) processing time. Bimachines deal with this problem quite elegantly. We construct one in <a href="#fig2">Figure 2</a> such that it represents \( R_2 \).</p>
+<p><img id="fig2" src="/images/posts/2020-06-12-intro-bimachines/bm2.png" alt="bm-1" /></p>
+<p class="text-center"><small>Figure 2: Bimachine representing R<sub>2</sub></small></p>
+<p>Let&rsquo;s see how we process strings using this bimachine. Below the simulation of the bimachine for the input string <em>aaaaa</em>.</p>
+<p><img src="/images/posts/2020-06-12-intro-bimachines/bm2path1.png" alt="bm-2-path-1" /></p>
+<p>For <em>baaaabba</em> we end up with the following simulation.</p>
+<p><img src="/images/posts/2020-06-12-intro-bimachines/bm2path2.png" alt="bm-2-path-2" /></p>
+<h2 id="caveats">Caveats</h2>
+<p>Bimachines are simple and efficient but, as with everything, they come at a cost. The state-of-the-art algorithms for constructing bimachines rely on building the corresponding transducer first. Due to the bimachines&rsquo; deterministic nature, we end up an upper bound of exponential time and space requirements for the construction, more specifically \( \mathcal{O}(2^{|Q|}) \) where \( |Q| \) is the number of states of the transducer. Some approaches that improve on that, given specific conditions are met, but still, the bimachine construction remains a computationally intensive operation.<br>
+The simulation procedure also requires us to store the recognition path of the right automaton while we read the text and run the left automaton. For large inputs, this might prove also costly.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Besides plain text rewriting, bimachines can be used for various linguistic tasks, such as text annotation, tagging, tokenization, etc. They can also be generalized in a sense that the output is in a monoid (string output is a just special
+type called a <a href="https://en.wikipedia.org/wiki/Free_monoid">free monoid</a>). Although having been around since the 1960s, even nowadays, they remain relatively unexplored. Efficient construction algorithms and applications are a good topic for further research.</p>
+<h2 id="references">References</h2>
+<ul>
+<li>Chapters 6 - <em>Bimachines</em> of <a href="https://www.cambridge.org/core/books/finitestate-techniques/E21E748468F0310DA12A2CFAEB989185">&ldquo;Finite State Techniques - Automata, Transducers and Bimachines&rdquo; by Mihov &amp; Schulz</a></li>
+<li><em>A simple method for building bimachines from functional finite-state transducers</em> by Gerdjikov, S., Mihov, S., and Schulz, K. U. (2017). In Carayol, A. and Nicaud, C., editors, Implementation and Application of Automata, pages 113–125. Springer International Publishing.</li>
+<li><em>14.5.2 Bimachines</em> in &ldquo;Finite State Language Processing&rdquo; by Roche and Schabes 1997 MIT Press</li>
+<li><a href="/2020/02/18/finite-state-transducers-for-text-rewriting/">Finite-State Transducers for Text Rewriting</a></li>
+</ul>
+
+
+		<section class="social-share">
+    
+    
+    <a href="//twitter.com/share?url=https%3a%2f%2fdeniskyashif.com%2f2020%2f06%2f12%2fintroduction-to-bimachines%2f&amp;text=Introduction%20to%20Bimachines&amp;via=deniskyashif" target="_blank" class="share-btn twitter">
+        <i class="fa fa-2x fa-twitter"></i>
+    </a>
+    
+    
+    
+    <a href="//reddit.com/submit?url=https%3a%2f%2fdeniskyashif.com%2f2020%2f06%2f12%2fintroduction-to-bimachines%2f&amp;title=Introduction%20to%20Bimachines" target="_blank" class="share-btn reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    
+    
+    
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdeniskyashif.com%2f2020%2f06%2f12%2fintroduction-to-bimachines%2f" target="_blank" class="share-btn facebook">
+        <i class="fa fa-2x fa-facebook"></i>
+    </a>
+    
+    
+    
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fdeniskyashif.com%2f2020%2f06%2f12%2fintroduction-to-bimachines%2f&amp;title=Introduction%20to%20Bimachines" target="_blank" class="share-btn linkedin">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:?subject=Check out 'Introduction%20to%20Bimachines' by Denis%20Kyashif&amp;body=https%3a%2f%2fdeniskyashif.com%2f2020%2f06%2f12%2fintroduction-to-bimachines%2f" target="_blank" class="share-btn email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    
+</section>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "deniskyashif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+	</div>
+
+	<div class="pagination">
+		<a href="/2020/02/22/resolving-ambiguity-in-text-rewriting/" class="left arrow">&#8592;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+</main>
+
+
+        <footer>
+	<span>
+		&copy;&nbsp;<time datetime="2020-06-12 10:10:27.856743 &#43;0300 EEST m=&#43;0.108002989">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+	</span>
+    <br/>
+</footer>
+
+    </body>
+</html>

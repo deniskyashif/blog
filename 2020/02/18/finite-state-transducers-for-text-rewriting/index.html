@@ -140,7 +140,7 @@ In this article, we&rsquo;ll describe the process of text rewriting from a set-t
 <h3 id="string-relations">String Relations</h3>
 <p>A <strong>binary string relation</strong> \( R \subseteq \Sigma^* \times \Sigma^* \) is a set of word tuples over some alphabet \( \Sigma \). For example</p>
 <p>\[ R := \{ \langle a, xy \rangle, \langle ab, z \rangle, \langle ab, xy \rangle, \langle abbb, xy \rangle \} \]</p>
-<p>is a binary string relation. If for each string of \(R\)&lsquo;s domain we have exactly one output, then \(R\) is a <strong>function</strong>. We denote <strong>concatenation of word tuples</strong> with \( \cdot \) being the string concatenation operator:</p>
+<p>is a binary string relation. If for each string of \(R\)&rsquo;s domain we have exactly one output, then \(R\) is a <strong>function</strong>. We denote <strong>concatenation of word tuples</strong> with \( \cdot \) being the string concatenation operator:</p>
 <p>\[ \langle u_1, u_2 \rangle \cdot \langle \epsilon, \epsilon \rangle := \langle u_1, u_2 \rangle \]
 \[ \langle u_1, u_2 \rangle \cdot \langle v_1, v_2 \rangle := \langle u_1 \cdot v_1, u_2 \cdot v_2 \rangle \]</p>
 <p>and the concatenation of binary string relations \(R_1\) and \(R_2\) as</p>
@@ -193,7 +193,7 @@ We can represent a rewrite rule as a regular relation and thus we can build a co
 <p>\[ dacdad \]</p>
 <p>We can partition the input text into segments:</p>
 <p>\[ u_0 \cdot v_1 \cdot u_1 \cdot v_2 \cdot u_2 \cdots v_n \cdot u_n \]</p>
-<p>such that the \(v_i\)&lsquo;s belong to the domain of the transducer (in our case \( dom(T) = \{ ab, bc \} \)). The \(u_i\)&lsquo;s are arbitrary strings from \( \Sigma^* \setminus dom(T) \) and for those strings, we want them to be appended to the output as they are. Before we formalize this procedure, let&rsquo;s introduce the identity function on a set of strings.</p>
+<p>such that the \(v_i\)&rsquo;s belong to the domain of the transducer (in our case \( dom(T) = \{ ab, bc \} \)). The \(u_i\)&rsquo;s are arbitrary strings from \( \Sigma^* \setminus dom(T) \) and for those strings, we want them to be appended to the output as they are. Before we formalize this procedure, let&rsquo;s introduce the identity function on a set of strings.</p>
 <p>\[ \Sigma = \{ a,b,c,d \} \]
 \[ Id(\Sigma^*) = \{ \langle \epsilon, \epsilon \rangle, \langle a,a \rangle, \langle b,b \rangle, \langle c,c \rangle, \langle d,d \rangle \}^* \]</p>
 <p>Intuitively \( Id(\Sigma^*) \) is the set of all possible same string tuples over the alphabet \(\Sigma\). For example, the tuples \( \langle ac, ac \rangle, \langle cccd, cccd \rangle, \langle dba, dba \rangle \) are all in \( Id(\Sigma^*) \).</p>
@@ -203,7 +203,7 @@ We can represent a rewrite rule as a regular relation and thus we can build a co
 </p>
 <p>Now we&rsquo;re ready to define the optional regular rewrite relation \(R^{opt}(T)\) induced by \(T\) for the rewrite rule \(ab|bc \to d\).</p>
 <p>\[ R^{opt}(T) := Id(\Sigma^*) \cdot (T \cdot Id(\Sigma^*))^* \]</p>
-<p>Since in the above expression \(T\) is surrounded by expressions \( Id(\Sigma^*) \), any substring of a text \(t \in dom(T)\) can be replaced by its \(T\)-translations using \(R^{opt}(T)\). The final asterisk in the definition of \(R^{opt}(T)\) ensures that any number of substrings from \(dom(T)\) can be translated. The second \( Id(\Sigma^*) \) expression shows that subtexts between consecutive elements of \(dom(T)\) (the \(u_i\)&lsquo;s) are translated via identity. Text parts matching \( Id(\Sigma^*) \) expressions can contain entries from \(dom(T)\), as a consequence, the \(T\)-replacement is always optional.</p>
+<p>Since in the above expression \(T\) is surrounded by expressions \( Id(\Sigma^*) \), any substring of a text \(t \in dom(T)\) can be replaced by its \(T\)-translations using \(R^{opt}(T)\). The final asterisk in the definition of \(R^{opt}(T)\) ensures that any number of substrings from \(dom(T)\) can be translated. The second \( Id(\Sigma^*) \) expression shows that subtexts between consecutive elements of \(dom(T)\) (the \(u_i\)&rsquo;s) are translated via identity. Text parts matching \( Id(\Sigma^*) \) expressions can contain entries from \(dom(T)\), as a consequence, the \(T\)-replacement is always optional.</p>
 <p><img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst4.png" alt="Finite State Transducer 4" /></p>
 <p class="text-center">
     <small>Figure 3.2: Transducer for the optional rewrite relation induced by T</small>
@@ -335,7 +335,7 @@ xcx
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-04-29 12:57:30.109998 &#43;0300 EEST m=&#43;0.160785912">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-06-12 10:10:27.848352 &#43;0300 EEST m=&#43;0.099612522">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
