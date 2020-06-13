@@ -74,7 +74,7 @@ The simulation procedure also requires us to store the recognition path of the r
 Besides plain text rewriting, bimachines can be used for various linguistic tasks, such as text annotation, tagging, tokenization, etc. They can also be generalized in a sense that the output is in a monoid (string output is a just special 
 type called a [free monoid](https://en.wikipedia.org/wiki/Free_monoid)). Although having been around since the 1960s, even nowadays, they remain relatively unexplored. Efficient construction algorithms and applications are a good topic for further research.
 
-## References
+## References & Further Reading
 
 * Chapters 6 - _Bimachines_ of ["Finite State Techniques - Automata, Transducers and Bimachines" by Mihov & Schulz](https://www.cambridge.org/core/books/finitestate-techniques/E21E748468F0310DA12A2CFAEB989185)
 * _A simple method for building bimachines from functional finite-state transducers_ by Gerdjikov, S., Mihov, S., and Schulz, K. U. (2017). In Carayol, A. and Nicaud, C., editors, Implementation and Application of Automata, pages 113–125. Springer International Publishing.
