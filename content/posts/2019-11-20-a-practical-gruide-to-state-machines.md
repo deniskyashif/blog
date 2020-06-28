@@ -195,7 +195,7 @@ We added self-transitions to each of the participants' states for the actions th
 - are irrelevant to the participant (e.g. _cancel_ to the store).
 - can potentially "terminate" the machine (e.g. executing _pay_ while the store is in a state other than `a`)
 
-Keep in mind that the behavior of the state machines does not depend on who initiates the action. The actions are independent events that occur in our system. The complete state of the system is a combination of the current states these three automatons. On each event they either traisition into a state of their own or stay in the same state.
+Keep in mind that the behavior of the state machines does not depend on who initiates the action. The actions are independent events that occur in our system. The complete state of the system is a combination of the current states of these three automatons. On each event they either traisition into a state of their own or stay in the same state.
 
 ### Constructing the Product
 
