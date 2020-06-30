@@ -246,7 +246,7 @@ Another potential problem would be when the customer executes <em>pay</em> for a
 <li>are irrelevant to the participant (e.g. <em>cancel</em> to the store).</li>
 <li>can potentially &ldquo;terminate&rdquo; the machine (e.g. executing <em>pay</em> while the store is in a state other than <code>a</code>)</li>
 </ul>
-<p>Keep in mind that the behavior of the state machines does not depend on who initiates the action. The actions are independent events that occur in our system. The complete state of the system is a combination of the current states these three automatons. On each event they either traisition into a state of their own or stay in the same state.</p>
+<p>Keep in mind that the behavior of the state machines does not depend on who initiates the action. The actions are independent events that occur in our system. The complete state of the system is a combination of the current states of these three automatons. On each event they either traisition into a state of their own or stay in the same state.</p>
 <h3 id="constructing-the-product">Constructing the Product</h3>
 <p>It&rsquo;s still not quite obvious how the states in the store and the bank interact. To see this more clearly, we need to construct <strong>the product</strong> of those state machines. The product is a state machine itself, and since the customer automaton only has one state, the states of the product are <strong>pairs of states from the bank and from the store</strong>.
 For example, the state <code>(3,d)</code> represents the situation where the bank is in state <code>3</code> and the store is in state <code>d</code>. The total amount of states is 4x7=28. We group them in a table where the row corresponds to the state of the bank and the column to the state of the store. The initial state is the pair, both items of which are initial states of their respective machines - in our case <code>(1,a)</code>.</p>
@@ -350,7 +350,7 @@ They are no silver bullet though. Not every domain is suitable to be modeled in 
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-06-25 11:35:54.6788 &#43;0300 EEST m=&#43;0.166293939">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-06-30 12:07:15.621565 &#43;0300 EEST m=&#43;0.107275080">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
