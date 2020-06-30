@@ -146,15 +146,18 @@ By combining those functions, we can define any strategy we want, however, from 
 
 ## Conclusion
 
-In this article, we discussed the problem of having overlapping replacement candidates in text rewriting. We defined the _leftmost-longest_ match strategy for resolving such conflicts and learned how to implement it from a formal standpoint. By performing small modifications, we saw how to define other kinds of strategies like the _leftmost-shortest_, _rightmost-longest_, etc.  
+In this article, we discussed the problem of having overlapping replacement candidates in text rewriting. We defined the _leftmost-longest_ match strategy for resolving such conflicts and learned how to implement it from a formal standpoint. By performing small modifications, we saw how to formally define other kinds of strategies like the _leftmost-shortest_, _rightmost-longest_, etc.  
 
-In the following article, we'll put what we've learned into practice. We'll transform these formalisms into code and learn how to build such machines that perform obligatory, _leftmost-longest_ match text rewriting in linear time.
+The problem for implementing a finite-state transducer, corresponding to the rewrite relation \\( R^{LML} \\) is already well explored. In the references you can find a few papers providing implementations which differ in complexity and performance.
 
 **Part 1:** [Finite-State Transducers for Text Rewriting](/2020/02/18/finite-state-transducers-for-text-rewriting/)
 
-## References
+## References and Further Reading
 
 * Implementation of a [Subsetequential Transducer for Dictionary-Based Text Rewriting](https://github.com/deniskyashif/ssfst)
 * ["Finite State Techniques - Automata, Transducers and Bimachines" by Mihov &
 Schulz](https://www.cambridge.org/core/books/finitestate-techniques/E21E748468F0310DA12A2CFAEB989185) Chapter 11.4 - Regular relations for left-most-longest match rewriting
 * ["Regular Models for Phonological Rule Systems" by Kaplan & Kay](https://web.stanford.edu/~mjkay/Kaplan%26Kay.pdf)
+* ["Directed Replacement" by Karttunnen](https://web.stanford.edu/~laurik/publications/acl-96/acl96.pdf)
+* ["The Replace Operator" by Karttunnen](https://web.stanford.edu/~laurik/publications/acl-95/acl95.html)
+* ["Transducers from Rewrite Rules with Backreferences" by Gerdemann & van Noord](https://www.researchgate.net/publication/2559820_Transducers_from_Rewrite_Rules_with_Backreferences)

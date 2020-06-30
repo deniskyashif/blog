@@ -16,4 +16,4 @@ Hi, I'm a software developer based in Sofia, Bulgaria <img class="emoji" alt="ðŸ
 
 I'm also currently doing my Master's degree in Computational Linguistics at Sofia University. In this blog I write down my thoughts and experiences on technology and science.
 
-You can contact me at <strong>const myEmail = "denis." + "kyashif" + "[at]gmail.com"</strong>
+You can contact me at <strong>denis &nbsp; dot &nbsp; kyashif at gmail dot com"</strong>
