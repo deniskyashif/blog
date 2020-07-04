@@ -49,7 +49,7 @@ title = "Resume"
                         <small><i class="fa fa-map-marker" aria-hidden="true"></i>
                             Remote</small>
                         <p>
-                            Coursedot Instructor Hub is a single-page web application for providing and applying for technical training opportunities.
+                            Coursedot Instructor Hub is a platform for providing and applying for technical training opportunities.
                         </p>
                         <ul>
                             <li>Introduce a process for design, implementation, quality assurance and delivery (Azure Pipelines) of the features required by the business.</li>
@@ -57,7 +57,7 @@ title = "Resume"
                             <li>Have full technical ownership of the platform.</li>
                             <li>Perform code reviews and onboard fellow team members.</li>
                             <li>Implement (.NET Core) and test (xUnit + Moq) the core backend features such as the training application workflow, roles & permissions, the training search and message template engines, the certificate verification API etc.</li>
-                            <li>Integrate the app with the Pipedrive CRM.</li>
+                            <li>Integrate the platform with the Pipedrive CRM.</li>
                         </ul>
                         <div class="tools-list"><span>SQL Server</span><span>ASP.NET Core</span><span>Entity Framework</span><span>Angular</span><span>Azure</span></div>
                     </div>
@@ -73,8 +73,8 @@ title = "Resume"
                             Prevalent provides third party risk management solutions that help companies meet compliance requirements and reduce risk.
                         </p>
                         <ul>                                
-                            <li>Design and implement the backend APIs for the multi-tenant analytics platform Prevalent's SaaS vendor risk management.</li>
-                            <li>Perform code reviews, mentor and onboard fellow team members.</li>
+                            <li>Design and implement backend APIs of Prevalent's multi-tenant analytics SaaS platform.</li>
+                            <li>Perform code reviews, mentor, and onboard fellow team members.</li>
                         </ul>
                         <div class="tools-list"><span>PostgreSQL</span><span>ASP.NET Core</span><span>node.js</span><span>ReactJS</span><span>Docker</span></div>
                     </div>
@@ -93,9 +93,9 @@ title = "Resume"
                         <ul>
                             <li>Design and implement web applications for companies from various industries.</li>
                             <li>Make project estimations and communicate with customers on status, proposals and technical issues.</li>
-                            <li>Consult teams onsite & remote on working with Kendo UI & Angular.</li>
+                            <li>Consult teams onsite & remote on working with .NET, Kendo UI & Angular.</li>
+                            <li>Represent the company as a speaker on various international conferences accross Europe and the United States.</li>
                             <li>Prepare and lead onsite and virtual technical trainings on Kendo UI, Angular & ASP.NET Core.</li>
-                            <li>Represent the company as a speaker on various international conferences accross Europe and North America.</li>
                         </ul>
                         <div class="tools-list"><span>.NET/Core</span><span>Angular</span><span>Kendo UI</span><span>NativeScript</span><span>Azure</span></div>
                     </div>
@@ -122,10 +122,10 @@ title = "Resume"
                         Software engineer, passionate about software design and architecture, and web technologies.
                     </p>
                     <p>
-                        Experienced in building apps with .NET and TypeScript/JavaScript, consulting and public speaking.
+                        Experience in building products with .NET and TypeScript/JavaScript, consulting and public speaking.
                     </p>
                     <p>
-                        Committed to building robust, maintainable software and loves exploring new paradigms and languages. Has a long standing interest in linguistics and natural language processing.
+                        Committed to implementing robust, maintainable software and loves exploring new paradigms and languages. Has a long standing interest in linguistics and natural language processing.
                     </p>
                 </section>
                 <section class="tools">
@@ -152,8 +152,8 @@ title = "Resume"
                         <h4 class="accent">Sofia University St. Kliment Ohridski</h4>
                         <small><i class="fa fa-calendar" aria-hidden="true"></i> 2016-2020</small>
                         <ul>
-                            <p>Taken classes on algorithms, text processing, information retrieval and machine learning.
-                                Currently completing my thesis about lexical analysis in compilers.</p>
+                            <p>Focus on text processing algorithms, information retrieval and machine learning. Thesis topic is about lexical 
+                                analysis in compilers.</p>
                         </ul>
                     </div>
                     <div class="erasmus">
@@ -196,23 +196,23 @@ title = "Resume"
                             </a>
                         </small>
                         <p>
-                            With fellow students, we developed a question answering system using Python and wrote a paper on it.
-                            Participated in the "International Workshop on Semantic Evaluation 2018" being one of
-                            the few teams that solved the problem.
+                            With fellow students, we developed a question answering system and wrote a paper on it.
+                            Took part in the "International Workshop on Semantic Evaluation" being one of
+                            the few teams worldwide that solved the problem.
                         </p><!-- 
                                  <div class="tools-list">
                                  <span>Python</span>
                                  </div> -->
                     </div>
                     <div>
-                        <h3>ssfst</h3>
+                        <h3>ssfst - an efficient dictionary-based text rewriter</h3>
                         <small><i class="fa fa-link" aria-hidden="true"></i>
                             <a href="http://github.com/deniskyashif/ssfst" target="_blank">
                                 github.com/deniskyashif/ssfst
                             </a>
                         </small>
                         <p>
-                            An efficient dictionary-based text rewriter implemented in JavaScript.
+                            <!-- An efficient dictionary-based text rewriter implemented in JavaScript. -->
                             <!-- <br> -->
                             <!-- <div class="tools-list">
                                  <span>node.js</span>
@@ -248,12 +248,12 @@ title = "Resume"
                             <a href="https://github.com/deniskyashif" target="_blank">github.com/deniskyashif</a>
                         </li>
                         <li>
-                            <i class="fa fa-twitter accent" aria-hidden="true"></i>
-                            <a href="https://twitter.com/deniskyashif" target="_blank">twitter.com/deniskyashif</a>
-                        </li>
-                        <li>
                             <i class="fa fa-linkedin accent" aria-hidden="true"></i>
                             <a href="https://linkedin.com/in/denis-kyashif" target="_blank">linkedin.com/in/denis-kyashif</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-twitter accent" aria-hidden="true"></i>
+                            <a href="https://twitter.com/deniskyashif" target="_blank">twitter.com/deniskyashif</a>
                         </li>
                     </ul>
                 </section>

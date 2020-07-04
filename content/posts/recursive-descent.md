@@ -128,7 +128,30 @@ A predictive parser is a recursive descent parser that is able to determine in a
 
 The LL(1) grammars are of great practical interest as they are powerful enough to cover most of the languages when it comes to computation, and their parsers run in linear time.
 
-## Grammar #2
+### FIRST and FOLLOW
+
+Picking the right production during predictive parsing is not always as straightforward as it was for Grammar #1. That's why we define two utility functions that will make it easy for us to do so.
+
+We define \\( FIRST(\alpha) \\), where \\( \alpha \\) is a body of a production, to be the set of terminals that the strings derived from \\( \alpha \\) begin with. If \\( \alpha \\) derives the empty string \\( \epsilon \\) then it is also in the set \\( FIRST(\alpha) \\).
+
+Let's see an example. We have \\( A \to \alpha \mid \beta \\). The sets \\( FIRST(\alpha) \\) and \\( FIRST(\beta) \\) are disjoint. We have to choose one of the these productions so we look at the next token in in the input. If this token is in \\( FIRST(\alpha) \\) then we pick \\(A \to \alpha \\), if it is in \\( FIRST(\beta) \\) we pick \\(A \to \beta \\), otherwise the input cannot be parsed.
+
+We define \\( FOLLOW(A) \\), where \\(A\\) is a nonterminal, to be the set of terminals that can appear immediately to the right of \\(A\\) for some derivation. For example during parsing we can end up with the following derivation \\( S \rightarrow^* \alpha A a \beta \\) for some \\(\alpha \\) and \\(\beta\\), \\(a\\) follows \\(A\\) so it is in the set. Let's see now how to compute these sets. 
+
+\\(FIRST(X)\\) is constructed as follows:
+
+1. If \\(X\\) is a terminal, then \\(FIRST(X) = \\{ X \\}\\).
+2. If \\(X\\) is a nonterminal and \\( X \to Y_1Y_2 \dots Y_k\\) then \\( a \in FIRST(X) \\) if \\( a \in FIRST(Y_i) \\) for some \\(i = 1 \dots k \\) and \\( \epsilon \in FIRST(Y_{j}) \\) for all \\( 1 \leq j < i \\) which means that the production \\( Y_1 \dots Y_{i-1} \Rightarrow^* \epsilon \\) (derives the empty string). If the whole production \\( Y_1Y_2 \dots Y_k \Rightarrow^* \epsilon \\) then \\( \epsilon \in FIRST(X) \\).
+3. If \\(X \to \epsilon \\) is a production then \\( \epsilon \in FIRST(X) \\).
+
+Suppose we have some production body \\( X_1X_2 \dots X_n \\). We add to \\( FIRST(X_1X_2 \dots X_n) \\) all the non-\\(\epsilon\\) symbols from \\(FIRST(X_1)\\). If \\(\epsilon \in FIRST(X_1)\\) then we add the non-\\(\epsilon\\) symbols from \\(FIRST(X_2)\\) and so on. If \\(\epsilon \\) is in all \\(FIRST(X_i), i = 1 \dots n\\) then we add \\(\epsilon \\) to \\( FIRST(X_1X_2 \dots X_n) \\).
+
+To compute \\(FOLLOW(A)\\) we apply these three rules until nothing can be added to the set:
+
+1. Place $ in \\(FOLLOW(S)\\) where \\(S\\) is the start symbol of the grammar and $ is a special marker denoting the end of the input. $ is not a part of the grammar symbols.
+2. For a production of type \\( A \to \alpha B \beta \\), everything in \\( FIRST(\beta) \\) except \\(\epsilon\\) is in \\(FOLLOW(B)\\).
+3. If there is a production \\(A \to \alpha B \\) or \\(A \to \alpha B \beta \\), where \\(\epsilon \in FIRST(\beta)\\), then everything in \\(FOLLOW(A)\\) is in \\(FOLLOW(B)\\).
+
 
 
 
@@ -137,23 +160,6 @@ The LL(1) grammars are of great practical interest as they are powerful enough t
 At first, our program sees a sequence of characters. The role of the lexical analyzer (tokenizer) is to group these characters into tokens and pass them to the parser. For example, the arithmetic expression "19+3=22" consists of the following tokens: ("19", Num), ("+", Op), ("3", Num), ("=", Eq), ("22", Num). Tokenizers can be either manually implemented, or generated using tools such as **lex** or **flex**. Those generators take a lexical specification in the form of regular expressions and output a tokenizer. The role of the tokenizer is to infer the tokens from a string based on this specification.
 
 Depending on the case, the the lexing and parsing stages can be performed together so there is no need to explicitly implement a tokenizer.
-
-## Left Recursion and Ambiguity
-
-A nonterminal can have multiple productions such as \\(A \to \alpha \mid \beta \\) where \\( \alpha \text{ and } \beta \\) are some sequences of terminal and nonterminals. If we expand the wrong production with regards to the input stirng, then we might have to do **backtracking** which will read to repeated scans over the same input. Most of the times, however, backtracking is not required. If we end up having a grammar that requires backtracking, we're better off using some other parsing algorithms such as Earley's which is based on dynamic programming.
-
-One caveat is that these parsers can work with a limited class of context-free grammars, namely we are not allowed to have left recursion due to the risk of ending up in an infite loop. The good news is that every left-recursive grammar can be converted to an equivalent grammar with no left recursion.
-
-The left-recursive rules have the following form:
-
-\\[ A \to A \alpha \mid \beta \\]
-
-\\(A\\) is a nonterminal, whereas \\(\alpha\\) and \\(\beta\\) are arbitrary sequences of terminals and nonterminals.
-
-This is an example of a direct recursion. When the parser expands the rule \\(A\\), because it goes from left to right, it'll attempt expanding \\(A\\) again, thus, overflowing the stack. The approach here is to trasform the rule to it's equivalent without right recursion, \\(\epsilon\\) denotes the empty string.
-
-\\[ A \to \beta A' \\]
-\\[ A' \to \alpha A' \mid \epsilon \\]
 
 ## References and Further Reading
 
