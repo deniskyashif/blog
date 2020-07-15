@@ -56,7 +56,7 @@ title = "Resume"
                             <li>Work closely with the business to define the roadmap and the features of the application.</li>
                             <li>Have full technical ownership of the platform.</li>
                             <li>Perform code reviews and onboard fellow team members.</li>
-                            <li>Implement (.NET Core) and test (xUnit + Moq) the core backend features such as the training application workflow, roles & permissions, the training search, and message template engines, the certificate verification API, etc.</li>
+                            <li>Implement (.NET Core) and test (xUnit + Moq) the core backend and frontend (Angular) features such as the training application workflow, roles & permissions, searching, message template engine, the certificate verification API, etc.</li>
                             <li>Integrate the platform with the Pipedrive CRM.</li>
                         </ul>
                         <div class="tools-list"><span>SQL Server</span><span>ASP.NET Core</span><span>Entity Framework</span><span>Angular</span><span>Azure</span></div>
@@ -134,6 +134,7 @@ title = "Resume"
                         <li>C#</li>
                         <li>TypeScript</li>
                         <li>JavaScript</li>
+                        <li>Go</li>
                         <li>ASP.NET Core</li>
                         <li>node.js</li>
                         <li>Angular</li>
@@ -152,8 +153,7 @@ title = "Resume"
                         <h4 class="accent">Sofia University St. Kliment Ohridski</h4>
                         <small><i class="fa fa-calendar" aria-hidden="true"></i> 2016-2020</small>
                         <ul>
-                            <p>Focus on text processing algorithms, information retrieval, and machine learning. The thesis topic is about lexical 
-                                analysis in compilers.</p>
+                            <p>Focus on text processing algorithms, information retrieval, and machine learning. The thesis topic is about lexical analysis in compilers.</p>
                         </ul>
                     </div>
                     <div class="erasmus">
@@ -165,6 +165,7 @@ title = "Resume"
                         <h3>Bachelor's Degree in Linguistics</h3>
                         <h4 class="accent">Veliko Tarnovo University St. St. Cyril and Methodius</h4>
                         <small><i class="fa fa-calendar" aria-hidden="true"></i> 2009-2013</small>
+                        <p>Studied English and German languages as well as formal language theory.</p>
                     </div>
                 </section>
                 <section class="languages">
