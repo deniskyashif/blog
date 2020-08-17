@@ -494,7 +494,7 @@ match(<span style="color:#c30">&#39;&#39;</span>); <span style="color:#09f;font-
 <p>We started by learning about finite automata and how do they work. We classified them as deterministic and nondeterministic. We also introduced the concept of ε-NFAs which are a specific type of nondeterministic automata. We&rsquo;ve seen how NFAs and DFAs have the same expressive power and how they can be used for string recognition.</p>
 <p>We defined the building blocks of the regular expressions and learned how by applying operators (concatenation, union, and closure) we can construct more complex expressions from smaller ones. Then we learned how to compile a regular expression into its equivalent NFA then implemented an algorithm that processes a string through an NFA to determine whether it is matched or not.</p>
 <p>The complete code reference for this article is available on <a href="https://github.com/deniskyashif/regexjs/">GitHub</a>.</p>
-<p><u><b>Update:</b></u> You can also check out the article on <a href="/translation-using-syntactic-rules#parsing-regular-expressions">&ldquo;Syntax Directed Translation&rdquo;</a> which presents a different approach to compiling. At the end of the article, you can find an example of converting a regex to an NFA by creating a <strong>parse tree</strong>.  <a href="https://github.com/deniskyashif/regexjs/commit/c3fabedea1ff53b0a1b12e8647df95e81aea739f#diff-48e611c3706c9fdff05b92dfc5b98cd9L127">Here</a> is the implementation of the alternative compiler.</p>
+<p><u><b>Update:</b></u> You can also check out the article on <a href="/2020/08/17/parsing-regular-expressions-with-recursive-descent/">&ldquo;Parsing Regex with Recursive Descent&rdquo;</a> which presents a different approach. You can find an example of converting a regex to a parse tree and an NFA construction based on the traversal of this tree. <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser2.js">Here</a> and <a href="https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L170">here</a> is the implementation of the alternative compiler.</p>
 <h2 id="references--further-reading">References &amp; Further Reading</h2>
 <ul>
 <li>Hopcroft, Motwani, Ullman (2001) <em>Introduction to Automata Theory, Languages, and Computation</em> - Chapter 3: Regular Expressions and Languages</li>
@@ -581,7 +581,7 @@ match(<span style="color:#c30">&#39;&#39;</span>); <span style="color:#09f;font-
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-08-17 17:07:51.896932 &#43;0300 EEST m=&#43;0.187021298">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-08-17 17:12:50.084943 &#43;0300 EEST m=&#43;0.161342973">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
