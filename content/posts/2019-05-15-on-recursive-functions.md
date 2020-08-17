@@ -274,7 +274,8 @@ If you want to play some more with this stuff, I'd recommend implementing the **
 
 
 ## Further Reading and References
-* Full code reference in [JavaScript](https://github.com/deniskyashif/fmi-lcpt/blob/master/src/fixed-point.js) and [Clojure](https://github.com/deniskyashif/fmi-lcpt/blob/master/src/fixed-point.clj)
+* Full code reference in [JavaScript](https://github.com/deniskyashif/fmi-lcpt/blob/master/src/fixed-point.js) and [Clojure](
+https://github.com/deniskyashif/fmi-lcpt/blob/master/src/fixed_point.clj)
 * [Barendregt, Barendsen "Introduction to Lambda Calculus"](http://www.nyu.edu/projects/barker/Lambda/barendregt.94.pdf)
 * [Lambda Calculus from programmer's perspective](https://www.i-programmer.info/programming/theory/4514-lambda-calculus-for-programmers.html)
 * [Fixed-point combinator (Wikipedia)](https://en.wikipedia.org/wiki/Fixed-point_combinator)

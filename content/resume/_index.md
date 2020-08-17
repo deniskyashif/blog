@@ -39,7 +39,7 @@ title = "Resume"
                 <section class="experience">
                     <h2>Experience</h2>
                     <div>
-                        <h3>Lead Software Engineer (Contract)</h3>
+                        <h3>Engineering Lead (Contract)</h3>
                         <h4 class="accent">Coursedot Instructor Hub</h4>
                         <small>
                             <i class="fa fa-calendar" aria-hidden="true"></i> 08/2018 - Ongoing
