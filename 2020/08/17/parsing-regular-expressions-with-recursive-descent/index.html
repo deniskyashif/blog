@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="In this article, we&#39;ll define a basic regular expression language using a context-free grammar and learn how to parse its strings in linear time using the recursive descent method.">
+    <meta name="author" content="Denis Kyashif" />
+	
+	<title>
+		Parsing Regular Expressions with Recursive Descent &middot; Denis Kyashif&#39;s Blog
+	</title>
+	
+	
+  	<link rel="stylesheet" href="/css/style.css" />    
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="/assets/my.css">
+
+	
+	<link rel="icon" type="image/png" sizes="192x192" href="/images/icons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon-16x16.png">
+	
+	<link rel="apple-touch-icon" href="/images/icons/apple-icon.png" />
+	<link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-57x57.png" />
+	<link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-60x60.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-icon-72x72.png" />
+	<link rel="apple-touch-icon" sizes="76x76" href="/images/icons/apple-icon-76x76.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-icon-114x114.png" />
+	<link rel="apple-touch-icon" sizes="120x120" href="/images/icons/apple-icon-120x120.png" />
+	<link rel="apple-touch-icon" sizes="144x144" href="/images/icons/apple-icon-144x144.png" />
+	<link rel="apple-touch-icon" sizes="152x152" href="/images/icons/apple-icon-152x152.png" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/icons/apple-icon-180x180.png" />
+
+	<link rel="manifest" href="/site.webmanifest">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/images/icons/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	
+	
+	<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
+    <meta property="og:title" content="Parsing Regular Expressions with Recursive Descent" />
+<meta property="og:description" content="In this article, we&#39;ll define a basic regular expression language using a context-free grammar and learn how to parse its strings in linear time using the recursive descent method." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://deniskyashif.com/2020/08/17/parsing-regular-expressions-with-recursive-descent/" />
+<meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png"/>
+<meta property="article:published_time" content="2020-08-17T11:05:18+03:00" />
+<meta property="article:modified_time" content="2020-08-17T11:05:18+03:00" />
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-133185625-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+</head>
+
+    <body>
+        <a href="https://github.com/deniskyashif/blog" class="github-corner" target="_blank" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#4a9ae1; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<nav class="nav">
+	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
+		<ul>
+    <li><a href="/">Posts</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/about">About</a></li>
+</ul>
+
+	</div>
+</nav>
+
+        
+
+<main>
+	<div class="post">
+		<div class="post-info">
+    <time datetime="2020-08-17 11:05:18 &#43;0300 EEST">August 17, 2020</time>
+
+    
+    <div class="tags">
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/compsci/" class="tag">compsci</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/compilers/" class="tag">compilers</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/algorithms/" class="tag">algorithms</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/nlp/" class="tag">nlp</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/javascript/" class="tag">javascript</a>
+        
+        
+    </div>
+</div>
+
+		<h1 class="post-title">Parsing Regular Expressions with Recursive Descent</h1>
+<div class="post-line"></div>
+
+		
+
+		<h2 id="languages-grammars-and-parsing">Languages, Grammars, and Parsing</h2>
+<p>In computing, we use formal languages - programming languages, query languages, markup languages, protocols, config formats, etc. Using them, we define what we want the computer to do.</p>
+<p>Formal grammars, on the other hand, are used to define the languages themselves. For every formal language, we have a corresponding grammar (usually context-free) that defines its structure.</p>
+<p>Given a string and a grammar, parsing answers two questions:</p>
+<ul>
+<li>Does the string belong to the language of the grammar?</li>
+<li>What is the structure of the string with regard to the grammar?</li>
+</ul>
+<p>The structure of the string relative to the grammar is denoted using a <strong>parse tree</strong>. If we can build a parse tree then the string is correct according to the grammar.</p>
+<p>In this article, we&rsquo;ll define a basic regular expression language using a formal grammar and learn how to parse its strings in linear time using the <em>recursive descent</em> method. We&rsquo;ll use the <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a> notation for the grammars.</p>
+<h2 id="example-grammar-1">Example Grammar #1</h2>
+<p>Let&rsquo;s define the following grammar:</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">S</span>&gt; <span style="color:#555">::=</span> &#39;a&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;e&#39;
+&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt; <span style="color:#555">::=</span> &#39;b&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;d&#39; | &#39;c&#39;
+</code></pre></div><p>\(S, A\) are called nonterminals, \(a,b,c,d,e\) are the terminal symbols. \(S\) is the start symbol (axiom) of the grammar and above we have depicted the two production rules. This grammar describes strings that start with an &ldquo;a&rdquo;, end with an &ldquo;e&rdquo;, have a &ldquo;c&rdquo; in the middle which is surrounded by an equal number of &ldquo;b&rdquo;&rsquo;s to its left and &ldquo;d&rdquo;&rsquo;s to its right. Some of the strings that belong to the language of the grammar are &ldquo;ace&rdquo;, &ldquo;abcde&rdquo;, &ldquo;abbbcddde&rdquo;, etc. We can examine the structure of these strings by building the corresponding parse trees.</p>
+<p><img src="/images/posts/2020-08-17-parsing-regex-rd/pt1all.png" width="250" /></p>
+<p>Given a valid parse tree, we reconstruct the input string by traversing it depth-first and concatenating the labels of the leaf nodes.</p>
+<h2 id="recursive-descent-parsing">Recursive Descent Parsing</h2>
+<p>Recursive descent parsers belong to the class of <em>top-down</em> parsers, meaning, they construct the parse tree starting from the start symbol of the grammar (the root of the tree) and make their way towards the leaves. The rules in the grammar are applied from left to right. They are fascinating due to their simplicity, elegance and can run in linear time for some types of grammars.<br>
+This is a hands-on article, where we&rsquo;ll define a formal grammar for regular expressions and build a corresponding parser. We&rsquo;ll use JavaScript as a language of choice, but the concepts are universal and can be transferred to any other language.</p>
+<p>A recursive descent parser is simply a set of functions for each nonterminal in the grammar. We begin parsing by executing the function corresponding to the axiom and terminate successfully if the whole input string has been processed. Suppose we have the following rule:</p>
+<p>\[ A \to X_0 X_1 \dots X_n \]</p>
+<p>where \( X_i \) is either a terminal or a nonterminal. Pseudocode for the corresponding function would look like this:</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">function A() {
+    foreach Xi in X0...Xn
+        if Xi is a nonterminal
+            call the function for Xi()
+        else if Xi is a terminal and Xi == current input symbol
+            advance the to next input symbol
+        else
+            handle an errror (backtrack or throw)
+}
+</code></pre></div><p><small><em>Source: Compilers: Principles, Techniques, and Tools (The Dragon Book), Chapter 4 Syntax Analysis</em></small></p>
+<p>A simple recognizer for grammar #1 using recursive descent can be found <a href="https://gist.github.com/deniskyashif/24c055ec845dce9e33344e0afc6dd7ec">here</a>.</p>
+<h2 id="parsing-regular-expressions">Parsing Regular Expressions</h2>
+<p>We start by defining the grammar of our regular expressions. We are going to support the base operations such as <em>concatenation</em>, <em>union</em> (<code>|</code>), <em>zero-or-more</em> (<code>*</code>), <em>one-or-more</em> (<code>+</code>), <em>zero-or-one</em> (<code>?</code>), and <em>grouping</em> (<code>()</code>). We&rsquo;ll also allow users to use metacharacters (<code>*</code>,<code>+</code>,<code>?</code>) as ordinary symbols through escaping (<code>\</code>).</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
+    | &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;&#39;|&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;
+&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; 
+    | &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
+&lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;
+    | &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt;
+&lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">char</span>&gt;
+    | &#39;(&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;&#39;)&#39;
+&lt;<span style="color:#0a8;font-weight:bold">char</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">any-char-except-meta</span>&gt;
+    | &#39;\&#39;&lt;<span style="color:#0a8;font-weight:bold">any-char</span>&gt;
+&lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt; <span style="color:#555">::=</span> &#39;?&#39; | &#39;*&#39; | &#39;+&#39;
+</code></pre></div><p>We can see that the operator precedence is encoded in the grammar as the lower priority operations (e.g. <code>|</code>) are situated closer to the root of the parse tree whereas the higher priority ones (<code>?,*,+</code>) are closer to the leaves. We depict <em>concatenation</em> through the <code>&lt;term&gt; ::= &lt;factor&gt;&lt;term&gt;</code> production rule.</p>
+<p><img src="/images/posts/2020-08-17-parsing-regex-rd/ptre.png" width="375" /></p>
+<p>Above are the parse trees for the strings <code>a+b?</code> and <code>(a|b)*c</code> respectively.</p>
+<p>Let&rsquo;s introduce some auxiliary functions before implementing the parsing procedure. First, we define the constructor function for the tree node.</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> TreeNode(label, children) {
+    <span style="color:#069;font-weight:bold">this</span>.label <span style="color:#555">=</span> label;
+    <span style="color:#069;font-weight:bold">this</span>.children <span style="color:#555">=</span> children <span style="color:#555">||</span> [];
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>A tree node is an object holding a label (string) and an array with references to the child nodes. We continue by declaring some auxiliary variables and functions.</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">let</span> pattern <span style="color:#555">=</span> <span style="color:#c30">&#39;&#39;</span>;
+<span style="color:#069;font-weight:bold">let</span> pos <span style="color:#555">=</span> <span style="color:#f60">0</span>;
+
+<span style="color:#069;font-weight:bold">const</span> peek <span style="color:#555">=</span> () =&gt; pattern[pos];
+<span style="color:#069;font-weight:bold">const</span> hasMoreChars <span style="color:#555">=</span> () =&gt; pos <span style="color:#555">&lt;</span> pattern.length;
+<span style="color:#069;font-weight:bold">const</span> isMetaChar <span style="color:#555">=</span> ch =&gt; ch <span style="color:#555">===</span> <span style="color:#c30">&#39;*&#39;</span> <span style="color:#555">||</span> ch <span style="color:#555">===</span> <span style="color:#c30">&#39;+&#39;</span> <span style="color:#555">||</span> ch <span style="color:#555">===</span> <span style="color:#c30">&#39;?&#39;</span>;
+</code></pre></td></tr></table>
+</div>
+</div>
+<p><code>peek()</code> returns the current symbol in the input string, <code>hasMoreChars()</code> checks if we have reached the end of the input, and <code>isMetaChar(ch)</code> checks if we see a symbol that serves as a unary operator.</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> match(ch) {
+    <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">!==</span> ch)
+        <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> <span style="color:#366">Error</span>(<span style="color:#c30">`Unexpected symbol </span><span style="color:#a00">${</span>ch<span style="color:#a00">}</span><span style="color:#c30">`</span>);
+    pos<span style="color:#555">++</span>;
+}
+
+<span style="color:#069;font-weight:bold">function</span> next() {
+    <span style="color:#069;font-weight:bold">let</span> ch <span style="color:#555">=</span> peek();
+    match(ch);
+
+    <span style="color:#069;font-weight:bold">return</span> ch;
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p><code>match(ch)</code> matches a character with the one we&rsquo;re currently at and moves the position to the next input symbol, <code>next()</code> returns the current input symbol, and moves forward with one position.</p>
+<p>Now we are ready to implement the functions for each nonterminal in the grammar. These functions have the same signature - they take no arguments and return an object of type <code>TreeNode</code>. We start with the axiom.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; 
+    | &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;&#39;|&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;
+</code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> expr() {
+    <span style="color:#069;font-weight:bold">const</span> trm <span style="color:#555">=</span> term();
+
+    <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;|&#39;</span>) {
+        match(<span style="color:#c30">&#39;|&#39;</span>);
+        <span style="color:#069;font-weight:bold">const</span> exp <span style="color:#555">=</span> expr();
+        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Expr&#39;</span>, [trm, <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;|&#39;</span>), exp]);
+    }
+
+    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Expr&#39;</span>, [trm]);
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>Our code directly follows the derivations for <code>expr</code>. We continue with the <em>term</em> and <em>factor</em>.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; 
+    | &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
+&lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;
+    | &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt;
+</code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> term() {
+    <span style="color:#069;font-weight:bold">const</span> factr <span style="color:#555">=</span> factor();
+
+    <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">!==</span> <span style="color:#c30">&#39;)&#39;</span> <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">!==</span> <span style="color:#c30">&#39;|&#39;</span>) {
+        <span style="color:#069;font-weight:bold">const</span> trm <span style="color:#555">=</span> term();
+        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Term&#39;</span>, [factr, trm]);
+    }
+
+    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Term&#39;</span>, [factr]);
+}
+
+<span style="color:#069;font-weight:bold">function</span> factor() {
+    <span style="color:#069;font-weight:bold">const</span> atm <span style="color:#555">=</span> atom();
+
+    <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> isMetaChar(peek())) {
+        <span style="color:#069;font-weight:bold">const</span> meta <span style="color:#555">=</span> next();
+        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Factor&#39;</span>, [atm, <span style="color:#069;font-weight:bold">new</span> TreeNode(meta)]);
+    }
+
+    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Factor&#39;</span>, [atm]);
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>For <code>term()</code> we need to perform an additional check (line 41) of the next input symbol so we can expand the correct derivation. <code>factor()</code> similar to <code>expr()</code>.</p>
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">char</span>&gt;
+    | &#39;(&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;&#39;)&#39;
+&lt;<span style="color:#0a8;font-weight:bold">char</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">any-char-except-meta</span>&gt;
+    | &#39;\&#39;&lt;<span style="color:#0a8;font-weight:bold">any-char</span>&gt;
+</code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">83
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">84
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">85
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> atom() {
+    <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;(&#39;</span>) {
+        match(<span style="color:#c30">&#39;(&#39;</span>);
+        <span style="color:#069;font-weight:bold">const</span> exp <span style="color:#555">=</span> expr();
+        match(<span style="color:#c30">&#39;)&#39;</span>);
+
+        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Atom&#39;</span>, 
+            [<span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;(&#39;</span>), exp, <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;)&#39;</span>)]);
+    }
+    
+    <span style="color:#069;font-weight:bold">const</span> ch <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">char</span>();
+    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Atom&#39;</span>, [ch]);
+}
+
+<span style="color:#069;font-weight:bold">function</span> <span style="color:#069;font-weight:bold">char</span>() {
+    <span style="color:#069;font-weight:bold">if</span> (isMetaChar(peek()))
+        <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> <span style="color:#366">Error</span>(<span style="color:#c30">`Unexpected meta char </span><span style="color:#a00">${</span>peek()<span style="color:#a00">}</span><span style="color:#c30">`</span>);
+
+    <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;\\&#39;</span>) {
+        match(<span style="color:#c30">&#39;\\&#39;</span>);
+        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Char&#39;</span>, 
+            [<span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;\\&#39;</span>), <span style="color:#069;font-weight:bold">new</span> TreeNode(next())]);
+    }
+
+    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Char&#39;</span>, [<span style="color:#069;font-weight:bold">new</span> TreeNode(next())]);
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>The functions for the last two nonterminals <code>&lt;atom&gt;</code> and <code>&lt;char&gt;</code> follow the same pattern.</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">87
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">88
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">89
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">90
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">91
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">92
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> toParseTree(regex) {
+    pattern <span style="color:#555">=</span> regex;
+    pos <span style="color:#555">=</span> <span style="color:#f60">0</span>;
+
+    <span style="color:#069;font-weight:bold">return</span> expr();
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>Now we&rsquo;re ready to complete the algorithm. We assign the new input string to the variable <code>pattern</code> (88), reset the input position (89), and call the function for the start symbol of the grammar (91) which is going to return the complete parse tree if the input string is correctly defined.</p>
+<h2 id="regex-to-nfa-using-recursive-descent">Regex to NFA using Recursive Descent</h2>
+<p>We can use the resulting parse tree to compile a nondeterministic finite automaton (NFA) using a simple recursive depth-first traversal. The structure is convenient as it naturally encodes the operator&rsquo;s precedence.</p>
+<p>The relationship between regular expressions and finite automata is discussed <a href="/2019/02/17/implementing-a-regular-expression-engine">here</a>, however, the article presents a different approach to parsing. You can also check out the complete adaptation of this recursive descent parser for NFA compilation:</p>
+<ul>
+<li><a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser2.js">Parse Tree Construction</a></li>
+<li><a href="https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L170">From Parse Tree to NFA</a></li>
+</ul>
+<p>Note that the procedure can be further simplified by constructing the NFA &ldquo;on-the-fly&rdquo; instead of first building a parse tree. For this, we need to adapt the parser&rsquo;s functions for each nonterminal to return an NFA instead of <code>TreeNode</code> and perform the operations during the parsing which is practically a depth-first traversal by itself. You can check out the implementation of this approach, which also supports an extended regex syntax,
+<a href="https://github.com/deniskyashif/thesis/blob/master/project/src/RegExp.cs">here</a>.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this article, we briefly defined the concepts of formal grammars, parsing, and we&rsquo;ve learned how recursive descent parsers generally operate. Then we specified our regex syntax using a context-free grammar and implemented a recursive descent parser based on its production rules. In the end, we&rsquo;ve mentioned how this algorithm can be utilized for an efficient regex-to-NFA compilation procedure. It is also easy to see how our regular expression grammar and its parser can be extended to support additional syntactic constructs such as character classes, counts, etc.</p>
+<h2 id="references-and-further-reading">References and Further Reading</h2>
+<ul>
+<li>Compilers: Principles, Techniques, and Tools (The Dragon Book), Chapter 4 Syntax Analysis</li>
+<li><a href="/2019/02/17/implementing-a-regular-expression-engine">Implementing a Regular Expression Engine</a></li>
+<li><a href="https://gist.github.com/deniskyashif/24c055ec845dce9e33344e0afc6dd7ec">Recognizer using Recursive Descent for Grammar #1</a></li>
+<li><a href="http://ironcreek.net/syntaxtree">Syntax Tree Visualizer</a></li>
+</ul>
+
+
+		<section class="social-share">
+    
+    
+    <a href="//twitter.com/share?url=https%3a%2f%2fdeniskyashif.com%2f2020%2f08%2f17%2fparsing-regular-expressions-with-recursive-descent%2f&amp;text=Parsing%20Regular%20Expressions%20with%20Recursive%20Descent&amp;via=deniskyashif" target="_blank" class="share-btn twitter">
+        <i class="fa fa-2x fa-twitter"></i>
+    </a>
+    
+    
+    
+    <a href="//reddit.com/submit?url=https%3a%2f%2fdeniskyashif.com%2f2020%2f08%2f17%2fparsing-regular-expressions-with-recursive-descent%2f&amp;title=Parsing%20Regular%20Expressions%20with%20Recursive%20Descent" target="_blank" class="share-btn reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    
+    
+    
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdeniskyashif.com%2f2020%2f08%2f17%2fparsing-regular-expressions-with-recursive-descent%2f" target="_blank" class="share-btn facebook">
+        <i class="fa fa-2x fa-facebook"></i>
+    </a>
+    
+    
+    
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fdeniskyashif.com%2f2020%2f08%2f17%2fparsing-regular-expressions-with-recursive-descent%2f&amp;title=Parsing%20Regular%20Expressions%20with%20Recursive%20Descent" target="_blank" class="share-btn linkedin">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:?subject=Check out 'Parsing%20Regular%20Expressions%20with%20Recursive%20Descent' by Denis%20Kyashif&amp;body=https%3a%2f%2fdeniskyashif.com%2f2020%2f08%2f17%2fparsing-regular-expressions-with-recursive-descent%2f" target="_blank" class="share-btn email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    
+</section>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "deniskyashif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+	</div>
+
+	<div class="pagination">
+		<a href="/2020/06/12/introduction-to-bimachines/" class="left arrow">&#8592;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+</main>
+
+
+        <footer>
+	<span>
+		&copy;&nbsp;<time datetime="2020-08-17 17:04:08.255223 &#43;0300 EEST m=&#43;0.161801532">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+	</span>
+    <br/>
+</footer>
+
+    </body>
+</html>
