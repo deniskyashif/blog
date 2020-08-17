@@ -12,11 +12,11 @@
     
     
     <item>
-      <title>Parsing Regular Expressions with Recursive Descent</title>
-      <link>https://deniskyashif.com/2020/08/17/parsing-regular-expressions-with-recursive-descent/</link>
+      <title>Parsing Regex with Recursive Descent</title>
+      <link>https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/</link>
       <pubDate>Mon, 17 Aug 2020 11:05:18 +0300</pubDate>
       
-      <guid>https://deniskyashif.com/2020/08/17/parsing-regular-expressions-with-recursive-descent/</guid>
+      <guid>https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/</guid>
       <description>A fast and simple way to parse regular expressions.</description>
     </item>
     
