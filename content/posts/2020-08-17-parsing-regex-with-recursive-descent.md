@@ -1,25 +1,27 @@
 ---
 title: "Parsing Regex with Recursive Descent"
-date: 2020-08-15T11:05:18+03:00
-draft: true
-summary: "A simple and elegant way to parse regular expressions."
+date: 2020-08-17T11:05:18+03:00
+draft: false
+summary: "A fast and simple way to parse regular expressions."
+description: "In this article, we'll define a basic regular expression language using a context-free grammar and learn how to parse its strings in linear time using the recursive descent method."
 useMath: true
+tags: ["compsci", "compilers", "algorithms", "nlp", "javascript"]
 ---
 
 ## Languages, Grammars, and Parsing
 
-In computing we use formal languages - programming languages, query languages, markup languages, protocols, config formats, etc. Using them, we define what we want the computer to do.
+In computing, we use formal languages - programming languages, query languages, markup languages, protocols, config formats, etc. Using them, we define what we want the computer to do.
 
-Formal grammars, on the other hand, are used to define the languages themselves. For every formal language, we have a corresponding grammar (usually context-free) that defines it's structure.
+Formal grammars, on the other hand, are used to define the languages themselves. For every formal language, we have a corresponding grammar (usually context-free) that defines its structure.
 
 Given a string and a grammar, parsing answers two questions:
 
 - Does the string belong to the language of the grammar?
-- What is the structure of the string with regards to the grammar?
+- What is the structure of the string with regard to the grammar?
 
 The structure of the string relative to the grammar is denoted using a **parse tree**. If we can build a parse tree then the string is correct according to the grammar.
 
-In this article we'll define a basic regular expression language using a formal grammar and learn how to parse its strings in linear time using the _recursive descent_ method. We'll use the [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) notation for the grammars.
+In this article, we'll define a basic regular expression language using a formal grammar and learn how to parse its strings in linear time using the _recursive descent_ method. We'll use the [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) notation for the grammars.
 
 ## Example Grammar #1
 
@@ -45,7 +47,7 @@ A recursive descent parser is simply a set of functions for each nonterminal in 
 
 \\[ A \to X_0 X_1 \dots X_n \\]
 
-where \\( X_i \\) is either a terminal or a nonterminal. A pseudocode for the corresponding function would look like this:
+where \\( X_i \\) is either a terminal or a nonterminal. Pseudocode for the corresponding function would look like this:
 
 ```txt
 function A() {
@@ -64,7 +66,7 @@ A simple recognizer for grammar #1 using recursive descent can be found [here](h
 
 ## Parsing Regular Expressions
 
-We start with defining the grammar of our regular expressions. We are going to support the base operations such as _concatenation_, _union_ (`|`), _zero-or-more_ (`*`), _one-or-more_ (`+`), _zero-or-one_ (`?`) and _grouping_ (`()`). We'll also allow users to use meta characters (`*`,`+`,`?`) as ordinary symbols through escaping (`\`).
+We start by defining the grammar of our regular expressions. We are going to support the base operations such as _concatenation_, _union_ (`|`), _zero-or-more_ (`*`), _one-or-more_ (`+`), _zero-or-one_ (`?`), and _grouping_ (`()`). We'll also allow users to use metacharacters (`*`,`+`,`?`) as ordinary symbols through escaping (`\`).
 
 ```bnf
 <expr> ::= <term>
@@ -106,7 +108,7 @@ const hasMoreChars = () => pos < pattern.length;
 const isMetaChar = ch => ch === '*' || ch === '+' || ch === '?';
 {{< / highlight >}}
 
-`peek()` returns the current symbol in the input string, `hasMoreChars()` checks if we have reached the end of the input, and `isMetaChar(ch)` checks if we see a symbol which serves as an unary operator.
+`peek()` returns the current symbol in the input string, `hasMoreChars()` checks if we have reached the end of the input, and `isMetaChar(ch)` checks if we see a symbol that serves as a unary operator.
 
 {{< highlight js "linenos=table,linenostart=13" >}}
 function match(ch) {
@@ -123,7 +125,7 @@ function next() {
 }
 {{< / highlight >}}
 
-`match(ch)` matches a character with the one we're currently at and moves the position to the next input symbol, `next()` returns the current input symbol and moves forward with one position.
+`match(ch)` matches a character with the one we're currently at and moves the position to the next input symbol, `next()` returns the current input symbol, and moves forward with one position.
 
 Now we are ready to implement the functions for each nonterminal in the grammar. These functions have the same signature - they take no arguments and return an object of type `TreeNode`. We start with the axiom. 
 
@@ -228,23 +230,27 @@ function toParseTree(regex) {
 }
 {{< / highlight >}}
 
-Now we're ready to complete the algorithm. We assign the new input string to the variable `pattern` (88), reset the input position (89) and call the function for the start symbol of the grammar (91) which is going to return the complete parse tree if the input string is correctly defined.
+Now we're ready to complete the algorithm. We assign the new input string to the variable `pattern` (88), reset the input position (89), and call the function for the start symbol of the grammar (91) which is going to return the complete parse tree if the input string is correctly defined.
 
 ## Regex to NFA using Recursive Descent
 
-We can use the resulting parse tree to compile a nondeterministic finite automaton (NFA) using a simple recursive depth-first traversal. The structure is convenient as it naturally encodes the operator precedence. 
+We can use the resulting parse tree to compile a nondeterministic finite automaton (NFA) using a simple recursive depth-first traversal. The structure is convenient as it naturally encodes the operator's precedence. 
 
 The relationship between regular expressions and finite automata is discussed [here](/2019/02/17/implementing-a-regular-expression-engine), however, the article presents a different approach to parsing. You can also check out the complete adaptation of this recursive descent parser for NFA compilation:
 
 * [Parse Tree Construction](https://github.com/deniskyashif/regexjs/blob/master/src/parser2.js)
 * [From Parse Tree to NFA](https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L170)
 
-Note that the procedure can be further simplified by constructing the NFA "on-the-fly" instead of first building a parse tree. For this, we need to adapt the parser's functions for each nonterminal to return an NFA instead of `TreeNode` and perform the operations during the parsing which is practically a depth first traversal by itself. You can check out an implementation of this approach, which also supports an extended regex syntax, [here](https://github.com/deniskyashif/thesis/blob/master/project/src/RegExp.cs).
+Note that the procedure can be further simplified by constructing the NFA "on-the-fly" instead of first building a parse tree. For this, we need to adapt the parser's functions for each nonterminal to return an NFA instead of `TreeNode` and perform the operations during the parsing which is practically a depth-first traversal by itself. You can check out the implementation of this approach, which also supports an extended regex syntax,
+[here](https://github.com/deniskyashif/thesis/blob/master/project/src/RegExp.cs).
+
+## Conclusion
+
+In this article, we briefly defined the concepts of formal grammars, parsing, and we've learned how recursive descent parsers generally operate. Then we specified our regex syntax using a context-free grammar and implemented a recursive descent parser based on its production rules. In the end, we've mentioned how this algorithm can be utilized for an efficient regex-to-NFA compilation procedure. It is also easy to see how our regular expression grammar and its parser can be extended to support additional syntactic constructs such as character classes, counts, etc.
 
 ## References and Further Reading
 
 * Compilers: Principles, Techniques, and Tools (The Dragon Book), Chapter 4 Syntax Analysis
 * [Implementing a Regular Expression Engine](/2019/02/17/implementing-a-regular-expression-engine)
-* [Regex Engine Implementation](https://github.com/deniskyashif/regexjs/)
 * [Recognizer using Recursive Descent for Grammar #1](https://gist.github.com/deniskyashif/24c055ec845dce9e33344e0afc6dd7ec)
-*[Syntax Tree Visualizer](http://ironcreek.net/syntaxtree)
+* [Syntax Tree Visualizer](http://ironcreek.net/syntaxtree)
