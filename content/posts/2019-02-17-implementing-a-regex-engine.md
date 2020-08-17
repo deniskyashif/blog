@@ -369,7 +369,7 @@ We defined the building blocks of the regular expressions and learned how by app
 
 The complete code reference for this article is available on [GitHub](https://github.com/deniskyashif/regexjs/).
 
-<u><b>Update:</b></u> You can also check out the article on ["Syntax Directed Translation"](/translation-using-syntactic-rules#parsing-regular-expressions) which presents a different approach to compiling. At the end of the article, you can find an example of converting a regex to an NFA by creating a **parse tree**.  [Here](https://github.com/deniskyashif/regexjs/commit/c3fabedea1ff53b0a1b12e8647df95e81aea739f#diff-48e611c3706c9fdff05b92dfc5b98cd9L127) is the implementation of the alternative compiler.
+<u><b>Update:</b></u> You can also check out the article on ["Parsing Regex with Recursive Descent"](/2020/08/17/parsing-regular-expressions-with-recursive-descent/) which presents a different approach. You can find an example of converting a regex to a parse tree and an NFA construction based on the traversal of this tree. [Here](https://github.com/deniskyashif/regexjs/blob/master/src/parser2.js) and [here](https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L170) is the implementation of the alternative compiler.
 
 ## References & Further Reading
 * Hopcroft, Motwani, Ullman (2001) _Introduction to Automata Theory, Languages, and Computation_ - Chapter 3: Regular Expressions and Languages
