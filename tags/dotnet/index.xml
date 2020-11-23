@@ -6,11 +6,7 @@
     <description>Recent content in dotnet on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 07 Jan 2020 07:42:15 +0200</lastBuildDate>
-    
-	<atom:link href="https://deniskyashif.com/tags/dotnet/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 07 Jan 2020 07:42:15 +0200</lastBuildDate><atom:link href="https://deniskyashif.com/tags/dotnet/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>C# Channels - Async Data Pipelines</title>
       <link>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</link>

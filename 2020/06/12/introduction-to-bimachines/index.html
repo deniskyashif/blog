@@ -148,7 +148,7 @@ if (!doNotTrack) {
 <p>For <em>baaaabba</em> we end up with the following simulation.</p>
 <p><img src="/images/posts/2020-06-12-intro-bimachines/bm2path2.png" alt="bm-2-path-2" /></p>
 <h2 id="caveats">Caveats</h2>
-<p>Bimachines are simple and efficient but, as with everything, they come at a cost. The state-of-the-art algorithms for constructing bimachines rely on building the corresponding transducer first. Due to the bimachines&rsquo; deterministic nature, we end up an upper bound of exponential time and space requirements for the construction, more specifically \( \mathcal{O}(2^{|Q|}) \) where \( |Q| \) is the number of states of the transducer. Some approaches that improve on that, given specific conditions are met, but still, the bimachine construction remains a computationally intensive operation.<br>
+<p>Bimachines are simple and efficient but, as with everything, they come at a cost. The state-of-the-art algorithms for constructing bimachines rely on building the corresponding transducer first. Due to the bimachines' deterministic nature, we end up an upper bound of exponential time and space requirements for the construction, more specifically \( \mathcal{O}(2^{|Q|}) \) where \( |Q| \) is the number of states of the transducer. Some approaches that improve on that, given specific conditions are met, but still, the bimachine construction remains a computationally intensive operation.<br>
 The simulation procedure also requires us to store the recognition path of the right automaton while we read the text and run the left automaton. For large inputs, this might prove also costly.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Besides plain text rewriting, bimachines can be used for various linguistic tasks, such as text annotation, tagging, tokenization, etc. They can also be generalized in a sense that the output is in a monoid (string output is a just special
@@ -237,7 +237,7 @@ type called a <a href="https://en.wikipedia.org/wiki/Free_monoid">free monoid</a
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-09-21 10:23:32.978446 &#43;0300 EEST m=&#43;0.111959128">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-11-23 13:49:55.469092 &#43;0200 EET m=&#43;0.126390733">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

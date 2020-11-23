@@ -6,11 +6,7 @@
     <description>Recent content in kendoui on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 20 Jun 2017 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://deniskyashif.com/tags/kendoui/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 20 Jun 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://deniskyashif.com/tags/kendoui/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>KendoUI TreeList Load on Demand</title>
       <link>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</link>

@@ -6,11 +6,7 @@
     <description>Recent content in talks on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 26 Jan 2019 22:31:14 +0200</lastBuildDate>
-    
-	<atom:link href="https://deniskyashif.com/tags/talks/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 26 Jan 2019 22:31:14 +0200</lastBuildDate><atom:link href="https://deniskyashif.com/tags/talks/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Scalable Angular Apps at DevReach 2018</title>
       <link>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</link>

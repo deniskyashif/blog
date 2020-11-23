@@ -139,36 +139,36 @@ if (!doNotTrack) {
 <table>
 <thead>
 <tr>
-<th align="center">Step</th>
-<th align="center"> State </th>
-<th align="center"> Input </th>
-<th align="center"> New State </th>
+<th style="text-align:center">Step</th>
+<th style="text-align:center"> State </th>
+<th style="text-align:center"> Input </th>
+<th style="text-align:center"> New State </th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">0</td>
-<td align="center">\(q_0\)</td>
-<td align="center">a</td>
-<td align="center">\(q_1\)</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">\(q_0\)</td>
+<td style="text-align:center">a</td>
+<td style="text-align:center">\(q_1\)</td>
 </tr>
 <tr>
-<td align="center">1</td>
-<td align="center">\(q_1\)</td>
-<td align="center">b</td>
-<td align="center">\(q_2\)</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">\(q_1\)</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">\(q_2\)</td>
 </tr>
 <tr>
-<td align="center">2</td>
-<td align="center">\(q_2\)</td>
-<td align="center">b</td>
-<td align="center">\(q_2\)</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">\(q_2\)</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">\(q_2\)</td>
 </tr>
 <tr>
-<td align="center">3</td>
-<td align="center">\(q_2\)</td>
-<td align="center">a</td>
-<td align="center">\(q_3\)</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">\(q_2\)</td>
+<td style="text-align:center">a</td>
+<td style="text-align:center">\(q_3\)</td>
 </tr>
 </tbody>
 </table>
@@ -356,48 +356,48 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <table>
 <thead>
 <tr>
-<th align="center">Step</th>
-<th align="center">    Scan    </th>
-<th align="left"> Operations</th>
-<th align="left"> Stack </th>
+<th style="text-align:center">Step</th>
+<th style="text-align:center">    Scan    </th>
+<th style="text-align:left"> Operations</th>
+<th style="text-align:left"> Stack </th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">0</td>
-<td align="center"><u><b>a</b></u>b∣*c.</td>
-<td align="left">fromSymbol(a); push;</td>
-<td align="left">{ N(a) }</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center"><u><b>a</b></u>b∣*c.</td>
+<td style="text-align:left">fromSymbol(a); push;</td>
+<td style="text-align:left">{ N(a) }</td>
 </tr>
 <tr>
-<td align="center">1</td>
-<td align="center">a<u><b>b</b></u>∣*c.</td>
-<td align="left">fromSymbol(b); push;</td>
-<td align="left">{ N(a), N(b) }</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">a<u><b>b</b></u>∣*c.</td>
+<td style="text-align:left">fromSymbol(b); push;</td>
+<td style="text-align:left">{ N(a), N(b) }</td>
 </tr>
 <tr>
-<td align="center">2</td>
-<td align="center">ab<u><b>∣</b></u>*c.</td>
-<td align="left">pop; pop; union(N(a), N(b)); push;    </td>
-<td align="left">{ N(a∣b) }</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">ab<u><b>∣</b></u>*c.</td>
+<td style="text-align:left">pop; pop; union(N(a), N(b)); push;    </td>
+<td style="text-align:left">{ N(a∣b) }</td>
 </tr>
 <tr>
-<td align="center">4</td>
-<td align="center">ab∣<u><b>*</b></u>c.</td>
-<td align="left">pop; closure(N(a∣b)); push;</td>
-<td align="left">{ N((a∣b)*) }</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">ab∣<u><b>*</b></u>c.</td>
+<td style="text-align:left">pop; closure(N(a∣b)); push;</td>
+<td style="text-align:left">{ N((a∣b)*) }</td>
 </tr>
 <tr>
-<td align="center">5</td>
-<td align="center">ab∣*<u><b>c</b></u>.</td>
-<td align="left">fromSymbol(c); push;</td>
-<td align="left">{ N((a∣b)*), N(c) }</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">ab∣*<u><b>c</b></u>.</td>
+<td style="text-align:left">fromSymbol(c); push;</td>
+<td style="text-align:left">{ N((a∣b)*), N(c) }</td>
 </tr>
 <tr>
-<td align="center">6</td>
-<td align="center">ab∣*c<u><b>.</b></u></td>
-<td align="left">pop; pop; concat(N((a∣b)*), N(c)); push;   </td>
-<td align="left">{ N((a∣b)*c) }</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">ab∣*c<u><b>.</b></u></td>
+<td style="text-align:left">pop; pop; concat(N((a∣b)*), N(c)); push;   </td>
+<td style="text-align:left">{ N((a∣b)*c) }</td>
 </tr>
 </tbody>
 </table>
@@ -415,30 +415,30 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <table>
 <thead>
 <tr>
-<th align="left">Step</th>
-<th align="left">Current</th>
-<th align="left">Scan</th>
-<th align="left">Next</th>
+<th style="text-align:left">Step</th>
+<th style="text-align:left">Current</th>
+<th style="text-align:left">Scan</th>
+<th style="text-align:left">Next</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">1</td>
-<td align="left">{ \(q_1\), \(q_5\) }</td>
-<td align="left"><b><u>a</u></b>bb</td>
-<td align="left">{ \(q_2\), \(q_6\) }</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">{ \(q_1\), \(q_5\) }</td>
+<td style="text-align:left"><b><u>a</u></b>bb</td>
+<td style="text-align:left">{ \(q_2\), \(q_6\) }</td>
 </tr>
 <tr>
-<td align="left">2</td>
-<td align="left">{ \(q_2\), \(q_6\) }</td>
-<td align="left">a<b><u>b</u></b>b</td>
-<td align="left">{ \(q_3\), \(q_7\) }</td>
+<td style="text-align:left">2</td>
+<td style="text-align:left">{ \(q_2\), \(q_6\) }</td>
+<td style="text-align:left">a<b><u>b</u></b>b</td>
+<td style="text-align:left">{ \(q_3\), \(q_7\) }</td>
 </tr>
 <tr>
-<td align="left">3</td>
-<td align="left">{ \(q_3\), \(q_7\) }</td>
-<td align="left">ab<b><u>b</u></b></td>
-<td align="left">{ \(q_9\) }</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">{ \(q_3\), \(q_7\) }</td>
+<td style="text-align:left">ab<b><u>b</u></b></td>
+<td style="text-align:left">{ \(q_9\) }</td>
 </tr>
 </tbody>
 </table>
@@ -581,7 +581,7 @@ match(<span style="color:#c30">&#39;&#39;</span>); <span style="color:#09f;font-
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-09-21 10:23:33.038211 &#43;0300 EEST m=&#43;0.171725769">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-11-23 13:49:55.537256 &#43;0200 EET m=&#43;0.194557258">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

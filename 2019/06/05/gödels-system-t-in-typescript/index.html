@@ -234,7 +234,7 @@ pred 3
 <p><img src="/images/posts/2019-06-05-godel-t/ackermann.png" alt="Ackermann Definition" width="450" style="margin-left: 0" /></p>
 <p>You can find <a href="https://www.wolframalpha.com/input/?i=ackerman(1,1)">this</a> neat visual example of its execution.</p>
 <p>Let&rsquo;s try to implement it within our type system! We&rsquo;ll start by defining an operator for function composition:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript">type OneArityFn&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">K</span>&gt; <span style="color:#555">=</span> (x: <span style="color:#078;font-weight:bold">T</span>) <span style="color:#555">=&gt;</span> K;
+<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">type</span> OneArityFn&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">K</span>&gt; <span style="color:#555">=</span> (x: <span style="color:#078;font-weight:bold">T</span>) <span style="color:#555">=&gt;</span> K;
 
 <span style="color:#069;font-weight:bold">function</span> compose&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">K</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">V</span>&gt;(f: <span style="color:#078;font-weight:bold">OneArityFn</span>&lt;<span style="color:#309;font-weight:bold">K</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">V</span>&gt;, g: <span style="color:#078;font-weight:bold">OneArityFn</span>&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">K</span>&gt;)
     <span style="color:#555">:</span> OneArityFn&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">V</span>&gt; {
@@ -346,7 +346,7 @@ We have seen that using a language with a particular type system always comes wi
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-09-21 10:23:32.961389 &#43;0300 EEST m=&#43;0.094901200">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-11-23 13:49:55.449486 &#43;0200 EET m=&#43;0.106784698">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

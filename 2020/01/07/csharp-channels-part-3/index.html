@@ -328,7 +328,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 <span style="color:#078;font-weight:bold">var</span> fileSource = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>, cts.Token);
 ...
 </code></pre></div><h2 id="dealing-with-backpressure">Dealing with Backpressure</h2>
-<p>The term <a href="https://en.wikipedia.org/wiki/Back_pressure">backpressure</a> is borrowed from fluid dynamics and relates to to the software systems&rsquo; dataflow. In our examples, the stages execute concurrently but this doesn&rsquo;t guarantee an optimal performance. Let&rsquo;s revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we&rsquo;re going to end up with many pizzas with their toppings added, waiting to be baked, but our oven bakes only one at a time. We can solve this by getting a larger oven, or even multiple ovens.</p>
+<p>The term <a href="https://en.wikipedia.org/wiki/Back_pressure">backpressure</a> is borrowed from fluid dynamics and relates to to the software systems' dataflow. In our examples, the stages execute concurrently but this doesn&rsquo;t guarantee an optimal performance. Let&rsquo;s revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we&rsquo;re going to end up with many pizzas with their toppings added, waiting to be baked, but our oven bakes only one at a time. We can solve this by getting a larger oven, or even multiple ovens.</p>
 <p><img src="/images/posts/2020-01-07-csharp-channels-part3/bottleneck.png" /></p>
 <p>In the line-counter example, the stage where we read the file and count its lines might cause might experience backpressure because reading a sufficiently large file (stage 2) is slower than retreiving a file metadata (stage 1). It makes sense to increase the capacity of this stage and that&rsquo;s where <code>Split&lt;T&gt;</code> and <code>Merge&lt;T&gt;</code> which we discussed in <a href="/csharp-channels-part-1#multiplexer">part 1</a> come into use. We&rsquo;ll summarize them.</p>
 <h3 id="split">Split</h3>
@@ -503,7 +503,7 @@ var sourceCodeFiles =
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2020-09-21 10:23:32.979419 &#43;0300 EEST m=&#43;0.112931992">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2020-11-23 13:49:55.469153 &#43;0200 EET m=&#43;0.126451678">2020</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
