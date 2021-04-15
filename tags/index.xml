@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 17 Aug 2020 11:05:18 +0300</lastBuildDate><atom:link href="https://deniskyashif.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Apr 2021 22:16:29 +0300</lastBuildDate><atom:link href="https://deniskyashif.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>azure</title>
+      <link>https://deniskyashif.com/tags/azure/</link>
+      <pubDate>Tue, 06 Apr 2021 22:16:29 +0300</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/azure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>csharp</title>
+      <link>https://deniskyashif.com/tags/csharp/</link>
+      <pubDate>Tue, 06 Apr 2021 22:16:29 +0300</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/csharp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotnet</title>
+      <link>https://deniskyashif.com/tags/dotnet/</link>
+      <pubDate>Tue, 06 Apr 2021 22:16:29 +0300</pubDate>
+      
+      <guid>https://deniskyashif.com/tags/dotnet/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>algorithms</title>
       <link>https://deniskyashif.com/tags/algorithms/</link>
@@ -62,24 +89,6 @@
     </item>
     
     <item>
-      <title>csharp</title>
-      <link>https://deniskyashif.com/tags/csharp/</link>
-      <pubDate>Tue, 07 Jan 2020 07:42:15 +0200</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/csharp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dotnet</title>
-      <link>https://deniskyashif.com/tags/dotnet/</link>
-      <pubDate>Tue, 07 Jan 2020 07:42:15 +0200</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/dotnet/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>software-design</title>
       <link>https://deniskyashif.com/tags/software-design/</link>
       <pubDate>Tue, 07 Jan 2020 07:42:15 +0200</pubDate>
@@ -130,15 +139,6 @@
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
       <guid>https://deniskyashif.com/tags/kendoui/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>azure</title>
-      <link>https://deniskyashif.com/tags/azure/</link>
-      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://deniskyashif.com/tags/azure/</guid>
       <description></description>
     </item>
     

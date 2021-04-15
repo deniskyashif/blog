@@ -6,7 +6,16 @@
     <description>Recent content in csharp on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 07 Jan 2020 07:42:15 +0200</lastBuildDate><atom:link href="https://deniskyashif.com/tags/csharp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Apr 2021 22:16:29 +0300</lastBuildDate><atom:link href="https://deniskyashif.com/tags/csharp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Set a Custom Name Claim Type in Azure AD Secured Web API</title>
+      <link>https://deniskyashif.com/2021/04/06/set-a-custom-name-claim-type-in-azure-ad-secured-web-api/</link>
+      <pubDate>Tue, 06 Apr 2021 22:16:29 +0300</pubDate>
+      
+      <guid>https://deniskyashif.com/2021/04/06/set-a-custom-name-claim-type-in-azure-ad-secured-web-api/</guid>
+      <description>Overriding the default name claim type configuration in Microsoft Identity.</description>
+    </item>
+    
     <item>
       <title>C# Channels - Async Data Pipelines</title>
       <link>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</link>

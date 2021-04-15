@@ -1,212 +1,131 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/algorithms/</loc>
-    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/compilers/</loc>
-    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/compsci/</loc>
-    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/</loc>
-    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/javascript/</loc>
-    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/nlp/</loc>
-    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/</loc>
-    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/posts/</loc>
-    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/</loc>
-    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2020/06/12/introduction-to-bimachines/</loc>
-    <lastmod>2020-06-12T08:00:46+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2020/02/22/resolving-ambiguity-in-text-rewriting/</loc>
-    <lastmod>2020-02-22T09:10:37+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2020/02/18/finite-state-transducers-for-text-rewriting/</loc>
-    <lastmod>2020-02-18T10:00:32+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</loc>
-    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/concurrency/</loc>
-    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/csharp/</loc>
-    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/dotnet/</loc>
-    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/software-design/</loc>
-    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</loc>
-    <lastmod>2019-12-11T15:01:01+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</loc>
-    <lastmod>2019-12-08T08:02:09+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</loc>
-    <lastmod>2019-11-20T07:28:47+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</loc>
-    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2019/06/28/computing-ranges-in-constant-time/</loc>
-    <lastmod>2019-06-28T13:26:25+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/</loc>
-    <lastmod>2019-06-05T17:31:07+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/typescript/</loc>
-    <lastmod>2019-06-05T17:31:07+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2019/05/15/on-recursive-functions/</loc>
-    <lastmod>2019-05-15T15:16:00+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</loc>
-    <lastmod>2019-02-17T15:05:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/angular/</loc>
-    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</loc>
-    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/talks/</loc>
-    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2018/03/06/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</loc>
-    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/telerik/</loc>
-    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</loc>
-    <lastmod>2017-11-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/tags/kendoui/</loc>
-    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</loc>
-    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
-  </url>
-  
   <url>
     <loc>https://deniskyashif.com/tags/azure/</loc>
-    <lastmod>2017-01-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-04-06T22:16:29+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/csharp/</loc>
+    <lastmod>2021-04-06T22:16:29+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/</loc>
+    <lastmod>2021-04-06T22:16:29+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/dotnet/</loc>
+    <lastmod>2021-04-06T22:16:29+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/posts/</loc>
+    <lastmod>2021-04-06T22:16:29+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2021/04/06/set-a-custom-name-claim-type-in-azure-ad-secured-web-api/</loc>
+    <lastmod>2021-04-06T22:16:29+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/</loc>
+    <lastmod>2021-04-06T22:16:29+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/algorithms/</loc>
+    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/compilers/</loc>
+    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/compsci/</loc>
+    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/javascript/</loc>
+    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/nlp/</loc>
+    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/</loc>
+    <lastmod>2020-08-17T11:05:18+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2020/06/12/introduction-to-bimachines/</loc>
+    <lastmod>2020-06-12T08:00:46+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2020/02/22/resolving-ambiguity-in-text-rewriting/</loc>
+    <lastmod>2020-02-22T09:10:37+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2020/02/18/finite-state-transducers-for-text-rewriting/</loc>
+    <lastmod>2020-02-18T10:00:32+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</loc>
+    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/concurrency/</loc>
+    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/software-design/</loc>
+    <lastmod>2020-01-07T07:42:15+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</loc>
+    <lastmod>2019-12-11T15:01:01+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</loc>
+    <lastmod>2019-12-08T08:02:09+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</loc>
+    <lastmod>2019-11-20T07:28:47+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</loc>
+    <lastmod>2019-09-13T17:14:58-07:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2019/06/28/computing-ranges-in-constant-time/</loc>
+    <lastmod>2019-06-28T13:26:25+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/</loc>
+    <lastmod>2019-06-05T17:31:07+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/typescript/</loc>
+    <lastmod>2019-06-05T17:31:07+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2019/05/15/on-recursive-functions/</loc>
+    <lastmod>2019-05-15T15:16:00+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</loc>
+    <lastmod>2019-02-17T15:05:00+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/angular/</loc>
+    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</loc>
+    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/talks/</loc>
+    <lastmod>2019-01-26T22:31:14+02:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2018/03/06/setting-up-a-project-with-telerik-ui-for-asp.net-mvc/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/telerik/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</loc>
+    <lastmod>2017-11-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/kendoui/</loc>
+    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</loc>
+    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://deniskyashif.com/2017/01/18/statistical-machine-translation-on-azure-vm-using-moses/</loc>
     <lastmod>2017-01-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://deniskyashif.com/2016/10/10/impressions-from-emea-pug-challenge-2016/</loc>
     <lastmod>2016-10-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://deniskyashif.com/2016/05/30/validate-any-dom-element-with-the-kendoui-validator/</loc>
     <lastmod>2016-05-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://deniskyashif.com/2015/12/09/bring-.net-development-into-your-favourite-editor-with-omnisharp/</loc>
     <lastmod>2015-12-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://deniskyashif.com/about/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://deniskyashif.com/resume/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://deniskyashif.com/talks/</loc>
   </url>
-  
 </urlset>
