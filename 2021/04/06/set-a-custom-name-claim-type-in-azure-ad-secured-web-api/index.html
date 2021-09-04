@@ -44,8 +44,8 @@
 <meta property="og:description" content="Overriding the default name claim type configuration in Microsoft Identity." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/2021/04/06/set-a-custom-name-claim-type-in-azure-ad-secured-web-api/" /><meta property="og:image" content="https://deniskyashif.com/images/posts/2021-04-15-name-claim-azure-ad/azure-ad-logo.jpeg" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-04-06T22:16:29&#43;03:00" />
-<meta property="article:modified_time" content="2021-04-06T22:16:29&#43;03:00" />
+<meta property="article:published_time" content="2021-04-06T22:16:29+03:00" />
+<meta property="article:modified_time" content="2021-04-06T22:16:29+03:00" />
 
 
     
@@ -118,28 +118,28 @@ if (!doNotTrack) {
 		
 
 		<p>In this article, we&rsquo;ll learn how to set a custom <strong>name claim type</strong> to our <code>ClaimsPrincipal</code>&rsquo;s primary identity in ASP.NET Core Web API. Our API uses Azure AD as its identity provider. That will make it possible for us to retrieve the request initiator&rsquo;s name in our controllers' action methods by simply calling</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">User.Identity.Name
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">User.Identity.Name
 </code></pre></div><p>which will return the value of the claim we specified.</p>
 <h2 id="the-defaults">The Defaults</h2>
 <p>In a standard authentication flow, the user signs in to the client app (1) through Azure AD and obtains an access token as a JWT (2). This token is then used as a bearer token to authenticate the user when calling the Web API (3).</p>
 <p><img src="/images/posts/2021-04-15-name-claim-azure-ad/azure-ad-auth-flow.jpeg" alt="Authentication Flow" />
 <small style="display: block; text-align: right;"><em>Source: docs.microsoft.com</em></small></p>
 <p>To authenticate the user, the respective handler decodes, verifies the access token, and extracts the claims its payload. When ASP.NET instantiates the <code>ClaimsPrincipal</code> object for our request, it uses those claims to establish its identity. We enable the Azure AD authentication into our HTTP request/response pipeline, by simply adding</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">services
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddMicrosoftIdentityWebApi(Configuration.GetSection(<span style="color:#c30">&#34;AzureAd&#34;</span>));
 </code></pre></div><p>to the application startup. <code>&quot;AzureAd&quot;</code> is the name of the respective section in our app settings. For this example, we&rsquo;ll use the <code>&quot;preferred_username&quot;</code> claim which is included in the access token&rsquo;s payload issued by Azure AD. We can retrieve its value by calling</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">User.FindFirst(<span style="color:#c30">&#34;preferred_username&#34;</span>)?.Value;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">User.FindFirst(<span style="color:#c30">&#34;preferred_username&#34;</span>)?.Value;
 </code></pre></div><p>This will search the <code>User.Claims</code> collection for a claim with the provided type and return it if one is found.</p>
 <p>Our <code>ClaimsPrincipal</code>&rsquo;s primary identity has a <code>Name</code> property. It would make sense to get the value of the <code>&quot;preferred_username&quot;</code> claim when we call</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">User.Identity.Name
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">User.Identity.Name
 </code></pre></div><p>but instead, we get <code>null</code>, even though the authentication is successful and the <code>&quot;preferred_username&quot;</code> claim is available.</p>
 <p><img src="/images/posts/2021-04-15-name-claim-azure-ad/name-null.png" alt="Null Identity Name" /></p>
 <p>The reason is that the default name claim type is set to something different and since <code>User.Claims</code> don&rsquo;t contain it, we end up with <code>null</code>.</p>
 <p><img src="/images/posts/2021-04-15-name-claim-azure-ad/find-default-name.png" alt="Find Default Name Claim" /></p>
 <h2 id="the-solution">The Solution</h2>
 <p>We set the default name claim type by using a <strong>different overload</strong> of the <code>AddMicrosoftIdentityWebApi</code> method:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">services
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(options =&gt;
     {
@@ -224,7 +224,7 @@ if (!doNotTrack) {
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-04-15 15:25:44.216226 &#43;0300 EEST m=&#43;0.116195250">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.100737 &#43;0300 EEST m=&#43;0.132245736">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

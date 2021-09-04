@@ -44,8 +44,8 @@
 <meta property="og:description" content="In this article, we&#39;ll define a basic regular expression language using a context-free grammar and learn how to parse its strings in linear time using the recursive descent method." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/" /><meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-08-17T11:05:18&#43;03:00" />
-<meta property="article:modified_time" content="2020-08-17T11:05:18&#43;03:00" />
+<meta property="article:published_time" content="2020-08-17T11:05:18+03:00" />
+<meta property="article:modified_time" content="2020-08-17T11:05:18+03:00" />
 
 
     
@@ -135,7 +135,7 @@ if (!doNotTrack) {
 <p>In this article, we&rsquo;ll define a basic regular expression language using a formal grammar and learn how to parse its strings in linear time using the <em>recursive descent</em> method. We&rsquo;ll use the <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a> notation for the grammars.</p>
 <h2 id="example-grammar-1">Example Grammar #1</h2>
 <p>Let&rsquo;s define the following grammar:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">S</span>&gt; <span style="color:#555">::=</span> &#39;a&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;e&#39;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">S</span>&gt; <span style="color:#555">::=</span> &#39;a&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;e&#39;
 &lt;<span style="color:#0a8;font-weight:bold">A</span>&gt; <span style="color:#555">::=</span> &#39;b&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;d&#39; | &#39;c&#39;
 </code></pre></div><p>\(S, A\) are called nonterminals, \(a,b,c,d,e\) are the terminal symbols. \(S\) is the start symbol (axiom) of the grammar and above we have depicted the two production rules. This grammar describes strings that start with an &ldquo;a&rdquo;, end with an &ldquo;e&rdquo;, have a &ldquo;c&rdquo; in the middle which is surrounded by an equal number of &ldquo;b&rdquo;&rsquo;s to its left and &ldquo;d&rdquo;&rsquo;s to its right. Some of the strings that belong to the language of the grammar are &ldquo;ace&rdquo;, &ldquo;abcde&rdquo;, &ldquo;abbbcddde&rdquo;, etc. We can examine the structure of these strings by building the corresponding parse trees.</p>
 <p><img src="/images/posts/2020-08-17-parsing-regex-rd/pt1all.png" width="250" /></p>
@@ -146,7 +146,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 <p>A recursive descent parser is simply a set of functions for each nonterminal in the grammar. We begin parsing by executing the function corresponding to the axiom and terminate successfully if the whole input string has been processed. Suppose we have the following rule:</p>
 <p>\[ A \to X_0 X_1 \dots X_n \]</p>
 <p>where \( X_i \) is either a terminal or a nonterminal. Pseudocode for the corresponding function would look like this:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">function A() {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">function A() {
     foreach Xi in X0...Xn
         if Xi is a nonterminal
             call the function for Xi()
@@ -159,7 +159,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 <p>A simple recognizer for grammar #1 using recursive descent can be found <a href="https://gist.github.com/deniskyashif/24c055ec845dce9e33344e0afc6dd7ec">here</a>.</p>
 <h2 id="parsing-regular-expressions">Parsing Regular Expressions</h2>
 <p>We start by defining the grammar of our regular expressions. We are going to support the base operations such as <em>concatenation</em>, <em>union</em> (<code>|</code>), <em>zero-or-more</em> (<code>*</code>), <em>one-or-more</em> (<code>+</code>), <em>zero-or-one</em> (<code>?</code>), and <em>grouping</em> (<code>()</code>). We&rsquo;ll also allow users to use metacharacters (<code>*</code>,<code>+</code>,<code>?</code>) as ordinary symbols through escaping (<code>\</code>).</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
     | &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;&#39;|&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;
 &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; 
     | &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
@@ -176,23 +176,22 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 <p>Let&rsquo;s introduce some auxiliary functions before implementing the parsing procedure. First, we define the constructor function for the tree node.</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> TreeNode(label, children) {
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> TreeNode(label, children) {
     <span style="color:#069;font-weight:bold">this</span>.label <span style="color:#555">=</span> label;
     <span style="color:#069;font-weight:bold">this</span>.children <span style="color:#555">=</span> children <span style="color:#555">||</span> [];
-}
-</code></pre></td></tr></table>
+}</code></pre></td></tr></table>
 </div>
 </div>
 <p>A tree node is an object holding a label (string) and an array with references to the child nodes. We continue by declaring some auxiliary variables and functions.</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
@@ -200,19 +199,18 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">let</span> pattern <span style="color:#555">=</span> <span style="color:#c30">&#39;&#39;</span>;
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">let</span> pattern <span style="color:#555">=</span> <span style="color:#c30">&#39;&#39;</span>;
 <span style="color:#069;font-weight:bold">let</span> pos <span style="color:#555">=</span> <span style="color:#f60">0</span>;
 
 <span style="color:#069;font-weight:bold">const</span> peek <span style="color:#555">=</span> () =&gt; pattern[pos];
 <span style="color:#069;font-weight:bold">const</span> hasMoreChars <span style="color:#555">=</span> () =&gt; pos <span style="color:#555">&lt;</span> pattern.length;
-<span style="color:#069;font-weight:bold">const</span> isMetaChar <span style="color:#555">=</span> ch =&gt; ch <span style="color:#555">===</span> <span style="color:#c30">&#39;*&#39;</span> <span style="color:#555">||</span> ch <span style="color:#555">===</span> <span style="color:#c30">&#39;+&#39;</span> <span style="color:#555">||</span> ch <span style="color:#555">===</span> <span style="color:#c30">&#39;?&#39;</span>;
-</code></pre></td></tr></table>
+<span style="color:#069;font-weight:bold">const</span> isMetaChar <span style="color:#555">=</span> ch =&gt; ch <span style="color:#555">===</span> <span style="color:#c30">&#39;*&#39;</span> <span style="color:#555">||</span> ch <span style="color:#555">===</span> <span style="color:#c30">&#39;+&#39;</span> <span style="color:#555">||</span> ch <span style="color:#555">===</span> <span style="color:#c30">&#39;?&#39;</span>;</code></pre></td></tr></table>
 </div>
 </div>
 <p><code>peek()</code> returns the current symbol in the input string, <code>hasMoreChars()</code> checks if we have reached the end of the input, and <code>isMetaChar(ch)</code> checks if we see a symbol that serves as a unary operator.</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
@@ -226,7 +224,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> match(ch) {
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> match(ch) {
     <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">!==</span> ch)
         <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> <span style="color:#366">Error</span>(<span style="color:#c30">`Unexpected symbol </span><span style="color:#a00">${</span>ch<span style="color:#a00">}</span><span style="color:#c30">`</span>);
     pos<span style="color:#555">++</span>;
@@ -237,17 +235,16 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
     match(ch);
 
     <span style="color:#069;font-weight:bold">return</span> ch;
-}
-</code></pre></td></tr></table>
+}</code></pre></td></tr></table>
 </div>
 </div>
 <p><code>match(ch)</code> matches a character with the one we&rsquo;re currently at and moves the position to the next input symbol, <code>next()</code> returns the current input symbol, and moves forward with one position.</p>
 <p>Now we are ready to implement the functions for each nonterminal in the grammar. These functions have the same signature - they take no arguments and return an object of type <code>TreeNode</code>. We start with the axiom.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; 
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; 
     | &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;&#39;|&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;
 </code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
@@ -260,7 +257,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> expr() {
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> expr() {
     <span style="color:#069;font-weight:bold">const</span> trm <span style="color:#555">=</span> term();
 
     <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;|&#39;</span>) {
@@ -270,18 +267,17 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
     }
 
     <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Expr&#39;</span>, [trm]);
-}
-</code></pre></td></tr></table>
+}</code></pre></td></tr></table>
 </div>
 </div>
 <p>Our code directly follows the derivations for <code>expr</code>. We continue with the <em>term</em> and <em>factor</em>.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; 
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; 
     | &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
 &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;
     | &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt;
 </code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
@@ -304,7 +300,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> term() {
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> term() {
     <span style="color:#069;font-weight:bold">const</span> factr <span style="color:#555">=</span> factor();
 
     <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">!==</span> <span style="color:#c30">&#39;)&#39;</span> <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">!==</span> <span style="color:#c30">&#39;|&#39;</span>) {
@@ -324,18 +320,17 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
     }
 
     <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Factor&#39;</span>, [atm]);
-}
-</code></pre></td></tr></table>
+}</code></pre></td></tr></table>
 </div>
 </div>
 <p>For <code>term()</code> we need to perform an additional check (line 41) of the next input symbol so we can expand the correct derivation. <code>factor()</code> similar to <code>expr()</code>.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">char</span>&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">char</span>&gt;
     | &#39;(&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;&#39;)&#39;
 &lt;<span style="color:#0a8;font-weight:bold">char</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">any-char-except-meta</span>&gt;
     | &#39;\&#39;&lt;<span style="color:#0a8;font-weight:bold">any-char</span>&gt;
 </code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
@@ -363,7 +358,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">85
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> atom() {
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> atom() {
     <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;(&#39;</span>) {
         match(<span style="color:#c30">&#39;(&#39;</span>);
         <span style="color:#069;font-weight:bold">const</span> exp <span style="color:#555">=</span> expr();
@@ -388,14 +383,13 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
     }
 
     <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Char&#39;</span>, [<span style="color:#069;font-weight:bold">new</span> TreeNode(next())]);
-}
-</code></pre></td></tr></table>
+}</code></pre></td></tr></table>
 </div>
 </div>
 <p>The functions for the last two nonterminals <code>&lt;atom&gt;</code> and <code>&lt;char&gt;</code> follow the same pattern.</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">87
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">87
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">88
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">89
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">90
@@ -403,13 +397,12 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">92
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> toParseTree(regex) {
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> toParseTree(regex) {
     pattern <span style="color:#555">=</span> regex;
     pos <span style="color:#555">=</span> <span style="color:#f60">0</span>;
 
     <span style="color:#069;font-weight:bold">return</span> expr();
-}
-</code></pre></td></tr></table>
+}</code></pre></td></tr></table>
 </div>
 </div>
 <p>Now we&rsquo;re ready to complete the algorithm. We assign the new input string to the variable <code>pattern</code> (88), reset the input position (89), and call the function for the start symbol of the grammar (91) which is going to return the complete parse tree if the input string is correctly defined.</p>
@@ -508,7 +501,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-04-15 15:25:44.277896 &#43;0300 EEST m=&#43;0.177867482">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.149214 &#43;0300 EEST m=&#43;0.180724069">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

@@ -44,8 +44,8 @@
 <meta property="og:description" content="Experimenting with a rudimentary type system that ensures the programs always terminate." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/" /><meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2019-06-05T17:31:07&#43;03:00" />
-<meta property="article:modified_time" content="2019-06-05T17:31:07&#43;03:00" />
+<meta property="article:published_time" content="2019-06-05T17:31:07+03:00" />
+<meta property="article:modified_time" content="2019-06-05T17:31:07+03:00" />
 
 
     
@@ -137,18 +137,18 @@ In the paper, the authors define the primitives and some operators in Agda and l
 <p><code>Succ: Nat → Nat</code> we define as:</p>
 </li>
 </ul>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">const</span> Succ <span style="color:#555">=</span> (x: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#078;font-weight:bold">number</span> <span style="color:#555">=&gt;</span> x <span style="color:#555">+</span> <span style="color:#f60">1</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">const</span> Succ <span style="color:#555">=</span> (x: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#078;font-weight:bold">number</span> <span style="color:#555">=&gt;</span> x <span style="color:#555">+</span> <span style="color:#f60">1</span>;
 </code></pre></div><ul>
 <li><code>Cases&lt;T&gt;: Bool → T → T → T</code> - think of it as a conditional (if-then-else) expression. <strong>System T</strong> allows polymorphic functions which we implement using TypeScript&rsquo;s generics.</li>
 </ul>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> Cases&lt;<span style="color:#309;font-weight:bold">T</span>&gt;(cond: <span style="color:#078;font-weight:bold">boolean</span>, a: <span style="color:#078;font-weight:bold">T</span>, b: <span style="color:#078;font-weight:bold">T</span>)<span style="color:#555">:</span> T {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> Cases&lt;<span style="color:#309;font-weight:bold">T</span>&gt;(cond: <span style="color:#078;font-weight:bold">boolean</span>, a: <span style="color:#078;font-weight:bold">T</span>, b: <span style="color:#078;font-weight:bold">T</span>)<span style="color:#555">:</span> T {
 	<span style="color:#069;font-weight:bold">return</span> cond <span style="color:#555">?</span> a : <span style="color:#078;font-weight:bold">b</span>;
 }
 </code></pre></div><p>It&rsquo;s easy to see that <code>Cases&lt;number&gt;(true, 1, 2) == 1</code> and <code>Cases&lt;number&gt;(false, 1, 2) == 2</code>.</p>
 <ul>
 <li><code>Rec&lt;T&gt;: Nat → T → (Nat → T → T) → T</code> - this is called  <strong>Gödel&rsquo;s Recursor</strong>.</li>
 </ul>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> Rec&lt;<span style="color:#309;font-weight:bold">T</span>&gt;(sn: <span style="color:#078;font-weight:bold">number</span>, s: <span style="color:#078;font-weight:bold">T</span>, t<span style="color:#555">:</span> (z: <span style="color:#078;font-weight:bold">number</span>, acc: <span style="color:#078;font-weight:bold">T</span>) <span style="color:#555">=&gt;</span> T)<span style="color:#555">:</span> T {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> Rec&lt;<span style="color:#309;font-weight:bold">T</span>&gt;(sn: <span style="color:#078;font-weight:bold">number</span>, s: <span style="color:#078;font-weight:bold">T</span>, t<span style="color:#555">:</span> (z: <span style="color:#078;font-weight:bold">number</span>, acc: <span style="color:#078;font-weight:bold">T</span>) <span style="color:#555">=&gt;</span> T)<span style="color:#555">:</span> T {
 	<span style="color:#069;font-weight:bold">return</span> sn <span style="color:#555">===</span> Zero <span style="color:#555">?</span> s : <span style="color:#078;font-weight:bold">t</span>(sn <span style="color:#555">-</span> <span style="color:#f60">1</span>, Rec(sn <span style="color:#555">-</span> <span style="color:#f60">1</span>, s, t));
 }
 </code></pre></div><p>It might seem confusing at first but its reduction is straightforward:</p>
@@ -157,7 +157,7 @@ Rec sn s t → t n (R n s t)
 </code></pre><p><code>Rec&lt;T&gt;</code> is a polymorphic function that takes three arguments (or four if we count the type). <code>sn</code> is the natural number on which we perform the recursion, think of <code>sn</code> as <em>the successor of n</em>. <code>s</code> is the element returned from the base case, whereas <code>t</code> is the function called on each recursive step. <code>z</code> enumerates each recursive step, and <code>acc</code> is the value which we &ldquo;accumulate&rdquo; over the recursion. Later in the examples, we&rsquo;ll see that we can use <code>Rec&lt;T&gt;</code> as a higher order function too.</p>
 <h2 id="arithmetic-operators">Arithmetic Operators</h2>
 <p>This is where it gets interesting. We construct the <strong>addition</strong> operator in the following way:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> add(x: <span style="color:#078;font-weight:bold">number</span>, y: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#078;font-weight:bold">number</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> add(x: <span style="color:#078;font-weight:bold">number</span>, y: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#078;font-weight:bold">number</span> {
     <span style="color:#069;font-weight:bold">return</span> Rec&lt;<span style="color:#309;font-weight:bold">number</span>&gt;(x, y, (z, acc) <span style="color:#555">=&gt;</span> Succ(acc));
 }
 </code></pre></div><p>Seems weird? Let&rsquo;s see what happens when we invoke <code>add(2, 2)</code>:</p>
@@ -171,15 +171,15 @@ add 2 2
 → t 1 3
 → 4
 </code></pre><p>Using it as a building block we can define <strong>multiplication</strong>:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> multiply(x: <span style="color:#078;font-weight:bold">number</span>, y: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#078;font-weight:bold">number</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> multiply(x: <span style="color:#078;font-weight:bold">number</span>, y: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#078;font-weight:bold">number</span> {
     <span style="color:#069;font-weight:bold">return</span> Rec&lt;<span style="color:#309;font-weight:bold">number</span>&gt;(y, Zero, (z, acc) <span style="color:#555">=&gt;</span> add(x, acc));
 }
 </code></pre></div><p>As well as <strong>exponentiation</strong>:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> exp(x: <span style="color:#078;font-weight:bold">number</span>, y: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#078;font-weight:bold">number</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> exp(x: <span style="color:#078;font-weight:bold">number</span>, y: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#078;font-weight:bold">number</span> {
     <span style="color:#069;font-weight:bold">return</span> Rec&lt;<span style="color:#309;font-weight:bold">number</span>&gt;(y, <span style="color:#f60">1</span>, (z, acc) <span style="color:#555">=&gt;</span> multiply(x, acc));
 }
 </code></pre></div><p>We can also define the <strong>predecessor</strong> function:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> pred(x: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#078;font-weight:bold">number</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> pred(x: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#078;font-weight:bold">number</span> {
     <span style="color:#069;font-weight:bold">return</span> Rec&lt;<span style="color:#309;font-weight:bold">number</span>&gt;(x, Zero, (z, acc) <span style="color:#555">=&gt;</span> z);
 }
 </code></pre></div><p>This is a bit different than what we&rsquo;ve been defining so far and it might not be so obvious why it works. <code>t</code> is a function that takes two arguments and returns the first one. Let&rsquo;s walk through the reduction sequence of <code>pred(3)</code>:</p>
@@ -197,7 +197,7 @@ pred 3
 </code></pre><p><strong>subtraction</strong> is very similar to <strong>addition</strong>, we just have to replace <code>Succ</code> with <code>pred</code>. You can check it out yourself.</p>
 <h2 id="boolean-operators">Boolean Operators</h2>
 <p>Use the <code>Cases&lt;T&gt;</code> combinator with <code>true</code> and <code>false</code> constants to construct logical operators:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> not(x: <span style="color:#078;font-weight:bold">boolean</span>)<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">boolean</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> not(x: <span style="color:#078;font-weight:bold">boolean</span>)<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">boolean</span> {
     <span style="color:#069;font-weight:bold">return</span> Cases&lt;<span style="color:#309;font-weight:bold">boolean</span>&gt;(x, <span style="color:#069;font-weight:bold">false</span>, <span style="color:#069;font-weight:bold">true</span>);
 }
 
@@ -210,7 +210,7 @@ pred 3
 }
 </code></pre></div><p>Based on this you can try implementing the <code>xor</code> operator.</p>
 <p>Now it&rsquo;s time to compare numbers. For that we&rsquo;re going to reuse some of the functions we implemented so far and define to <code>isZero: Nat → Bool</code>. It uses the recursor, that is, if we&rsquo;re in the base case (<code>x</code> equals <code>Zero</code>) we return <code>True</code>, otherwise <code>False</code>.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">const</span> isZero <span style="color:#555">=</span> (x: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">boolean</span> <span style="color:#555">=&gt;</span> {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">const</span> isZero <span style="color:#555">=</span> (x: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">boolean</span> <span style="color:#555">=&gt;</span> {
     <span style="color:#069;font-weight:bold">return</span> Rec&lt;<span style="color:#309;font-weight:bold">boolean</span>&gt;(x, <span style="color:#069;font-weight:bold">true</span>, (z, acc) <span style="color:#555">=&gt;</span> <span style="color:#069;font-weight:bold">false</span>);
 }
 
@@ -233,14 +233,14 @@ pred 3
 <p><img src="/images/posts/2019-06-05-godel-t/ackermann.png" alt="Ackermann Definition" width="450" style="margin-left: 0" /></p>
 <p>You can find <a href="https://www.wolframalpha.com/input/?i=ackerman(1,1)">this</a> neat visual example of its execution.</p>
 <p>Let&rsquo;s try to implement it within our type system! We&rsquo;ll start by defining an operator for function composition:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">type</span> OneArityFn&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">K</span>&gt; <span style="color:#555">=</span> (x: <span style="color:#078;font-weight:bold">T</span>) <span style="color:#555">=&gt;</span> K;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">type</span> OneArityFn&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">K</span>&gt; <span style="color:#555">=</span> (x: <span style="color:#078;font-weight:bold">T</span>) <span style="color:#555">=&gt;</span> K;
 
 <span style="color:#069;font-weight:bold">function</span> compose&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">K</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">V</span>&gt;(f: <span style="color:#078;font-weight:bold">OneArityFn</span>&lt;<span style="color:#309;font-weight:bold">K</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">V</span>&gt;, g: <span style="color:#078;font-weight:bold">OneArityFn</span>&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">K</span>&gt;)
     <span style="color:#555">:</span> OneArityFn&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">V</span>&gt; {
     <span style="color:#069;font-weight:bold">return</span> x <span style="color:#555">=&gt;</span> f(g(x));
 }
 </code></pre></div><p>Observe that <code>compose</code> is a higher order function. It takes two functions <code>f</code> and <code>g</code> and returns a new function that takes an input <code>x</code>, applies it to <code>g</code> and returns the result of <code>g(x)</code> applied to <code>f</code>. Now, using the Gödel&rsquo;s recursor let&rsquo;s define a repeater function:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> repeat&lt;<span style="color:#309;font-weight:bold">T</span>&gt;(f: <span style="color:#078;font-weight:bold">OneArityFn</span>&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">T</span>&gt;, n: <span style="color:#078;font-weight:bold">number</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> repeat&lt;<span style="color:#309;font-weight:bold">T</span>&gt;(f: <span style="color:#078;font-weight:bold">OneArityFn</span>&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">T</span>&gt;, n: <span style="color:#078;font-weight:bold">number</span>)
     <span style="color:#555">:</span> OneArityFn&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">T</span>&gt; {
     <span style="color:#069;font-weight:bold">return</span> Rec&lt;<span style="color:#309;font-weight:bold">OneArityFn</span><span style="color:#a00;background-color:#faa">&lt;</span><span style="color:#309">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">T</span>&gt;<span style="color:#555">&gt;</span>(
         n,
@@ -248,7 +248,7 @@ pred 3
         (z, acc) <span style="color:#555">=&gt;</span> compose(f, acc));
 }
 </code></pre></div><p>Simply put, given a function <code>f</code> and a number <code>n</code>, <code>repeat</code> will invoke <code>f</code> on its output <code>n</code> number of times. Think of it as composing it with itself <code>n</code> number of times. For example <code>repeat(f, 3)</code> will result in <code>x =&gt; f(f(f(x)))</code>. This is all we need to define <code>ackermann</code>:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> ackermann(x: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> OneArityFn&lt;<span style="color:#309;font-weight:bold">number</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">number</span>&gt; {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">function</span> ackermann(x: <span style="color:#078;font-weight:bold">number</span>)<span style="color:#555">:</span> OneArityFn&lt;<span style="color:#309;font-weight:bold">number</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">number</span>&gt; {
     <span style="color:#069;font-weight:bold">return</span> Rec&lt;<span style="color:#309;font-weight:bold">OneArityFn</span><span style="color:#a00;background-color:#faa">&lt;</span><span style="color:#309">number</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">number</span>&gt;<span style="color:#555">&gt;</span>(
         x,
         Succ,
@@ -345,7 +345,7 @@ We have seen that using a language with a particular type system always comes wi
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-04-15 15:25:44.190771 &#43;0300 EEST m=&#43;0.090739729">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.054818 &#43;0300 EEST m=&#43;0.086325409">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

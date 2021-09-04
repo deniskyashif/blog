@@ -43,8 +43,8 @@
 <meta property="og:description" content="Explore cancellation and timeout techniques with channels." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/2019/12/11/csharp-channels-part-2/" /><meta property="og:image" content="https://deniskyashif.com/images/posts/2019-12-11-csharp-channels-part2/featured-image.png" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2019-12-11T15:01:01&#43;02:00" />
-<meta property="article:modified_time" content="2019-12-11T15:01:01&#43;02:00" />
+<meta property="article:published_time" content="2019-12-11T15:01:01+02:00" />
+<meta property="article:modified_time" content="2019-12-11T15:01:01+02:00" />
 
 
     
@@ -126,7 +126,7 @@ if (!doNotTrack) {
 <h2 id="timeout">Timeout</h2>
 <p>We want to stop reading from a channel after a certain amount of time. This is quite simple because the channels' async API supports cancellation.</p>
 <p><img src="/images/posts/2019-12-11-csharp-channels-part2/timeout-sketch.png" width="600" /></p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">10</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">10</span>);
 <span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
 cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
 
@@ -141,7 +141,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
 {
     Console.WriteLine(<span style="color:#c30">&#34;Joe, you are too slow!&#34;</span>);
 }
-</code></pre></div><div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Joe <span style="color:#f60">0</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Joe <span style="color:#f60">0</span>
 Joe <span style="color:#f60">1</span>
 Joe <span style="color:#f60">2</span>
 Joe <span style="color:#f60">3</span>
@@ -150,7 +150,7 @@ Joe, you are too slow!
 <h2 id="quit-channel">Quit Channel</h2>
 <p><img src="/images/posts/2019-12-11-csharp-channels-part2/quit-channel-sketch.png" width="600" /></p>
 <p>Let&rsquo;s go the other way around and tell Joe to stop talking. We need to modify our <code>CreateMessenger&lt;T&gt;()</code> generator so it supports cancellation.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">static</span> ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; CreateMessenger(
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">static</span> ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; CreateMessenger(
     <span style="color:#078;font-weight:bold">string</span> msg, <span style="color:#078;font-weight:bold">int</span> count, CancellationToken token = <span style="color:#069;font-weight:bold">default</span>)
 {
     <span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
@@ -174,36 +174,36 @@ Joe, you are too slow!
     <span style="color:#069;font-weight:bold">return</span> ch.Reader;
 }
 </code></pre></div><p>Now we need to pass our cancellation token to the generator which gives us control over the channel&rsquo;s longevity.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
 <span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">10</span>, cts.Token);
 cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
 
 <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> joe.ReadAllAsync())
     Console.WriteLine(item);
 </code></pre></div><p>Joe had 10 messages to send, but we gave him only 5 seconds, for which he managed to send only 4. We can also manually send a cancellation request, for example, after reading <code>N</code> number of messages.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Joe <span style="color:#f60">0</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Joe <span style="color:#f60">0</span>
 Joe <span style="color:#f60">1</span>
 Joe <span style="color:#f60">2</span>
 Joe <span style="color:#f60">3</span>
 Joe says bye!
 </code></pre></div><h2 id="web-search">Web Search</h2>
 <p>We&rsquo;re given the task to query several data sources and mix the results. The queries should run concurrently and we should disregard the ones taking too long. Also, we should handle a query response at the time of arrival, instead of waiting for all of them to complete. Let&rsquo;s see how we can solve this using what we&rsquo;ve learned so far:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
 </code></pre></div><p>We create a local function that simulates a remote async API call and writes its result to the channel.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#069;font-weight:bold">async</span> Task Search(<span style="color:#078;font-weight:bold">string</span> source, <span style="color:#078;font-weight:bold">string</span> term, CancellationToken token)
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#069;font-weight:bold">async</span> Task Search(<span style="color:#078;font-weight:bold">string</span> source, <span style="color:#078;font-weight:bold">string</span> term, CancellationToken token)
 {
     <span style="color:#069;font-weight:bold">await</span> Task.Delay(TimeSpan.FromSeconds(<span style="color:#069;font-weight:bold">new</span> Random().Next(<span style="color:#f60">5</span>)), token);
     <span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">$&#34;Result from {source} for {term}&#34;</span>, token);
 }
 </code></pre></div><p>Now we query several data sources by passing a search term and a cancellation token.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> term = <span style="color:#c30">&#34;Milky Way&#34;</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> term = <span style="color:#c30">&#34;Milky Way&#34;</span>;
 <span style="color:#078;font-weight:bold">var</span> token = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource(TimeSpan.FromSeconds(<span style="color:#f60">3</span>)).Token;
 
 <span style="color:#078;font-weight:bold">var</span> search1 = Search(<span style="color:#c30">&#34;Google&#34;</span>, term, token);
 <span style="color:#078;font-weight:bold">var</span> search2 = Search(<span style="color:#c30">&#34;Quora&#34;</span>, term, token);
 <span style="color:#078;font-weight:bold">var</span> search3 = Search(<span style="color:#c30">&#34;Wikipedia&#34;</span>, term, token);
 </code></pre></div><p>We wait and process the results one at a time. We break from the loop once the cancellation kicks in.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#069;font-weight:bold">try</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#069;font-weight:bold">try</span>
 {
     <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i &lt; <span style="color:#f60">3</span>; i++)
         Console.WriteLine(<span style="color:#069;font-weight:bold">await</span> ch.Reader.ReadAsync(token));
@@ -217,12 +217,12 @@ Joe says bye!
 
 ch.Writer.Complete();
 </code></pre></div><p>Depending on the timeout interval we might end up receiving responses for all of the queries,</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#555">[</span>9:09:14 AM<span style="color:#555">]</span> Result from Google <span style="color:#069;font-weight:bold">for</span> Milky Way
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#555">[</span>9:09:14 AM<span style="color:#555">]</span> Result from Google <span style="color:#069;font-weight:bold">for</span> Milky Way
 <span style="color:#555">[</span>9:09:14 AM<span style="color:#555">]</span> Result from Wikipedia <span style="color:#069;font-weight:bold">for</span> Milky Way
 <span style="color:#555">[</span>9:09:16 AM<span style="color:#555">]</span> Result from Quora <span style="color:#069;font-weight:bold">for</span> Milky Way
 All searches have completed.
 </code></pre></div><p>or cut off the ones that are too slow.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#555">[</span>9:09:19 AM<span style="color:#555">]</span> Result from Quora <span style="color:#069;font-weight:bold">for</span> Milky Way
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#555">[</span>9:09:19 AM<span style="color:#555">]</span> Result from Quora <span style="color:#069;font-weight:bold">for</span> Milky Way
 <span style="color:#555">[</span>9:09:20 AM<span style="color:#555">]</span> Result from Wikipedia <span style="color:#069;font-weight:bold">for</span> Milky Way
 Timeout.
 </code></pre></div><p>Again - our code is non-blocking concurrent, thus there&rsquo;s no need to use locks, callbacks or any kind of conditional statements.</p>
@@ -307,7 +307,7 @@ Timeout.
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-04-15 15:25:44.2011 &#43;0300 EEST m=&#43;0.101068464">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.082047 &#43;0300 EEST m=&#43;0.113554694">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

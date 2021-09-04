@@ -44,8 +44,8 @@
 <meta property="og:description" content="In this article we learn how to implement a simple and efficient regular expression engine following the Thompson&#39;s construction algorithm." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/" /><meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2019-02-17T15:05:00&#43;02:00" />
-<meta property="article:modified_time" content="2019-02-17T15:05:00&#43;02:00" />
+<meta property="article:published_time" content="2019-02-17T15:05:00+02:00" />
+<meta property="article:modified_time" content="2019-02-17T15:05:00+02:00" />
 
 
     
@@ -249,7 +249,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p>We won&rsquo;t delve into the technical details of this algorithm. You can check my implementation in less than 40 lines of javascript <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L36">here</a> and a neat explanation with more examples <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">here</a>.</p>
 <h3 id="constructing-the-nfa">Constructing the NFA</h3>
 <p>We represent an <strong>NFA state</strong> as an object with the following properties:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> createState(isEnd) {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> createState(isEnd) {
     <span style="color:#069;font-weight:bold">return</span> {
         isEnd,
         transition<span style="color:#555">:</span> {},
@@ -257,7 +257,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
     };
 }
 </code></pre></div><p>There are <strong>two types of transitions</strong> - by a symbol and by epsilon (empty string). A state in Thompson&rsquo;s NFA can either have a symbol transition to at most one state or epsilon transitions to up to two states, but it cannot have a symbol and epsilon transitions at the same time.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> addEpsilonTransition(from, to) {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> addEpsilonTransition(from, to) {
     from.epsilonTransitions.push(to);
 }
 
@@ -265,7 +265,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
     from.transition[symbol] <span style="color:#555">=</span> to;
 }
 </code></pre></div><p>From our <strong>basis</strong>, we have two types of NFA&rsquo;s that would serve as our building blocks: an ε-NFA and a symbol-NFA. This is how we implement them:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> fromEpsilon() {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> fromEpsilon() {
     <span style="color:#069;font-weight:bold">const</span> start <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">false</span>);
     <span style="color:#069;font-weight:bold">const</span> end <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">true</span>);
     addEpsilonTransition(start, end);
@@ -281,7 +281,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
     <span style="color:#069;font-weight:bold">return</span> { start, end };
 }
 </code></pre></div><p>The NFA is simply an object which holds references to its start and end states. By following the <strong>inductive rules</strong> (described above), we build larger NFAs by applying the three operations on smaller NFAs.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> concat(first, second) {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> concat(first, second) {
     addEpsilonTransition(first.end, second.start);
     first.end.isEnd <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">false</span>;
 
@@ -320,7 +320,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <li>When we scan a character - we construct a character-NFA and push it to the stack.</li>
 <li>When we scan an operator, we pop from the stack, apply this operation on the NFA(s) and push the resulting NFA back to the stack.</li>
 </ul>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> toNFA(postfixExp) {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> toNFA(postfixExp) {
 	<span style="color:#069;font-weight:bold">if</span>(postfixExp <span style="color:#555">===</span> <span style="color:#c30">&#39;&#39;</span>) {
 	    <span style="color:#069;font-weight:bold">return</span> fromEpsilon();
 	}
@@ -444,7 +444,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p>We check if any state in the set of states that we end up with is an accepting state and if so - the string is recognized by the NFA. In the above case, the final set contains only \(q_9\) which is an accepting state.</p>
 <h4 id="dealing-with-epsilon-transitions">Dealing with ε-transitions</h4>
 <p>As mentioned above, Thompson&rsquo;s construction has two types of states. Ones with ε-transitions and ones with a transition on a symbol. So each time we end up in a state with ε-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is obvious on step 3 from the example above, on \(q_7\) we read <strong>&lsquo;b&rsquo;</strong> and proceed to \(q_8\) which is an epsilon transition state. We follow the ε-transition and reach \(q_9\) which has no ε-transitions so we add it to the list of next states. This is a recursive procedure.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> addNextState(state, nextStates, visited) {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> addNextState(state, nextStates, visited) {
     <span style="color:#069;font-weight:bold">if</span> (state.epsilonTransitions.length) {
         <span style="color:#069;font-weight:bold">for</span> (<span style="color:#069;font-weight:bold">const</span> st <span style="color:#069;font-weight:bold">of</span> state.epsilonTransitions) {
             <span style="color:#069;font-weight:bold">if</span> (<span style="color:#555">!</span>visited.find(vs =&gt; vs <span style="color:#555">===</span> st)) {
@@ -457,7 +457,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
     }
 }
 </code></pre></div><p>We also have to mark the ε-transition states as visited to prevent infinite looping. The bottom of the recursion is when we reach a state with no ε-transitions. This is the code or the search procedure:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> search(nfa, word) {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> search(nfa, word) {
     <span style="color:#069;font-weight:bold">let</span> currentStates <span style="color:#555">=</span> [];
     addNextState(nfa.start, currentStates, []);
 
@@ -478,7 +478,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 </code></pre></div><p>The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on <a href="#fig5.1">Fig 5.1</a> the start state \(q_0\) is an ε-transition state, so we follow the transitions recursively until reaching the symbol transition states \(q_1\) and \(q_5\) which become our initial set of states.</p>
 <p>Given a string of length <em>n</em>, on each iteration, this algorithm keeps two lists of states with a length of approximately <em>n</em>. This gives us a time complexity of \(O(n^2)\) which significantly outperforms the recursive backtracking approach. We can optimize it by converting the NFA to an epsilon-free NFA and even further by converting it to a DFA. DFAs guarantee \(O(n)\) recognition complexity but we might end up having \(2^n\) states due to the <em>state explosion problem</em>.</p>
 <h2 id="putting-it-all-together">Putting it all together</h2>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> createMatcher(exp) {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> createMatcher(exp) {
     <span style="color:#069;font-weight:bold">const</span> postfixExp <span style="color:#555">=</span> toPostfix(insertExplicitConcatOperator(exp));
     <span style="color:#069;font-weight:bold">const</span> nfa <span style="color:#555">=</span> toNFA(postfixExp);
 
@@ -580,7 +580,7 @@ match(<span style="color:#c30">&#39;&#39;</span>); <span style="color:#09f;font-
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-04-15 15:25:44.275331 &#43;0300 EEST m=&#43;0.175302512">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.147496 &#43;0300 EEST m=&#43;0.179006018">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

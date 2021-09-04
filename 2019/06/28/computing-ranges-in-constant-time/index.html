@@ -44,8 +44,8 @@
 <meta property="og:description" content="Solution for the Range Minimum Query problem with Sparse Tables and Dynamic Programming." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/2019/06/28/computing-ranges-in-constant-time/" /><meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2019-06-28T13:26:25&#43;03:00" />
-<meta property="article:modified_time" content="2019-06-28T13:26:25&#43;03:00" />
+<meta property="article:published_time" content="2019-06-28T13:26:25+03:00" />
+<meta property="article:modified_time" content="2019-06-28T13:26:25+03:00" />
 
 
     
@@ -140,13 +140,13 @@ tr > th:first-child, td:first-child {
 <p>\([2 &hellip; 12]\) has \(11\) elements and we broke it down to ranges of \(8\), \(2\) and \(1\) elements (all powers of 2) respectively. We can also observe that such union can consist of <strong>at most</strong> \(log_2N\) ranges where \(N\) is the length of the original sequence.</p>
 <h2 id="efficiently-precomputing-the-results">Efficiently precomputing the results</h2>
 <p>We&rsquo;re going to compute range minima. Let&rsquo;s go back to our example sequence \(A\) and encode all the possible answers in the <strong>sparse table</strong>. We&rsquo;re going to represent it as a two-dimensional array \(M\) of size \(N \times K\), where \(K = \lfloor {log_2N} \rfloor + 1\). Every cell in this matrix will contain the index of the minimum in a particular range. Note that these ranges have <strong>sizes of powers of \(2\)</strong> which means that <strong>we compute the minima only of those ranges</strong>, hence the size \(O(Nlog_2N)\)</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> A = <span style="color:#069;font-weight:bold">new</span>[] { <span style="color:#f60">5</span>, <span style="color:#f60">2</span>, <span style="color:#f60">4</span>, <span style="color:#f60">7</span>, <span style="color:#f60">6</span>, <span style="color:#f60">3</span>, <span style="color:#f60">1</span>, <span style="color:#f60">2</span> };
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> A = <span style="color:#069;font-weight:bold">new</span>[] { <span style="color:#f60">5</span>, <span style="color:#f60">2</span>, <span style="color:#f60">4</span>, <span style="color:#f60">7</span>, <span style="color:#f60">6</span>, <span style="color:#f60">3</span>, <span style="color:#f60">1</span>, <span style="color:#f60">2</span> };
 <span style="color:#078;font-weight:bold">var</span> N = A.Length;
 <span style="color:#078;font-weight:bold">var</span> K = (<span style="color:#078;font-weight:bold">int</span>)Math.Floor(Math.Log(N, <span style="color:#f60">2</span>)) + <span style="color:#f60">1</span>;
 <span style="color:#078;font-weight:bold">var</span> M = <span style="color:#069;font-weight:bold">new</span> <span style="color:#078;font-weight:bold">int</span>[N, K]; <span style="color:#09f;font-style:italic">// The Sparse Table
 </span></code></pre></div><h3 id="basis">Basis</h3>
 <p>A range of length \(1\) is still a valid range. So the minimum of \(A[1&hellip;1]\) is exactly A[1] = 2, therefore, filling the first row of the table is trivial.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i &lt; N; i++)
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i &lt; N; i++)
     M[i, <span style="color:#f60">0</span>] = i;
 </code></pre></div><p>In other words, we have computed the minima of all the ranges starting at index \(i\) of length \(1 = 2^0\).</p>
 <h3 id="iteration">Iteration</h3>
@@ -350,7 +350,7 @@ M[i + 2^{j-1}, j - 1], &amp; \text{otherwise}
 A[i &hellip; i + 2^j - 1] = A[i &hellip; i + 2^{j-1} - 1] \cup A[i + 2^{j-1} &hellip; i + 2^j - 1]
 \]</p>
 <p>Both sub-ranges have a length of \(2^{j-1}\). This is how we turn this formal notation into code:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> j = <span style="color:#f60">1</span>; j &lt; K; j++) {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> j = <span style="color:#f60">1</span>; j &lt; K; j++) {
     <span style="color:#09f;font-style:italic">// 1 &lt;&lt; j = 2^j
 </span><span style="color:#09f;font-style:italic"></span>    <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i + (<span style="color:#f60">1</span> &lt;&lt; j) &lt;= N; i++) {
         <span style="color:#078;font-weight:bold">int</span> left = M[i, j - <span style="color:#f60">1</span>];
@@ -443,7 +443,7 @@ return 2
 left = { 2, 4, 7, 6 }
 right = { 4, 7, 6, 3 }
 </code></pre><p>We have converted the question from something we don&rsquo;t know to something we know and thus can easily determine the result of the query in \(O(1)\).</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">public</span> <span style="color:#078;font-weight:bold">int</span> RangeMinimum(<span style="color:#078;font-weight:bold">int</span>[] A, <span style="color:#078;font-weight:bold">int</span>[,] M, <span style="color:#078;font-weight:bold">int</span> p, <span style="color:#078;font-weight:bold">int</span> q) {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">public</span> <span style="color:#078;font-weight:bold">int</span> RangeMinimum(<span style="color:#078;font-weight:bold">int</span>[] A, <span style="color:#078;font-weight:bold">int</span>[,] M, <span style="color:#078;font-weight:bold">int</span> p, <span style="color:#078;font-weight:bold">int</span> q) {
     <span style="color:#078;font-weight:bold">var</span> k = (<span style="color:#078;font-weight:bold">int</span>)Math.Floor(Math.Log((q - p + <span style="color:#f60">1</span>), <span style="color:#f60">2</span>));
     <span style="color:#078;font-weight:bold">var</span> left = M[p, k];
     <span style="color:#078;font-weight:bold">var</span> right = M[q - (<span style="color:#f60">1</span> &lt;&lt; k) + <span style="color:#f60">1</span>, k];
@@ -453,10 +453,10 @@ right = { 4, 7, 6, 3 }
 </code></pre></div><p>This algorithm can be easily tweaked so it computes some other property like maximum for example.</p>
 <h2 id="range-sums">Range Sums</h2>
 <p>Let&rsquo;s see how to compute range sums in constant time using a sparse table. We need to slightly modify our precomputation procedure. The main difference is that instead of storing indexes to elements in the array, we store sums.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">for (int i = 0; i &lt; N; i++)
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">for (int i = 0; i &lt; N; i++)
 <span style="background-color:#fcc">-    M[i, 0] = i;
 </span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+    M[i, 0] = A[i];
-</span></code></pre></div><div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">for (int j = 1; j &lt; K; j++) {
+</span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">for (int j = 1; j &lt; K; j++) {
     // 1 &lt;&lt; j = 2^j
     for (int i = 0; i + (1 &lt;&lt; j) &lt;= N; i++) {
         int left = M[i, j - 1];
@@ -466,7 +466,7 @@ right = { 4, 7, 6, 3 }
 </span><span style="background-color:#cfc"></span>    }
 }
 </code></pre></div><p>For computing a sum of an arbitrary range \(A[p &hellip; q]\), we&rsquo;re going to use the observation that any range is a union of subranges with lengths of powers of \(2\). We start with the largest such subrange contained in \(A[p &hellip; q]\) and continue by adding the sums of the subsequent smaller ones, but only if they are within the bounds of \(A[p &hellip; q]\).</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">public</span> <span style="color:#078;font-weight:bold">int</span> RSQ(<span style="color:#078;font-weight:bold">int</span>[,] M, <span style="color:#078;font-weight:bold">int</span> p, <span style="color:#078;font-weight:bold">int</span> q) {
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">public</span> <span style="color:#078;font-weight:bold">int</span> RSQ(<span style="color:#078;font-weight:bold">int</span>[,] M, <span style="color:#078;font-weight:bold">int</span> p, <span style="color:#078;font-weight:bold">int</span> q) {
     <span style="color:#078;font-weight:bold">var</span> sum = <span style="color:#f60">0</span>;
     <span style="color:#09f;font-style:italic">// The size of the table&#39;s second dimension
 </span><span style="color:#09f;font-style:italic"></span>    <span style="color:#078;font-weight:bold">int</span> k = (<span style="color:#078;font-weight:bold">int</span>)Math.Floor(Math.Log((q - p + <span style="color:#f60">1</span>), <span style="color:#f60">2</span>))
@@ -568,7 +568,7 @@ right = { 4, 7, 6, 3 }
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-04-15 15:25:44.184486 &#43;0300 EEST m=&#43;0.084454577">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.053092 &#43;0300 EEST m=&#43;0.084598854">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

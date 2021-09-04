@@ -43,8 +43,8 @@
 <meta property="og:description" content="How to lazily load the descendant items of a record in a TreeList." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/" /><meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2017-06-20T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2017-06-20T00:00:00&#43;00:00" />
+<meta property="article:published_time" content="2017-06-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-06-20T00:00:00+00:00" />
 
 
     
@@ -118,7 +118,7 @@ if (!doNotTrack) {
 <p>Unlike the <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/treeview#configuration-loadOnDemand">TreeView</a>, the <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/treelist">TreeList</a> <strong>doesn&rsquo;t</strong> provide a configuration option to indicate that we&rsquo;re going to lazily load the widget data. Instead we have to resort to its data source.</p>
 <h2 id="treelistdatasource">TreeListDataSource</h2>
 <p>The TreeList has its own DataSource implementation, which extends the KendoUI DataSource. Unlike the TreeView which works with a hierarchical data structure, it expects a linear data structure, i.e. JavaScript array, and the relations are described using property references. So for example the following collection:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
 <span style="color:#069;font-weight:bold">var</span> dataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
     data<span style="color:#555">:</span> [
         { employeeId<span style="color:#555">:</span> <span style="color:#f60">1</span>, name<span style="color:#555">:</span> <span style="color:#c30">&#39;Montgomery Burns&#39;</span>, reportsTo<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">null</span>, hasSubordinates<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">true</span> },
@@ -133,7 +133,7 @@ if (!doNotTrack) {
 |   +-- Lenford Leonard
 </code></pre><h3 id="remote-data-binding">Remote Data Binding</h3>
 <p>For remote data binding we need to use the DataSource&rsquo;s <code>transport</code> property. This is straightforward as in any other Kendo widget:</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">var</span> treeListDataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">var</span> treeListDataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
     transport<span style="color:#555">:</span> {
         read<span style="color:#555">:</span> {
             url<span style="color:#555">:</span> <span style="color:#c30">&#39;api/employees&#39;</span>,
@@ -145,7 +145,7 @@ if (!doNotTrack) {
 });
 </code></pre></div><h3 id="schemamodel"><code>schema.model</code></h3>
 <p>Next we have adapt the widget to the structure of the data by configuring the schema and describe its field mapping in the model.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
 <span style="color:#069;font-weight:bold">var</span> treeListDataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
     transport<span style="color:#555">:</span> { <span style="color:#09f;font-style:italic">/* ... */</span> },
     schema<span style="color:#555">:</span> {
@@ -165,7 +165,7 @@ if (!doNotTrack) {
 
 </code></pre></div><h3 id="haschildren"><code>hasChildren</code></h3>
 <p>This property indicates whether it has child items that have to be additionally fetched from the remote service. We can map it to another property, compute it dynamically with a function or hardcode it.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
 <span style="color:#09f;font-style:italic">// hard-code that the item will always have children
 </span><span style="color:#09f;font-style:italic"></span>hasChildren<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">true</span>
 
@@ -262,7 +262,7 @@ You can find the complete example <a href="https://jsfiddle.net/8xwhv0Le/1/">her
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-04-15 15:25:44.270432 &#43;0300 EEST m=&#43;0.170403588">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.141453 &#43;0300 EEST m=&#43;0.172962732">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

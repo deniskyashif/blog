@@ -43,8 +43,8 @@
 <meta property="og:description" content="How to implement an assembly line concurrency model in .NET using channels." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://deniskyashif.com/2020/01/07/csharp-channels-part-3/" /><meta property="og:image" content="https://deniskyashif.com/images/posts/2020-01-07-csharp-channels-part3/featured-image.png" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-01-07T07:42:15&#43;02:00" />
-<meta property="article:modified_time" content="2020-01-07T07:42:15&#43;02:00" />
+<meta property="article:published_time" content="2020-01-07T07:42:15+02:00" />
+<meta property="article:modified_time" content="2020-01-07T07:42:15+02:00" />
 
 
     
@@ -140,7 +140,7 @@ if (!doNotTrack) {
 <p>To see it in action, we&rsquo;re going to implement a program that efficiently counts the lines of code in a project.</p>
 <h3 id="the-generator---enumerate-the-files">The Generator - Enumerate the Files</h3>
 <p>The initial stage of our pipeline would be to enumerate recursively the files in the workspace. We implement it as a generator.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; GetFilesRecursively(<span style="color:#078;font-weight:bold">string</span> root)
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; GetFilesRecursively(<span style="color:#078;font-weight:bold">string</span> root)
 {
     <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
     
@@ -164,7 +164,7 @@ if (!doNotTrack) {
 </code></pre></div><p>We perform a depth-first traversal of the directory and its subdirectories and write each file name we encounter to the output channel. When we&rsquo;re done with the traversal, we mark the channel as complete so the consumer (the next stage) knows when to stop reading from it.</p>
 <h3 id="stage-1---keep-the-source-files">Stage 1 - Keep the Source Files</h3>
 <p>Stage 1 is going to determine whether the file contains source code or not. The ones that don&rsquo;t should be discarded.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;FileInfo&gt; FilterByExtension(
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;FileInfo&gt; FilterByExtension(
     ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; input, HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; exts)
 {
     <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;FileInfo&gt;();
@@ -185,7 +185,7 @@ if (!doNotTrack) {
 </code></pre></div><p>This stage takes an input channel (produced by the generator) from which it asynchronously reads the file names. For each file, it gets its metadata and checks whether the extension belongs to the set of the source code file extensions. It also transforms the input, that is, for each file that satisfies the condition, it writes a <code>FileInfo</code> object to the output channel.</p>
 <h3 id="stage-2---get-the-line-count">Stage 2 - Get the Line Count</h3>
 <p>This stage is responsible for counting the number of lines in each file.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;(FileInfo file, <span style="color:#078;font-weight:bold">int</span> lines)&gt; 
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;(FileInfo file, <span style="color:#078;font-weight:bold">int</span> lines)&gt; 
     GetLineCount(ChannelReader&lt;FileInfo&gt; input)
 {
     <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;(FileInfo, <span style="color:#078;font-weight:bold">int</span>)&gt;();
@@ -205,7 +205,7 @@ if (!doNotTrack) {
 </code></pre></div><p>We write a tuple of type <code>(FileInfo, int)</code> which is a pair of the file metadata and its number of lines. The <code>int CountLines(FileInfo file)</code> method is straightforward, you can check out the implementation below.</p>
 <details>
   <summary>Expand <code>CountLines</code></summary>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">int</span> CountLines(FileInfo file)
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">int</span> CountLines(FileInfo file)
 {
     <span style="color:#069;font-weight:bold">using</span> <span style="color:#0cf;font-weight:bold">var</span> sr = <span style="color:#069;font-weight:bold">new</span> StreamReader(file.FullName);
     <span style="color:#078;font-weight:bold">var</span> lines = <span style="color:#f60">0</span>;
@@ -218,12 +218,12 @@ if (!doNotTrack) {
 </code></pre></div></details>
 <h2 id="the-sink-stage">The Sink Stage</h2>
 <p>Now we&rsquo;ve implemented the stages of our pipeline, we are ready to put them all together.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> fileGen = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> fileGen = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
 <span style="color:#078;font-weight:bold">var</span> sourceCodeFiles = FilterByExtension(
     fileGen, <span style="color:#069;font-weight:bold">new</span> HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; { <span style="color:#c30">&#34;.js&#34;</span>, <span style="color:#c30">&#34;.ts&#34;</span> });
 <span style="color:#078;font-weight:bold">var</span> counter = GetLineCount(sourceCodeFiles);
 </code></pre></div><p>The sink stage processes the output from the last stage of the pipeline. Unlike the generator, which doesn&rsquo;t consume, but only produces, the sink only consumes but doesn&rsquo;t produce. That&rsquo;s where our pipeline comes to an end.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> totalLines = <span style="color:#f60">0</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> totalLines = <span style="color:#f60">0</span>;
 <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> counter.ReadAllAsync())
 {
     Console.WriteLine(<span style="color:#c30">$&#34;{item.file.FullName} {item.lines}&#34;</span>);
@@ -231,7 +231,7 @@ if (!doNotTrack) {
 }
 
 Console.WriteLine(<span style="color:#c30">$&#34;Total lines: {totalLines}&#34;</span>);
-</code></pre></div><div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/Users/denis/Workspace/proj/index.js <span style="color:#f60">155</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/Users/denis/Workspace/proj/index.js <span style="color:#f60">155</span>
 /Users/denis/Workspace/proj/main.ts <span style="color:#f60">97</span>
 /Users/denis/Workspace/proj/tree.ts <span style="color:#f60">0</span>
 /Users/denis/Workspace/proj/lib/index.ts <span style="color:#f60">210</span>
@@ -245,7 +245,7 @@ responsibility to deal with it. To achieve good error handling, our pipeline nee
 <li>The pipeline should not swallow errors. All the errors should be reported.</li>
 </ol>
 <p>We&rsquo;re going to modify stage 2 which counts the lines in a file. Our definition for invalid input is an empty file. Our pipeline should not pass them forward and instead, it should report the existence of such files. We solve that by introducing a second channel that emits the errors.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="background-color:#fcc">- ChannelReader&lt;(FileInfo file, int lines)&gt; GetLineCount(
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="background-color:#fcc">- ChannelReader&lt;(FileInfo file, int lines)&gt; GetLineCount(
 </span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+     (ChannelReader&lt;(FileInfo file, int lines)&gt; output,
 </span><span style="background-color:#cfc">+      ChannelReader&lt;string&gt; errors)
 </span><span style="background-color:#cfc"></span>    GetLineCount(ChannelReader&lt;FileInfo&gt; input)
@@ -272,7 +272,7 @@ responsibility to deal with it. To achieve good error handling, our pipeline nee
 </span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+       return (output, errors);
 </span><span style="background-color:#cfc"></span>    }
 </code></pre></div><p>We&rsquo;ve created a second channel for errors and changed the signature of the method so it returns both the output and the error channels. Empty files are not passed to the next stage, we&rsquo;ve provided a mechanism to report them using the error channel and after we get an invalid input, our pipeline continues processing the next ones.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> fileGen = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> fileGen = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
 <span style="color:#078;font-weight:bold">var</span> sourceCodeFiles = FilterByExtension(
     fileGen, <span style="color:#069;font-weight:bold">new</span> HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; { <span style="color:#c30">&#34;.js&#34;</span>, <span style="color:#c30">&#34;.ts&#34;</span> });
 <span style="color:#078;font-weight:bold">var</span> (counter, errors) = GetLineCount(sourceCodeFiles);
@@ -285,14 +285,14 @@ Console.WriteLine(<span style="color:#c30">$&#34;Total lines: {totalLines}&#34;<
 
 <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> errMessage <span style="color:#069;font-weight:bold">in</span> errors.ReadAllAsync())
     Console.WriteLine(errMessage);
-</code></pre></div><div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/Users/denis/Workspace/proj/index.js <span style="color:#f60">155</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">/Users/denis/Workspace/proj/index.js <span style="color:#f60">155</span>
 /Users/denis/Workspace/proj/main.ts <span style="color:#f60">97</span>
 /Users/denis/Workspace/proj/lib/index.ts <span style="color:#f60">210</span>
 Total lines: <span style="color:#f60">462</span>
 <span style="color:#555">[</span>Error<span style="color:#555">]</span> Empty file /Users/denis/Workspace/proj/tree.ts
 </code></pre></div><h2 id="cancellation">Cancellation</h2>
 <p>Similarily to the error handling, the stages being independent means that each has to handle cancellation on their own. To stop the pipeline, we need to prevent the generator from delegating new jobs. Let&rsquo;s make it cancellable.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; GetFilesRecursively(
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; GetFilesRecursively(
     <span style="color:#078;font-weight:bold">string</span> root, CancellationToken token = <span style="color:#069;font-weight:bold">default</span>)
 {
     <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
@@ -322,7 +322,7 @@ Total lines: <span style="color:#f60">462</span>
     <span style="color:#069;font-weight:bold">return</span> output;
 }
 </code></pre></div><p>The change is straightforward, we need to handle the cancellation in a <code>try/catch</code> block and not forget to close the output channel. Keep in mind that canceling only the initial stage will leave the next stages running with the existing jobs which might not always be desired, especially if the stages are long-running. Therefore, we have to make them able to handle cancellation as well.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
 cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 <span style="color:#078;font-weight:bold">var</span> fileSource = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>, cts.Token);
 ...
@@ -335,7 +335,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 <p><img src="/images/posts/2020-01-07-csharp-channels-part3/split.png" /></p>
 <details>
   <summary>Expand <code>Split&lt;T&gt;</code> implementation</summary>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">IList&lt;ChannelReader&lt;T&gt;&gt; Split&lt;T&gt;(ChannelReader&lt;T&gt; input, <span style="color:#078;font-weight:bold">int</span> n)
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">IList&lt;ChannelReader&lt;T&gt;&gt; Split&lt;T&gt;(ChannelReader&lt;T&gt; input, <span style="color:#078;font-weight:bold">int</span> n)
 {
     <span style="color:#078;font-weight:bold">var</span> outputs = <span style="color:#069;font-weight:bold">new</span> Channel&lt;T&gt;[n];
     <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">var</span> i = <span style="color:#f60">0</span>; i &lt; n; i++)
@@ -359,7 +359,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 </code></pre></div></details>
 <br />
 <p>We&rsquo;re going to use it to distribute the source code files among 5 channels which will let us process up to 5 files simultaneously. This is similar to when supermarkets open additional checkout lines when there&rsquo;re a lot of customers waiting.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> fileSource = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> fileSource = GetFilesRecursively(<span style="color:#c30">&#34;path_to/node_modules&#34;</span>);
 <span style="color:#078;font-weight:bold">var</span> sourceCodeFiles =
     FilterByExtension(fileSource, <span style="color:#069;font-weight:bold">new</span> HashSet&lt;<span style="color:#078;font-weight:bold">string</span>&gt; {<span style="color:#c30">&#34;.js&#34;</span>, <span style="color:#c30">&#34;.ts&#34;</span> });
 <span style="color:#078;font-weight:bold">var</span> splitter = Split(sourceCodeFiles, <span style="color:#f60">5</span>);
@@ -368,7 +368,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 <p><img src="/images/posts/2020-01-07-csharp-channels-part3/merge.png" /></p>
 <details>
   <summary>Expand <code>Merge&lt;T&gt;</code> implementation</summary>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;T&gt; Merge&lt;T&gt;(<span style="color:#069;font-weight:bold">params</span> ChannelReader&lt;T&gt;[] inputs)
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;T&gt; Merge&lt;T&gt;(<span style="color:#069;font-weight:bold">params</span> ChannelReader&lt;T&gt;[] inputs)
 {
     <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;T&gt;();
 
@@ -390,7 +390,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 <br />
 <p>During <code>Merge&lt;T&gt;</code>, we read concurrently from several channels, so this is the stage that we need to tweak a little bit and perform the line counting.</p>
 <p>We introduce, <code>CountLinesAndMerge</code> which doesn&rsquo;t only redirect, but also transforms.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;(FileInfo file, <span style="color:#078;font-weight:bold">int</span> lines)&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;(FileInfo file, <span style="color:#078;font-weight:bold">int</span> lines)&gt;
     CountLinesAndMerge(IList&lt;ChannelReader&lt;FileInfo&gt;&gt; inputs)
 {
     <span style="color:#078;font-weight:bold">var</span> output = Channel.CreateUnbounded&lt;(FileInfo file, <span style="color:#078;font-weight:bold">int</span> lines)&gt;();
@@ -410,7 +410,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
     <span style="color:#069;font-weight:bold">return</span> output;
 }
 </code></pre></div><p>The error handling and the cancellation are omitted for the sake of brevity, however, we&rsquo;ve already seen how to implement them. Now we&rsquo;re ready to build our pipeline.</p>
-<div class="highlight"><pre style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">var fileSource = GetFilesRecursively(&#34;path_to/node_modules&#34;);
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">var fileSource = GetFilesRecursively(&#34;path_to/node_modules&#34;);
 var sourceCodeFiles =
     FilterByExtension(fileSource, new HashSet&lt;string&gt; {&#34;.js&#34;, &#34;.ts&#34;});
 <span style="background-color:#fcc">- var counter = GetLineCount(sourceCodeFiles);
@@ -502,7 +502,7 @@ var sourceCodeFiles =
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-04-15 15:25:44.209079 &#43;0300 EEST m=&#43;0.109048581">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.080678 &#43;0300 EEST m=&#43;0.112186038">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
