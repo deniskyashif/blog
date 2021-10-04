@@ -128,7 +128,7 @@ if (!doNotTrack) {
 });
 
 </code></pre></div><p>will result in the corresponding tree:</p>
-<pre><code>+-- Montgomery Burns  
+<pre tabindex="0"><code>+-- Montgomery Burns  
 |   +-- Homer Simpson  
 |   +-- Lenford Leonard
 </code></pre><h3 id="remote-data-binding">Remote Data Binding</h3>
@@ -179,10 +179,10 @@ if (!doNotTrack) {
 
 </code></pre></div><h2 id="the-endpoint">The Endpoint</h2>
 <p>On initial load the widget&rsquo;s data soruce will make an API call to the url we&rsquo;ve defined, e.g.</p>
-<pre><code>GET 'api/employees'
+<pre tabindex="0"><code>GET 'api/employees'
 RESPONSE: [{ employeeId: 1, name: 'Montgomery Burns', reportsTo: null, hasSubordinates: true }]
 </code></pre><p>thus retrieving and populating the widget with the top-level records, namely the ones the <code>parentId</code> of which is null or not defined. After that when a record is expanded and its <code>hasChildren</code> property is ```true`` the data source will perform an API call but this time by also providing an additional id query parameter, e.g.</p>
-<pre><code>GET 'api/employees?id=1'
+<pre tabindex="0"><code>GET 'api/employees?id=1'
 RESPONSE: [
     { employeeId: 2, name: &quot;Homer Simpson&quot;, reportsTo: 1, hasSubordinates: false },
     { employeeId: 3, name: &quot;Lenford Leonard&quot;, reportsTo: 1, hasSubordinates: false }]
@@ -262,7 +262,7 @@ You can find the complete example <a href="https://jsfiddle.net/8xwhv0Le/1/">her
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.141453 &#43;0300 EEST m=&#43;0.172962732">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-10-04 12:45:14.098929 &#43;0300 EEST m=&#43;0.166471832">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

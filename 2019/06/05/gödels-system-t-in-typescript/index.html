@@ -152,7 +152,7 @@ In the paper, the authors define the primitives and some operators in Agda and l
 	<span style="color:#069;font-weight:bold">return</span> sn <span style="color:#555">===</span> Zero <span style="color:#555">?</span> s : <span style="color:#078;font-weight:bold">t</span>(sn <span style="color:#555">-</span> <span style="color:#f60">1</span>, Rec(sn <span style="color:#555">-</span> <span style="color:#f60">1</span>, s, t));
 }
 </code></pre></div><p>It might seem confusing at first but its reduction is straightforward:</p>
-<pre><code>Rec 0 s t → s
+<pre tabindex="0"><code>Rec 0 s t → s
 Rec sn s t → t n (R n s t)
 </code></pre><p><code>Rec&lt;T&gt;</code> is a polymorphic function that takes three arguments (or four if we count the type). <code>sn</code> is the natural number on which we perform the recursion, think of <code>sn</code> as <em>the successor of n</em>. <code>s</code> is the element returned from the base case, whereas <code>t</code> is the function called on each recursive step. <code>z</code> enumerates each recursive step, and <code>acc</code> is the value which we &ldquo;accumulate&rdquo; over the recursion. Later in the examples, we&rsquo;ll see that we can use <code>Rec&lt;T&gt;</code> as a higher order function too.</p>
 <h2 id="arithmetic-operators">Arithmetic Operators</h2>
@@ -161,7 +161,7 @@ Rec sn s t → t n (R n s t)
     <span style="color:#069;font-weight:bold">return</span> Rec&lt;<span style="color:#309;font-weight:bold">number</span>&gt;(x, y, (z, acc) <span style="color:#555">=&gt;</span> Succ(acc));
 }
 </code></pre></div><p>Seems weird? Let&rsquo;s see what happens when we invoke <code>add(2, 2)</code>:</p>
-<pre><code>t := λz.λacc.Succ acc
+<pre tabindex="0"><code>t := λz.λacc.Succ acc
 
 add 2 2 
 → Rec 2 2 t
@@ -183,7 +183,7 @@ add 2 2
     <span style="color:#069;font-weight:bold">return</span> Rec&lt;<span style="color:#309;font-weight:bold">number</span>&gt;(x, Zero, (z, acc) <span style="color:#555">=&gt;</span> z);
 }
 </code></pre></div><p>This is a bit different than what we&rsquo;ve been defining so far and it might not be so obvious why it works. <code>t</code> is a function that takes two arguments and returns the first one. Let&rsquo;s walk through the reduction sequence of <code>pred(3)</code>:</p>
-<pre><code>t := λz.λw.z
+<pre tabindex="0"><code>t := λz.λw.z
 
 pred 3 
 → Rec 3 0 t
@@ -345,7 +345,7 @@ We have seen that using a language with a particular type system always comes wi
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.054818 &#43;0300 EEST m=&#43;0.086325409">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-10-04 12:45:14.031941 &#43;0300 EEST m=&#43;0.099481851">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

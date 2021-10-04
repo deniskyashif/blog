@@ -126,7 +126,7 @@ if (!doNotTrack) {
 For the hands-on part, we&rsquo;ll use <a href="https://www.antlr.org/">ANTLR</a> (ANother Tool for Language Recognition) to implement a CSV parser thus seeing how an abstract formalism can be turned into code.</p>
 <h2 id="definition">Definition</h2>
 <p>Let&rsquo;s take a look at <a href="https://www.ecma-international.org/ecma-262/5.1/#sec-12.5">ECMAScript&rsquo;s specification</a> of an <strong>if-statement</strong>:</p>
-<pre><code>IfStatement: 
+<pre tabindex="0"><code>IfStatement: 
     if ( Expression ) Statement else Statement
     if ( Expression ) Statement
 </code></pre><p>The <code>:</code> means <strong>&ldquo;can have the form&rdquo;</strong> and such a rule is called a <strong>production</strong>.
@@ -177,7 +177,7 @@ Lexer rules contain only either literals (along with the use of EBNF symbols; li
 </span><span style="color:#bbb">     </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;.&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#555">+</span>;<span style="color:#bbb">       </span><span style="color:#09f;font-style:italic">// match .2, .3248 etc.</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#99f">DIGIT</span>:<span style="color:#bbb"> </span>[0-9];<span style="color:#bbb">
 </span></code></pre></div><p>Given this grammar and the string &ldquo;5+1&rdquo;, the tokenizer will generate the following output:</p>
-<pre><code>[@0,0:0='5',&lt;NUMBER&gt;,1:0]
+<pre tabindex="0"><code>[@0,0:0='5',&lt;NUMBER&gt;,1:0]
 [@1,1:1='+',&lt;'+'&gt;,1:1]
 [@2,2:2='1',&lt;NUMBER&gt;,1:2]
 [@3,3:2='&lt;EOF&gt;',&lt;EOF&gt;,1:3]
@@ -195,7 +195,7 @@ Lexer rules contain only either literals (along with the use of EBNF symbols; li
 <p>The leaves of the tree from left to right yield the string. <strong>Finding the tree for a given sequence of tokens is called parsing.</strong> Let&rsquo;s see another example. The parse tree of &ldquo;15+1.4-.2&rdquo;:</p>
 <p><img src="/images/posts/2019-09-13-syntax-directed-translation/calc2.png" /></p>
 <p>We can generate &ldquo;15+1.4-.2&rdquo; by applying the production rules in the following order:</p>
-<pre><code>start
+<pre tabindex="0"><code>start
 expr
 expr - NUMBER
 expr + NUMER - NUMBER
@@ -319,7 +319,7 @@ visit(root); <span style="color:#09f;font-style:italic">// &#39;5+3-1&#39; =&gt;
 STRING : &#39;&#34;&#39; (&#39;&#34;&#34;&#39;|~&#39;&#34;&#39;)* &#39;&#34;&#39; ; // quote-quote is an escaped quote
 </code></pre></div><p><em>source: <a href="https://github.com/antlr/grammars-v4/blob/master/csv/CSV.g4">grammars-v4 on GitHub</a></em></p>
 <p>Let&rsquo;s also create <code>employees.csv</code>.</p>
-<pre><code class="language-csv" data-lang="csv">EmployeeNumber, Name, Location, BirthDate
+<pre tabindex="0"><code class="language-csv" data-lang="csv">EmployeeNumber, Name, Location, BirthDate
 12420, John Smith, USA, 1988/04/29
 </code></pre><p>We can now proceed to visualize the parse tree. Running</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">antlr CSV.g4
@@ -548,7 +548,7 @@ query languages, protocols, connection strings, configuration files and all kind
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.151822 &#43;0300 EEST m=&#43;0.183332599">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-10-04 12:45:14.109145 &#43;0300 EEST m=&#43;0.176688266">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

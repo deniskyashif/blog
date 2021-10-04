@@ -428,7 +428,7 @@ RangeMinimum(p, q) = Min(M[p, k], M[q - 2^k + 1, k])
 </tbody>
 </table>
 <p>What is the range minimum of 1 and 5?</p>
-<pre><code>p = 1, q = 5
+<pre tabindex="0"><code>p = 1, q = 5
 k = floor(log(5 - 1 + 1)) = 2
 M[1, 2] = 2
 M[5 - 2^2 + 1, 2] = M[2, 2] = 3
@@ -439,7 +439,7 @@ return 2
 <li>We already know the minima of all blocks with sizes of 4.</li>
 </ol>
 <p>Therefore we pick two <strong>overlapping</strong> ranges of this length. The first <strong>starts at \(p\)</strong> and the other <strong>ends at \(q\)</strong>. The whole range includes:</p>
-<pre><code>A[1 ... 5] = { 2, 4, 7, 6, 3 }
+<pre tabindex="0"><code>A[1 ... 5] = { 2, 4, 7, 6, 3 }
 left = { 2, 4, 7, 6 }
 right = { 4, 7, 6, 3 }
 </code></pre><p>We have converted the question from something we don&rsquo;t know to something we know and thus can easily determine the result of the query in \(O(1)\).</p>
@@ -568,7 +568,7 @@ right = { 4, 7, 6, 3 }
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-09-04 10:14:30.053092 &#43;0300 EEST m=&#43;0.084598854">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2021-10-04 12:45:14.029025 &#43;0300 EEST m=&#43;0.096565414">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
