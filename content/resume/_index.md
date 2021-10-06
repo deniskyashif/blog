@@ -100,7 +100,7 @@ title = "Resume"
                         </ul>
                         <div class="tools-list"><span>PostgreSQL</span><span>ASP.NET Core</span><span>node.js</span><span>ReactJS</span><span>Docker</span></div>
                     </div>
-                    <div class="exp-nvs">
+                    <div class="exp-nvs" style="margin-top: 0">
                         <h3>Senior Software Engineer and Consultant</h3>
                         <h4 class="accent">New Venture Software</h4>
                         <small><i class="fa fa-calendar" aria-hidden="true"></i> 11/2015 - 08/2018</small>
@@ -141,7 +141,7 @@ title = "Resume"
                 <section class="summary">
                     <h2>Summary</h2>                        
                     <p>
-                        Software engineer, passionate about software design and architecture, and web technologies.
+                        Software engineer and architect, passionate about software design and architecture, and web technologies.
                     </p>
                     <p>
                         Experience in building products with .NET and JavaScript, consulting, and public speaking.
@@ -157,7 +157,7 @@ title = "Resume"
                         <li>TypeScript</li>
                         <li>JavaScript</li>
                         <li>Go</li>
-                        <li>ASP.NET Core</li>
+                        <li>ASP.NET</li>
                         <li>node.js</li>
                         <li>Angular</li>
                         <li>HTML</li>
@@ -200,7 +200,7 @@ title = "Resume"
                 </section>
             </div>
         </div>
-        <div class="container">
+        <div class="container"> <!-- style="margin-top: 65px" for PDF print -->
             <div class="left">
                 <section class="projects">
                     <h2>Academic & Side Projects</h2>
@@ -222,10 +222,10 @@ title = "Resume"
                             With fellow students, we developed a question answering system and wrote a paper on it.
                             Took part in the "International Workshop on Semantic Evaluation" being one of
                             the few teams worldwide that solved the problem.
-                        </p><!-- 
-                                 <div class="tools-list">
-                                 <span>Python</span>
-                                 </div> -->
+                        </p> 
+                        <div class="tools-list">
+                            <span>Python</span>
+                        </div>
                     </div>
                     <div>
                         <h3>ssfst - an efficient dictionary-based text rewriter</h3>
@@ -235,11 +235,11 @@ title = "Resume"
                             </a>
                         </small>
                         <p>
-                            <!-- An efficient dictionary-based text rewriter implemented in JavaScript. -->
-                            <!-- <br> -->
-                            <!-- <div class="tools-list">
-                                 <span>node.js</span>
-                                 </div> -->
+                            An efficient dictionary-based text rewriter implemented in JavaScript.
+                            <br>
+                            <div class="tools-list">
+                                <span>node.js</span>
+                            </div>
                         </p>
                     </div>
                 </section>
