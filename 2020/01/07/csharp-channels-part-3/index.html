@@ -124,7 +124,7 @@ if (!doNotTrack) {
 		<p>In this article, we&rsquo;ll learn how to efficiently process data in a non-blocking way using the pipeline pattern. We&rsquo;ll construct composable and testable pipelines using .NET&rsquo;s channels, and see how to perform cancellation and deal with errors. If you&rsquo;re new to the concept of channels, I suggest checking out <a href="/csharp-channels-part-1">part 1</a> and <a href="/csharp-channels-part-2">part 2</a> of the series first.</p>
 <h2 id="pipelines">Pipelines</h2>
 <p>A pipeline is a concurrency model where a job is handled through several processing stages. Each stage performs a part of the full job and when it&rsquo;s done, it forwards it to the next stage. It also runs in a separate thread and <strong>shares no state</strong> with the other stages.</p>
-<p><img src="/images/posts/2020-01-07-csharp-channels-part3/pipeline.png" /></p>
+<img src="/images/posts/2020-01-07-csharp-channels-part3/pipeline.png" />
 <p>The generator delegates the jobs, which are being processed through the pipeline. For example, we can represent the pizza preparation as a pipeline, consisting of the following stages:</p>
 <ol start="0">
 <li>Pizza order (Generator)</li>
@@ -136,7 +136,7 @@ if (!doNotTrack) {
 <p>Stages start executing as soon as their input is ready, that is, when stage 2 adds toppings to pizza 1, stage 1 can prepare the dough for pizza 2, when stage 4 puts the baked pizza 1 in a box, stage 1 might be preparing the dough for pizza 3 and so on.</p>
 <h2 id="implementing-a-channel-based-pipeline">Implementing a Channel-based Pipeline</h2>
 <p>Each pipeline starts with a generator method, which initiates jobs by passing it to the stages. The intermediate stages are also methods that run concurrently. Channels serve as a transport mechanism between the stages. A stage takes a channel as an input, performs some work on each data item it asynchronously reads, and passes the result to an output channel. The purpose of a stage is to do one job and do it well.</p>
-<p><img src="/images/posts/2020-01-07-csharp-channels-part3/pipeline-channels.png" /></p>
+<img src="/images/posts/2020-01-07-csharp-channels-part3/pipeline-channels.png" />
 <p>To see it in action, we&rsquo;re going to implement a program that efficiently counts the lines of code in a project.</p>
 <h3 id="the-generator---enumerate-the-files">The Generator - Enumerate the Files</h3>
 <p>The initial stage of our pipeline would be to enumerate recursively the files in the workspace. We implement it as a generator.</p>
@@ -328,11 +328,11 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 ...
 </code></pre></div><h2 id="dealing-with-backpressure">Dealing with Backpressure</h2>
 <p>The term <a href="https://en.wikipedia.org/wiki/Back_pressure">backpressure</a> is borrowed from fluid dynamics and relates to to the software systems' dataflow. In our examples, the stages execute concurrently but this doesn&rsquo;t guarantee an optimal performance. Let&rsquo;s revisit the pizza example. It takes a longer time to bake the pizza than to add the toppings. This becomes an issue when we have to process a large number of pizza orders as we&rsquo;re going to end up with many pizzas with their toppings added, waiting to be baked, but our oven bakes only one at a time. We can solve this by getting a larger oven, or even multiple ovens.</p>
-<p><img src="/images/posts/2020-01-07-csharp-channels-part3/bottleneck.png" /></p>
+<img src="/images/posts/2020-01-07-csharp-channels-part3/bottleneck.png" />
 <p>In the line-counter example, the stage where we read the file and count its lines might cause might experience backpressure because reading a sufficiently large file (stage 2) is slower than retreiving a file metadata (stage 1). It makes sense to increase the capacity of this stage and that&rsquo;s where <code>Split&lt;T&gt;</code> and <code>Merge&lt;T&gt;</code> which we discussed in <a href="/csharp-channels-part-1#multiplexer">part 1</a> come into use. We&rsquo;ll summarize them.</p>
 <h3 id="split">Split</h3>
 <p><code>Split&lt;T&gt;</code> is a method that takes an input channel and distributes its messages amongst several outputs. That way we can let several threads concurrently handle the message processing.</p>
-<p><img src="/images/posts/2020-01-07-csharp-channels-part3/split.png" /></p>
+<img src="/images/posts/2020-01-07-csharp-channels-part3/split.png" />
 <details>
   <summary>Expand <code>Split&lt;T&gt;</code> implementation</summary>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">IList&lt;ChannelReader&lt;T&gt;&gt; Split&lt;T&gt;(ChannelReader&lt;T&gt; input, <span style="color:#078;font-weight:bold">int</span> n)
@@ -365,7 +365,7 @@ cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">2</span>));
 <span style="color:#078;font-weight:bold">var</span> splitter = Split(sourceCodeFiles, <span style="color:#f60">5</span>);
 </code></pre></div><h3 id="merge">Merge</h3>
 <p><code>Merge&lt;T&gt;</code> is the opposite operation. It takes multiple input channels and consolidates them in a single output.</p>
-<p><img src="/images/posts/2020-01-07-csharp-channels-part3/merge.png" /></p>
+<img src="/images/posts/2020-01-07-csharp-channels-part3/merge.png" />
 <details>
   <summary>Expand <code>Merge&lt;T&gt;</code> implementation</summary>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">ChannelReader&lt;T&gt; Merge&lt;T&gt;(<span style="color:#069;font-weight:bold">params</span> ChannelReader&lt;T&gt;[] inputs)
@@ -502,7 +502,7 @@ var sourceCodeFiles =
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.712952 &#43;0300 EEST m=&#43;0.120816367">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.749114 &#43;0200 EET m=&#43;0.110552534">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

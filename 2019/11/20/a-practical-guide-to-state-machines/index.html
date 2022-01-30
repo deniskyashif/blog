@@ -125,7 +125,7 @@ if (!doNotTrack) {
 <h2 id="an-informal-definition">An Informal Definition</h2>
 <p>A finite state machine is an abstract device that has states and transitions between those states. It&rsquo;s always in one of its states and while it reads an input, it switches from state to state. Think of it as a directed graph. A state machine has no memory, that is, it does not keep track of the previous states it has been in. It only knows its current state. If there&rsquo;s no transition on a given input, the machine terminates.<br>
 For a state machine to be deterministic means that on each input there is one and only one state to which it can transition from its current state. All of the examples in this article are of deterministic state machines.</p>
-<p><img src="/images/posts/2019-11-20-guide-to-fsm/1.svg" /></p>
+<img src="/images/posts/2019-11-20-guide-to-fsm/1.svg" />
 <p class="text-center"><small>Figure 1: Representation of a door using a state machine</small></p>
 <p>The state machine in Figure 1 has:</p>
 <ul>
@@ -159,7 +159,7 @@ State ChangeState(State current, Input input) =&gt;
 </span><span style="color:#09f;font-style:italic"></span>current = ChangeState(current, Input.Open); <span style="color:#09f;font-style:italic">// throws
 </span></code></pre></div><h2 id="state-machines-with-async-actions">State Machines with Async Actions</h2>
 <p>Let&rsquo;s take a look at another example. This time we&rsquo;ll implement a process scheduler.</p>
-<p><img src="/images/posts/2019-11-20-guide-to-fsm/2.svg" /></p>
+<img src="/images/posts/2019-11-20-guide-to-fsm/2.svg" />
 <p class="text-center"><small>Figure 2: The states of a process</small></p>
 <p>In Figure 2 we have the following sets of states and inputs:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">enum</span> State { Created, Ready, Running, Waiting, Terminated }
@@ -224,21 +224,21 @@ State ChangeState(State current, Input input) =&gt;
 </ul>
 <p>We have to ensure that the customer cannot use one issued payment multiple times, or <em>pay</em> and immediately <em>cancel</em>, thus getting the items for free. The bank must ensure that money cannot be <em>canceled</em> and <em>redeemed</em> at the same time. The store should <em>ship</em> the items only when it gets the payment.</p>
 <p>We model a separate state machine for each participant. Let&rsquo;s start with the bank.</p>
-<p><img src="/images/posts/2019-11-20-guide-to-fsm/31.svg" /></p>
+<img src="/images/posts/2019-11-20-guide-to-fsm/31.svg" />
 <p class="text-center"><small>Figure 3.1: The Bank</small></p>
 <p>The initial state <code>1</code> represents the situation when the bank has issued the money but has not been requested to either <em>redeem</em> it (by the store) or <em>cancel</em> it (by the customer). Once the store <em>redeems</em> the money, the bank enters state <code>3</code> and thus can to <em>transfer</em> it to the store&rsquo;s account. When it&rsquo;s in state <code>2</code>, it restores the money to the customer&rsquo;s account. The fact that we don&rsquo;t allow the bank to leave state <code>2</code> prevents restoring the customer&rsquo;s money multiple times.</p>
-<p><img src="/images/posts/2019-11-20-guide-to-fsm/32.svg" /></p>
+<img src="/images/posts/2019-11-20-guide-to-fsm/32.svg" />
 <p class="text-center"><small>Figure 3.2: The Store</small></p>
 <p>When the <em>pay</em> action is performed (by the customer), the store enters state <code>b</code>. It can then either <em>ship</em> the items or <em>redeem</em> the money from the bank. It can also ship when it has made a <em>redeem</em> request and before the money is <em>transferred</em>, or at the end when the money is <em>transferred</em> by the bank.</p>
-<p><img src="/images/posts/2019-11-20-guide-to-fsm/33.svg" /></p>
+<img src="/images/posts/2019-11-20-guide-to-fsm/33.svg" />
 <p class="text-center"><small>Figure 3.3: The Customer</small></p>
 <p>The customer&rsquo;s state machine has only one state and two input actions that lead back to the same state. This means that the customer <strong>can do anything</strong> any number of times.</p>
 <h3 id="dealing-with-the-missing-action-inputs">Dealing with the Missing Action Inputs</h3>
 <p>To combine these state machines, they should be able to process action inputs simultaneously. We observe that some transitions are missing on some of the machines. For example, the store doesn&rsquo;t have a notion of the <em>cancel</em> action. For the bank, <em>pay</em> and <em>ship</em> are irrelevant. To make the store &ldquo;ignore&rdquo; the <em>cancel</em> action, we simply have to add a transition from each of its states to itself on <em>cancel</em>.
 Another potential problem would be when the customer executes <em>pay</em> for a second time, while the store is in state <code>e</code>. We need to add a transition on <code>e</code> to itself on <em>pay</em>.</p>
-<p><img src="/images/posts/2019-11-20-guide-to-fsm/341.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/341.svg" />
 <img src="/images/posts/2019-11-20-guide-to-fsm/342.svg" />
-<img src="/images/posts/2019-11-20-guide-to-fsm/343.svg" /></p>
+<img src="/images/posts/2019-11-20-guide-to-fsm/343.svg" />
 <p class="text-center"><small>Figure 3.4: The complete sets of transitions for the bank, the store and the customer</small></p>
 <p>We added self-transitions to each of the participants' states for the actions that:</p>
 <ul>
@@ -249,14 +249,14 @@ Another potential problem would be when the customer executes <em>pay</em> for a
 <h3 id="constructing-the-product">Constructing the Product</h3>
 <p>It&rsquo;s still not quite obvious how the states in the store and the bank interact. To see this more clearly, we need to construct <strong>the product</strong> of those state machines. The product is a state machine itself, and since the customer automaton only has one state, the states of the product are <strong>pairs of states from the bank and from the store</strong>.
 For example, the state <code>(3,d)</code> represents the situation where the bank is in state <code>3</code> and the store is in state <code>d</code>. The total amount of states is 4x7=28. We group them in a table where the row corresponds to the state of the bank and the column to the state of the store. The initial state is the pair, both items of which are initial states of their respective machines - in our case <code>(1,a)</code>.</p>
-<p><img src="/images/posts/2019-11-20-guide-to-fsm/35.svg" /></p>
+<img src="/images/posts/2019-11-20-guide-to-fsm/35.svg" />
 <p class="text-center"><small>Figure 3.5: The product of the bank's and the store's state machines; the reachable states are marked in green. <br />
 P - <em>pay</em>, C - <em>cancel</em>, R - <em>redeem</em>, S - <em>ship</em>, T - <em>transfer</em>
 </small></p>
 <p>We&rsquo;ve drawn all of the state pairs and the transitions amongst them. We can now clearly see how the inputs affect the system as a whole. For instance, on <em>pay</em>, the store goes from <code>a</code> to <code>b</code>, whereas the bank stays put, therefore, <code>change_state((1,a), &quot;pay&quot;) -&gt; (1,b)</code>. From state <code>(1,b)</code>, on <em>redeem</em>, the store goes from state <code>b</code> to <code>d</code> and the bank from <code>1</code> to <code>3</code>, therefore, we end up in <code>change_state((1,b), &quot;redeem&quot;) -&gt; (3,d)</code>.</p>
 <h3 id="eliminating-the-unreachable-states">Eliminating the Unreachable States</h3>
 <p>We observe that not all states are reachable from the initial state <code>(1,a)</code>. For example, we cannot go to <code>(1,g)</code> where the store has shipped the goods after the money is transferred, but the bank is still waiting for a redeem - this makes no sense! We&rsquo;ve modeled our system such that a case like this cannot occur. We also found a flaw in our logic, that is, when the machine is in <code>(2,c)</code>, the items have been shipped but the money hasn&rsquo;t been transferred because the customer has issued <em>cancel</em>.</p>
-<p><img src="/images/posts/2019-11-20-guide-to-fsm/36.svg" /></p>
+<img src="/images/posts/2019-11-20-guide-to-fsm/36.svg" />
 <p class="text-center"><small>Figure 3.6: The combined state machine for the bank and the store.
 <br />
 P - <em>pay</em>, C - <em>cancel</em>, R - <em>redeem</em>, S - <em>ship</em>, T - <em>transfer</em></small>
@@ -349,7 +349,7 @@ They are no silver bullet though. Not every domain is suitable to be modeled in 
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.692594 &#43;0300 EEST m=&#43;0.100457445">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.723314 &#43;0200 EET m=&#43;0.084752351">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

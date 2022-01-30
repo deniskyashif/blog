@@ -118,7 +118,7 @@ In this article, we&rsquo;ll describe the process of text rewriting from a set-t
 <p>Let&rsquo;s introduce some definitions before proceeding to the main part.</p>
 <h3 id="finite-automata">Finite Automata</h3>
 <p>A <strong>finite-state automaton</strong> (FSA) is an abstract device  that has states and transitions between those states. It&rsquo;s always in one of its states and while it reads an input, it switches from state to state. Think of it as a directed graph. A state machine has no memory, that is, it does not keep track of the previous states it has been in. It only knows its current state. If there&rsquo;s no transition on a given input, the machine terminates.</p>
-<p><img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fsa.png" alt="Finite State Automaton" /></p>
+<img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fsa.png" alt="Finite State Automaton" />
 <p class="text-center">
     <small>Figure 1: Finite automaton for the expression <strong>ab*</strong></small>
 </p>
@@ -146,22 +146,22 @@ In this article, we&rsquo;ll describe the process of text rewriting from a set-t
 <p>\[ R_1 \cdot R_2 := \{ \bar{u} \cdot \bar{v} | \bar{u} \in R_1, \bar{v} \in R_2 \}  \]</p>
 <p>where \( \bar{u} \) and \( \bar{v} \) are word tuples. Let&rsquo;s see an example.</p>
 <p>\[
-R_1 := \{ \langle ab, d \rangle, \langle bc, d \rangle \} \\<br>
-R_2 := \{ \langle xy, zzz \rangle, \langle y, x \rangle \} \\<br>
+R_1 := \{ \langle ab, d \rangle, \langle bc, d \rangle \} \\
+R_2 := \{ \langle xy, zzz \rangle, \langle y, x \rangle \} \\
 R_1 \cdot R_2 := \{ \langle abxy, dzzz \rangle, \langle bcxy, dzzz \rangle, \langle aby, dx \rangle, \langle bcy, dx \rangle \}
 \]</p>
 <h3 id="finite-state-transducers-fst">Finite-State Transducers (FST)</h3>
 <p>FSTs are automata with two tapes, namely input, and output tapes. The only difference with FSAs is that when FSTs transition to a state from a given input symbol, they also perform an output. FSAs recognize strings whereas FSTs recognize tuples of strings.</p>
-<p><img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst.png" alt="Finite State Transducer" /></p>
+<img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst.png" alt="Finite State Transducer" />
 <p class="text-center">
     <small>Figure 2: Finite-state transducer translating words in <strong>ab*</strong> to words in <strong>xy*</strong></small>
 </p>
 <p>Formally an FST \(T\) is a 5-tuple \( T = \langle \Sigma \times \Gamma, Q, I, F, \Delta \rangle  \) where the transition relation \( \Delta \subseteq Q \times (\Sigma \times \Gamma) \times Q \) and \( \Sigma \) and \( \Gamma \) are the input and output alphabets respectively.</p>
 <p>The FST in Figure 2 replaces the input symbol &lsquo;a&rsquo; with &lsquo;x&rsquo; and &lsquo;b&rsquo; with &lsquo;y&rsquo;. The alphabet of the first (input) tape is \( \Sigma = \{ a, b \} \) and of the second (output) tape is \( \Gamma = \{ x, y \} \). If we discard, we&rsquo;ll end up with an FSA, equivalent to the one in Figure 1. The transducer performs the following mapping:</p>
 <p>\[
-a \longmapsto_T x \\<br>
-ab \longmapsto_T xy \\<br>
-abb \longmapsto_T xyy \\<br>
+a \longmapsto_T x \\
+ab \longmapsto_T xy \\
+abb \longmapsto_T xyy \\
 &hellip;
 \]</p>
 <p>The domain of the transducer on Figure 2 is the set of word recognized by the underlying automaton on the first tape</p>
@@ -178,7 +178,7 @@ dom(T) = \{ a, ab, abb, abbb, &hellip; \}
 <p>\[ E \to \beta \]</p>
 <p>where \(E\) is a regular expression and \( \beta \) is a word. During the scan, when the rewriter recognizes a string from the language of \(E\), it replaces it with \( \beta \).
 We can represent a rewrite rule as a regular relation and thus we can build a corresponding finite-state transducer. Let&rsquo;s see an example.</p>
-<p><img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst2.png" alt="Finite State Transducer" /></p>
+<img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst2.png" alt="Finite State Transducer" />
 <p class="text-center">
     <small>Figure 3.1: FST for the rewrite rule ab|bc -> d</small>
 </p>
@@ -196,14 +196,14 @@ We can represent a rewrite rule as a regular relation and thus we can build a co
 <p>\[ \Sigma = \{ a,b,c,d \} \]
 \[ Id(\Sigma^<em>) = \{ \langle \epsilon, \epsilon \rangle, \langle a,a \rangle, \langle b,b \rangle, \langle c,c \rangle, \langle d,d \rangle \}^</em> \]</p>
 <p>Intuitively \( Id(\Sigma^<em>) \) is the set of all possible same string tuples over the alphabet \(\Sigma\). For example, the tuples \( \langle ac, ac \rangle, \langle cccd, cccd \rangle, \langle dba, dba \rangle \) are all in \( Id(\Sigma^</em>) \).</p>
-<p><img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst3.png" alt="Finite State Transducer 3" /></p>
+<img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst3.png" alt="Finite State Transducer 3" />
 <p class="text-center">
     <small>Figure 3.2: FST for Id({a,b,c,d}*)</small>
 </p>
 <p>Now we&rsquo;re ready to define the optional regular rewrite relation \(R^{opt}(T)\) induced by \(T\) for the rewrite rule \(ab|bc \to d\).</p>
 <p>\[ R^{opt}(T) := Id(\Sigma^<em>) \cdot (T \cdot Id(\Sigma^</em>))^* \]</p>
 <p>Since in the above expression \(T\) is surrounded by expressions \( Id(\Sigma^<em>) \), any substring of a text \(t \in dom(T)\) can be replaced by its \(T\)-translations using \(R^{opt}(T)\). The final asterisk in the definition of \(R^{opt}(T)\) ensures that any number of substrings from \(dom(T)\) can be translated. The second \( Id(\Sigma^</em>) \) expression shows that subtexts between consecutive elements of \(dom(T)\) (the \(u_i\)&rsquo;s) are translated via identity. Text parts matching \( Id(\Sigma^*) \) expressions can contain entries from \(dom(T)\), as a consequence, the \(T\)-replacement is always optional.</p>
-<p><img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst4.png" alt="Finite State Transducer 4" /></p>
+<img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst4.png" alt="Finite State Transducer 4" />
 <p class="text-center">
     <small>Figure 3.2: Transducer for the optional rewrite relation induced by T</small>
 </p>
@@ -215,7 +215,7 @@ Now, let&rsquo;s define the <strong>obligatory rewrite relation</strong> induced
 <p>where \(N(T)\) is the identity function on all strings that <strong>do not contain</strong> any infix from \(dom(T)\), including \(\{ \langle \epsilon, \epsilon \rangle \}\)</p>
 <p>\[ N(T) = Id(\Sigma^* \setminus (\Sigma^* \cdot dom(T) \cdot \Sigma^* )) \cup \{ \langle \epsilon, \epsilon \rangle \} \]</p>
 <p>The obligatory rewrite relation \(R(T)\) is also regular, thus we can build the corresponding transducer.</p>
-<p><img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst5.png" alt="Finite State Transducer 4" /></p>
+<img class="img-center" src="/images/posts/2020-02-18-fsts-for-text-rewriting/fst5.png" alt="Finite State Transducer 4" />
 <p class="text-center">
     <small>Figure 3.3: Transducer for the obligatory rewrite relation R(T) </small>
 </p>
@@ -236,9 +236,9 @@ Now, let&rsquo;s define the <strong>obligatory rewrite relation</strong> induced
 <p>\[ R_1 = ab|bc \to d \\ R_2 = da \to x \]</p>
 <p>\( R_1 \) and \( R_2 \) are regular relations from which we construct FSTs for obligatory replacement. The regular relations are closed under composition which means that we can construct a single transducer by composing several transducers. Note that relational composition only makes sense if the alphabet of the second tape of the first transducer coincides with the alphabet of the first tape the second transducer. Now we see how to apply their composition for text rewriting.</p>
 <p>\[
-(T_{R(T_1)} \circ T_{R(T_2)})(abacbca) \to \\<br>
-T_{R(T_2)}(T_{R(T_1)}(abacbca)) \to \\<br>
-T_{R(T_2)}(dacda) \to \\<br>
+(T_{R(T_1)} \circ T_{R(T_2)})(abacbca) \to \\
+T_{R(T_2)}(T_{R(T_1)}(abacbca)) \to \\
+T_{R(T_2)}(dacda) \to \\
 xcx
 \]</p>
 <p>Description of a direct composition algorithm is out of the scope of this article, but you can find some resources in the <a href="#references-and-further-reading">references</a>.</p>
@@ -334,7 +334,7 @@ xcx
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.712969 &#43;0300 EEST m=&#43;0.120833498">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.724207 &#43;0200 EET m=&#43;0.085645165">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

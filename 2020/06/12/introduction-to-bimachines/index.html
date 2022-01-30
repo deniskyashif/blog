@@ -119,12 +119,12 @@ if (!doNotTrack) {
 <p>A classical bimachine is a triple \( \mathcal{B} = \langle \mathcal{A}_L, \mathcal{A}_R, \psi \rangle \), where \( \mathcal{A}_L, \mathcal{A}_R \) are deterministic finite automata and \( \psi: Q_L \times \Sigma \times Q_R \to \Sigma^* \) is called the output function of the bimachine which given a state of the left automaton, an input symbol and a state of the right automaton, it returns a string. The left automaton of the bimachine scans the text from left to right, whereas the right automaton scans from right to left. Once we get the two paths, we construct the output by concatenating the results of the output function.</p>
 <h3 id="example-1">Example 1</h3>
 <p>Let&rsquo;s go through an example. We have the simple regular string relation \( R_1 = \{ \langle a, x \rangle, \langle ab, y \rangle \} \). What is represents is two text rewritings - either <em>a</em> gets replaced by <em>x</em> or <em>ab</em> gets replaced by <em>y</em>. This s a regular string function which can be expressed as a bimachine (<a href="#fig1.1">Figure 1.1</a>).</p>
-<p><img id="fig1.1" src="/images/posts/2020-06-12-intro-bimachines/bm1.png" alt="bm-1" /></p>
+<img id="fig1.1" src="/images/posts/2020-06-12-intro-bimachines/bm1.png" alt="bm-1" />
 <p class="text-center"><small>Figure 1.1: Bimachine representing R<sub>1</sub></small></p>
 <p>Note that the right and left automata&rsquo;s all states are final, \(\epsilon\) represents the empty string. There are two possible successful simulations of the bimachine - one for the word <em>a</em> and one for the word <em>ab</em>.</p>
-<p><img src="/images/posts/2020-06-12-intro-bimachines/bm1paths.png" alt="bm-1-paths" /></p>
+<img src="/images/posts/2020-06-12-intro-bimachines/bm1paths.png" alt="bm-1-paths" />
 <p>The top row depicts the recognition path in the left automaton while the text is being scanned from left to right, whereas the bottom row is the path of the right automaton while reading the text in the opposite direction. In <a href="#fig1.2">Figure 1.2</a> we depict the equivalent FST.</p>
-<p><img id="fig1.2" src="/images/posts/2020-06-12-intro-bimachines/fst1.png" alt="fst-1" /></p>
+<img id="fig1.2" src="/images/posts/2020-06-12-intro-bimachines/fst1.png" alt="fst-1" />
 <p class="text-center"><small>Figure 1.2: Finite-state transducer representing R<sub>1</sub></small></p>
 <h3 id="example-2">Example 2</h3>
 <p>Let&rsquo;s take a look at another example where bimachines are particularly useful. We want to mark (<em>&lt;, &gt;</em>) substrings in a text and we have the following two patterns:</p>
@@ -140,12 +140,12 @@ if (!doNotTrack) {
 <li>    \( R_2(aaaaa) = &lt;a&gt;&lt;a&gt;&lt;a&gt;&lt;a&gt;&lt;a&gt; \)</li>
 </ol>
 <p>The challenge here occurs in the case where we read an <em>a</em> - we can either directly output <em>&lt;a&gt;</em>, or we&rsquo;d have to continue reading the text until we see a <em>b</em>. In the case when there is no <em>b</em> (example 4), we&rsquo;d end up reading the whole text and then backtrack all the way which would lead to \( \mathcal{O}(n^2) \) processing time. Bimachines deal with this problem quite elegantly. We construct one in <a href="#fig2">Figure 2</a> such that it represents \( R_2 \).</p>
-<p><img id="fig2" src="/images/posts/2020-06-12-intro-bimachines/bm2.png" alt="bm-1" /></p>
+<img id="fig2" src="/images/posts/2020-06-12-intro-bimachines/bm2.png" alt="bm-1" />
 <p class="text-center"><small>Figure 2: Bimachine representing R<sub>2</sub></small></p>
 <p>Let&rsquo;s see how we process strings using this bimachine. Below the simulation of the bimachine for the input string <em>aaaaa</em>.</p>
-<p><img src="/images/posts/2020-06-12-intro-bimachines/bm2path1.png" alt="bm-2-path-1" /></p>
+<img src="/images/posts/2020-06-12-intro-bimachines/bm2path1.png" alt="bm-2-path-1" />
 <p>For <em>baaaabba</em> we end up with the following simulation.</p>
-<p><img src="/images/posts/2020-06-12-intro-bimachines/bm2path2.png" alt="bm-2-path-2" /></p>
+<img src="/images/posts/2020-06-12-intro-bimachines/bm2path2.png" alt="bm-2-path-2" />
 <h2 id="caveats">Caveats</h2>
 <p>Bimachines are simple and efficient but, as with everything, they come at a cost. The state-of-the-art algorithms for constructing bimachines rely on building the corresponding transducer first. Due to the bimachines' deterministic nature, we end up an upper bound of exponential time and space requirements for the construction, more specifically \( \mathcal{O}(2^{|Q|}) \) where \( |Q| \) is the number of states of the transducer. Some approaches that improve on that, given specific conditions are met, but still, the bimachine construction remains a computationally intensive operation.<br>
 The simulation procedure also requires us to store the recognition path of the right automaton while we read the text and run the left automaton. For large inputs, this might prove also costly.</p>
@@ -236,7 +236,7 @@ type called a <a href="https://en.wikipedia.org/wiki/Free_monoid">free monoid</a
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.715105 &#43;0300 EEST m=&#43;0.122969384">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.736679 &#43;0200 EET m=&#43;0.098117693">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

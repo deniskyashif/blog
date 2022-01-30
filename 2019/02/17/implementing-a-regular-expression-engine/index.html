@@ -131,7 +131,7 @@ if (!doNotTrack) {
 <h2 id="finite-automata">Finite Automata</h2>
 <p>In informal terms <strong>finite automaton</strong> (or <strong>finite state machine</strong>) is an abstract machine that  has states and transitions between these states. It is always in one of its states and while it reads an input it switches from state to state. It has a <strong>start state</strong> and can have one or more <strong>end (accepting) states</strong>.</p>
 <h3 id="deterministic-finite-automata-dfa">Deterministic Finite Automata (DFA)</h3>
-<p><img id="fig1.1" src="/images/posts/2019-02-20-regex/dfa.png" /></p>
+<img id="fig1.1" src="/images/posts/2019-02-20-regex/dfa.png" />
 <p class="text-center"><small>Figure 1.1: Deterministic Finite Automaton (DFA)</small></p>
 <p>In <a href="#fig1.1">Fig 1.1</a> we have automaton with four states; \(q_0\) is called the <strong>start state</strong> and \(q_3\) is the <strong>end (accepting)</strong> state. It recognizes all the strings that start with <strong>&ldquo;ab&rdquo;</strong>, followed by an arbitrary number of <strong>&lsquo;b&rsquo;</strong> s and ending with an <strong>&lsquo;a&rsquo;</strong>.</p>
 <p>If we process the string <strong>&ldquo;abba&rdquo;</strong> through the machine on <a href="#fig1.1">Fig 1.1</a> we&rsquo;ll go through the following states:</p>
@@ -174,12 +174,12 @@ if (!doNotTrack) {
 <p>For the strings <strong>&ldquo;aba&rdquo;</strong>, <strong>&ldquo;abbba&rdquo;</strong> or <strong>&ldquo;abbbbba&rdquo;</strong>, the automaton will end up in the accepting state of \(q_3\). If at any point during processing, the machine has no state to follow for a given input symbol - it stops the execution and the string is not recognized. So it won&rsquo;t recognize <strong>&ldquo;ab&rdquo;</strong> as it will end up in the non-accepting state of \(q_2\) and <strong>&ldquo;abca&rdquo;</strong> as there&rsquo;s no transition on the symbol <strong>&lsquo;c&rsquo;</strong> from \(q_2\). In the example of <a href="#fig1">Fig 1.1</a>, at each state for a given valid input symbol, we can end up in exactly one state, we say that the machine is <strong>deterministic</strong> (DFA).</p>
 <h3 id="nondeterministic-finite-automata-nfa">Nondeterministic Finite Automata (NFA)</h3>
 <p>Suppose we have the following automaton:</p>
-<p><img id="fig1.2" src="/images/posts/2019-02-20-regex/nfa.png" /></p>
+<img id="fig1.2" src="/images/posts/2019-02-20-regex/nfa.png" />
 <p class="text-center"><small>Figure 1.2: Nondeterministic Finite Automaton (NFA)</small></p>
 <p>We can see on <a href="#fig1.2">Fig 1.2</a> that from \(q_1\) on input <strong>&lsquo;b&rsquo;</strong> we can transition to two states - \(q_1\) and \(q_2\). In this case, we say that the machine is <strong>nondeterministic</strong> (NFA). It is easy to see that this machine is equivalent to the one in <a href="#fig1.1">Fig 1.1</a>, i.e. they recognize the same set of strings. Every NFA can be converted to its corresponding DFA, the proof and the conversion, however, are a subject of another article.</p>
 <h3 id="epsilon-nfa">ε-NFA</h3>
 <p>We represent an ε-NFA exactly as we do an NFA but with one exception. It includes transitions on the <strong>empty string</strong> - ε. That means from one state we are able to transition into another without reading an input symbol. These transitions are usually denoted with the Greek letter ε (epsilon).</p>
-<p><img id="fig1.3" src="/images/posts/2019-02-20-regex/enfa.png" /></p>
+<img id="fig1.3" src="/images/posts/2019-02-20-regex/enfa.png" />
 <p class="text-center"><small>Figure 1.3: epsilon-NFA</small></p>
 <p>On <a href="#fig1.3">Fig 1.3</a> we can see that we have <strong>ε-transition</strong> from \(q_2\) to \(q_1\). This ε-NFA is equivalent to the NFA in <a href="#fig1.2">Fig 1.2</a>.</p>
 <h2 id="compiling-regular-expressions-to-finite-automata">Compiling Regular Expressions to Finite Automata</h2>
@@ -194,24 +194,24 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <li><strong>Inductive</strong> rules for constructing larger NFAs from the smaller NFAs by applying the operators.</li>
 </ol>
 <h4 id="basis">Basis</h4>
-<p><img id="fig2.1" src="/images/posts/2019-02-20-regex/e-nfa-impl.png" /></p>
+<img id="fig2.1" src="/images/posts/2019-02-20-regex/e-nfa-impl.png" />
 <p class="text-center"><small>Figure 2.1: Finite automaton for the expression <strong>&epsilon;</strong></small></p>
 <p>On <a href="#fig2.1">Fig 2.1</a> we have an automaton that recognizes the empty string ε. \(i\) is the start state and \(f\) is the accepting state.</p>
-<p><img id="fig2.2" src="/images/posts/2019-02-20-regex/symbol-nfa.png" /></p>
+<img id="fig2.2" src="/images/posts/2019-02-20-regex/symbol-nfa.png" />
 <p class="text-center"><small>Figure 2.2: Finite automaton for the expression <em>a</em></small></p>
 <p>On <a href="#fig2.2">Fig 2.2</a> we construct an automaton for the symbol <strong>&lsquo;a&rsquo;</strong>. We treat each symbol of the input alphabet as a regular expression by itself. The language of this automaton consists only of the word <strong>&ldquo;a&rdquo;</strong>.</p>
 <h4 id="induction">Induction</h4>
 <p>Suppose we have the two regular expressions \(S\) and \(T\) and their NFAs \(N(S)\) and \(N(T)\) respectively:</p>
 <p>a) <strong>Union</strong>: \(R = S \vert T \)</p>
-<p><img id="fig3.1" src="/images/posts/2019-02-20-regex/union.png" /></p>
+<img id="fig3.1" src="/images/posts/2019-02-20-regex/union.png" />
 <p class="text-center"><small>Figure 3.1: Union of two NFAs</small></p>
 <p>We introduce a start state \(i\) and add ε-trainsitions from it to the start states of \(N(S)\) and \(N(T)\). Next, we add transitions from the end states of \(N(S)\) and \(N(T)\) to the newly created \(f\) state and mark them as not accepting. The resulting NFA will recognize strings that are either belong to \(L(S)\) or \(L(T)\).</p>
 <p>b) <strong>Concatenation</strong>: \(R = S \cdot T\)</p>
-<p><img id="fig3.2" src="/images/posts/2019-02-20-regex/concat.png" /></p>
+<img id="fig3.2" src="/images/posts/2019-02-20-regex/concat.png" />
 <p class="text-center"><small>Figure 3.2: Concatenation of two NFAs</small></p>
 <p>We mark the accepting state of \(N(S)\) as not accepting and add a transition from it to the start state of \(N(T)\). Here \(i\) denotes the start state of \(N(S)\) and \(f\) denotes the accepting state of \(N(T)\). This would result in an NFA that recognizes all the string concatenations \(vw\) where \(v\) belongs to \(L(S)\) and \(w\) belongs to \(L(T)\).</p>
 <p>c) <strong>Closure (Kleene Star)</strong>: \(R = S \ast \)</p>
-<p><img id="fig3.3" src="/images/posts/2019-02-20-regex/closure.png" /></p>
+<img id="fig3.3" src="/images/posts/2019-02-20-regex/closure.png" />
 <p class="text-center"><small>Figure 3.3: NFA for the closure of a regular expression.</small></p>
 <p>We introduce \(i\) as start and \(f\) as an accepting state. We add ε-transitions: from \(i\) to \(f\), from \(i\) to the start state of \(N(S)\), then we connect the accepting state of \(N(S)\) with \(f\) and finally add a transition from the end state of \(N(S)\) to its start state. We mark the end state of \(N(S)\) as intermediate.</p>
 <p>The <em>closure (*)</em> operator has the highest precedence, followed by concatenation \((\cdot)\). The <em>union</em> \((\vert)\) is the operation with the lowest precedence. Modern regex implementations have additional operators like <em>+</em> (one or more), <em>?</em> (zero or one), their implementation, however, is analogous to the ones above and we&rsquo;ll skip them for the sake of brevity.</p>
@@ -220,27 +220,27 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <ol>
 <li>Construct \(N(a)\): NFA for <strong>&lsquo;a&rsquo;</strong>.</li>
 </ol>
-<p><img id="fig4.1" src="/images/posts/2019-02-20-regex/ex-nfa-a.png" /></p>
+<img id="fig4.1" src="/images/posts/2019-02-20-regex/ex-nfa-a.png" />
 <p class="text-center"><small>Figure 4.1: N(a): NFA for 'a'</small></p>
 <ol start="2">
 <li>Construct \(N(b)\): a NFA for <strong>&lsquo;b&rsquo;</strong>.</li>
 </ol>
-<p><img id="fig4.2" src="/images/posts/2019-02-20-regex/ex-nfa-b.png" /></p>
+<img id="fig4.2" src="/images/posts/2019-02-20-regex/ex-nfa-b.png" />
 <p class="text-center"><small>Figure 4.2: N(b): NFA for 'b'</small></p>
 <ol start="3">
 <li>Apply <em>union</em> on \(N(a)\) and \(N(b)\) → \(N(a \vert b)\)</li>
 </ol>
-<p><img id="fig4.3" src="/images/posts/2019-02-20-regex/ex-union-na-nb.png" /></p>
+<img id="fig4.3" src="/images/posts/2019-02-20-regex/ex-union-na-nb.png" />
 <p class="text-center"><small>Figure 4.3: N(a&#8739;b): Union of N(a) and N(b)</small></p>
 <ol start="4">
 <li>Apply <em>closure</em> on \(N(a|b)\) → \(N((a \vert b)\ast)\)</li>
 </ol>
-<p><img id="fig4.4" src="/images/posts/2019-02-20-regex/ex-closure-nab.png" /></p>
+<img id="fig4.4" src="/images/posts/2019-02-20-regex/ex-closure-nab.png" />
 <p class="text-center"><small>Figure 4.4: N((a&#8739;b)*): Closure of N(a&#8739;b)</small></p>
 <ol start="5">
 <li>Apply <em>concatenation</em> to \(N((a \vert b)*)\) with \(N(c)\). The construction of \(N(c)\) is analogous to steps 1) and 2).</li>
 </ol>
-<p><img id="fig4.5" src="/images/posts/2019-02-20-regex/ex-concat-nabc.png" /></p>
+<img id="fig4.5" src="/images/posts/2019-02-20-regex/ex-concat-nabc.png" />
 <p class="text-center"><small>Figure 4.5: N((a&#8739;b)*c): NFA for the expression of (a&#8739;b)*c</small></p>
 <h3 id="parsing-a-regular-expression">Parsing a regular expression</h3>
 <p>First, we need to preprocess the string by adding an explicit concatenation operator. We&rsquo;re going to use the dot (.) symbol, as described in the paper. So for example, the regular expression \(abc\) would be converted to \(a \cdot b \cdot c\) and \((a \vert b)c\) wound turn into \((a \vert b)\cdot c\) You can check the implementation <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L1">here</a>.</p>
@@ -403,7 +403,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <h2 id="nfa-search-algorithms">NFA Search Algorithms</h2>
 <h3 id="recursive-backtracking">Recursive Backtracking</h3>
 <p>The simplest way to check if a string is recognized by automaton is by computing all the possible paths through the NFA until we end up in an accepting state or exhaust all the possibilities. It falls down to a recursive depth-first search with backtracking. Let&rsquo;s see an example:</p>
-<p><img id="fig5.1" src="/images/posts/2019-02-20-regex/nfa-search.png" /></p>
+<img id="fig5.1" src="/images/posts/2019-02-20-regex/nfa-search.png" />
 <p class="text-center"><small>Figure 5.1: NFA for the expression (aba)&#8739;(abb)</small></p>
 <p>The automaton in <a href="#fig5.1">Fig. 5.1</a> recognizes either the string <strong>&ldquo;aba&rdquo;</strong> or <strong>&ldquo;abb&rdquo;</strong>. If we want to process <strong>&ldquo;abb&rdquo;</strong>, our simulation with recursive backtracking would process the input <strong>one state at a time</strong> so we&rsquo;ll first end up reaching \(q_3\) after reading <strong>&ldquo;ab&rdquo;</strong> from the input string. The next symbol is <strong>&lsquo;b&rsquo;</strong> but there&rsquo;s no transition from \(q_3\) on <strong>&lsquo;b&rsquo;</strong>, therefore, we backtrack to \(q_0\) and take the other path which leads us to the accepting state. You can check out my implementation on <a href="https://github.com/deniskyashif/regexjs/blob/master/src/nfa.js#L189">GitHub</a>.</p>
 <p>For the automaton on <a href="fig#5.1">Fig 5.1</a> we ended up going through all of the possible two paths. This doesn&rsquo;t seem like a big deal but in a more complex scenario, there might be considerable performance implications.</p>
@@ -580,7 +580,7 @@ match(<span style="color:#c30">&#39;&#39;</span>); <span style="color:#09f;font-
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.76668 &#43;0300 EEST m=&#43;0.174546135">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.732502 &#43;0200 EET m=&#43;0.093940401">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

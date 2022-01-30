@@ -189,11 +189,11 @@ Lexer rules contain only either literals (along with the use of EBNF symbols; li
 <li>Each leaf is labeled by a terminal.</li>
 <li>Each interior node and the rood are labeled by a nonterminal.</li>
 </ul>
-<p><img src="/images/posts/2019-09-13-syntax-directed-translation/lex-parse.png" /></p>
+<img src="/images/posts/2019-09-13-syntax-directed-translation/lex-parse.png" />
 <p>&ldquo;5+1&rdquo; has the following parse tree:</p>
-<p><img src="/images/posts/2019-09-13-syntax-directed-translation/calc1.png" /></p>
+<img src="/images/posts/2019-09-13-syntax-directed-translation/calc1.png" />
 <p>The leaves of the tree from left to right yield the string. <strong>Finding the tree for a given sequence of tokens is called parsing.</strong> Let&rsquo;s see another example. The parse tree of &ldquo;15+1.4-.2&rdquo;:</p>
-<p><img src="/images/posts/2019-09-13-syntax-directed-translation/calc2.png" /></p>
+<img src="/images/posts/2019-09-13-syntax-directed-translation/calc2.png" />
 <p>We can generate &ldquo;15+1.4-.2&rdquo; by applying the production rules in the following order:</p>
 <pre tabindex="0"><code>start
 expr
@@ -240,9 +240,9 @@ Grammars can also be <strong>ambiguous</strong> - that is we can have <strong>mo
     }
 }
 </code></pre></div><p>It would result in the following parse tree:</p>
-<p><img src="/images/posts/2019-09-13-syntax-directed-translation/json.png" /></p>
+<img src="/images/posts/2019-09-13-syntax-directed-translation/json.png" />
 <p>Generating a parse tree is a form of validation as well. If a parse tree cannot be generated from a given input - the input is invalid.</p>
-<p><img src="/images/posts/2019-09-13-syntax-directed-translation/js-syntax-error.png" width="325" /></p>
+<img src="/images/posts/2019-09-13-syntax-directed-translation/js-syntax-error.png" width="325" />
 <h2 id="syntax-directed-translation">Syntax-directed translation</h2>
 <p><strong>The syntax-directed translation</strong> is a compiler implementation technique where <strong>the translation is completely driven by the parser</strong>. In other words, the parse tree is used to perform the semantic analysis and the translation of the source. Once we&rsquo;ve generated the parse tree, we have to visit each node and perform a specific action (think of it as a piece of code to be executed). As each node in a parse tree corresponds to a grammar rule, we can say that the action, attached to this rule carries its semantics. Keep in mind:</p>
 <ul>
@@ -251,7 +251,7 @@ Grammars can also be <strong>ambiguous</strong> - that is we can have <strong>mo
 </ul>
 <p>So far we&rsquo;ve learned how to describe a structure of a language. Now is time to define its semantics.</p>
 <p>Let&rsquo;s go back to the arithmetic expression example and see how to calculate a result by performing a <strong>depth-first traversal</strong> of the parse tree. Consider the following input &ldquo;5+3-1&rdquo;:</p>
-<p><img src="/images/posts/2019-09-13-syntax-directed-translation/calc3.1.png" width="225" /></p>
+<img src="/images/posts/2019-09-13-syntax-directed-translation/calc3.1.png" width="225" />
 <p>Knowing that the phrase structure is specified by a set of rules:</p>
 <ul>
 <li>The intermediate nodes in a parse tree correspond to grammar rules.</li>
@@ -326,7 +326,7 @@ STRING : &#39;&#34;&#39; (&#39;&#34;&#34;&#39;|~&#39;&#34;&#39;)* &#39;&#34;&#39
 javac ./CSV*.java
 grun CSV csvFile -gui -tokens ./employees.csv
 </code></pre></div><p>would result in</p>
-<p><img src="/images/posts/2019-09-13-syntax-directed-translation/employees-pt.png" /></p>
+<img src="/images/posts/2019-09-13-syntax-directed-translation/employees-pt.png" />
 <p>This is a useful tool for debugging our grammars, but now we&rsquo;ll see how to programmatically construct and access the parse tree.<br>
 First we need to install the <a href="https://www.npmjs.com/package/antlr4">JavaScript target for ANTLR4</a>.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm i antlr4
@@ -457,7 +457,7 @@ CSVVisitor.prototype.constructor <span style="color:#555">=</span> CSVVisitor;
 </span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#99f">SYMBOL</span>:<span style="color:#bbb"> </span>[a-zA-Z0-9];<span style="color:#bbb">
 </span></code></pre></div><p>The operator precedence is specified by ordering the <code>expr</code> productions from the highest (top) to the lowest (bottom). Here&rsquo;s the parse tree of &ldquo;(a|b)*.c&rdquo;:</p>
-<p><img src="/images/posts/2019-09-13-syntax-directed-translation/regex.png" /></p>
+<img src="/images/posts/2019-09-13-syntax-directed-translation/regex.png" />
 <p>You can check out the compilation procedure <a href="https://github.com/deniskyashif/regexjs/commit/c3fabedea1ff53b0a1b12e8647df95e81aea739f#diff-48e611c3706c9fdff05b92dfc5b98cd9L127">here</a>, however, for better understanding I recommend reading the <a href="/implementing-a-regular-expression-engine">regex article</a> first.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>In this article, we&rsquo;ve learned an approach for formal language recognition and translation. We&rsquo;ve introduced the context-free grammars and learned how to describe a language syntax using a grammar. Then we saw how to denote the structure of a string using a parse tree and work with this tree to derive the desired output. We also learned how to use ANTLR to generate a parser for a language and use its API to define its semantics.</p>
@@ -548,7 +548,7 @@ query languages, protocols, connection strings, configuration files and all kind
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.769274 &#43;0300 EEST m=&#43;0.177140922">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.754052 &#43;0200 EET m=&#43;0.115490693">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

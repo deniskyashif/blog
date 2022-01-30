@@ -230,7 +230,7 @@ pred 3
 <p>Now to our last and most interesting example. In <strong>System T</strong> we can express the <strong>total computable functions</strong> using primitive recursion, but can we express the ones that are not primitive recursive?</p>
 <h3 id="ackermann">Ackermann</h3>
 <p>The <a href="http://mathworld.wolfram.com/AckermannFunction.html">Ackermann function</a> is one of the earliest discovered examples of a total computable function that is <strong>not primitive recursive</strong>. All primitive recursive functions are total and computable, but the Ackermann function illustrates that <strong>not all total computable functions are primitive recursive</strong>.</p>
-<p><img src="/images/posts/2019-06-05-godel-t/ackermann.png" alt="Ackermann Definition" width="450" style="margin-left: 0" /></p>
+<img src="/images/posts/2019-06-05-godel-t/ackermann.png" alt="Ackermann Definition" width="450" style="margin-left: 0" />
 <p>You can find <a href="https://www.wolframalpha.com/input/?i=ackerman(1,1)">this</a> neat visual example of its execution.</p>
 <p>Let&rsquo;s try to implement it within our type system! We&rsquo;ll start by defining an operator for function composition:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#069;font-weight:bold">type</span> OneArityFn&lt;<span style="color:#309;font-weight:bold">T</span><span style="color:#a00;background-color:#faa">,</span> <span style="color:#309">K</span>&gt; <span style="color:#555">=</span> (x: <span style="color:#078;font-weight:bold">T</span>) <span style="color:#555">=&gt;</span> K;
@@ -345,7 +345,7 @@ We have seen that using a language with a particular type system always comes wi
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.690968 &#43;0300 EEST m=&#43;0.098831793">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.731219 &#43;0200 EET m=&#43;0.092658004">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

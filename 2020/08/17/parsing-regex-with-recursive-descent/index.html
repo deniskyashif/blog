@@ -138,7 +138,7 @@ if (!doNotTrack) {
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">S</span>&gt; <span style="color:#555">::=</span> &#39;a&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;e&#39;
 &lt;<span style="color:#0a8;font-weight:bold">A</span>&gt; <span style="color:#555">::=</span> &#39;b&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;d&#39; | &#39;c&#39;
 </code></pre></div><p>\(S, A\) are called nonterminals, \(a,b,c,d,e\) are the terminal symbols. \(S\) is the start symbol (axiom) of the grammar and above we have depicted the two production rules. This grammar describes strings that start with an &ldquo;a&rdquo;, end with an &ldquo;e&rdquo;, have a &ldquo;c&rdquo; in the middle which is surrounded by an equal number of &ldquo;b&rdquo;&rsquo;s to its left and &ldquo;d&rdquo;&rsquo;s to its right. Some of the strings that belong to the language of the grammar are &ldquo;ace&rdquo;, &ldquo;abcde&rdquo;, &ldquo;abbbcddde&rdquo;, etc. We can examine the structure of these strings by building the corresponding parse trees.</p>
-<p><img src="/images/posts/2020-08-17-parsing-regex-rd/pt1all.png" width="250" /></p>
+<img src="/images/posts/2020-08-17-parsing-regex-rd/pt1all.png" width="250" />
 <p>Given a valid parse tree, we reconstruct the input string by traversing it depth-first and concatenating the labels of the leaf nodes.</p>
 <h2 id="recursive-descent-parsing">Recursive Descent Parsing</h2>
 <p>Recursive descent parsers belong to the class of <em>top-down</em> parsers, meaning, they construct the parse tree starting from the start symbol of the grammar (the root of the tree) and make their way towards the leaves. The rules in the grammar are applied from left to right. They are fascinating due to their simplicity, elegance and can run in linear time for some types of grammars.<br>
@@ -171,7 +171,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
     | &#39;\&#39;&lt;<span style="color:#0a8;font-weight:bold">any-char</span>&gt;
 &lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt; <span style="color:#555">::=</span> &#39;?&#39; | &#39;*&#39; | &#39;+&#39;
 </code></pre></div><p>We can see that the operator precedence is encoded in the grammar as the lower priority operations (e.g. <code>|</code>) are situated closer to the root of the parse tree whereas the higher priority ones (<code>?,*,+</code>) are closer to the leaves. We depict <em>concatenation</em> through the <code>&lt;term&gt; ::= &lt;factor&gt;&lt;term&gt;</code> production rule.</p>
-<p><img src="/images/posts/2020-08-17-parsing-regex-rd/ptre.png" width="375" /></p>
+<img src="/images/posts/2020-08-17-parsing-regex-rd/ptre.png" width="375" />
 <p>Above are the parse trees for the strings <code>a+b?</code> and <code>(a|b)*c</code> respectively.</p>
 <p>Let&rsquo;s introduce some auxiliary functions before implementing the parsing procedure. First, we define the constructor function for the tree node.</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -501,7 +501,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.766609 &#43;0300 EEST m=&#43;0.174475351">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.754578 &#43;0200 EET m=&#43;0.116016502">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

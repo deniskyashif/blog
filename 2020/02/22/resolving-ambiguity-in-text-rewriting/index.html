@@ -122,7 +122,7 @@ R_1 = ab|bc \to x
 <p>\[ aabcb \]</p>
 <p>If we don&rsquo;t specify a conflict resolution strategy, the obligatory rewrite transducer for \(R_1\) will result in two distinct translations because the matches &ldquo;ab&rdquo; and &ldquo;bc&rdquo; clearly overlap.</p>
 <p>\[
-a \cdot ab \cdot cb \longmapsto_{R(T_{R_1})} axcb \\<br>
+a \cdot ab \cdot cb \longmapsto_{R(T_{R_1})} axcb \\
 aa \cdot bc \cdot b \longmapsto_{R(T_{R_1})} aaxb
 \]</p>
 <p>Let&rsquo;s see another example. A rewrite rule</p>
@@ -133,8 +133,8 @@ R_2 = aa*b|aa \to x
 <p>\[ aaaaabbaa \]</p>
 <p>that results in even more valid decompositions.</p>
 <p>\[
-aaaaab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xbx \\<br>
-aa \cdot aaab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xxbx \\<br>
+aaaaab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xbx \\
+aa \cdot aaab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xxbx \\
 aa \cdot aa \cdot ab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xxxbx
 \]</p>
 <p>A proper conflict resolution strategy would ensure that for each input text, we&rsquo;ll get a single output following this strategy.</p>
@@ -143,13 +143,13 @@ aa \cdot aa \cdot ab \cdot b \cdot aa \longmapsto_{R(T_{R_2})} xxxbx
 <p>Given two strings \( u, v \in \Sigma^* \) we write \( u &lt; v \) if \( u \) is a <strong>prefix</strong> of \( v \) and \( u \leq v \) if \( u \) is a <strong>proper prefix</strong> of \( v \).</p>
 <p>An <strong>infix occurence</strong> of an string \( v \) in text \( t \) is a triple \( \langle u, v, w \rangle \) such that \( t = u \cdot v \cdot w \). For example in text \( t = aabcb, \langle a, ab, cb \rangle \) and \( \langle aa, bc, b \rangle \) infix occurrences of the strings &ldquo;ab&rdquo; and &ldquo;bc&rdquo; respectively.</p>
 <p>Two <strong>infix occurrences</strong> \( \langle u_1, v_1, w_1 \rangle \) and \( \langle u_2, v_2, w_2 \rangle \) of a text <strong>overlap</strong> if \( u_1 &lt; u_2 &lt; u_1 \cdot v_1 \).</p>
-<p><img src="/images/posts/2020-02-22-ambiguity-text-rewriting/overlap.png" alt="infix overlap" width="500" /></p>
+<img src="/images/posts/2020-02-22-ambiguity-text-rewriting/overlap.png" alt="infix overlap" width="500" />
 <p class="text-center">
     <small>Figure 1: Overlapping infix occurrences</small>
 </p>
 <p>A <strong>set of infix occurrences</strong> \(A\) of the text t is said to be <strong>non-overlapping</strong> if two distinct infix occurrences of \(A\) never overlap. Let&rsquo;s see an example.</p>
 <p>\[
-t = aabbbccab \\<br>
+t = aabbbccab \\
 A = \{ \langle a, ab, bbccab \rangle, \langle aabb, bc, cab \rangle, \langle aabbbcc, ab, \epsilon \rangle \}
 \]</p>
 <h2 id="leftmost-longest-match">Leftmost-Longest Match</h2>
@@ -160,7 +160,7 @@ A = \{ \langle a, ab, bbccab \rangle, \langle aabb, bc, cab \rangle, \langle aab
 </ol>
 <p>By applying the <em>leftmost-longest</em> strategy in the example above, we get rid of the ambiguity and, thus, end up with the following translations:</p>
 <p>\[
-aabcb \to_{R^{LML}(T_{R_1})} axcb \\<br>
+aabcb \to_{R^{LML}(T_{R_1})} axcb \\
 aaaaabbaa \to_{R^{LML}(T_{R_2})} xbx
 \]</p>
 <h3 id="formal-description">Formal Description</h3>
@@ -183,11 +183,11 @@ LML(A) := \bigcup\limits_{i=0}^{\infty} V_{i}
 \]</p>
 <p>Where the intermediate sets \( V_i \) are defined inductively.</p>
 <p>\[
-V_0 = \emptyset \\<br>
+V_0 = \emptyset \\
 V_{i+1} = V_i \cup LONGEST(LEFTMOST(AFTER(A,V_i)))
 \]</p>
 <p>\( LML(A) \) is always finite because \( A \) is finite. That is, after a certain induction step \( i, V_i \) will remain unchanged and that&rsquo;s when we break from the loop. At each step, we add at most one element to the resulting set.</p>
-<p>Note that also all the infix occurrences in \( LML(A) \) are <strong>non-overlapping</strong> which leads to another useful property, that is, given a rewrite function \( T: \Sigma^+ \to \Sigma^* \) the obligatory rewrite relation \( R^{LML}(T) \) under the <em>leftmost-longest</em> match strategy is also a function. That is, because our replacement candidates don&rsquo;t overlap, we rewrite distinct regions in the input text. The original rewrite transducer representing a function means that we do not have the same rule mapping to more than one distinct outputs (e.g. \(ab \to x, ab \to y\)). This guarantees that given any input text, the obligatory rewrite transducer for _leftmost-longest_ match \( T_{R^{LML}(T)} \) is always going to produce a single output.</p>
+<p>Note that also all the infix occurrences in \( LML(A) \) are <strong>non-overlapping</strong> which leads to another useful property, that is, given a rewrite function \( T: \Sigma^+ \to \Sigma^* \) the obligatory rewrite relation \( R^{LML}(T) \) under the <em>leftmost-longest</em> match strategy is also a function. That is, because our replacement candidates don&rsquo;t overlap, we rewrite distinct regions in the input text. The original rewrite transducer representing a function means that we do not have the same rule mapping to more than one distinct outputs (e.g. \(ab \to x, ab \to y\)). This guarantees that given any input text, the obligatory rewrite transducer for <em>leftmost-longest</em> match \( T_{R^{LML}(T)} \) is always going to produce a single output.</p>
 <h2 id="other-conflict-resolution-strategies">Other Conflict Resolution Strategies</h2>
 <p>Now we&rsquo;ve defined the <em>leftmost-longest</em> match, it is trivial to modify the algorithm to obtain different replacement strategies. For example, for <em>leftmost-shortest</em>, we can replace the \(LONGEST\) function with</p>
 <p>\[
@@ -289,7 +289,7 @@ Schulz</a> Chapter 11.4 - Regular relations for left-most-longest match rewritin
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.713051 &#43;0300 EEST m=&#43;0.120915171">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.728189 &#43;0200 EET m=&#43;0.089627390">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

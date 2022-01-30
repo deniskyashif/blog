@@ -122,8 +122,8 @@ if (!doNotTrack) {
 </code></pre></div><p>which will return the value of the claim we specified.</p>
 <h2 id="the-defaults">The Defaults</h2>
 <p>In a standard authentication flow, the user signs in to the client app (1) through Azure AD and obtains an access token as a JWT (2). This token is then used as a bearer token to authenticate the user when calling the Web API (3).</p>
-<p><img src="/images/posts/2021-04-15-name-claim-azure-ad/azure-ad-auth-flow.jpeg" alt="Authentication Flow" />
-<small style="display: block; text-align: right;"><em>Source: docs.microsoft.com</em></small></p>
+<img src="/images/posts/2021-04-15-name-claim-azure-ad/azure-ad-auth-flow.jpeg" alt="Authentication Flow" />
+<small style="display: block; text-align: right;"><em>Source: docs.microsoft.com</em></small>
 <p>To authenticate the user, the respective handler decodes, verifies the access token, and extracts the claims its payload. When ASP.NET instantiates the <code>ClaimsPrincipal</code> object for our request, it uses those claims to establish its identity. We enable the Azure AD authentication into our HTTP request/response pipeline, by simply adding</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -134,9 +134,9 @@ if (!doNotTrack) {
 <p>Our <code>ClaimsPrincipal</code>&rsquo;s primary identity has a <code>Name</code> property. It would make sense to get the value of the <code>&quot;preferred_username&quot;</code> claim when we call</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">User.Identity.Name
 </code></pre></div><p>but instead, we get <code>null</code>, even though the authentication is successful and the <code>&quot;preferred_username&quot;</code> claim is available.</p>
-<p><img src="/images/posts/2021-04-15-name-claim-azure-ad/name-null.png" alt="Null Identity Name" /></p>
+<img src="/images/posts/2021-04-15-name-claim-azure-ad/name-null.png" alt="Null Identity Name" />
 <p>The reason is that the default name claim type is set to something different and since <code>User.Claims</code> don&rsquo;t contain it, we end up with <code>null</code>.</p>
-<p><img src="/images/posts/2021-04-15-name-claim-azure-ad/find-default-name.png" alt="Find Default Name Claim" /></p>
+<img src="/images/posts/2021-04-15-name-claim-azure-ad/find-default-name.png" alt="Find Default Name Claim" />
 <h2 id="the-solution">The Solution</h2>
 <p>We set the default name claim type by using a <strong>different overload</strong> of the <code>AddMicrosoftIdentityWebApi</code> method:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">services
@@ -148,7 +148,7 @@ if (!doNotTrack) {
     },
     options =&gt; Configuration.Bind(<span style="color:#c30">&#34;AzureAd&#34;</span>, options));
 </code></pre></div><p>Now we can easily retrieve the name of our user who initiated the request:</p>
-<p><img src="/images/posts/2021-04-15-name-claim-azure-ad/name-preferred.png" alt="Populated Identity Name" /></p>
+<img src="/images/posts/2021-04-15-name-claim-azure-ad/name-preferred.png" alt="Populated Identity Name" />
 <p><strong>NB</strong></p>
 <p>The <code>&quot;preferred_username&quot;</code> claim&rsquo;s value is mutable and might change over time, hence, it <strong>should not</strong> be used as a primary key or for authorization decisions. There are immutable claims for such tasks. Refer to the <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens">docs</a> for more details.</p>
 
@@ -224,7 +224,7 @@ if (!doNotTrack) {
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.726303 &#43;0300 EEST m=&#43;0.134168172">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.776268 &#43;0200 EET m=&#43;0.137706850">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

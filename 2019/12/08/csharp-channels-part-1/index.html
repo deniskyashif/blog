@@ -265,7 +265,7 @@ Unhandled exception. System.Threading.Channels.ChannelClosedException:
     <span style="color:#069;font-weight:bold">return</span> output;
 }
 </code></pre></div><p><code>Merge&lt;T&gt;()</code> takes two channels and starts reading from them simultaneously. It creates and immediately returns a new channel which consolidates the outputs from the input channels. The reading procedures are run asynchronously on separate threads. Think of it like this:</p>
-<p><img src="/images/posts/2019-12-08-csharp-channels-part1/merge-sketch.png" width="600" /></p>
+<img src="/images/posts/2019-12-08-csharp-channels-part1/merge-sketch.png" width="600" />
 <p>That&rsquo;s how we use it.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> ch = Merge(CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">3</span>), CreateMessenger(<span style="color:#c30">&#34;Ann&#34;</span>, <span style="color:#f60">5</span>));
 
@@ -303,7 +303,7 @@ We&rsquo;ve created the local asynchronous <code>Redirect()</code> function whic
 <p>Our code is concurrent and non-blocking. The messages are being processed at the time of arrival and there&rsquo;s no need to use locks or any kind of conditional logic. While we&rsquo;re waiting, the thread is free to perform other work. We also don&rsquo;t have to handle the case when one of the writers complete (as you can see Ann has sent all of her messages before Joe).</p>
 <h3 id="demultiplexer">Demultiplexer</h3>
 <p>Joe talks too much and we cannot handle all of his messages. We want to distribute the work amongst several consumers. Let&rsquo;s define <code>Split&lt;T&gt;()</code>:</p>
-<p><img src="/images/posts/2019-12-08-csharp-channels-part1/split-sketch.png" width="600" /></p>
+<img src="/images/posts/2019-12-08-csharp-channels-part1/split-sketch.png" width="600" />
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">static</span> IList&lt;ChannelReader&lt;T&gt;&gt; Split&lt;T&gt;(ChannelReader&lt;T&gt; ch, <span style="color:#078;font-weight:bold">int</span> n)
 {
     <span style="color:#078;font-weight:bold">var</span> outputs = <span style="color:#069;font-weight:bold">new</span> Channel&lt;T&gt;[n];
@@ -440,7 +440,7 @@ Reader 0: Joe <span style="color:#f60">9</span>
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2021-10-06 10:41:09.710848 &#43;0300 EEST m=&#43;0.118712448">2021</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.747832 &#43;0200 EET m=&#43;0.109270829">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
