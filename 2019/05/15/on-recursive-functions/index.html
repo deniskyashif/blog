@@ -114,13 +114,13 @@ if (!doNotTrack) {
 
 		<p>In this article, we&rsquo;ll explore one of the most fascinating concepts in computer science, namely the <strong>Y combinator</strong>. It can simulate recursion in a language that doesn&rsquo;t support it.</p>
 <p>We&rsquo;re going to use the <em>Factorial</em> function as an example. <em>Factorial</em> gives us the product of an integer and all the integers below it. For example \(4! = 4*3*2*1 = 24\). In JavaScript, we can implement it as follows:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> fact <span style="color:#555">=</span> n =&gt; {
-    <span style="color:#069;font-weight:bold">if</span> (n <span style="color:#555">===</span> <span style="color:#f60">0</span>) {
-        <span style="color:#069;font-weight:bold">return</span> <span style="color:#f60">1</span>;
-    }
-    <span style="color:#069;font-weight:bold">return</span> n <span style="color:#555">*</span> fact(n <span style="color:#555">-</span> <span style="color:#f60">1</span>);
-}
-</code></pre></div><p>So <code>fact(4)</code> will result in the following computation:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> fact <span style="color:#555">=</span> n =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (n <span style="color:#555">===</span> <span style="color:#f60">0</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> <span style="color:#f60">1</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> n <span style="color:#555">*</span> fact(n <span style="color:#555">-</span> <span style="color:#f60">1</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>So <code>fact(4)</code> will result in the following computation:</p>
 <pre tabindex="0"><code>fact(4)
 4 * fact(3)
 4 * (3 * fact(2))
@@ -148,8 +148,8 @@ Apply \(N\) as an argument to \(M\). \(M\) and  \(N\) are both lambda terms.</li
 <p>For example, let&rsquo;s define the <em>Identity</em> function:<br>
 \[I \equiv \lambda x.x \]</p>
 <p>Which in JavaScript we can define like:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> id <span style="color:#555">=</span> x =&gt; x;
-</code></pre></div><p>It returns the argument that it has been provided. To pass an argument to the function, we can simply write<br>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> id <span style="color:#555">=</span> x =&gt; x;
+</span></span></code></pre></div><p>It returns the argument that it has been provided. To pass an argument to the function, we can simply write<br>
 \[ I \space N \]
 or<br>
 \[ (\lambda x.x)N  \]
@@ -162,11 +162,11 @@ In λ-calculus, we refer to \(I\) as a <a href="https://en.wikipedia.org/wiki/La
 <p>Are there λ-terms without a normal form? The answer is - yes and this is a crucial part of constructing our solution. Let&rsquo;s take a look at the following combinator:</p>
 <p>\[\omega := \lambda x.xx\]</p>
 <p>It takes a function and applies it to itself. We can express it in JavaScript in the following way:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> w <span style="color:#555">=</span> x =&gt; x(x);
-</code></pre></div><p>We can now define:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> w <span style="color:#555">=</span> x =&gt; x(x);
+</span></span></code></pre></div><p>We can now define:</p>
 <p>\[ \Omega := \omega \omega \equiv (\lambda x.x x)(\lambda x.x x) \]</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> W <span style="color:#555">=</span> w(w); <span style="color:#09f;font-style:italic">// (x =&gt; x(x))(x =&gt; x(x))
-</span></code></pre></div><p>So if we try reducing \(\Omega\) we&rsquo;ll end up in an infinite reduction sequence because the second \(\omega\) substitutes the \(x\) in the first term so after each reduction we&rsquo;ll get the same term over and over again.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> W <span style="color:#555">=</span> w(w); <span style="color:#09f;font-style:italic">// (x =&gt; x(x))(x =&gt; x(x))
+</span></span></span></code></pre></div><p>So if we try reducing \(\Omega\) we&rsquo;ll end up in an infinite reduction sequence because the second \(\omega\) substitutes the \(x\) in the first term so after each reduction we&rsquo;ll get the same term over and over again.</p>
 <p>\[ (\lambda x.x x)(\lambda x.x x) \]
 \[ \to (\lambda x.x x)[x \mapsto (\lambda x.x x)] \]
 \[ \to (\lambda x.x x)(\lambda x.x x) \]
@@ -176,17 +176,17 @@ In λ-calculus, we refer to \(I\) as a <a href="https://en.wikipedia.org/wiki/La
 <h3 id="the-y-combinator">The Y Combinator</h3>
 <p>So to simulate recursion, we are looking for a combinator that, given an argument some function \(F\), would not only reproduce itself but also pass \(F\) on itself. We already saw the self-reproducing term \(\Omega\) so using it as our basis we can define:</p>
 <p>\[ \omega_F := \lambda x.F(x x) \]</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> wF <span style="color:#555">=</span> x =&gt; F(x(x));
-</code></pre></div><p>The difference here is that we <strong>pass \(x\) to itself and the result, we pass to some function \(F\)</strong>. We can now define \(Y\):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> wF <span style="color:#555">=</span> x =&gt; F(x(x));
+</span></span></code></pre></div><p>The difference here is that we <strong>pass \(x\) to itself and the result, we pass to some function \(F\)</strong>. We can now define \(Y\):</p>
 <p>\[ Y_F := \omega_F \omega_F \equiv (\lambda x.F(x x))(\lambda x.F(x x)) \]</p>
 <p>or in more general terms:</p>
 <p>\[ Y := \lambda f. (\lambda x.f(x x))(\lambda x.f(x x)) \]</p>
 <p>Let&rsquo;s implement the Y combinator in JavaScript:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> Y <span style="color:#555">=</span> f =&gt; {
-    <span style="color:#069;font-weight:bold">const</span> g <span style="color:#555">=</span> x =&gt; f(x(x));
-    <span style="color:#069;font-weight:bold">return</span> g(g);
-};
-</code></pre></div><p>So if we pass a function \(F\) to the Y combinator, we&rsquo;re going to end up with the following reduction sequence:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> Y <span style="color:#555">=</span> f =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> g <span style="color:#555">=</span> x =&gt; f(x(x));
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> g(g);
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>So if we pass a function \(F\) to the Y combinator, we&rsquo;re going to end up with the following reduction sequence:</p>
 <p>\[ Y F \]
 \[ \equiv (\lambda f. (\lambda x.f(x x))(\lambda x.f(x x))) \space F \]
 \[ \to (\lambda f. (\lambda x.f(x x))(\lambda x.f(x x)))[f \mapsto F] \]
@@ -219,15 +219,15 @@ In λ-calculus, we refer to \(I\) as a <a href="https://en.wikipedia.org/wiki/La
 <p>So we&rsquo;ve wrapped the <em>Factorial</em> definition inside a function that takes a function \(f\) as an argument and returns a new function which calls \(f\) in one of its execution branches. We can think of \(factStep\) as a <strong>factory</strong> - a function that returns another function.</p>
 <p>In our case \(factStep\), plays the role of a <strong>pseudo-recursive</strong> function that is going to be passed and invoked over and over again until we reach the bottom of our pseudo-recursion. If we think in terms of iteration \(factStep\) is the body of the loop.</p>
 <p>In JavaScript it&rsquo;s defined in the following way:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> factStep <span style="color:#555">=</span> nextStep <span style="color:#09f;font-style:italic">/* f */</span> =&gt; {
-    <span style="color:#069;font-weight:bold">return</span> n =&gt; {
-        <span style="color:#069;font-weight:bold">if</span> (n <span style="color:#555">===</span> <span style="color:#f60">0</span>) {
-            <span style="color:#069;font-weight:bold">return</span> <span style="color:#f60">1</span>;
-        }
-        <span style="color:#069;font-weight:bold">return</span> n <span style="color:#555">*</span> nextStep(n <span style="color:#555">-</span> <span style="color:#f60">1</span>);
-    }
-}
-</code></pre></div><p>We cannot reference a function from itself, that&rsquo;s why it makes sense to <strong>pass it to itself</strong>. Now we are ready to define <em>Factorial</em> using the Y combinator. Let&rsquo;s compute <em>Factorial</em> of 2 by going through its reduction sequence.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> factStep <span style="color:#555">=</span> nextStep <span style="color:#09f;font-style:italic">/* f */</span> =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> n =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">if</span> (n <span style="color:#555">===</span> <span style="color:#f60">0</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">return</span> <span style="color:#f60">1</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> n <span style="color:#555">*</span> nextStep(n <span style="color:#555">-</span> <span style="color:#f60">1</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We cannot reference a function from itself, that&rsquo;s why it makes sense to <strong>pass it to itself</strong>. Now we are ready to define <em>Factorial</em> using the Y combinator. Let&rsquo;s compute <em>Factorial</em> of 2 by going through its reduction sequence.</p>
 <p>The sequence might seem rather tedious but by going through it one line at a time I hope it should be easy to understand. I&rsquo;d also suggest writing it down, as that helped me a grasp the concept when I was learning about it.
 I&rsquo;ve put parentheses when the precedence of the operations is not obvious. The <strong>application</strong> in λ-calculus is <strong>left associative</strong> so that the expression: \(M \space N \space P \) is equivalent to \( ((M \space N) \space P) \) meaning that \(N\) will be passed to \(M\) and \(P\) will be passed to the result of \(M \space N\).</p>
 <p>\[ Y \space factStep \space 2  \]
@@ -252,8 +252,8 @@ I&rsquo;ve put parentheses when the precedence of the operations is not obvious.
 <p>Essentially, by passing \(factStep\) to itself, we allow it to call itself in a recursive manner. Keep in mind that \(factStep\) is only an intermediate value - it is not the recursive function itself, as it still needs a reference to itself to do the recursion.</p>
 <h2 id="evaluation-strategies">Evaluation Strategies</h2>
 <p>Now we can put it all together:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> fact <span style="color:#555">=</span> Y(factStep);
-</code></pre></div><p>But not so fast! The code above will result in:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> fact <span style="color:#555">=</span> Y(factStep);
+</span></span></code></pre></div><p>But not so fast! The code above will result in:</p>
 <pre><code style="color: red">RangeError: Maximum call stack size exceeded</code></pre>
 <p>This is due to the fact that JavaScript and Lambda Calculus have different <a href="https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-27.html#%25_sec_4.2.1">models of evaluation</a>. In fact, JavaScript uses <strong>applicative order</strong> (call by value) evaluation which means that the function&rsquo;s arguments are evaluated before calling the function. This causes the Y combinator to expand infinitely (I found this out the hard way 🤦‍♂️
  ). Let&rsquo;s recall:</p>
@@ -262,19 +262,19 @@ I&rsquo;ve put parentheses when the precedence of the operations is not obvious.
 <p>So instead of passing \((Y \space factStep)\) to \(factStep\) as it is, JavaScript would try to evaluate it first which would lead to an infinite expansion, therefore, causing stack overflow.</p>
 <p>\[ \to factStep \space (factStep \space &hellip; \space (factStep \space (Y \space factStep))) \space 2 \]</p>
 <p>So the Y combinator is suited for languages with <strong>normal order</strong> (call by name) evaluation. Normal order evaluates the function first, before evaluating its arguments. In order to adapt it for an applicative order language we have to do a slight modification to our fixed-point combinator:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="background-color:#fcc">- λf.(λx.f (x x)) (λx.f (x x))
-</span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+ λf.(λx.λy.f (x x) y) (λx.λy.f (x x) y)
-</span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">function Y1(f) {
-    const g = x =&gt; {
-<span style="background-color:#fcc">-       return f(x(x));
-</span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+       return y =&gt; f(x(x))(y);
-</span><span style="background-color:#cfc"></span>    };
-    return g(g);
-}
-</code></pre></div><p>We implement &ldquo;laziness&rdquo; by wrapping the function call into another function. A function definition is an evaluated term for JavaScript so it won&rsquo;t be reduced further. Now we are ready to implement <em>Factorial</em>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> fact <span style="color:#555">=</span> Y1(factStep)
-fact(<span style="color:#f60">5</span>); <span style="color:#09f;font-style:italic">// 120
-</span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span><span style="background-color:#fcc">- λf.(λx.f (x x)) (λx.f (x x))
+</span></span></span><span style="display:flex;"><span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+ λf.(λx.λy.f (x x) y) (λx.λy.f (x x) y)
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>function Y1(f) {
+</span></span><span style="display:flex;"><span>    const g = x =&gt; {
+</span></span><span style="display:flex;"><span><span style="background-color:#fcc">-       return f(x(x));
+</span></span></span><span style="display:flex;"><span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+       return y =&gt; f(x(x))(y);
+</span></span></span><span style="display:flex;"><span><span style="background-color:#cfc"></span>    };
+</span></span><span style="display:flex;"><span>    return g(g);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We implement &ldquo;laziness&rdquo; by wrapping the function call into another function. A function definition is an evaluated term for JavaScript so it won&rsquo;t be reduced further. Now we are ready to implement <em>Factorial</em>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> fact <span style="color:#555">=</span> Y1(factStep)
+</span></span><span style="display:flex;"><span>fact(<span style="color:#f60">5</span>); <span style="color:#09f;font-style:italic">// 120
+</span></span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
 <p>There&rsquo;re other fixed-point combinators like the <strong>Z combinator</strong> which is suited for call-by-value languages:</p>
 <p>\[ Z := \lambda f.(\lambda x.f \space (\lambda v.((x \space x) \space v))) \space (\lambda x.f \space (\lambda v.((x \space x) \space v))) \]</p>
 <p>If you want to play some more with this stuff, I&rsquo;d recommend implementing the <strong>Z combinator</strong> and writing down its reduction sequence. You can also try defining recursive functions with multiple arguments, for example, the <a href="https://en.wikipedia.org/wiki/Ackermann_function">Ackermann function</a>.</p>
@@ -325,7 +325,7 @@ fact(<span style="color:#f60">5</span>); <span style="color:#09f;font-style:ital
 
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     
@@ -363,7 +363,7 @@ fact(<span style="color:#f60">5</span>); <span style="color:#09f;font-style:ital
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.718442 &#43;0200 EET m=&#43;0.079880211">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-05-11 10:50:48.833166 &#43;0300 EEST m=&#43;0.127239474">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

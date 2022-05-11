@@ -164,26 +164,24 @@ if (!doNotTrack) {
 </ul>
 <p>Kendo UI depends on jQuery so we should rather use the one distributed with the framework instead of the one provided in the MVC template.</p>
 <p>Now add the follwing code to <code>App_Start/BundleConfig.cs</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">
-<span style="color:#069;font-weight:bold">public</span> <span style="color:#069;font-weight:bold">static</span> <span style="color:#069;font-weight:bold">void</span> RegisterBundles(BundleCollection bundles)
-{     
-    <span style="color:#09f;font-style:italic">/* other bundles */</span>
-    
-    bundles.Add(<span style="color:#069;font-weight:bold">new</span> ScriptBundle(<span style="color:#c30">&#34;~/bundles/kendo&#34;</span>).Include(
-        <span style="color:#c30">&#34;~/Scripts/kendo/jszip.min.js&#34;</span>,
-        <span style="color:#c30">&#34;~/Scripts/kendo/kendo.all.min.js&#34;</span>,
-        <span style="color:#c30">&#34;~/Scripts/kendo/kendo.aspnetmvc.min.js&#34;</span>));
-
-    bundles.Add(<span style="color:#069;font-weight:bold">new</span> StyleBundle(<span style="color:#c30">&#34;~/Content/kendo&#34;</span>).Include(
-        <span style="color:#c30">&#34;~/Content/kendo/kendo.common.min.css&#34;</span>,
-        <span style="color:#c30">&#34;~/Content/kendo/kendo.&lt;THEME_NAME&gt;.min.css&#34;</span>));       
-}
-
-</code></pre></div><p>The only thing left is to render these bundles inside our layout file. Keep in mind that Kendo UI&rsquo;s JavaScript files should be loaded after jQuery. Inside our <code>_Layout.cshtml</code> we add:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">public</span> <span style="color:#069;font-weight:bold">static</span> <span style="color:#069;font-weight:bold">void</span> RegisterBundles(BundleCollection bundles)
+</span></span><span style="display:flex;"><span>{     
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic">/* other bundles */</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    bundles.Add(<span style="color:#069;font-weight:bold">new</span> ScriptBundle(<span style="color:#c30">&#34;~/bundles/kendo&#34;</span>).Include(
+</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;~/Scripts/kendo/jszip.min.js&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;~/Scripts/kendo/kendo.all.min.js&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;~/Scripts/kendo/kendo.aspnetmvc.min.js&#34;</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    bundles.Add(<span style="color:#069;font-weight:bold">new</span> StyleBundle(<span style="color:#c30">&#34;~/Content/kendo&#34;</span>).Include(
+</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;~/Content/kendo/kendo.common.min.css&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;~/Content/kendo/kendo.&lt;THEME_NAME&gt;.min.css&#34;</span>));       
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The only thing left is to render these bundles inside our layout file. Keep in mind that Kendo UI&rsquo;s JavaScript files should be loaded after jQuery. Inside our <code>_Layout.cshtml</code> we add:</p>
 <pre tabindex="0"><code class="language-cshtml" data-lang="cshtml">
-@Styles.Render(&quot;~/Content/kendo&quot;)
-@Scripts.Render(&quot;~/bundles/kendo&quot;)
-
+@Styles.Render(&#34;~/Content/kendo&#34;)
+@Scripts.Render(&#34;~/bundles/kendo&#34;)
 </code></pre><p>If we have rendered our script bundles inside the <code>&lt;head&gt;</code> tag we can directly use the components inside our Razor views. On the other hand if we render them before the closing <code>&lt;/body&gt;</code> tag we should make sure defer the initialization of our components. More the topic <a href="https://docs.telerik.com/aspnet-mvc/getting-started/fundamentals#configuration-Deferring">here</a>. Now we&rsquo;re ready to get started with the Telerik UI components our MVC web app.</p>
 
 
@@ -224,7 +222,7 @@ if (!doNotTrack) {
 
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     
@@ -259,7 +257,7 @@ if (!doNotTrack) {
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.715074 &#43;0200 EET m=&#43;0.076512398">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-05-11 10:50:48.836362 &#43;0300 EEST m=&#43;0.130435352">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

@@ -146,41 +146,41 @@ strings.</li>
 </ul>
 <h3 id="grammar-notation">Grammar Notation</h3>
 <p>We write grammars by listing their production rules with the start symbol listed first. There are several ways to describe a grammar but for the remainder of this article, we&rsquo;ll use ANTLR&rsquo;s <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form">EBNF</a>-style format.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#99f">start</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">expr</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;+&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">expr</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;-&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">expr</span>:<span style="color:#bbb"> </span><span style="color:#360">DIGIT</span>;<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">DIGIT</span>:<span style="color:#bbb"> </span><span style="color:#c30">&#39;0&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;1&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;2&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;3&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;4&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;5&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;6&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;7&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;8&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;9&#39;</span>;<span style="color:#bbb">
-</span></code></pre></div><p>We can also group the bodies of the <code>expr</code> productions:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#99f">expr</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;+&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;-&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span>;<span style="color:#bbb">
-</span></code></pre></div><p>The terminals of the grammar are <code>+</code>,<code>-</code>,<code>0</code>,<code>1</code>,<code>2</code>,<code>3</code>,<code>4</code>,<code>5</code>,<code>6</code>,<code>7</code>,<code>8</code>,<code>9</code>, the nonterminals are <code>start</code>, <code>expr</code> and <code>DIGIT</code> where <code>start</code> is the start nonterminal.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-antlr" data-lang="antlr"><span style="display:flex;"><span><span style="color:#99f">start</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">expr</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;+&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">expr</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;-&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">expr</span>:<span style="color:#bbb"> </span><span style="color:#360">DIGIT</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">DIGIT</span>:<span style="color:#bbb"> </span><span style="color:#c30">&#39;0&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;1&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;2&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;3&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;4&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;5&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;6&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;7&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;8&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;9&#39;</span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>We can also group the bodies of the <code>expr</code> productions:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-antlr" data-lang="antlr"><span style="display:flex;"><span><span style="color:#99f">expr</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;+&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;-&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span>;<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The terminals of the grammar are <code>+</code>,<code>-</code>,<code>0</code>,<code>1</code>,<code>2</code>,<code>3</code>,<code>4</code>,<code>5</code>,<code>6</code>,<code>7</code>,<code>8</code>,<code>9</code>, the nonterminals are <code>start</code>, <code>expr</code> and <code>DIGIT</code> where <code>start</code> is the start nonterminal.</p>
 <p>We can also define our <code>DIGIT</code> lexer rule (token) using a regular expression:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#99f">DIGIT</span>:<span style="color:#bbb"> </span>[0-9];<span style="color:#bbb">
-</span></code></pre></div><p>You might be wondering why <code>expr</code> and <code>DIGIT</code> nonterminals are denoted differently. Although both are on the left-hand side of some productions, they represent different types of rules - namely <strong>lexer rules</strong> and <strong>parser rules</strong> (more on that in the next section). ANTLR imposes <strong>the convention that lexer rules start with an uppercase letter and parser rules with a lowercase letter</strong>.<br>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-antlr" data-lang="antlr"><span style="display:flex;"><span><span style="color:#99f">DIGIT</span>:<span style="color:#bbb"> </span>[0-9];<span style="color:#bbb">
+</span></span></span></code></pre></div><p>You might be wondering why <code>expr</code> and <code>DIGIT</code> nonterminals are denoted differently. Although both are on the left-hand side of some productions, they represent different types of rules - namely <strong>lexer rules</strong> and <strong>parser rules</strong> (more on that in the next section). ANTLR imposes <strong>the convention that lexer rules start with an uppercase letter and parser rules with a lowercase letter</strong>.<br>
 Lexer rules contain only either literals (along with the use of EBNF symbols; literals can be both single characters and longer strings) or references to other lexer rules. Parser rules may reference parser and lexer rules as they wish and even include literals, but never only literals.</p>
 <h2 id="derivations">Derivations</h2>
 <p>The way we <strong>derive a string</strong> by a given grammar is by beginning with the start symbol&rsquo;s production and replacing each of the nonterminals in its body with a corresponding production. We say that <strong>the language of grammar is the set of all strings that can be derived from its start symbol</strong>.</p>
 <h3 id="lexical-analysis-tokenization">Lexical Analysis (Tokenization)</h3>
 <p>A lexer reads an input character stream and divides it into tokens, using the patterns that we specify (see <code>DIGIT</code> above), and generates a token stream as an output. It can also discard or flag some tokens like whitespaces and comments so that they&rsquo;re ignored during parsing.</p>
 <p>Let&rsquo;s extend our token grammar so it includes integers and floating-point numbers.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#09f;font-style:italic">// Parser rules</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">start</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">expr</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;+&#39;</span><span style="color:#bbb"> </span><span style="color:#360">NUMBER</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;-&#39;</span><span style="color:#bbb"> </span><span style="color:#360">NUMBER</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">NUMBER</span>;<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#09f;font-style:italic">// Lexer rules</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">NUMBER</span>:<span style="color:#bbb"> </span><span style="color:#360">INT</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">FLOAT</span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">INT</span>:<span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#555">+</span>;<span style="color:#bbb">             </span><span style="color:#09f;font-style:italic">// match one or more digits</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">FLOAT</span>:<span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#555">+</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;.&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#555">*</span><span style="color:#bbb"> </span><span style="color:#09f;font-style:italic">// match 1.314, 5., 0.2 etc.</span><span style="color:#bbb">
-</span><span style="color:#bbb">     </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;.&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#555">+</span>;<span style="color:#bbb">       </span><span style="color:#09f;font-style:italic">// match .2, .3248 etc.</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">DIGIT</span>:<span style="color:#bbb"> </span>[0-9];<span style="color:#bbb">
-</span></code></pre></div><p>Given this grammar and the string &ldquo;5+1&rdquo;, the tokenizer will generate the following output:</p>
-<pre tabindex="0"><code>[@0,0:0='5',&lt;NUMBER&gt;,1:0]
-[@1,1:1='+',&lt;'+'&gt;,1:1]
-[@2,2:2='1',&lt;NUMBER&gt;,1:2]
-[@3,3:2='&lt;EOF&gt;',&lt;EOF&gt;,1:3]
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-antlr" data-lang="antlr"><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// Parser rules</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">start</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">expr</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;+&#39;</span><span style="color:#bbb"> </span><span style="color:#360">NUMBER</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;-&#39;</span><span style="color:#bbb"> </span><span style="color:#360">NUMBER</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">NUMBER</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#09f;font-style:italic">// Lexer rules</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">NUMBER</span>:<span style="color:#bbb"> </span><span style="color:#360">INT</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">FLOAT</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">INT</span>:<span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#555">+</span>;<span style="color:#bbb">             </span><span style="color:#09f;font-style:italic">// match one or more digits</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">FLOAT</span>:<span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#555">+</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;.&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#555">*</span><span style="color:#bbb"> </span><span style="color:#09f;font-style:italic">// match 1.314, 5., 0.2 etc.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;.&#39;</span><span style="color:#bbb"> </span><span style="color:#360">DIGIT</span><span style="color:#555">+</span>;<span style="color:#bbb">       </span><span style="color:#09f;font-style:italic">// match .2, .3248 etc.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">DIGIT</span>:<span style="color:#bbb"> </span>[0-9];<span style="color:#bbb">
+</span></span></span></code></pre></div><p>Given this grammar and the string &ldquo;5+1&rdquo;, the tokenizer will generate the following output:</p>
+<pre tabindex="0"><code>[@0,0:0=&#39;5&#39;,&lt;NUMBER&gt;,1:0]
+[@1,1:1=&#39;+&#39;,&lt;&#39;+&#39;&gt;,1:1]
+[@2,2:2=&#39;1&#39;,&lt;NUMBER&gt;,1:2]
+[@3,3:2=&#39;&lt;EOF&gt;&#39;,&lt;EOF&gt;,1:3]
 </code></pre><p>So we have the value of each token, its type and its position in the input.</p>
 <h3 id="parse-trees">Parse Trees</h3>
 <p>The parser&rsquo;s job is to figure out the relationship between the tokens. A parse tree shows how the start symbol of a grammar derives a particular string. It has the following properties:</p>
@@ -210,36 +210,36 @@ INT + NUMBER - NUMBER
 Grammars can also be <strong>ambiguous</strong> - that is we can have <strong>more than one</strong> parse tree for a given input. We won&rsquo;t cover the various grammar types and parsing algorithms in this article, but I&rsquo;ve provided some resources on the topic in the <a href="#references-further-reading">references</a> below.</p>
 <h3 id="parsing-json">Parsing JSON</h3>
 <p>Let&rsquo;s see another example. The following grammar denotes a proper subset of the JSON language.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#069;font-weight:bold">grammar</span><span style="color:#bbb"> </span><span style="color:#0a8;font-weight:bold">JSON</span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#09f;font-style:italic">// Parser rules</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">json</span>:<span style="color:#bbb"> </span><span style="color:#033">object</span><span style="color:#bbb"> 
-</span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">array</span><span style="color:#bbb"> 
-</span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb">   </span><span style="color:#09f;font-style:italic">// empty string is a valid json</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span>;<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">object</span>:<span style="color:#bbb"> </span><span style="color:#c30">&#39;{&#39;</span><span style="color:#bbb"> </span><span style="color:#033">pair</span><span style="color:#bbb"> </span><span style="color:#555">(</span><span style="color:#c30">&#39;,&#39;</span><span style="color:#bbb"> </span><span style="color:#033">pair</span><span style="color:#555">)*</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;}&#39;</span><span style="color:#bbb"> </span><span style="color:#09f;font-style:italic">// one or more key-value pairs</span><span style="color:#bbb">
-</span><span style="color:#bbb">      </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;{&#39;</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;}&#39;</span>;<span style="color:#bbb">  </span><span style="color:#09f;font-style:italic">// empty object</span><span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">pair</span>:<span style="color:#bbb"> </span><span style="color:#360">STRING</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;:&#39;</span><span style="color:#bbb"> </span><span style="color:#033">value</span>;<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">array</span>:<span style="color:#bbb"> </span><span style="color:#c30">&#39;[&#39;</span><span style="color:#bbb"> </span><span style="color:#033">value</span><span style="color:#bbb"> </span><span style="color:#555">(</span><span style="color:#c30">&#39;,&#39;</span><span style="color:#bbb"> </span><span style="color:#033">value</span><span style="color:#555">)*</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;]&#39;</span><span style="color:#bbb"> 
-</span><span style="color:#bbb">     </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;[&#39;</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;]&#39;</span>;<span style="color:#bbb"> </span><span style="color:#09f;font-style:italic">// empty array</span><span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">value</span>:<span style="color:#bbb"> </span><span style="color:#360">STRING</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">NUMBER</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">object</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">array</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;true&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;false&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;null&#39;</span>;<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#09f;font-style:italic">// Lexer rules (simplified for brevity)</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">STRING</span>:<span style="color:#bbb"> </span><span style="color:#c30">&#39;&#34;&#39;</span><span style="color:#bbb"> </span>[a-zA-Z0-9]<span style="color:#555">+</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;&#34;&#39;</span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">NUMBER</span>:<span style="color:#bbb"> </span>[0-9]<span style="color:#555">+</span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">WS</span>:<span style="color:#bbb"> </span>[ \t\n\r]<span style="color:#555">+</span><span style="color:#bbb"> </span><span style="color:#555">-&gt;</span><span style="color:#bbb"> </span><span style="color:#033">skip</span>;<span style="color:#bbb"> </span><span style="color:#09f;font-style:italic">// discard tabs, whitespaces and newlines</span><span style="color:#bbb">
-</span></code></pre></div><p>Consider the following JSON:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#309;font-weight:bold">&#34;key&#34;</span>: <span style="color:#c30">&#34;a1b2c3&#34;</span>,
-    <span style="color:#309;font-weight:bold">&#34;values&#34;</span>: [<span style="color:#f60">1</span>, <span style="color:#f60">34</span>, <span style="color:#f60">10</span>],
-    <span style="color:#309;font-weight:bold">&#34;meta&#34;</span>: {
-        <span style="color:#309;font-weight:bold">&#34;readonly&#34;</span>: <span style="color:#069;font-weight:bold">false</span>
-    }
-}
-</code></pre></div><p>It would result in the following parse tree:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-antlr" data-lang="antlr"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">grammar</span><span style="color:#bbb"> </span><span style="color:#0a8;font-weight:bold">JSON</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#09f;font-style:italic">// Parser rules</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">json</span>:<span style="color:#bbb"> </span><span style="color:#033">object</span><span style="color:#bbb"> 
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">array</span><span style="color:#bbb"> 
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb">   </span><span style="color:#09f;font-style:italic">// empty string is a valid json</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">object</span>:<span style="color:#bbb"> </span><span style="color:#c30">&#39;{&#39;</span><span style="color:#bbb"> </span><span style="color:#033">pair</span><span style="color:#bbb"> </span><span style="color:#555">(</span><span style="color:#c30">&#39;,&#39;</span><span style="color:#bbb"> </span><span style="color:#033">pair</span><span style="color:#555">)*</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;}&#39;</span><span style="color:#bbb"> </span><span style="color:#09f;font-style:italic">// one or more key-value pairs</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;{&#39;</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;}&#39;</span>;<span style="color:#bbb">  </span><span style="color:#09f;font-style:italic">// empty object</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">pair</span>:<span style="color:#bbb"> </span><span style="color:#360">STRING</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;:&#39;</span><span style="color:#bbb"> </span><span style="color:#033">value</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">array</span>:<span style="color:#bbb"> </span><span style="color:#c30">&#39;[&#39;</span><span style="color:#bbb"> </span><span style="color:#033">value</span><span style="color:#bbb"> </span><span style="color:#555">(</span><span style="color:#c30">&#39;,&#39;</span><span style="color:#bbb"> </span><span style="color:#033">value</span><span style="color:#555">)*</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;]&#39;</span><span style="color:#bbb"> 
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">     </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;[&#39;</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;]&#39;</span>;<span style="color:#bbb"> </span><span style="color:#09f;font-style:italic">// empty array</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">value</span>:<span style="color:#bbb"> </span><span style="color:#360">STRING</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">NUMBER</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">object</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">array</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;true&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;false&#39;</span><span style="color:#bbb"> </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;null&#39;</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#09f;font-style:italic">// Lexer rules (simplified for brevity)</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">STRING</span>:<span style="color:#bbb"> </span><span style="color:#c30">&#39;&#34;&#39;</span><span style="color:#bbb"> </span>[a-zA-Z0-9]<span style="color:#555">+</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;&#34;&#39;</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">NUMBER</span>:<span style="color:#bbb"> </span>[0-9]<span style="color:#555">+</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">WS</span>:<span style="color:#bbb"> </span>[ \t\n\r]<span style="color:#555">+</span><span style="color:#bbb"> </span><span style="color:#555">-&gt;</span><span style="color:#bbb"> </span><span style="color:#033">skip</span>;<span style="color:#bbb"> </span><span style="color:#09f;font-style:italic">// discard tabs, whitespaces and newlines</span><span style="color:#bbb">
+</span></span></span></code></pre></div><p>Consider the following JSON:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#309;font-weight:bold">&#34;key&#34;</span>: <span style="color:#c30">&#34;a1b2c3&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#309;font-weight:bold">&#34;values&#34;</span>: [<span style="color:#f60">1</span>, <span style="color:#f60">34</span>, <span style="color:#f60">10</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#309;font-weight:bold">&#34;meta&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#309;font-weight:bold">&#34;readonly&#34;</span>: <span style="color:#069;font-weight:bold">false</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>It would result in the following parse tree:</p>
 <img src="/images/posts/2019-09-13-syntax-directed-translation/json.png" />
 <p>Generating a parse tree is a form of validation as well. If a parse tree cannot be generated from a given input - the input is invalid.</p>
 <img src="/images/posts/2019-09-13-syntax-directed-translation/js-syntax-error.png" width="325" />
@@ -258,43 +258,43 @@ Grammars can also be <strong>ambiguous</strong> - that is we can have <strong>mo
 <li>The leaf nodes correspond to terminals.</li>
 </ul>
 <p>So in our tree walk, according to the grammar, we can either be in a node of type <code>start</code>, <code>expr</code> or in a leaf node which can represent the <code>NUMBER, '+' or '-'</code> tokens. The calculation procedure might look like this:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> visit(node) {
-    <span style="color:#069;font-weight:bold">if</span> (node.isTerminal) {
-        <span style="color:#09f;font-style:italic">// Action &#34;attached&#34; to a terminal node
-</span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">return</span> node.type <span style="color:#555">===</span> TokenTypes.NUMBER 
-            <span style="color:#555">?</span> <span style="color:#366">parseFloat</span>(node.getText()) 
-            <span style="color:#555">:</span> node.getText();
-    }
-    <span style="color:#09f;font-style:italic">// Action &#34;attached&#34; to a &#39;expr&#39;/&#39;start&#39; node
-</span><span style="color:#09f;font-style:italic"></span>    <span style="color:#069;font-weight:bold">if</span> (node.children.length <span style="color:#555">===</span> <span style="color:#f60">3</span>) {
-        <span style="color:#069;font-weight:bold">const</span> left <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">0</span>));
-        <span style="color:#069;font-weight:bold">const</span> op <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">1</span>));
-        <span style="color:#069;font-weight:bold">const</span> right <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">2</span>));
-
-        <span style="color:#069;font-weight:bold">return</span> op <span style="color:#555">===</span> <span style="color:#c30">&#39;+&#39;</span> <span style="color:#555">?</span> (left <span style="color:#555">+</span> right) <span style="color:#555">:</span> (left <span style="color:#555">-</span> right);
-    }
-
-    <span style="color:#069;font-weight:bold">return</span> visit(node.getChild(<span style="color:#f60">0</span>));
-}
-visit(root); <span style="color:#09f;font-style:italic">// &#39;5+3-1&#39; =&gt; 7
-</span></code></pre></div><p>So calling <code>visit(root)</code> is going to return the result of the evaluation. An <code>expr</code> subtree has the following semantics - it can either have a single child which subtree evaluates to a number or three child nodes where the first and the third evaluate to a number and the second is an operator symbol. Depending on the operator, the node&rsquo;s value is calculated.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> visit(node) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (node.isTerminal) {
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic">// Action &#34;attached&#34; to a terminal node
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">return</span> node.type <span style="color:#555">===</span> TokenTypes.NUMBER 
+</span></span><span style="display:flex;"><span>            <span style="color:#555">?</span> <span style="color:#366">parseFloat</span>(node.getText()) 
+</span></span><span style="display:flex;"><span>            <span style="color:#555">:</span> node.getText();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic">// Action &#34;attached&#34; to a &#39;expr&#39;/&#39;start&#39; node
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>    <span style="color:#069;font-weight:bold">if</span> (node.children.length <span style="color:#555">===</span> <span style="color:#f60">3</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> left <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">0</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> op <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">1</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> right <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">2</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> op <span style="color:#555">===</span> <span style="color:#c30">&#39;+&#39;</span> <span style="color:#555">?</span> (left <span style="color:#555">+</span> right) <span style="color:#555">:</span> (left <span style="color:#555">-</span> right);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> visit(node.getChild(<span style="color:#f60">0</span>));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>visit(root); <span style="color:#09f;font-style:italic">// &#39;5+3-1&#39; =&gt; 7
+</span></span></span></code></pre></div><p>So calling <code>visit(root)</code> is going to return the result of the evaluation. An <code>expr</code> subtree has the following semantics - it can either have a single child which subtree evaluates to a number or three child nodes where the first and the third evaluate to a number and the second is an operator symbol. Depending on the operator, the node&rsquo;s value is calculated.</p>
 <p>Another example would be to convert the expression which is in infix notation into postfix notation.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> visit(node) {
-    <span style="color:#069;font-weight:bold">if</span> (node.isTerminal) {
-        <span style="color:#069;font-weight:bold">return</span> node.getText();
-    } 
-    <span style="color:#069;font-weight:bold">if</span> (node.children.length <span style="color:#555">===</span> <span style="color:#f60">3</span>) {
-        <span style="color:#069;font-weight:bold">const</span> left <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">0</span>));
-        <span style="color:#069;font-weight:bold">const</span> op <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">1</span>));
-        <span style="color:#069;font-weight:bold">const</span> right <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">2</span>));
-
-        <span style="color:#069;font-weight:bold">return</span> op <span style="color:#555">+</span> <span style="color:#c30">&#39; &#39;</span> <span style="color:#555">+</span> left <span style="color:#555">+</span> <span style="color:#c30">&#39; &#39;</span> <span style="color:#555">+</span> right;
-    }
-
-    <span style="color:#069;font-weight:bold">return</span> visit(node.getChild(<span style="color:#f60">0</span>));
-}
-visit(root); <span style="color:#09f;font-style:italic">// &#39;5+3-1&#39; =&gt; &#39;5 3 + 1 -&#39;
-</span></code></pre></div><p>We would take the same approach if we are to implement a JSON to XML converter, or JSON to an in-memory data structure for example. This is also a very rudimentary and impractical way to attach actions to rules. In the next section, we&rsquo;ll see a cleaner approach.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> visit(node) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (node.isTerminal) {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> node.getText();
+</span></span><span style="display:flex;"><span>    } 
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (node.children.length <span style="color:#555">===</span> <span style="color:#f60">3</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> left <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">0</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> op <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">1</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> right <span style="color:#555">=</span> visit(node.getChild(<span style="color:#f60">2</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> op <span style="color:#555">+</span> <span style="color:#c30">&#39; &#39;</span> <span style="color:#555">+</span> left <span style="color:#555">+</span> <span style="color:#c30">&#39; &#39;</span> <span style="color:#555">+</span> right;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> visit(node.getChild(<span style="color:#f60">0</span>));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>visit(root); <span style="color:#09f;font-style:italic">// &#39;5+3-1&#39; =&gt; &#39;5 3 + 1 -&#39;
+</span></span></span></code></pre></div><p>We would take the same approach if we are to implement a JSON to XML converter, or JSON to an in-memory data structure for example. This is also a very rudimentary and impractical way to attach actions to rules. In the next section, we&rsquo;ll see a cleaner approach.</p>
 <h2 id="hands-on-parsing-csv">Hands-On: Parsing CSV</h2>
 <p>Everything so far was more or less abstract. Now is time to go through a real-world example and put what we&rsquo;ve learned to practice. We&rsquo;re going to implement a program that translates a <a href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a> string to JSON. To generate our parser, we&rsquo;re going to use <a href="https://www.antlr.org">ANTLR</a>. Provided a grammar, ANTLR can emit the parser code in several languages (Java, C#, JavaScript and others). Check <a href="https://github.com/antlr/antlr4/blob/master/doc/getting-started.md">this guide</a> for the installation details. We&rsquo;re going to generate our parser in JavaScript.</p>
 <p>We can split our task into two subtasks:</p>
@@ -304,159 +304,159 @@ visit(root); <span style="color:#09f;font-style:italic">// &#39;5+3-1&#39; =&gt;
 </ol>
 <h3 id="parser-generation-with-antlr">Parser generation with ANTLR</h3>
 <p>Let&rsquo;s define our CSV grammar in <code>CSV.g4</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#069;font-weight:bold">grammar</span><span style="color:#bbb"> </span><span style="color:#0a8;font-weight:bold">CSV</span>;<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">csvFile</span>:<span style="color:#bbb"> </span><span style="color:#033">hdr</span><span style="color:#bbb"> </span><span style="color:#033">row</span><span style="color:#555">+</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">hdr</span><span style="color:#bbb"> </span>:<span style="color:#bbb"> </span><span style="color:#033">row</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">row</span><span style="color:#bbb"> </span>:<span style="color:#bbb"> </span><span style="color:#033">field</span><span style="color:#bbb"> </span><span style="color:#555">(</span><span style="color:#c30">&#39;,&#39;</span><span style="color:#bbb"> </span><span style="color:#033">field</span><span style="color:#555">)*</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;\r&#39;</span><span style="color:#555">?</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;\n&#39;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">field</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span>:<span style="color:#bbb"> </span><span style="color:#360">TEXT</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">STRING</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb">   </span><span style="color:#09f;font-style:italic">// empty string</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span>;<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">TEXT</span><span style="color:#bbb">   </span>:<span style="color:#bbb"> </span><span style="color:#555">~</span>[,\n\r&#34;]+ ;
-STRING : &#39;&#34;&#39; (&#39;&#34;&#34;&#39;|~&#39;&#34;&#39;)* &#39;&#34;&#39; ; // quote-quote is an escaped quote
-</code></pre></div><p><em>source: <a href="https://github.com/antlr/grammars-v4/blob/master/csv/CSV.g4">grammars-v4 on GitHub</a></em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-antlr" data-lang="antlr"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">grammar</span><span style="color:#bbb"> </span><span style="color:#0a8;font-weight:bold">CSV</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">csvFile</span>:<span style="color:#bbb"> </span><span style="color:#033">hdr</span><span style="color:#bbb"> </span><span style="color:#033">row</span><span style="color:#555">+</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">hdr</span><span style="color:#bbb"> </span>:<span style="color:#bbb"> </span><span style="color:#033">row</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">row</span><span style="color:#bbb"> </span>:<span style="color:#bbb"> </span><span style="color:#033">field</span><span style="color:#bbb"> </span><span style="color:#555">(</span><span style="color:#c30">&#39;,&#39;</span><span style="color:#bbb"> </span><span style="color:#033">field</span><span style="color:#555">)*</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;\r&#39;</span><span style="color:#555">?</span><span style="color:#bbb"> </span><span style="color:#c30">&#39;\n&#39;</span><span style="color:#bbb"> </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">field</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>:<span style="color:#bbb"> </span><span style="color:#360">TEXT</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">STRING</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb">   </span><span style="color:#09f;font-style:italic">// empty string</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">TEXT</span><span style="color:#bbb">   </span>:<span style="color:#bbb"> </span><span style="color:#555">~</span>[,\n\r&#34;]+ ;
+</span></span><span style="display:flex;"><span>STRING : &#39;&#34;&#39; (&#39;&#34;&#34;&#39;|~&#39;&#34;&#39;)* &#39;&#34;&#39; ; // quote-quote is an escaped quote
+</span></span></code></pre></div><p><em>source: <a href="https://github.com/antlr/grammars-v4/blob/master/csv/CSV.g4">grammars-v4 on GitHub</a></em></p>
 <p>Let&rsquo;s also create <code>employees.csv</code>.</p>
 <pre tabindex="0"><code class="language-csv" data-lang="csv">EmployeeNumber, Name, Location, BirthDate
 12420, John Smith, USA, 1988/04/29
 </code></pre><p>We can now proceed to visualize the parse tree. Running</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">antlr CSV.g4
-javac ./CSV*.java
-grun CSV csvFile -gui -tokens ./employees.csv
-</code></pre></div><p>would result in</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>antlr CSV.g4
+</span></span><span style="display:flex;"><span>javac ./CSV*.java
+</span></span><span style="display:flex;"><span>grun CSV csvFile -gui -tokens ./employees.csv
+</span></span></code></pre></div><p>would result in</p>
 <img src="/images/posts/2019-09-13-syntax-directed-translation/employees-pt.png" />
 <p>This is a useful tool for debugging our grammars, but now we&rsquo;ll see how to programmatically construct and access the parse tree.<br>
 First we need to install the <a href="https://www.npmjs.com/package/antlr4">JavaScript target for ANTLR4</a>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm i antlr4
-</code></pre></div><p>Generate the parser, this time in JavaScript:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">antlr CSV.g4 -Dlanguage<span style="color:#555">=</span>JavaScript -visitor -o lang/
-</code></pre></div><p>ANTLR has generated a bunch of files for us.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ls lang
-CSV.interp      CSVLexer.interp CSVLexer.tokens CSVParser.js
-CSV.tokens      CSVLexer.js     CSVListener.js  CSVVisitor.js
-</code></pre></div><p>We can see that we now have the lexer and parser source files. ANTLR has also generated two other files - <code>CSVVisitor.js</code> and <code>CSVListener.js</code> which we&rsquo;ll cover in the next section as they are related to the translation phase.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm i antlr4
+</span></span></code></pre></div><p>Generate the parser, this time in JavaScript:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>antlr CSV.g4 -Dlanguage<span style="color:#555">=</span>JavaScript -visitor -o lang/
+</span></span></code></pre></div><p>ANTLR has generated a bunch of files for us.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ls lang
+</span></span><span style="display:flex;"><span>CSV.interp      CSVLexer.interp CSVLexer.tokens CSVParser.js
+</span></span><span style="display:flex;"><span>CSV.tokens      CSVLexer.js     CSVListener.js  CSVVisitor.js
+</span></span></code></pre></div><p>We can see that we now have the lexer and parser source files. ANTLR has also generated two other files - <code>CSVVisitor.js</code> and <code>CSVListener.js</code> which we&rsquo;ll cover in the next section as they are related to the translation phase.</p>
 <p>We have a lexer and a parser. Now it&rsquo;s time to generate the parse tree. Create <code>main.js</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> antlr <span style="color:#555">=</span> require(<span style="color:#c30">&#39;antlr4&#39;</span>);
-<span style="color:#069;font-weight:bold">const</span> CsvLexer <span style="color:#555">=</span> require(<span style="color:#c30">&#39;./lang/CSVLexer&#39;</span>).CSVLexer;
-<span style="color:#069;font-weight:bold">const</span> CsvParser <span style="color:#555">=</span> require(<span style="color:#c30">&#39;./lang/CSVParser&#39;</span>).CSVParser;
-<span style="color:#069;font-weight:bold">const</span> CsvVisitor <span style="color:#555">=</span> require(<span style="color:#c30">&#39;./lang/CSVVisitor&#39;</span>).CSVVisitor;
-
-<span style="color:#069;font-weight:bold">const</span> input <span style="color:#555">=</span> <span style="color:#c30">`REVIEW_DATE, AUTHOR, ISBN, DISCOUNTED_PRICE
-</span><span style="color:#c30">1985/01/21, Douglas Adams, 0345391802, 5.95
-</span><span style="color:#c30">1990/01/12, Douglas Hofstadter, 0465026567, 9.95
-</span><span style="color:#c30">`</span>;
-<span style="color:#069;font-weight:bold">const</span> chars <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> antlr.InputStream(input);
-<span style="color:#069;font-weight:bold">const</span> lexer <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> CsvLexer(chars);
-<span style="color:#069;font-weight:bold">const</span> tokens <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> antlr.CommonTokenStream(lexer);
-<span style="color:#069;font-weight:bold">const</span> parser <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> CsvParser(tokens);
-<span style="color:#069;font-weight:bold">const</span> tree <span style="color:#555">=</span> parser.csvFile(); <span style="color:#09f;font-style:italic">// parse from the start rule (the axiom)
-</span></code></pre></div><p>We&rsquo;ve generated a parse tree, it&rsquo;s time to go ahead with the translation.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> antlr <span style="color:#555">=</span> require(<span style="color:#c30">&#39;antlr4&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> CsvLexer <span style="color:#555">=</span> require(<span style="color:#c30">&#39;./lang/CSVLexer&#39;</span>).CSVLexer;
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> CsvParser <span style="color:#555">=</span> require(<span style="color:#c30">&#39;./lang/CSVParser&#39;</span>).CSVParser;
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> CsvVisitor <span style="color:#555">=</span> require(<span style="color:#c30">&#39;./lang/CSVVisitor&#39;</span>).CSVVisitor;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> input <span style="color:#555">=</span> <span style="color:#c30">`REVIEW_DATE, AUTHOR, ISBN, DISCOUNTED_PRICE
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">1985/01/21, Douglas Adams, 0345391802, 5.95
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">1990/01/12, Douglas Hofstadter, 0465026567, 9.95
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">`</span>;
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> chars <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> antlr.InputStream(input);
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> lexer <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> CsvLexer(chars);
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> tokens <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> antlr.CommonTokenStream(lexer);
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> parser <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> CsvParser(tokens);
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> tree <span style="color:#555">=</span> parser.csvFile(); <span style="color:#09f;font-style:italic">// parse from the start rule (the axiom)
+</span></span></span></code></pre></div><p>We&rsquo;ve generated a parse tree, it&rsquo;s time to go ahead with the translation.</p>
 <h3 id="translation">Translation</h3>
 <p>ANTLR also generates a &ldquo;parse tree walker&rdquo; interface for us. That means we can easily hook into events during the parse tree traversal. For our translator, we&rsquo;re going to use the visitor mechanism which is an implementation
 of the <a href="https://en.wikipedia.org/wiki/Visitor_pattern">Visitor pattern</a>. In ANTLR, the visitors and listeners are both used for traversing the tree but they are slightly different (more on that <a href="https://github.com/antlr/antlr4/blob/master/doc/listeners.md">here</a>).</p>
 <p>Let&rsquo;s take a look at the generated <code>CSVVisitor.js</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#09f;font-style:italic">// Generated from CSV.g4 by ANTLR 4.7.2
-</span><span style="color:#09f;font-style:italic">// jshint ignore: start
-</span><span style="color:#09f;font-style:italic"></span><span style="color:#069;font-weight:bold">var</span> antlr4 <span style="color:#555">=</span> require(<span style="color:#c30">&#39;antlr4/index&#39;</span>);
-
-<span style="color:#09f;font-style:italic">// This class defines a complete generic visitor for a parse tree produced by CSVParser.
-</span><span style="color:#09f;font-style:italic"></span><span style="color:#069;font-weight:bold">function</span> CSVVisitor() {
-	antlr4.tree.ParseTreeVisitor.call(<span style="color:#069;font-weight:bold">this</span>);
-	<span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>;
-}
-
-CSVVisitor.prototype <span style="color:#555">=</span> <span style="color:#366">Object</span>.create(antlr4.tree.ParseTreeVisitor.prototype);
-CSVVisitor.prototype.constructor <span style="color:#555">=</span> CSVVisitor;
-
-<span style="color:#09f;font-style:italic">// Visit a parse tree produced by CSVParser#csvFile.
-</span><span style="color:#09f;font-style:italic"></span>CSVVisitor.prototype.visitCsvFile <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">function</span>(ctx) {
-  <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
-};
-<span style="color:#09f;font-style:italic">// Visit a parse tree produced by CSVParser#hdr.
-</span><span style="color:#09f;font-style:italic"></span>CSVVisitor.prototype.visitHdr <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">function</span>(ctx) {
-  <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
-};
-<span style="color:#09f;font-style:italic">// Visit a parse tree produced by CSVParser#row.
-</span><span style="color:#09f;font-style:italic"></span>CSVVisitor.prototype.visitRow <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">function</span>(ctx) {
-  <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
-};
-<span style="color:#09f;font-style:italic">// Visit a parse tree produced by CSVParser#field.
-</span><span style="color:#09f;font-style:italic"></span>CSVVisitor.prototype.visitField <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">function</span>(ctx) {
-  <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
-};
-</code></pre></div><p>You can see that these function names <strong>correspond to the nonterminals in the grammar</strong>, <code>ctx</code> is the context of the current tree node. We can hook into and implement the semantics of each rule by extending this class. Think of these functions as <strong>augmentations to the grammar</strong>. They represent the actions we specify for our rules.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// Generated from CSV.g4 by ANTLR 4.7.2
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// jshint ignore: start
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span><span style="color:#069;font-weight:bold">var</span> antlr4 <span style="color:#555">=</span> require(<span style="color:#c30">&#39;antlr4/index&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// This class defines a complete generic visitor for a parse tree produced by CSVParser.
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span><span style="color:#069;font-weight:bold">function</span> CSVVisitor() {
+</span></span><span style="display:flex;"><span>	antlr4.tree.ParseTreeVisitor.call(<span style="color:#069;font-weight:bold">this</span>);
+</span></span><span style="display:flex;"><span>	<span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>CSVVisitor.prototype <span style="color:#555">=</span> <span style="color:#366">Object</span>.create(antlr4.tree.ParseTreeVisitor.prototype);
+</span></span><span style="display:flex;"><span>CSVVisitor.prototype.constructor <span style="color:#555">=</span> CSVVisitor;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// Visit a parse tree produced by CSVParser#csvFile.
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>CSVVisitor.prototype.visitCsvFile <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">function</span>(ctx) {
+</span></span><span style="display:flex;"><span>  <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// Visit a parse tree produced by CSVParser#hdr.
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>CSVVisitor.prototype.visitHdr <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">function</span>(ctx) {
+</span></span><span style="display:flex;"><span>  <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// Visit a parse tree produced by CSVParser#row.
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>CSVVisitor.prototype.visitRow <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">function</span>(ctx) {
+</span></span><span style="display:flex;"><span>  <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// Visit a parse tree produced by CSVParser#field.
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>CSVVisitor.prototype.visitField <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">function</span>(ctx) {
+</span></span><span style="display:flex;"><span>  <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>You can see that these function names <strong>correspond to the nonterminals in the grammar</strong>, <code>ctx</code> is the context of the current tree node. We can hook into and implement the semantics of each rule by extending this class. Think of these functions as <strong>augmentations to the grammar</strong>. They represent the actions we specify for our rules.</p>
 <p>In CSV we have two types of rows - a row with values and a header row. Each row contains fields. So when building our translator, we have to handle the special case when a row node descends from a header (hdr) node (see the parse tree above).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">class</span> CsvToJsonConverter <span style="color:#069;font-weight:bold">extends</span> CsvVisitor {
-    constructor() {
-        <span style="color:#069;font-weight:bold">super</span>();
-        <span style="color:#069;font-weight:bold">this</span>.header <span style="color:#555">=</span> []; <span style="color:#09f;font-style:italic">// holds the header values
-</span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.currentRowValues <span style="color:#555">=</span> []; <span style="color:#09f;font-style:italic">// holds the values of the current row
-</span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.output <span style="color:#555">=</span> [];
-    }
-    
-    <span style="color:#09f;font-style:italic">// The axiom&#39;s action is going to be invoked first.
-</span><span style="color:#09f;font-style:italic"></span>    visitCsvFile(ctx) { 
-        <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
-        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>.output;
-    }
-    
-    visitHdr(ctx) {
-        <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
-        <span style="color:#09f;font-style:italic">// After traversing the &#39;hdr&#39; subtree we store the values
-</span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.header <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">this</span>.currentRowValues;
-    }
-
-    visitRow(ctx) {
-        <span style="color:#09f;font-style:italic">// Clear values added from the previous row node
-</span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.currentRowValues <span style="color:#555">=</span> [];
-        <span style="color:#09f;font-style:italic">// Traverse the subtree and collect the field values
-</span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
-        
-        <span style="color:#09f;font-style:italic">// Construct an object from a row in case is&#39;s not a header row
-</span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">if</span> (ctx.parentCtx.ruleIndex <span style="color:#555">!==</span> CsvParser.RULE_hdr) {
-            <span style="color:#069;font-weight:bold">const</span> item <span style="color:#555">=</span> {};
-            <span style="color:#069;font-weight:bold">this</span>.currentRowValues.forEach((val, index) =&gt; {
-                <span style="color:#09f;font-style:italic">/* The header row is already visited because 
-</span><span style="color:#09f;font-style:italic">                   it is always the lefmost row node in the tree */</span>
-                <span style="color:#069;font-weight:bold">const</span> key <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">this</span>.header[index];
-                <span style="color:#069;font-weight:bold">return</span> item[key] <span style="color:#555">=</span> val;
-            });
-            <span style="color:#069;font-weight:bold">this</span>.output.push(item);
-        }
-    }
-
-    visitField(ctx) {
-        <span style="color:#09f;font-style:italic">// When we visit a &#39;field&#39; node, we simply store its text
-</span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.currentRowValues.push(ctx.getText().trim());
-    }
-}
-</code></pre></div><p>Now we&rsquo;ve specified how to &ldquo;walk the tree&rdquo; using our custom visitor.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">const</span> result <span style="color:#555">=</span> tree.accept(<span style="color:#069;font-weight:bold">new</span> CsvToJsonConverter());
-</code></pre></div><p>is going to produce:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">[ { REVIEW_DATE<span style="color:#555">:</span> <span style="color:#c30">&#39;1985/01/21&#39;</span>,
-    AUTHOR<span style="color:#555">:</span> <span style="color:#c30">&#39;Douglas Adams&#39;</span>,
-    ISBN<span style="color:#555">:</span> <span style="color:#c30">&#39;0345391802&#39;</span>,
-    DISCOUNTED_PRICE<span style="color:#555">:</span> <span style="color:#c30">&#39;5.95&#39;</span> },
-  { REVIEW_DATE<span style="color:#555">:</span> <span style="color:#c30">&#39;1990/01/12&#39;</span>,
-    AUTHOR<span style="color:#555">:</span> <span style="color:#c30">&#39;Douglas Hofstadter&#39;</span>,
-    ISBN<span style="color:#555">:</span> <span style="color:#c30">&#39;0465026567&#39;</span>,
-    DISCOUNTED_PRICE<span style="color:#555">:</span> <span style="color:#c30">&#39;9.95&#39;</span> } ]
-</code></pre></div><h2 id="parsing-regular-expressions">Parsing Regular Expressions</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">class</span> CsvToJsonConverter <span style="color:#069;font-weight:bold">extends</span> CsvVisitor {
+</span></span><span style="display:flex;"><span>    constructor() {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">super</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">this</span>.header <span style="color:#555">=</span> []; <span style="color:#09f;font-style:italic">// holds the header values
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.currentRowValues <span style="color:#555">=</span> []; <span style="color:#09f;font-style:italic">// holds the values of the current row
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.output <span style="color:#555">=</span> [];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic">// The axiom&#39;s action is going to be invoked first.
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>    visitCsvFile(ctx) { 
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">this</span>.output;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    visitHdr(ctx) {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic">// After traversing the &#39;hdr&#39; subtree we store the values
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.header <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">this</span>.currentRowValues;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    visitRow(ctx) {
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic">// Clear values added from the previous row node
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.currentRowValues <span style="color:#555">=</span> [];
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic">// Traverse the subtree and collect the field values
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.visitChildren(ctx);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic">// Construct an object from a row in case is&#39;s not a header row
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">if</span> (ctx.parentCtx.ruleIndex <span style="color:#555">!==</span> CsvParser.RULE_hdr) {
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">const</span> item <span style="color:#555">=</span> {};
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">this</span>.currentRowValues.forEach((val, index) =&gt; {
+</span></span><span style="display:flex;"><span>                <span style="color:#09f;font-style:italic">/* The header row is already visited because 
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">                   it is always the lefmost row node in the tree */</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#069;font-weight:bold">const</span> key <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">this</span>.header[index];
+</span></span><span style="display:flex;"><span>                <span style="color:#069;font-weight:bold">return</span> item[key] <span style="color:#555">=</span> val;
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">this</span>.output.push(item);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    visitField(ctx) {
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic">// When we visit a &#39;field&#39; node, we simply store its text
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>        <span style="color:#069;font-weight:bold">this</span>.currentRowValues.push(ctx.getText().trim());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now we&rsquo;ve specified how to &ldquo;walk the tree&rdquo; using our custom visitor.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> result <span style="color:#555">=</span> tree.accept(<span style="color:#069;font-weight:bold">new</span> CsvToJsonConverter());
+</span></span></code></pre></div><p>is going to produce:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>[ { REVIEW_DATE<span style="color:#555">:</span> <span style="color:#c30">&#39;1985/01/21&#39;</span>,
+</span></span><span style="display:flex;"><span>    AUTHOR<span style="color:#555">:</span> <span style="color:#c30">&#39;Douglas Adams&#39;</span>,
+</span></span><span style="display:flex;"><span>    ISBN<span style="color:#555">:</span> <span style="color:#c30">&#39;0345391802&#39;</span>,
+</span></span><span style="display:flex;"><span>    DISCOUNTED_PRICE<span style="color:#555">:</span> <span style="color:#c30">&#39;5.95&#39;</span> },
+</span></span><span style="display:flex;"><span>  { REVIEW_DATE<span style="color:#555">:</span> <span style="color:#c30">&#39;1990/01/12&#39;</span>,
+</span></span><span style="display:flex;"><span>    AUTHOR<span style="color:#555">:</span> <span style="color:#c30">&#39;Douglas Hofstadter&#39;</span>,
+</span></span><span style="display:flex;"><span>    ISBN<span style="color:#555">:</span> <span style="color:#c30">&#39;0465026567&#39;</span>,
+</span></span><span style="display:flex;"><span>    DISCOUNTED_PRICE<span style="color:#555">:</span> <span style="color:#c30">&#39;9.95&#39;</span> } ]
+</span></span></code></pre></div><h2 id="parsing-regular-expressions">Parsing Regular Expressions</h2>
 <p>Another example is using syntax-directed translation for <a href="/implementing-a-regular-expression-engine">compiling regular expressions to finite automata</a>. The article shows a stack-based approach, but we can also perform the compilation by writing a grammar and constructing a parse tree. A grammar that replicates the regex syntax as shown in the article would be:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-antlr" data-lang="antlr"><span style="color:#069;font-weight:bold">grammar</span><span style="color:#bbb"> </span><span style="color:#0a8;font-weight:bold">Regex</span>;<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">start</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span>;<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">expr</span>:<span style="color:#bbb"> 
-</span><span style="color:#bbb">    </span><span style="color:#c30">&#39;(&#39;</span><span style="color:#033">expr</span><span style="color:#c30">&#39;)&#39;</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#c30">&#39;*&#39;</span><span style="color:#bbb">      </span><span style="color:#09f;font-style:italic">// closure</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#c30">&#39;.&#39;</span><span style="color:#033">expr</span><span style="color:#bbb">  </span><span style="color:#09f;font-style:italic">// concatenation</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#c30">&#39;|&#39;</span><span style="color:#033">expr</span><span style="color:#bbb">  </span><span style="color:#09f;font-style:italic">// union (or)</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">SYMBOL</span>;<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#99f">SYMBOL</span>:<span style="color:#bbb"> </span>[a-zA-Z0-9];<span style="color:#bbb">
-</span></code></pre></div><p>The operator precedence is specified by ordering the <code>expr</code> productions from the highest (top) to the lowest (bottom). Here&rsquo;s the parse tree of &ldquo;(a|b)*.c&rdquo;:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-antlr" data-lang="antlr"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">grammar</span><span style="color:#bbb"> </span><span style="color:#0a8;font-weight:bold">Regex</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">start</span>:<span style="color:#bbb"> </span><span style="color:#033">expr</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">expr</span>:<span style="color:#bbb"> 
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#c30">&#39;(&#39;</span><span style="color:#033">expr</span><span style="color:#c30">&#39;)&#39;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#c30">&#39;*&#39;</span><span style="color:#bbb">      </span><span style="color:#09f;font-style:italic">// closure</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#c30">&#39;.&#39;</span><span style="color:#033">expr</span><span style="color:#bbb">  </span><span style="color:#09f;font-style:italic">// concatenation</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#033">expr</span><span style="color:#c30">&#39;|&#39;</span><span style="color:#033">expr</span><span style="color:#bbb">  </span><span style="color:#09f;font-style:italic">// union (or)</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#555">|</span><span style="color:#bbb"> </span><span style="color:#360">SYMBOL</span>;<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#99f">SYMBOL</span>:<span style="color:#bbb"> </span>[a-zA-Z0-9];<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The operator precedence is specified by ordering the <code>expr</code> productions from the highest (top) to the lowest (bottom). Here&rsquo;s the parse tree of &ldquo;(a|b)*.c&rdquo;:</p>
 <img src="/images/posts/2019-09-13-syntax-directed-translation/regex.png" />
 <p>You can check out the compilation procedure <a href="https://github.com/deniskyashif/regexjs/commit/c3fabedea1ff53b0a1b12e8647df95e81aea739f#diff-48e611c3706c9fdff05b92dfc5b98cd9L127">here</a>, however, for better understanding I recommend reading the <a href="/implementing-a-regular-expression-engine">regex article</a> first.</p>
 <h2 id="conclusion">Conclusion</h2>
@@ -510,7 +510,7 @@ query languages, protocols, connection strings, configuration files and all kind
 
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     
@@ -548,7 +548,7 @@ query languages, protocols, connection strings, configuration files and all kind
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.754052 &#43;0200 EET m=&#43;0.115490693">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-05-11 10:50:48.877953 &#43;0300 EEST m=&#43;0.172028110">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

@@ -135,9 +135,9 @@ if (!doNotTrack) {
 <p>In this article, we&rsquo;ll define a basic regular expression language using a formal grammar and learn how to parse its strings in linear time using the <em>recursive descent</em> method. We&rsquo;ll use the <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">BNF</a> notation for the grammars.</p>
 <h2 id="example-grammar-1">Example Grammar #1</h2>
 <p>Let&rsquo;s define the following grammar:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">S</span>&gt; <span style="color:#555">::=</span> &#39;a&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;e&#39;
-&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt; <span style="color:#555">::=</span> &#39;b&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;d&#39; | &#39;c&#39;
-</code></pre></div><p>\(S, A\) are called nonterminals, \(a,b,c,d,e\) are the terminal symbols. \(S\) is the start symbol (axiom) of the grammar and above we have depicted the two production rules. This grammar describes strings that start with an &ldquo;a&rdquo;, end with an &ldquo;e&rdquo;, have a &ldquo;c&rdquo; in the middle which is surrounded by an equal number of &ldquo;b&rdquo;&rsquo;s to its left and &ldquo;d&rdquo;&rsquo;s to its right. Some of the strings that belong to the language of the grammar are &ldquo;ace&rdquo;, &ldquo;abcde&rdquo;, &ldquo;abbbcddde&rdquo;, etc. We can examine the structure of these strings by building the corresponding parse trees.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bnf" data-lang="bnf"><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">S</span>&gt; <span style="color:#555">::=</span> &#39;a&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;e&#39;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt; <span style="color:#555">::=</span> &#39;b&#39;&lt;<span style="color:#0a8;font-weight:bold">A</span>&gt;&#39;d&#39; | &#39;c&#39;
+</span></span></code></pre></div><p>\(S, A\) are called nonterminals, \(a,b,c,d,e\) are the terminal symbols. \(S\) is the start symbol (axiom) of the grammar and above we have depicted the two production rules. This grammar describes strings that start with an &ldquo;a&rdquo;, end with an &ldquo;e&rdquo;, have a &ldquo;c&rdquo; in the middle which is surrounded by an equal number of &ldquo;b&rdquo;&rsquo;s to its left and &ldquo;d&rdquo;&rsquo;s to its right. Some of the strings that belong to the language of the grammar are &ldquo;ace&rdquo;, &ldquo;abcde&rdquo;, &ldquo;abbbcddde&rdquo;, etc. We can examine the structure of these strings by building the corresponding parse trees.</p>
 <img src="/images/posts/2020-08-17-parsing-regex-rd/pt1all.png" width="250" />
 <p>Given a valid parse tree, we reconstruct the input string by traversing it depth-first and concatenating the labels of the leaf nodes.</p>
 <h2 id="recursive-descent-parsing">Recursive Descent Parsing</h2>
@@ -146,263 +146,263 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 <p>A recursive descent parser is simply a set of functions for each nonterminal in the grammar. We begin parsing by executing the function corresponding to the axiom and terminate successfully if the whole input string has been processed. Suppose we have the following rule:</p>
 <p>\[ A \to X_0 X_1 \dots X_n \]</p>
 <p>where \( X_i \) is either a terminal or a nonterminal. Pseudocode for the corresponding function would look like this:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">function A() {
-    foreach Xi in X0...Xn
-        if Xi is a nonterminal
-            call the function for Xi()
-        else if Xi is a terminal and Xi == current input symbol
-            advance the to next input symbol
-        else
-            handle an errror (backtrack or throw)
-}
-</code></pre></div><p><small><em>Source: Compilers: Principles, Techniques, and Tools (The Dragon Book), Chapter 4 Syntax Analysis</em></small></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>function A() {
+</span></span><span style="display:flex;"><span>    foreach Xi in X0...Xn
+</span></span><span style="display:flex;"><span>        if Xi is a nonterminal
+</span></span><span style="display:flex;"><span>            call the function for Xi()
+</span></span><span style="display:flex;"><span>        else if Xi is a terminal and Xi == current input symbol
+</span></span><span style="display:flex;"><span>            advance the to next input symbol
+</span></span><span style="display:flex;"><span>        else
+</span></span><span style="display:flex;"><span>            handle an errror (backtrack or throw)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><small><em>Source: Compilers: Principles, Techniques, and Tools (The Dragon Book), Chapter 4 Syntax Analysis</em></small></p>
 <p>A simple recognizer for grammar #1 using recursive descent can be found <a href="https://gist.github.com/deniskyashif/24c055ec845dce9e33344e0afc6dd7ec">here</a>.</p>
 <h2 id="parsing-regular-expressions">Parsing Regular Expressions</h2>
 <p>We start by defining the grammar of our regular expressions. We are going to support the base operations such as <em>concatenation</em>, <em>union</em> (<code>|</code>), <em>zero-or-more</em> (<code>*</code>), <em>one-or-more</em> (<code>+</code>), <em>zero-or-one</em> (<code>?</code>), and <em>grouping</em> (<code>()</code>). We&rsquo;ll also allow users to use metacharacters (<code>*</code>,<code>+</code>,<code>?</code>) as ordinary symbols through escaping (<code>\</code>).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
-    | &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;&#39;|&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;
-&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; 
-    | &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
-&lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;
-    | &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt;
-&lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">char</span>&gt;
-    | &#39;(&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;&#39;)&#39;
-&lt;<span style="color:#0a8;font-weight:bold">char</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">any-char-except-meta</span>&gt;
-    | &#39;\&#39;&lt;<span style="color:#0a8;font-weight:bold">any-char</span>&gt;
-&lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt; <span style="color:#555">::=</span> &#39;?&#39; | &#39;*&#39; | &#39;+&#39;
-</code></pre></div><p>We can see that the operator precedence is encoded in the grammar as the lower priority operations (e.g. <code>|</code>) are situated closer to the root of the parse tree whereas the higher priority ones (<code>?,*,+</code>) are closer to the leaves. We depict <em>concatenation</em> through the <code>&lt;term&gt; ::= &lt;factor&gt;&lt;term&gt;</code> production rule.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bnf" data-lang="bnf"><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
+</span></span><span style="display:flex;"><span>    | &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;&#39;|&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; 
+</span></span><span style="display:flex;"><span>    | &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;
+</span></span><span style="display:flex;"><span>    | &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">char</span>&gt;
+</span></span><span style="display:flex;"><span>    | &#39;(&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;&#39;)&#39;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">char</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">any-char-except-meta</span>&gt;
+</span></span><span style="display:flex;"><span>    | &#39;\&#39;&lt;<span style="color:#0a8;font-weight:bold">any-char</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt; <span style="color:#555">::=</span> &#39;?&#39; | &#39;*&#39; | &#39;+&#39;
+</span></span></code></pre></div><p>We can see that the operator precedence is encoded in the grammar as the lower priority operations (e.g. <code>|</code>) are situated closer to the root of the parse tree whereas the higher priority ones (<code>?,*,+</code>) are closer to the leaves. We depict <em>concatenation</em> through the <code>&lt;term&gt; ::= &lt;factor&gt;&lt;term&gt;</code> production rule.</p>
 <img src="/images/posts/2020-08-17-parsing-regex-rd/ptre.png" width="375" />
 <p>Above are the parse trees for the strings <code>a+b?</code> and <code>(a|b)*c</code> respectively.</p>
 <p>Let&rsquo;s introduce some auxiliary functions before implementing the parsing procedure. First, we define the constructor function for the tree node.</p>
-<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> TreeNode(label, children) {
-    <span style="color:#069;font-weight:bold">this</span>.label <span style="color:#555">=</span> label;
-    <span style="color:#069;font-weight:bold">this</span>.children <span style="color:#555">=</span> children <span style="color:#555">||</span> [];
-}</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> TreeNode(label, children) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">this</span>.label <span style="color:#555">=</span> label;
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">this</span>.children <span style="color:#555">=</span> children <span style="color:#555">||</span> [];
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>A tree node is an object holding a label (string) and an array with references to the child nodes. We continue by declaring some auxiliary variables and functions.</p>
-<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">let</span> pattern <span style="color:#555">=</span> <span style="color:#c30">&#39;&#39;</span>;
-<span style="color:#069;font-weight:bold">let</span> pos <span style="color:#555">=</span> <span style="color:#f60">0</span>;
-
-<span style="color:#069;font-weight:bold">const</span> peek <span style="color:#555">=</span> () =&gt; pattern[pos];
-<span style="color:#069;font-weight:bold">const</span> hasMoreChars <span style="color:#555">=</span> () =&gt; pos <span style="color:#555">&lt;</span> pattern.length;
-<span style="color:#069;font-weight:bold">const</span> isMetaChar <span style="color:#555">=</span> ch =&gt; ch <span style="color:#555">===</span> <span style="color:#c30">&#39;*&#39;</span> <span style="color:#555">||</span> ch <span style="color:#555">===</span> <span style="color:#c30">&#39;+&#39;</span> <span style="color:#555">||</span> ch <span style="color:#555">===</span> <span style="color:#c30">&#39;?&#39;</span>;</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">let</span> pattern <span style="color:#555">=</span> <span style="color:#c30">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">let</span> pos <span style="color:#555">=</span> <span style="color:#f60">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> peek <span style="color:#555">=</span> () =&gt; pattern[pos];
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> hasMoreChars <span style="color:#555">=</span> () =&gt; pos <span style="color:#555">&lt;</span> pattern.length;
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> isMetaChar <span style="color:#555">=</span> ch =&gt; ch <span style="color:#555">===</span> <span style="color:#c30">&#39;*&#39;</span> <span style="color:#555">||</span> ch <span style="color:#555">===</span> <span style="color:#c30">&#39;+&#39;</span> <span style="color:#555">||</span> ch <span style="color:#555">===</span> <span style="color:#c30">&#39;?&#39;</span>;</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p><code>peek()</code> returns the current symbol in the input string, <code>hasMoreChars()</code> checks if we have reached the end of the input, and <code>isMetaChar(ch)</code> checks if we see a symbol that serves as a unary operator.</p>
-<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> match(ch) {
-    <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">!==</span> ch)
-        <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> <span style="color:#366">Error</span>(<span style="color:#c30">`Unexpected symbol </span><span style="color:#a00">${</span>ch<span style="color:#a00">}</span><span style="color:#c30">`</span>);
-    pos<span style="color:#555">++</span>;
-}
-
-<span style="color:#069;font-weight:bold">function</span> next() {
-    <span style="color:#069;font-weight:bold">let</span> ch <span style="color:#555">=</span> peek();
-    match(ch);
-
-    <span style="color:#069;font-weight:bold">return</span> ch;
-}</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> match(ch) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">!==</span> ch)
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> <span style="color:#366">Error</span>(<span style="color:#c30">`Unexpected symbol </span><span style="color:#a00">${</span>ch<span style="color:#a00">}</span><span style="color:#c30">`</span>);
+</span></span><span style="display:flex;"><span>    pos<span style="color:#555">++</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> next() {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">let</span> ch <span style="color:#555">=</span> peek();
+</span></span><span style="display:flex;"><span>    match(ch);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> ch;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p><code>match(ch)</code> matches a character with the one we&rsquo;re currently at and moves the position to the next input symbol, <code>next()</code> returns the current input symbol, and moves forward with one position.</p>
 <p>Now we are ready to implement the functions for each nonterminal in the grammar. These functions have the same signature - they take no arguments and return an object of type <code>TreeNode</code>. We start with the axiom.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; 
-    | &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;&#39;|&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;
-</code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bnf" data-lang="bnf"><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; 
+</span></span><span style="display:flex;"><span>    | &lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;&#39;|&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;
+</span></span></code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> expr() {
-    <span style="color:#069;font-weight:bold">const</span> trm <span style="color:#555">=</span> term();
-
-    <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;|&#39;</span>) {
-        match(<span style="color:#c30">&#39;|&#39;</span>);
-        <span style="color:#069;font-weight:bold">const</span> exp <span style="color:#555">=</span> expr();
-        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Expr&#39;</span>, [trm, <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;|&#39;</span>), exp]);
-    }
-
-    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Expr&#39;</span>, [trm]);
-}</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> expr() {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> trm <span style="color:#555">=</span> term();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;|&#39;</span>) {
+</span></span><span style="display:flex;"><span>        match(<span style="color:#c30">&#39;|&#39;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> exp <span style="color:#555">=</span> expr();
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Expr&#39;</span>, [trm, <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;|&#39;</span>), exp]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Expr&#39;</span>, [trm]);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Our code directly follows the derivations for <code>expr</code>. We continue with the <em>term</em> and <em>factor</em>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; 
-    | &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
-&lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;
-    | &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt;
-</code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bnf" data-lang="bnf"><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; 
+</span></span><span style="display:flex;"><span>    | &lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">term</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">factor</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;
+</span></span><span style="display:flex;"><span>    | &lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt;&lt;<span style="color:#0a8;font-weight:bold">meta-char</span>&gt;
+</span></span></code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> term() {
-    <span style="color:#069;font-weight:bold">const</span> factr <span style="color:#555">=</span> factor();
-
-    <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">!==</span> <span style="color:#c30">&#39;)&#39;</span> <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">!==</span> <span style="color:#c30">&#39;|&#39;</span>) {
-        <span style="color:#069;font-weight:bold">const</span> trm <span style="color:#555">=</span> term();
-        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Term&#39;</span>, [factr, trm]);
-    }
-
-    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Term&#39;</span>, [factr]);
-}
-
-<span style="color:#069;font-weight:bold">function</span> factor() {
-    <span style="color:#069;font-weight:bold">const</span> atm <span style="color:#555">=</span> atom();
-
-    <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> isMetaChar(peek())) {
-        <span style="color:#069;font-weight:bold">const</span> meta <span style="color:#555">=</span> next();
-        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Factor&#39;</span>, [atm, <span style="color:#069;font-weight:bold">new</span> TreeNode(meta)]);
-    }
-
-    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Factor&#39;</span>, [atm]);
-}</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> term() {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> factr <span style="color:#555">=</span> factor();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">!==</span> <span style="color:#c30">&#39;)&#39;</span> <span style="color:#555">&amp;&amp;</span> peek() <span style="color:#555">!==</span> <span style="color:#c30">&#39;|&#39;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> trm <span style="color:#555">=</span> term();
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Term&#39;</span>, [factr, trm]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Term&#39;</span>, [factr]);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> factor() {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> atm <span style="color:#555">=</span> atom();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (hasMoreChars() <span style="color:#555">&amp;&amp;</span> isMetaChar(peek())) {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> meta <span style="color:#555">=</span> next();
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Factor&#39;</span>, [atm, <span style="color:#069;font-weight:bold">new</span> TreeNode(meta)]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Factor&#39;</span>, [atm]);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>For <code>term()</code> we need to perform an additional check (line 41) of the next input symbol so we can expand the correct derivation. <code>factor()</code> similar to <code>expr()</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bnf" data-lang="bnf">&lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">char</span>&gt;
-    | &#39;(&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;&#39;)&#39;
-&lt;<span style="color:#0a8;font-weight:bold">char</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">any-char-except-meta</span>&gt;
-    | &#39;\&#39;&lt;<span style="color:#0a8;font-weight:bold">any-char</span>&gt;
-</code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">83
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">84
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">85
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bnf" data-lang="bnf"><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">atom</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">char</span>&gt;
+</span></span><span style="display:flex;"><span>    | &#39;(&#39;&lt;<span style="color:#0a8;font-weight:bold">expr</span>&gt;&#39;)&#39;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#0a8;font-weight:bold">char</span>&gt; <span style="color:#555">::=</span> &lt;<span style="color:#0a8;font-weight:bold">any-char-except-meta</span>&gt;
+</span></span><span style="display:flex;"><span>    | &#39;\&#39;&lt;<span style="color:#0a8;font-weight:bold">any-char</span>&gt;
+</span></span></code></pre></div><div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">83
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">84
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">85
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> atom() {
-    <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;(&#39;</span>) {
-        match(<span style="color:#c30">&#39;(&#39;</span>);
-        <span style="color:#069;font-weight:bold">const</span> exp <span style="color:#555">=</span> expr();
-        match(<span style="color:#c30">&#39;)&#39;</span>);
-
-        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Atom&#39;</span>, 
-            [<span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;(&#39;</span>), exp, <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;)&#39;</span>)]);
-    }
-    
-    <span style="color:#069;font-weight:bold">const</span> ch <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">char</span>();
-    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Atom&#39;</span>, [ch]);
-}
-
-<span style="color:#069;font-weight:bold">function</span> <span style="color:#069;font-weight:bold">char</span>() {
-    <span style="color:#069;font-weight:bold">if</span> (isMetaChar(peek()))
-        <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> <span style="color:#366">Error</span>(<span style="color:#c30">`Unexpected meta char </span><span style="color:#a00">${</span>peek()<span style="color:#a00">}</span><span style="color:#c30">`</span>);
-
-    <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;\\&#39;</span>) {
-        match(<span style="color:#c30">&#39;\\&#39;</span>);
-        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Char&#39;</span>, 
-            [<span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;\\&#39;</span>), <span style="color:#069;font-weight:bold">new</span> TreeNode(next())]);
-    }
-
-    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Char&#39;</span>, [<span style="color:#069;font-weight:bold">new</span> TreeNode(next())]);
-}</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> atom() {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;(&#39;</span>) {
+</span></span><span style="display:flex;"><span>        match(<span style="color:#c30">&#39;(&#39;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> exp <span style="color:#555">=</span> expr();
+</span></span><span style="display:flex;"><span>        match(<span style="color:#c30">&#39;)&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Atom&#39;</span>, 
+</span></span><span style="display:flex;"><span>            [<span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;(&#39;</span>), exp, <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;)&#39;</span>)]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> ch <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">char</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Atom&#39;</span>, [ch]);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> <span style="color:#069;font-weight:bold">char</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (isMetaChar(peek()))
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> <span style="color:#366">Error</span>(<span style="color:#c30">`Unexpected meta char </span><span style="color:#a00">${</span>peek()<span style="color:#a00">}</span><span style="color:#c30">`</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (peek() <span style="color:#555">===</span> <span style="color:#c30">&#39;\\&#39;</span>) {
+</span></span><span style="display:flex;"><span>        match(<span style="color:#c30">&#39;\\&#39;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Char&#39;</span>, 
+</span></span><span style="display:flex;"><span>            [<span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;\\&#39;</span>), <span style="color:#069;font-weight:bold">new</span> TreeNode(next())]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">new</span> TreeNode(<span style="color:#c30">&#39;Char&#39;</span>, [<span style="color:#069;font-weight:bold">new</span> TreeNode(next())]);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>The functions for the last two nonterminals <code>&lt;atom&gt;</code> and <code>&lt;char&gt;</code> follow the same pattern.</p>
-<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">87
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">88
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">89
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">90
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">91
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">92
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">87
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">88
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">89
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">90
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">91
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">92
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#069;font-weight:bold">function</span> toParseTree(regex) {
-    pattern <span style="color:#555">=</span> regex;
-    pos <span style="color:#555">=</span> <span style="color:#f60">0</span>;
-
-    <span style="color:#069;font-weight:bold">return</span> expr();
-}</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> toParseTree(regex) {
+</span></span><span style="display:flex;"><span>    pattern <span style="color:#555">=</span> regex;
+</span></span><span style="display:flex;"><span>    pos <span style="color:#555">=</span> <span style="color:#f60">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> expr();
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Now we&rsquo;re ready to complete the algorithm. We assign the new input string to the variable <code>pattern</code> (88), reset the input position (89), and call the function for the start symbol of the grammar (91) which is going to return the complete parse tree if the input string is correctly defined.</p>
@@ -463,7 +463,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     
@@ -501,7 +501,7 @@ This is a hands-on article, where we&rsquo;ll define a formal grammar for regula
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.754578 &#43;0200 EET m=&#43;0.116016502">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-05-11 10:50:48.878019 &#43;0300 EEST m=&#43;0.172093758">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

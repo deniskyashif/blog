@@ -249,103 +249,103 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p>We won&rsquo;t delve into the technical details of this algorithm. You can check my implementation in less than 40 lines of javascript <a href="https://github.com/deniskyashif/regexjs/blob/master/src/parser.js#L36">here</a> and a neat explanation with more examples <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">here</a>.</p>
 <h3 id="constructing-the-nfa">Constructing the NFA</h3>
 <p>We represent an <strong>NFA state</strong> as an object with the following properties:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> createState(isEnd) {
-    <span style="color:#069;font-weight:bold">return</span> {
-        isEnd,
-        transition<span style="color:#555">:</span> {},
-        epsilonTransitions<span style="color:#555">:</span> []
-    };
-}
-</code></pre></div><p>There are <strong>two types of transitions</strong> - by a symbol and by epsilon (empty string). A state in Thompson&rsquo;s NFA can either have a symbol transition to at most one state or epsilon transitions to up to two states, but it cannot have a symbol and epsilon transitions at the same time.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> addEpsilonTransition(from, to) {
-    from.epsilonTransitions.push(to);
-}
-
-<span style="color:#069;font-weight:bold">function</span> addTransition(from, to, symbol) {
-    from.transition[symbol] <span style="color:#555">=</span> to;
-}
-</code></pre></div><p>From our <strong>basis</strong>, we have two types of NFA&rsquo;s that would serve as our building blocks: an ε-NFA and a symbol-NFA. This is how we implement them:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> fromEpsilon() {
-    <span style="color:#069;font-weight:bold">const</span> start <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">false</span>);
-    <span style="color:#069;font-weight:bold">const</span> end <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">true</span>);
-    addEpsilonTransition(start, end);
-    
-    <span style="color:#069;font-weight:bold">return</span> { start, end };
-}
-
-<span style="color:#069;font-weight:bold">function</span> fromSymbol(symbol) {
-    <span style="color:#069;font-weight:bold">const</span> start <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">false</span>);
-    <span style="color:#069;font-weight:bold">const</span> end <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">true</span>);
-    addTransition(start, end, symbol);
-
-    <span style="color:#069;font-weight:bold">return</span> { start, end };
-}
-</code></pre></div><p>The NFA is simply an object which holds references to its start and end states. By following the <strong>inductive rules</strong> (described above), we build larger NFAs by applying the three operations on smaller NFAs.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> concat(first, second) {
-    addEpsilonTransition(first.end, second.start);
-    first.end.isEnd <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">false</span>;
-
-    <span style="color:#069;font-weight:bold">return</span> { start<span style="color:#555">:</span> first.start, end<span style="color:#555">:</span> second.end };
-}
-
-<span style="color:#069;font-weight:bold">function</span> union(first, second) {
-    <span style="color:#069;font-weight:bold">const</span> start <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">false</span>);
-    addEpsilonTransition(start, first.start);
-    addEpsilonTransition(start, second.start);
-
-    <span style="color:#069;font-weight:bold">const</span> end <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">true</span>);
-    addEpsilonTransition(first.end, end);
-    first.end.isEnd <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">false</span>;
-    addEpsilonTransition(second.end, end);
-    second.end.isEnd <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">false</span>;
-
-    <span style="color:#069;font-weight:bold">return</span> { start, end };
-}
-
-<span style="color:#069;font-weight:bold">function</span> closure(nfa) {
-    <span style="color:#069;font-weight:bold">const</span> start <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">false</span>);
-    <span style="color:#069;font-weight:bold">const</span> end <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">true</span>);
-
-    addEpsilonTransition(start, end);
-    addEpsilonTransition(start, nfa.start);
-
-    addEpsilonTransition(nfa.end, end);
-    addEpsilonTransition(nfa.end, nfa.start);
-    nfa.end.isEnd <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">false</span>;
-
-    <span style="color:#069;font-weight:bold">return</span> { start, end };
-}
-</code></pre></div><p>Now is time to put it all together. We <strong>scan our postfix expression one symbol at a time</strong> and store the context in a stack. <strong>The stack contains NFAs</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> createState(isEnd) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> {
+</span></span><span style="display:flex;"><span>        isEnd,
+</span></span><span style="display:flex;"><span>        transition<span style="color:#555">:</span> {},
+</span></span><span style="display:flex;"><span>        epsilonTransitions<span style="color:#555">:</span> []
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>There are <strong>two types of transitions</strong> - by a symbol and by epsilon (empty string). A state in Thompson&rsquo;s NFA can either have a symbol transition to at most one state or epsilon transitions to up to two states, but it cannot have a symbol and epsilon transitions at the same time.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> addEpsilonTransition(from, to) {
+</span></span><span style="display:flex;"><span>    from.epsilonTransitions.push(to);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> addTransition(from, to, symbol) {
+</span></span><span style="display:flex;"><span>    from.transition[symbol] <span style="color:#555">=</span> to;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>From our <strong>basis</strong>, we have two types of NFA&rsquo;s that would serve as our building blocks: an ε-NFA and a symbol-NFA. This is how we implement them:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> fromEpsilon() {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> start <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">false</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> end <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">true</span>);
+</span></span><span style="display:flex;"><span>    addEpsilonTransition(start, end);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> { start, end };
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> fromSymbol(symbol) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> start <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">false</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> end <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">true</span>);
+</span></span><span style="display:flex;"><span>    addTransition(start, end, symbol);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> { start, end };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The NFA is simply an object which holds references to its start and end states. By following the <strong>inductive rules</strong> (described above), we build larger NFAs by applying the three operations on smaller NFAs.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> concat(first, second) {
+</span></span><span style="display:flex;"><span>    addEpsilonTransition(first.end, second.start);
+</span></span><span style="display:flex;"><span>    first.end.isEnd <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> { start<span style="color:#555">:</span> first.start, end<span style="color:#555">:</span> second.end };
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> union(first, second) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> start <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">false</span>);
+</span></span><span style="display:flex;"><span>    addEpsilonTransition(start, first.start);
+</span></span><span style="display:flex;"><span>    addEpsilonTransition(start, second.start);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> end <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">true</span>);
+</span></span><span style="display:flex;"><span>    addEpsilonTransition(first.end, end);
+</span></span><span style="display:flex;"><span>    first.end.isEnd <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>    addEpsilonTransition(second.end, end);
+</span></span><span style="display:flex;"><span>    second.end.isEnd <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> { start, end };
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> closure(nfa) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> start <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">false</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> end <span style="color:#555">=</span> createState(<span style="color:#069;font-weight:bold">true</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    addEpsilonTransition(start, end);
+</span></span><span style="display:flex;"><span>    addEpsilonTransition(start, nfa.start);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    addEpsilonTransition(nfa.end, end);
+</span></span><span style="display:flex;"><span>    addEpsilonTransition(nfa.end, nfa.start);
+</span></span><span style="display:flex;"><span>    nfa.end.isEnd <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> { start, end };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now is time to put it all together. We <strong>scan our postfix expression one symbol at a time</strong> and store the context in a stack. <strong>The stack contains NFAs</strong>.</p>
 <ul>
 <li>When we scan a character - we construct a character-NFA and push it to the stack.</li>
 <li>When we scan an operator, we pop from the stack, apply this operation on the NFA(s) and push the resulting NFA back to the stack.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> toNFA(postfixExp) {
-	<span style="color:#069;font-weight:bold">if</span>(postfixExp <span style="color:#555">===</span> <span style="color:#c30">&#39;&#39;</span>) {
-	    <span style="color:#069;font-weight:bold">return</span> fromEpsilon();
-	}
-	
-	<span style="color:#069;font-weight:bold">const</span> stack <span style="color:#555">=</span> [];
-    
-	<span style="color:#069;font-weight:bold">for</span> (<span style="color:#069;font-weight:bold">const</span> token <span style="color:#069;font-weight:bold">of</span> postfixExp) {
-		<span style="color:#069;font-weight:bold">if</span>(token <span style="color:#555">===</span> <span style="color:#c30">&#39;*&#39;</span>) {
-   		    stack.push(closure(stack.pop()));
-   		} <span style="color:#069;font-weight:bold">else</span> <span style="color:#069;font-weight:bold">if</span> (token <span style="color:#555">===</span> <span style="color:#c30">&#39;|&#39;</span>) {
-   		    <span style="color:#069;font-weight:bold">const</span> right <span style="color:#555">=</span> stack.pop();
-   		    <span style="color:#069;font-weight:bold">const</span> left <span style="color:#555">=</span> stack.pop();
-   		    stack.push(union(left, right));
-   		} <span style="color:#069;font-weight:bold">else</span> <span style="color:#069;font-weight:bold">if</span> (token <span style="color:#555">===</span> <span style="color:#c30">&#39;.&#39;</span>) {
-   		    <span style="color:#069;font-weight:bold">const</span> right <span style="color:#555">=</span> stack.pop();
-   		    <span style="color:#069;font-weight:bold">const</span> left <span style="color:#555">=</span> stack.pop();
-   		    stack.push(concat(left, right));
-   		} <span style="color:#069;font-weight:bold">else</span> {
-   		    stack.push(fromSymbol(token));
-   		}
-   	}
-    
-	<span style="color:#069;font-weight:bold">return</span> stack.pop();
-}
-</code></pre></div><h4 id="example-1">Example</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> toNFA(postfixExp) {
+</span></span><span style="display:flex;"><span>	<span style="color:#069;font-weight:bold">if</span>(postfixExp <span style="color:#555">===</span> <span style="color:#c30">&#39;&#39;</span>) {
+</span></span><span style="display:flex;"><span>	    <span style="color:#069;font-weight:bold">return</span> fromEpsilon();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#069;font-weight:bold">const</span> stack <span style="color:#555">=</span> [];
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>	<span style="color:#069;font-weight:bold">for</span> (<span style="color:#069;font-weight:bold">const</span> token <span style="color:#069;font-weight:bold">of</span> postfixExp) {
+</span></span><span style="display:flex;"><span>		<span style="color:#069;font-weight:bold">if</span>(token <span style="color:#555">===</span> <span style="color:#c30">&#39;*&#39;</span>) {
+</span></span><span style="display:flex;"><span>   		    stack.push(closure(stack.pop()));
+</span></span><span style="display:flex;"><span>   		} <span style="color:#069;font-weight:bold">else</span> <span style="color:#069;font-weight:bold">if</span> (token <span style="color:#555">===</span> <span style="color:#c30">&#39;|&#39;</span>) {
+</span></span><span style="display:flex;"><span>   		    <span style="color:#069;font-weight:bold">const</span> right <span style="color:#555">=</span> stack.pop();
+</span></span><span style="display:flex;"><span>   		    <span style="color:#069;font-weight:bold">const</span> left <span style="color:#555">=</span> stack.pop();
+</span></span><span style="display:flex;"><span>   		    stack.push(union(left, right));
+</span></span><span style="display:flex;"><span>   		} <span style="color:#069;font-weight:bold">else</span> <span style="color:#069;font-weight:bold">if</span> (token <span style="color:#555">===</span> <span style="color:#c30">&#39;.&#39;</span>) {
+</span></span><span style="display:flex;"><span>   		    <span style="color:#069;font-weight:bold">const</span> right <span style="color:#555">=</span> stack.pop();
+</span></span><span style="display:flex;"><span>   		    <span style="color:#069;font-weight:bold">const</span> left <span style="color:#555">=</span> stack.pop();
+</span></span><span style="display:flex;"><span>   		    stack.push(concat(left, right));
+</span></span><span style="display:flex;"><span>   		} <span style="color:#069;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>   		    stack.push(fromSymbol(token));
+</span></span><span style="display:flex;"><span>   		}
+</span></span><span style="display:flex;"><span>   	}
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>	<span style="color:#069;font-weight:bold">return</span> stack.pop();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="example-1">Example</h4>
 <p>Let&rsquo;s simulate the algorithm on <strong>(a∣b)*c</strong></p>
 <ol>
 <li>Insert explicit concatenation operator (.): <strong>(a∣b)*c</strong> → <strong>(a∣b)*.c</strong></li>
@@ -444,52 +444,52 @@ For instance, in the arithmetic algebra we start with constants such as integers
 <p>We check if any state in the set of states that we end up with is an accepting state and if so - the string is recognized by the NFA. In the above case, the final set contains only \(q_9\) which is an accepting state.</p>
 <h4 id="dealing-with-epsilon-transitions">Dealing with ε-transitions</h4>
 <p>As mentioned above, Thompson&rsquo;s construction has two types of states. Ones with ε-transitions and ones with a transition on a symbol. So each time we end up in a state with ε-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is obvious on step 3 from the example above, on \(q_7\) we read <strong>&lsquo;b&rsquo;</strong> and proceed to \(q_8\) which is an epsilon transition state. We follow the ε-transition and reach \(q_9\) which has no ε-transitions so we add it to the list of next states. This is a recursive procedure.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> addNextState(state, nextStates, visited) {
-    <span style="color:#069;font-weight:bold">if</span> (state.epsilonTransitions.length) {
-        <span style="color:#069;font-weight:bold">for</span> (<span style="color:#069;font-weight:bold">const</span> st <span style="color:#069;font-weight:bold">of</span> state.epsilonTransitions) {
-            <span style="color:#069;font-weight:bold">if</span> (<span style="color:#555">!</span>visited.find(vs =&gt; vs <span style="color:#555">===</span> st)) {
-                visited.push(st);
-                addNextStates(st, nextStates, visited);
-            }
-        }
-    } <span style="color:#069;font-weight:bold">else</span> {
-        nextStates.push(state);
-    }
-}
-</code></pre></div><p>We also have to mark the ε-transition states as visited to prevent infinite looping. The bottom of the recursion is when we reach a state with no ε-transitions. This is the code or the search procedure:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> search(nfa, word) {
-    <span style="color:#069;font-weight:bold">let</span> currentStates <span style="color:#555">=</span> [];
-    addNextState(nfa.start, currentStates, []);
-
-    <span style="color:#069;font-weight:bold">for</span> (<span style="color:#069;font-weight:bold">const</span> symbol <span style="color:#069;font-weight:bold">of</span> word) {
-        <span style="color:#069;font-weight:bold">const</span> nextStates <span style="color:#555">=</span> [];
-
-        <span style="color:#069;font-weight:bold">for</span> (<span style="color:#069;font-weight:bold">const</span> state <span style="color:#069;font-weight:bold">of</span> currentStates) {
-            <span style="color:#069;font-weight:bold">const</span> nextState <span style="color:#555">=</span> state.transition[symbol];
-            <span style="color:#069;font-weight:bold">if</span> (nextState) {
-                addNextState(nextState, nextStates, []);
-            }
-        }
-        currentStates <span style="color:#555">=</span> nextStates;
-    }
-
-    <span style="color:#069;font-weight:bold">return</span> currentStates.find(s =&gt; s.isEnd) <span style="color:#555">?</span> <span style="color:#069;font-weight:bold">true</span> <span style="color:#555">:</span> <span style="color:#069;font-weight:bold">false</span>;
-}
-</code></pre></div><p>The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on <a href="#fig5.1">Fig 5.1</a> the start state \(q_0\) is an ε-transition state, so we follow the transitions recursively until reaching the symbol transition states \(q_1\) and \(q_5\) which become our initial set of states.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> addNextState(state, nextStates, visited) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (state.epsilonTransitions.length) {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">for</span> (<span style="color:#069;font-weight:bold">const</span> st <span style="color:#069;font-weight:bold">of</span> state.epsilonTransitions) {
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">if</span> (<span style="color:#555">!</span>visited.find(vs =&gt; vs <span style="color:#555">===</span> st)) {
+</span></span><span style="display:flex;"><span>                visited.push(st);
+</span></span><span style="display:flex;"><span>                addNextStates(st, nextStates, visited);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    } <span style="color:#069;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>        nextStates.push(state);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We also have to mark the ε-transition states as visited to prevent infinite looping. The bottom of the recursion is when we reach a state with no ε-transitions. This is the code or the search procedure:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> search(nfa, word) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">let</span> currentStates <span style="color:#555">=</span> [];
+</span></span><span style="display:flex;"><span>    addNextState(nfa.start, currentStates, []);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">for</span> (<span style="color:#069;font-weight:bold">const</span> symbol <span style="color:#069;font-weight:bold">of</span> word) {
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">const</span> nextStates <span style="color:#555">=</span> [];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">for</span> (<span style="color:#069;font-weight:bold">const</span> state <span style="color:#069;font-weight:bold">of</span> currentStates) {
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">const</span> nextState <span style="color:#555">=</span> state.transition[symbol];
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">if</span> (nextState) {
+</span></span><span style="display:flex;"><span>                addNextState(nextState, nextStates, []);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        currentStates <span style="color:#555">=</span> nextStates;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> currentStates.find(s =&gt; s.isEnd) <span style="color:#555">?</span> <span style="color:#069;font-weight:bold">true</span> <span style="color:#555">:</span> <span style="color:#069;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The initial set of current states is either the start state itself or the set of states reachable by epsilon transitions from the start state. In the example on <a href="#fig5.1">Fig 5.1</a> the start state \(q_0\) is an ε-transition state, so we follow the transitions recursively until reaching the symbol transition states \(q_1\) and \(q_5\) which become our initial set of states.</p>
 <p>Given a string of length <em>n</em>, on each iteration, this algorithm keeps two lists of states with a length of approximately <em>n</em>. This gives us a time complexity of \(O(n^2)\) which significantly outperforms the recursive backtracking approach. We can optimize it by converting the NFA to an epsilon-free NFA and even further by converting it to a DFA. DFAs guarantee \(O(n)\) recognition complexity but we might end up having \(2^n\) states due to the <em>state explosion problem</em>.</p>
 <h2 id="putting-it-all-together">Putting it all together</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">function</span> createMatcher(exp) {
-    <span style="color:#069;font-weight:bold">const</span> postfixExp <span style="color:#555">=</span> toPostfix(insertExplicitConcatOperator(exp));
-    <span style="color:#069;font-weight:bold">const</span> nfa <span style="color:#555">=</span> toNFA(postfixExp);
-
-    <span style="color:#069;font-weight:bold">return</span> word =&gt; search(nfa, word);
-}
-
-<span style="color:#069;font-weight:bold">const</span> match <span style="color:#555">=</span> createMatcher(<span style="color:#c30">&#39;a*b&#39;</span>);
-match(<span style="color:#c30">&#39;&#39;</span>); <span style="color:#09f;font-style:italic">// false
-</span><span style="color:#09f;font-style:italic"></span>match(<span style="color:#c30">&#39;b&#39;</span>); <span style="color:#09f;font-style:italic">// true
-</span><span style="color:#09f;font-style:italic"></span>match(<span style="color:#c30">&#39;ab&#39;</span>); <span style="color:#09f;font-style:italic">// true
-</span></code></pre></div><h2 id="recap">Recap</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> createMatcher(exp) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> postfixExp <span style="color:#555">=</span> toPostfix(insertExplicitConcatOperator(exp));
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">const</span> nfa <span style="color:#555">=</span> toNFA(postfixExp);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> word =&gt; search(nfa, word);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">const</span> match <span style="color:#555">=</span> createMatcher(<span style="color:#c30">&#39;a*b&#39;</span>);
+</span></span><span style="display:flex;"><span>match(<span style="color:#c30">&#39;&#39;</span>); <span style="color:#09f;font-style:italic">// false
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>match(<span style="color:#c30">&#39;b&#39;</span>); <span style="color:#09f;font-style:italic">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>match(<span style="color:#c30">&#39;ab&#39;</span>); <span style="color:#09f;font-style:italic">// true
+</span></span></span></code></pre></div><h2 id="recap">Recap</h2>
 <p>We started by learning about finite automata and how do they work. We classified them as deterministic and nondeterministic. We also introduced the concept of ε-NFAs which are a specific type of nondeterministic automata. We&rsquo;ve seen how NFAs and DFAs have the same expressive power and how they can be used for string recognition.</p>
 <p>We defined the building blocks of the regular expressions and learned how by applying operators (concatenation, union, and closure) we can construct more complex expressions from smaller ones. Then we learned how to compile a regular expression into its equivalent NFA then implemented an algorithm that processes a string through an NFA to determine whether it is matched or not.</p>
 <p>The complete code reference for this article is available on <a href="https://github.com/deniskyashif/regexjs/">GitHub</a>.</p>
@@ -542,7 +542,7 @@ match(<span style="color:#c30">&#39;&#39;</span>); <span style="color:#09f;font-
 
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     
@@ -580,7 +580,7 @@ match(<span style="color:#c30">&#39;&#39;</span>); <span style="color:#09f;font-
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.732502 &#43;0200 EET m=&#43;0.093940401">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-05-11 10:50:48.852011 &#43;0300 EEST m=&#43;0.146084686">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

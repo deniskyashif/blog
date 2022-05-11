@@ -118,74 +118,71 @@ if (!doNotTrack) {
 <p>Unlike the <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/treeview#configuration-loadOnDemand">TreeView</a>, the <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/treelist">TreeList</a> <strong>doesn&rsquo;t</strong> provide a configuration option to indicate that we&rsquo;re going to lazily load the widget data. Instead we have to resort to its data source.</p>
 <h2 id="treelistdatasource">TreeListDataSource</h2>
 <p>The TreeList has its own DataSource implementation, which extends the KendoUI DataSource. Unlike the TreeView which works with a hierarchical data structure, it expects a linear data structure, i.e. JavaScript array, and the relations are described using property references. So for example the following collection:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
-<span style="color:#069;font-weight:bold">var</span> dataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
-    data<span style="color:#555">:</span> [
-        { employeeId<span style="color:#555">:</span> <span style="color:#f60">1</span>, name<span style="color:#555">:</span> <span style="color:#c30">&#39;Montgomery Burns&#39;</span>, reportsTo<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">null</span>, hasSubordinates<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">true</span> },
-        { employeeId<span style="color:#555">:</span> <span style="color:#f60">2</span>, name<span style="color:#555">:</span> <span style="color:#c30">&#34;Homer Simpson&#34;</span>, reportsTo<span style="color:#555">:</span> <span style="color:#f60">1</span>, hasSubordinates<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">false</span> },
-        { employeeId<span style="color:#555">:</span> <span style="color:#f60">3</span>, name<span style="color:#555">:</span> <span style="color:#c30">&#34;Lenford Leonard&#34;</span>, reportsTo<span style="color:#555">:</span> <span style="color:#f60">1</span>, hasSubordinates<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">false</span> }
-    ]
-});
-
-</code></pre></div><p>will result in the corresponding tree:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">var</span> dataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
+</span></span><span style="display:flex;"><span>    data<span style="color:#555">:</span> [
+</span></span><span style="display:flex;"><span>        { employeeId<span style="color:#555">:</span> <span style="color:#f60">1</span>, name<span style="color:#555">:</span> <span style="color:#c30">&#39;Montgomery Burns&#39;</span>, reportsTo<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">null</span>, hasSubordinates<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">true</span> },
+</span></span><span style="display:flex;"><span>        { employeeId<span style="color:#555">:</span> <span style="color:#f60">2</span>, name<span style="color:#555">:</span> <span style="color:#c30">&#34;Homer Simpson&#34;</span>, reportsTo<span style="color:#555">:</span> <span style="color:#f60">1</span>, hasSubordinates<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">false</span> },
+</span></span><span style="display:flex;"><span>        { employeeId<span style="color:#555">:</span> <span style="color:#f60">3</span>, name<span style="color:#555">:</span> <span style="color:#c30">&#34;Lenford Leonard&#34;</span>, reportsTo<span style="color:#555">:</span> <span style="color:#f60">1</span>, hasSubordinates<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">false</span> }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>will result in the corresponding tree:</p>
 <pre tabindex="0"><code>+-- Montgomery Burns  
 |   +-- Homer Simpson  
 |   +-- Lenford Leonard
 </code></pre><h3 id="remote-data-binding">Remote Data Binding</h3>
 <p>For remote data binding we need to use the DataSource&rsquo;s <code>transport</code> property. This is straightforward as in any other Kendo widget:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#069;font-weight:bold">var</span> treeListDataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
-    transport<span style="color:#555">:</span> {
-        read<span style="color:#555">:</span> {
-            url<span style="color:#555">:</span> <span style="color:#c30">&#39;api/employees&#39;</span>,
-            type<span style="color:#555">:</span> <span style="color:#c30">&#39;GET&#39;</span>,
-            dataType<span style="color:#555">:</span> <span style="color:#c30">&#39;json&#39;</span>
-        }
-    },
-    schema<span style="color:#555">:</span> { <span style="color:#09f;font-style:italic">/* ... */</span> }
-});
-</code></pre></div><h3 id="schemamodel"><code>schema.model</code></h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">var</span> treeListDataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
+</span></span><span style="display:flex;"><span>    transport<span style="color:#555">:</span> {
+</span></span><span style="display:flex;"><span>        read<span style="color:#555">:</span> {
+</span></span><span style="display:flex;"><span>            url<span style="color:#555">:</span> <span style="color:#c30">&#39;api/employees&#39;</span>,
+</span></span><span style="display:flex;"><span>            type<span style="color:#555">:</span> <span style="color:#c30">&#39;GET&#39;</span>,
+</span></span><span style="display:flex;"><span>            dataType<span style="color:#555">:</span> <span style="color:#c30">&#39;json&#39;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    schema<span style="color:#555">:</span> { <span style="color:#09f;font-style:italic">/* ... */</span> }
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h3 id="schemamodel"><code>schema.model</code></h3>
 <p>Next we have adapt the widget to the structure of the data by configuring the schema and describe its field mapping in the model.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
-<span style="color:#069;font-weight:bold">var</span> treeListDataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
-    transport<span style="color:#555">:</span> { <span style="color:#09f;font-style:italic">/* ... */</span> },
-    schema<span style="color:#555">:</span> {
-        <span style="color:#09f;font-style:italic">// property mapping
-</span><span style="color:#09f;font-style:italic"></span>        model<span style="color:#555">:</span> {
-            id<span style="color:#555">:</span> <span style="color:#c30">&#39;employeeId&#39;</span>, <span style="color:#09f;font-style:italic">// unique id field name
-</span><span style="color:#09f;font-style:italic"></span>            parentId<span style="color:#555">:</span> <span style="color:#c30">&#39;reportsTo&#39;</span>, <span style="color:#09f;font-style:italic">// relation with another record&#39;s id
-</span><span style="color:#09f;font-style:italic"></span>            hasChildren<span style="color:#555">:</span> <span style="color:#c30">&#39;hasSubordinates&#39;</span>, <span style="color:#09f;font-style:italic">// indicates that there&#39;re records that haven&#39;t been loaded
-</span><span style="color:#09f;font-style:italic"></span>            fields<span style="color:#555">:</span> {
-            	employeeId<span style="color:#555">:</span> { type<span style="color:#555">:</span> <span style="color:#c30">&#39;number&#39;</span>, nullable<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">false</span> },
-                name<span style="color:#555">:</span> { type<span style="color:#555">:</span> <span style="color:#c30">&#39;string&#39;</span>, nullable<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">false</span> },
-                reportsTo<span style="color:#555">:</span> { type<span style="color:#555">:</span> <span style="color:#c30">&#39;number&#39;</span>, nullable<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">true</span> }
-            }
-        }
-    }
-});
-
-</code></pre></div><h3 id="haschildren"><code>hasChildren</code></h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">var</span> treeListDataSource <span style="color:#555">=</span> <span style="color:#069;font-weight:bold">new</span> kendo.data.TreeListDataSource({
+</span></span><span style="display:flex;"><span>    transport<span style="color:#555">:</span> { <span style="color:#09f;font-style:italic">/* ... */</span> },
+</span></span><span style="display:flex;"><span>    schema<span style="color:#555">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic">// property mapping
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>        model<span style="color:#555">:</span> {
+</span></span><span style="display:flex;"><span>            id<span style="color:#555">:</span> <span style="color:#c30">&#39;employeeId&#39;</span>, <span style="color:#09f;font-style:italic">// unique id field name
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>            parentId<span style="color:#555">:</span> <span style="color:#c30">&#39;reportsTo&#39;</span>, <span style="color:#09f;font-style:italic">// relation with another record&#39;s id
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>            hasChildren<span style="color:#555">:</span> <span style="color:#c30">&#39;hasSubordinates&#39;</span>, <span style="color:#09f;font-style:italic">// indicates that there&#39;re records that haven&#39;t been loaded
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>            fields<span style="color:#555">:</span> {
+</span></span><span style="display:flex;"><span>            	employeeId<span style="color:#555">:</span> { type<span style="color:#555">:</span> <span style="color:#c30">&#39;number&#39;</span>, nullable<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">false</span> },
+</span></span><span style="display:flex;"><span>                name<span style="color:#555">:</span> { type<span style="color:#555">:</span> <span style="color:#c30">&#39;string&#39;</span>, nullable<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">false</span> },
+</span></span><span style="display:flex;"><span>                reportsTo<span style="color:#555">:</span> { type<span style="color:#555">:</span> <span style="color:#c30">&#39;number&#39;</span>, nullable<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">true</span> }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h3 id="haschildren"><code>hasChildren</code></h3>
 <p>This property indicates whether it has child items that have to be additionally fetched from the remote service. We can map it to another property, compute it dynamically with a function or hardcode it.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
-<span style="color:#09f;font-style:italic">// hard-code that the item will always have children
-</span><span style="color:#09f;font-style:italic"></span>hasChildren<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">true</span>
-
-<span style="color:#09f;font-style:italic">// map the hasChildren property to the hasSubordinates field, serialized from the server
-</span><span style="color:#09f;font-style:italic"></span>hasChildren<span style="color:#555">:</span> <span style="color:#c30">&#34;hasSubordinates&#34;</span>
-
-<span style="color:#09f;font-style:italic">// compute whether the given item will have children
-</span><span style="color:#09f;font-style:italic"></span>hasChildren<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">function</span>(item) {
-    <span style="color:#069;font-weight:bold">return</span> item.hasEmployees <span style="color:#555">&amp;&amp;</span> item.relatedDepartment;
-}
-
-</code></pre></div><h2 id="the-endpoint">The Endpoint</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// hard-code that the item will always have children
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>hasChildren<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// map the hasChildren property to the hasSubordinates field, serialized from the server
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>hasChildren<span style="color:#555">:</span> <span style="color:#c30">&#34;hasSubordinates&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">// compute whether the given item will have children
+</span></span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"></span>hasChildren<span style="color:#555">:</span> <span style="color:#069;font-weight:bold">function</span>(item) {
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> item.hasEmployees <span style="color:#555">&amp;&amp;</span> item.relatedDepartment;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="the-endpoint">The Endpoint</h2>
 <p>On initial load the widget&rsquo;s data soruce will make an API call to the url we&rsquo;ve defined, e.g.</p>
-<pre tabindex="0"><code>GET 'api/employees'
-RESPONSE: [{ employeeId: 1, name: 'Montgomery Burns', reportsTo: null, hasSubordinates: true }]
+<pre tabindex="0"><code>GET &#39;api/employees&#39;
+RESPONSE: [{ employeeId: 1, name: &#39;Montgomery Burns&#39;, reportsTo: null, hasSubordinates: true }]
 </code></pre><p>thus retrieving and populating the widget with the top-level records, namely the ones the <code>parentId</code> of which is null or not defined. After that when a record is expanded and its <code>hasChildren</code> property is ```true`` the data source will perform an API call but this time by also providing an additional id query parameter, e.g.</p>
-<pre tabindex="0"><code>GET 'api/employees?id=1'
+<pre tabindex="0"><code>GET &#39;api/employees?id=1&#39;
 RESPONSE: [
-    { employeeId: 2, name: &quot;Homer Simpson&quot;, reportsTo: 1, hasSubordinates: false },
-    { employeeId: 3, name: &quot;Lenford Leonard&quot;, reportsTo: 1, hasSubordinates: false }]
+    { employeeId: 2, name: &#34;Homer Simpson&#34;, reportsTo: 1, hasSubordinates: false },
+    { employeeId: 3, name: &#34;Lenford Leonard&#34;, reportsTo: 1, hasSubordinates: false }]
 </code></pre><p>In this case the endpoint should return only the descendands of the record with id of 1. Once they are loaded, the DataSource caches them in memory and does not send a request for the same record. If the default url format is not suitable to the remote service, we can use the <a href="http://docs.telerik.com/kendo-ui/api/javascript/data/datasource#configuration-transport.parameterMap">transport.parameterMap</a> to convert it.
 You can find the complete example <a href="https://jsfiddle.net/8xwhv0Le/1/">here</a>.</p>
 
@@ -227,7 +224,7 @@ You can find the complete example <a href="https://jsfiddle.net/8xwhv0Le/1/">her
 
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     
@@ -262,7 +259,7 @@ You can find the complete example <a href="https://jsfiddle.net/8xwhv0Le/1/">her
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.710517 &#43;0200 EET m=&#43;0.071955823">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-05-11 10:50:48.819327 &#43;0300 EEST m=&#43;0.113399889">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

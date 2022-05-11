@@ -124,108 +124,108 @@ if (!doNotTrack) {
 		<p>This is a continuation of the article on <a href="/csharp-channels-part-1">how to build publish/subscribe workflows in C#</a> where we learned how to use channels in C#. We also went through some techniques about distributing computations among several workers to make use of the modern-day, multi-core CPUs.</p>
 <p>In this article, we&rsquo;ll build on top of that by exploring some cases where we have to &ldquo;exit&rdquo; a channel. In the last example, we&rsquo;ll put what we&rsquo;ve covered so far in practice. You can check out the interactive version of the demos on <a href="https://github.com/deniskyashif/trydotnet-channels">GitHub</a>.</p>
 <h2 id="timeout">Timeout</h2>
-<p>We want to stop reading from a channel after a certain amount of time. This is quite simple because the channels' async API supports cancellation.</p>
+<p>We want to stop reading from a channel after a certain amount of time. This is quite simple because the channels&rsquo; async API supports cancellation.</p>
 <img src="/images/posts/2019-12-11-csharp-channels-part2/timeout-sketch.png" width="600" />
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">10</span>);
-<span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
-cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
-
-<span style="color:#069;font-weight:bold">try</span>
-{
-    <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> joe.ReadAllAsync(cts.Token))
-        Console.WriteLine(item);
-
-    Console.WriteLine(<span style="color:#c30">&#34;Joe sent all of his messages.&#34;</span>); 
-}
-<span style="color:#069;font-weight:bold">catch</span> (OperationCanceledException)
-{
-    Console.WriteLine(<span style="color:#c30">&#34;Joe, you are too slow!&#34;</span>);
-}
-</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Joe <span style="color:#f60">0</span>
-Joe <span style="color:#f60">1</span>
-Joe <span style="color:#f60">2</span>
-Joe <span style="color:#f60">3</span>
-Joe, you are too slow!
-</code></pre></div><p>Joe was set to send 10 messages but over 5 seconds, we received only 4 and then canceled the reading operation. If we reduced the number of messages Joe sends or sufficiently increased the timeout duration, we&rsquo;d read everything and thus avoid ending up in the <code>catch</code> block.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">10</span>);
+</span></span><span style="display:flex;"><span><span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
+</span></span><span style="display:flex;"><span>cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">try</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> joe.ReadAllAsync(cts.Token))
+</span></span><span style="display:flex;"><span>        Console.WriteLine(item);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Console.WriteLine(<span style="color:#c30">&#34;Joe sent all of his messages.&#34;</span>); 
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">catch</span> (OperationCanceledException)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    Console.WriteLine(<span style="color:#c30">&#34;Joe, you are too slow!&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>Joe <span style="color:#f60">0</span>
+</span></span><span style="display:flex;"><span>Joe <span style="color:#f60">1</span>
+</span></span><span style="display:flex;"><span>Joe <span style="color:#f60">2</span>
+</span></span><span style="display:flex;"><span>Joe <span style="color:#f60">3</span>
+</span></span><span style="display:flex;"><span>Joe, you are too slow!
+</span></span></code></pre></div><p>Joe was set to send 10 messages but over 5 seconds, we received only 4 and then canceled the reading operation. If we reduced the number of messages Joe sends or sufficiently increased the timeout duration, we&rsquo;d read everything and thus avoid ending up in the <code>catch</code> block.</p>
 <h2 id="quit-channel">Quit Channel</h2>
 <img src="/images/posts/2019-12-11-csharp-channels-part2/quit-channel-sketch.png" width="600" />
 <p>Let&rsquo;s go the other way around and tell Joe to stop talking. We need to modify our <code>CreateMessenger&lt;T&gt;()</code> generator so it supports cancellation.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#069;font-weight:bold">static</span> ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; CreateMessenger(
-    <span style="color:#078;font-weight:bold">string</span> msg, <span style="color:#078;font-weight:bold">int</span> count, CancellationToken token = <span style="color:#069;font-weight:bold">default</span>)
-{
-    <span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
-
-    Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
-    {
-        <span style="color:#078;font-weight:bold">var</span> rnd = <span style="color:#069;font-weight:bold">new</span> Random();
-        <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i &lt; count; i++)
-        {
-            <span style="color:#069;font-weight:bold">if</span> (token.IsCancellationRequested)
-            {
-                <span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">$&#34;{msg} says bye!&#34;</span>);
-                <span style="color:#069;font-weight:bold">break</span>;
-            }
-            <span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">$&#34;{msg} {i}&#34;</span>);
-            <span style="color:#069;font-weight:bold">await</span> Task.Delay(TimeSpan.FromSeconds(rnd.Next(<span style="color:#f60">0</span>, <span style="color:#f60">3</span>)));
-        }
-        ch.Writer.Complete();
-    });
-
-    <span style="color:#069;font-weight:bold">return</span> ch.Reader;
-}
-</code></pre></div><p>Now we need to pass our cancellation token to the generator which gives us control over the channel&rsquo;s longevity.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
-<span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">10</span>, cts.Token);
-cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
-
-<span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> joe.ReadAllAsync())
-    Console.WriteLine(item);
-</code></pre></div><p>Joe had 10 messages to send, but we gave him only 5 seconds, for which he managed to send only 4. We can also manually send a cancellation request, for example, after reading <code>N</code> number of messages.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Joe <span style="color:#f60">0</span>
-Joe <span style="color:#f60">1</span>
-Joe <span style="color:#f60">2</span>
-Joe <span style="color:#f60">3</span>
-Joe says bye!
-</code></pre></div><h2 id="web-search">Web Search</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">static</span> ChannelReader&lt;<span style="color:#078;font-weight:bold">string</span>&gt; CreateMessenger(
+</span></span><span style="display:flex;"><span>    <span style="color:#078;font-weight:bold">string</span> msg, <span style="color:#078;font-weight:bold">int</span> count, CancellationToken token = <span style="color:#069;font-weight:bold">default</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Task.Run(<span style="color:#069;font-weight:bold">async</span> () =&gt;
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#078;font-weight:bold">var</span> rnd = <span style="color:#069;font-weight:bold">new</span> Random();
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i &lt; count; i++)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">if</span> (token.IsCancellationRequested)
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">$&#34;{msg} says bye!&#34;</span>);
+</span></span><span style="display:flex;"><span>                <span style="color:#069;font-weight:bold">break</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">$&#34;{msg} {i}&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">await</span> Task.Delay(TimeSpan.FromSeconds(rnd.Next(<span style="color:#f60">0</span>, <span style="color:#f60">3</span>)));
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        ch.Writer.Complete();
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> ch.Reader;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now we need to pass our cancellation token to the generator which gives us control over the channel&rsquo;s longevity.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#078;font-weight:bold">var</span> cts = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource();
+</span></span><span style="display:flex;"><span><span style="color:#078;font-weight:bold">var</span> joe = CreateMessenger(<span style="color:#c30">&#34;Joe&#34;</span>, <span style="color:#f60">10</span>, cts.Token);
+</span></span><span style="display:flex;"><span>cts.CancelAfter(TimeSpan.FromSeconds(<span style="color:#f60">5</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> joe.ReadAllAsync())
+</span></span><span style="display:flex;"><span>    Console.WriteLine(item);
+</span></span></code></pre></div><p>Joe had 10 messages to send, but we gave him only 5 seconds, for which he managed to send only 4. We can also manually send a cancellation request, for example, after reading <code>N</code> number of messages.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>Joe <span style="color:#f60">0</span>
+</span></span><span style="display:flex;"><span>Joe <span style="color:#f60">1</span>
+</span></span><span style="display:flex;"><span>Joe <span style="color:#f60">2</span>
+</span></span><span style="display:flex;"><span>Joe <span style="color:#f60">3</span>
+</span></span><span style="display:flex;"><span>Joe says bye!
+</span></span></code></pre></div><h2 id="web-search">Web Search</h2>
 <p>We&rsquo;re given the task to query several data sources and mix the results. The queries should run concurrently and we should disregard the ones taking too long. Also, we should handle a query response at the time of arrival, instead of waiting for all of them to complete. Let&rsquo;s see how we can solve this using what we&rsquo;ve learned so far:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
-</code></pre></div><p>We create a local function that simulates a remote async API call and writes its result to the channel.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#069;font-weight:bold">async</span> Task Search(<span style="color:#078;font-weight:bold">string</span> source, <span style="color:#078;font-weight:bold">string</span> term, CancellationToken token)
-{
-    <span style="color:#069;font-weight:bold">await</span> Task.Delay(TimeSpan.FromSeconds(<span style="color:#069;font-weight:bold">new</span> Random().Next(<span style="color:#f60">5</span>)), token);
-    <span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">$&#34;Result from {source} for {term}&#34;</span>, token);
-}
-</code></pre></div><p>Now we query several data sources by passing a search term and a cancellation token.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#078;font-weight:bold">var</span> term = <span style="color:#c30">&#34;Milky Way&#34;</span>;
-<span style="color:#078;font-weight:bold">var</span> token = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource(TimeSpan.FromSeconds(<span style="color:#f60">3</span>)).Token;
-
-<span style="color:#078;font-weight:bold">var</span> search1 = Search(<span style="color:#c30">&#34;Google&#34;</span>, term, token);
-<span style="color:#078;font-weight:bold">var</span> search2 = Search(<span style="color:#c30">&#34;Quora&#34;</span>, term, token);
-<span style="color:#078;font-weight:bold">var</span> search3 = Search(<span style="color:#c30">&#34;Wikipedia&#34;</span>, term, token);
-</code></pre></div><p>We wait and process the results one at a time. We break from the loop once the cancellation kicks in.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#069;font-weight:bold">try</span>
-{
-    <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i &lt; <span style="color:#f60">3</span>; i++)
-        Console.WriteLine(<span style="color:#069;font-weight:bold">await</span> ch.Reader.ReadAsync(token));
-
-    Console.WriteLine(<span style="color:#c30">&#34;All searches have completed.&#34;</span>);
-}
-<span style="color:#069;font-weight:bold">catch</span> (OperationCanceledException)
-{
-    Console.WriteLine(<span style="color:#c30">&#34;Timeout.&#34;</span>);
-}
-
-ch.Writer.Complete();
-</code></pre></div><p>Depending on the timeout interval we might end up receiving responses for all of the queries,</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#555">[</span>9:09:14 AM<span style="color:#555">]</span> Result from Google <span style="color:#069;font-weight:bold">for</span> Milky Way
-<span style="color:#555">[</span>9:09:14 AM<span style="color:#555">]</span> Result from Wikipedia <span style="color:#069;font-weight:bold">for</span> Milky Way
-<span style="color:#555">[</span>9:09:16 AM<span style="color:#555">]</span> Result from Quora <span style="color:#069;font-weight:bold">for</span> Milky Way
-All searches have completed.
-</code></pre></div><p>or cut off the ones that are too slow.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#555">[</span>9:09:19 AM<span style="color:#555">]</span> Result from Quora <span style="color:#069;font-weight:bold">for</span> Milky Way
-<span style="color:#555">[</span>9:09:20 AM<span style="color:#555">]</span> Result from Wikipedia <span style="color:#069;font-weight:bold">for</span> Milky Way
-Timeout.
-</code></pre></div><p>Again - our code is non-blocking concurrent, thus there&rsquo;s no need to use locks, callbacks or any kind of conditional statements.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#078;font-weight:bold">var</span> ch = Channel.CreateUnbounded&lt;<span style="color:#078;font-weight:bold">string</span>&gt;();
+</span></span></code></pre></div><p>We create a local function that simulates a remote async API call and writes its result to the channel.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">async</span> Task Search(<span style="color:#078;font-weight:bold">string</span> source, <span style="color:#078;font-weight:bold">string</span> term, CancellationToken token)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">await</span> Task.Delay(TimeSpan.FromSeconds(<span style="color:#069;font-weight:bold">new</span> Random().Next(<span style="color:#f60">5</span>)), token);
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">$&#34;Result from {source} for {term}&#34;</span>, token);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now we query several data sources by passing a search term and a cancellation token.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#078;font-weight:bold">var</span> term = <span style="color:#c30">&#34;Milky Way&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#078;font-weight:bold">var</span> token = <span style="color:#069;font-weight:bold">new</span> CancellationTokenSource(TimeSpan.FromSeconds(<span style="color:#f60">3</span>)).Token;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#078;font-weight:bold">var</span> search1 = Search(<span style="color:#c30">&#34;Google&#34;</span>, term, token);
+</span></span><span style="display:flex;"><span><span style="color:#078;font-weight:bold">var</span> search2 = Search(<span style="color:#c30">&#34;Quora&#34;</span>, term, token);
+</span></span><span style="display:flex;"><span><span style="color:#078;font-weight:bold">var</span> search3 = Search(<span style="color:#c30">&#34;Wikipedia&#34;</span>, term, token);
+</span></span></code></pre></div><p>We wait and process the results one at a time. We break from the loop once the cancellation kicks in.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">try</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">for</span> (<span style="color:#078;font-weight:bold">int</span> i = <span style="color:#f60">0</span>; i &lt; <span style="color:#f60">3</span>; i++)
+</span></span><span style="display:flex;"><span>        Console.WriteLine(<span style="color:#069;font-weight:bold">await</span> ch.Reader.ReadAsync(token));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Console.WriteLine(<span style="color:#c30">&#34;All searches have completed.&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">catch</span> (OperationCanceledException)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    Console.WriteLine(<span style="color:#c30">&#34;Timeout.&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ch.Writer.Complete();
+</span></span></code></pre></div><p>Depending on the timeout interval we might end up receiving responses for all of the queries,</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#555">[</span>9:09:14 AM<span style="color:#555">]</span> Result from Google <span style="color:#069;font-weight:bold">for</span> Milky Way
+</span></span><span style="display:flex;"><span><span style="color:#555">[</span>9:09:14 AM<span style="color:#555">]</span> Result from Wikipedia <span style="color:#069;font-weight:bold">for</span> Milky Way
+</span></span><span style="display:flex;"><span><span style="color:#555">[</span>9:09:16 AM<span style="color:#555">]</span> Result from Quora <span style="color:#069;font-weight:bold">for</span> Milky Way
+</span></span><span style="display:flex;"><span>All searches have completed.
+</span></span></code></pre></div><p>or cut off the ones that are too slow.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#555">[</span>9:09:19 AM<span style="color:#555">]</span> Result from Quora <span style="color:#069;font-weight:bold">for</span> Milky Way
+</span></span><span style="display:flex;"><span><span style="color:#555">[</span>9:09:20 AM<span style="color:#555">]</span> Result from Wikipedia <span style="color:#069;font-weight:bold">for</span> Milky Way
+</span></span><span style="display:flex;"><span>Timeout.
+</span></span></code></pre></div><p>Again - our code is non-blocking concurrent, thus there&rsquo;s no need to use locks, callbacks or any kind of conditional statements.</p>
 <h2 id="references">References</h2>
 <ul>
 <li><a href="https://github.com/deniskyashif/trydotnet-channels">GitHub Repo</a> with the interactive examples</li>
@@ -272,7 +272,7 @@ Timeout.
 
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     
@@ -307,7 +307,7 @@ Timeout.
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.769392 &#43;0200 EET m=&#43;0.130830677">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-05-11 10:50:48.886964 &#43;0300 EEST m=&#43;0.181039001">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

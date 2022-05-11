@@ -115,7 +115,7 @@ if (!doNotTrack) {
 <h2 id="creating-a-machine-translation-model">Creating a Machine Translation Model</h2>
 <p>In statistical machine translation (SMT), translation models are trained on large quantities of parallel data, which is a collection of aligned sentences in two different languages, in that each sentence in one language is matched with its corresponding translated sentence in the other language. We can split the implementation of a such model into 4 main stages:</p>
 <h3 id="preparing-the-data">Preparing the Data</h3>
-<p>The input data has to be split for training (90%), testing (5%) and tuning (5%), also cleaned from bad symbols and tokenized. By tokenizing in this case I mean the process of breaking the text string into words. For example if we have a word which is immediately followed by a punctuation mark - they have to be separated by a whitespace, otherwise they will be considered a single unit which will decrease the translation quality (<em>&ldquo;then,&quot;</em> -&gt; <em>&ldquo;then ,&quot;</em>). We also have to prepare a <a href="https://en.wikipedia.org/wiki/Language_model">language model</a> of the target language which is going to be used at a later stage when translating.</p>
+<p>The input data has to be split for training (90%), testing (5%) and tuning (5%), also cleaned from bad symbols and tokenized. By tokenizing in this case I mean the process of breaking the text string into words. For example if we have a word which is immediately followed by a punctuation mark - they have to be separated by a whitespace, otherwise they will be considered a single unit which will decrease the translation quality (<em>&ldquo;then,&rdquo;</em> -&gt; <em>&ldquo;then ,&rdquo;</em>). We also have to prepare a <a href="https://en.wikipedia.org/wiki/Language_model">language model</a> of the target language which is going to be used at a later stage when translating.</p>
 <h3 id="training">Training</h3>
 <p>The training process in <a href="http://http//www.statmt.org/moses/index.php?n=Main.HomePage">Moses</a> takes in the parallel corpus and uses coocurrences of words and segments(phrases) to infer translation correspondences between the two languages of interest. As a result we get a <a href="http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases">phrase table</a>. It may take some time to compute, in my case with 200MB of input data on a laptop I had to wait for 10 hours to complete. More about the inner workings of the decoding mechanism can be found <a href="http://www.statmt.org/moses/?n=moses.background">here</a>.</p>
 <h3 id="testing">Testing</h3>
@@ -169,7 +169,7 @@ if (!doNotTrack) {
 
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     
@@ -204,7 +204,7 @@ if (!doNotTrack) {
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2022-01-30 11:27:20.70429 &#43;0200 EET m=&#43;0.065728020">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-05-11 10:50:48.807302 &#43;0300 EEST m=&#43;0.101374993">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
