@@ -59,7 +59,7 @@ title = "Resume"
                             <li>Manage software teams - onboard the developers, pair program, review code, ensure that the engineers have clarity over the business requirements and the technical delivery.</li>
                             <!-- <li>Improve upon the established engineering practices - set coding standards, automate proccesses, incorporate code quality tools to deliver more robust software.</li> -->
                         </ul>
-                        <div class="tools-list"><span>Oracle</span><span>.NET</span><span>ActiveMQ</span><span>Informatica ETL</span></div>
+                        <div class="tools-list"><span>C#/.NET</span><span>Angular</span><span>ActiveMQ</span><span>Oracle DB</span></div>
                     </div>
                     <div>
                         <h3>Engineering Lead</h3>
