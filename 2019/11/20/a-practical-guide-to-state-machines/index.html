@@ -148,7 +148,7 @@ For a state machine to be deterministic means that on each input there is one an
 </span></span><span style="display:flex;"><span>        (State.Open, Input.Close) =&gt; State.Closed,
 </span></span><span style="display:flex;"><span>        (State.Closed, Input.Lock) =&gt; State.Locked,
 </span></span><span style="display:flex;"><span>        (State.Locked, Input.Unlock) =&gt; State.Closed,
-</span></span><span style="display:flex;"><span>        <span style="color:#f60">_</span> =&gt; <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> NotSupportedException(
+</span></span><span style="display:flex;"><span>        _ =&gt; <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> NotSupportedException(
 </span></span><span style="display:flex;"><span>            <span style="color:#c30">$&#34;{current} has no transition on {input}&#34;</span>)
 </span></span><span style="display:flex;"><span>	};
 </span></span></code></pre></div><p>That&rsquo;s how we &ldquo;run&rdquo; our machine:</p>
@@ -177,7 +177,7 @@ For a state machine to be deterministic means that on each input there is one an
 </span></span><span style="display:flex;"><span>        (State.Waiting, Input.IOorEventComplete) =&gt; State.Ready,
 </span></span><span style="display:flex;"><span>        (State.Running, Input.Interrupt) =&gt; State.Ready,
 </span></span><span style="display:flex;"><span>        (State.Running, Input.Exit) =&gt; State.Terminated,
-</span></span><span style="display:flex;"><span>        <span style="color:#f60">_</span> =&gt; <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> NotSupportedException(
+</span></span><span style="display:flex;"><span>        _ =&gt; <span style="color:#069;font-weight:bold">throw</span> <span style="color:#069;font-weight:bold">new</span> NotSupportedException(
 </span></span><span style="display:flex;"><span>            <span style="color:#c30">$&#34;{current} has no transition on {input}&#34;</span>)
 </span></span><span style="display:flex;"><span>    };
 </span></span></code></pre></div><p>We can also create conditional transitions using the <code>when</code> keyword.</p>
@@ -349,7 +349,7 @@ They are no silver bullet though. Not every domain is suitable to be modeled in 
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2022-05-11 10:50:48.826635 &#43;0300 EEST m=&#43;0.120708367">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2022-11-19 16:18:30.000719 &#43;0200 EET m=&#43;0.096140738">2022</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
