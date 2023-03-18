@@ -4,7 +4,7 @@ author: deniskyashif
 layout: page
 ---
 
-<img class="circle" width="175" src="/images/me-avatar.jpg" />
+<img class="circle" width="175" src="/images/me-avatar.jpeg" />
 
 Hi, I'm a software engineer based in Sofia, Bulgaria <img class="emoji" alt="🇧🇬" src="https://twemoji.maxcdn.com/v/12.1.4/72x72/1f1e7-1f1ec.png"> and I like to do some cool things with computers. This is where I collect my thoughts, as I believe that writing is the best way to improve one's thinking.
 
