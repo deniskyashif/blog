@@ -4,17 +4,17 @@ date: 2019-12-08T08:02:09+02:00
 draft: false
 summary: "Concurrency patterns in .NET using channels."
 url: "/2019/12/08/csharp-channels-part-1"
-aliases: 
+aliases:
 - "/csharp-concurrency-patterns-using-channels"
 - "/csharp-channels-part-1"
-images: 
+images:
 - "/images/posts/2019-12-08-csharp-channels-part1/channel-sketch-featured.png"
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-12-08-csharp-channels-part-1.md"
 tags: ["software-design", "csharp", "concurrency", "dotnet"]
 ---
 
 In this article, we'll explore the synchronization data structures in .NET's `System.Threading.Channels` namespace and learn how to use them for designing concurrent workflows. It would be helpful to have some basic understanding of .NET's [Task Parallel Library
-(TPL)](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/task-parallel-library-tpl), but it's in no means necessary. 
+(TPL)](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/task-parallel-library-tpl), but it's in no means necessary.
 
 Recently, I watched Rob Pike's [talk on "Go Concurrency Patterns"](https://www.youtube.com/watch?v=f6kdp27TYZs) where he explains Go's approach to concurrency and demonstrates some of its features for building concurrent programs. I found its simplicity and ease of use fascinating and went on to implement some of these techniques in C#. Let's start by introducing some definitions.
 
@@ -52,7 +52,7 @@ ch.Writer.Complete();
 This is how we read from a channel:
 
 ```csharp
-while (await ch.Reader.WaitToReadAsync()) 
+while (await ch.Reader.WaitToReadAsync())
     Console.WriteLine(await ch.Reader.ReadAsync());
 ```
 
@@ -187,7 +187,7 @@ We're still going to try and read from Joe, even when his channel is completed w
 [8:05:01 AM] Ann 0
 [8:05:02 AM] Joe 1
 [8:05:02 AM] Ann 1
-Unhandled exception. System.Threading.Channels.ChannelClosedException: 
+Unhandled exception. System.Threading.Channels.ChannelClosedException:
     The channel has been closed.
 ```
 
@@ -267,7 +267,7 @@ static ChannelReader<T> Merge<T>(params ChannelReader<T>[] inputs)
             await foreach (var item in input.ReadAllAsync())
                 await output.Writer.WriteAsync(item);
     	}
-            
+
         await Task.WhenAll(inputs.Select(i => Redirect(i)).ToArray());
         output.Writer.Complete();
     });
@@ -276,8 +276,8 @@ static ChannelReader<T> Merge<T>(params ChannelReader<T>[] inputs)
 }
 ```
 
-Our `Merge<T>()` now also works with an arbitrary number of inputs.  
-We've created the local asynchronous `Redirect()` function which takes a channel as an input writes its messages to the consolidated output. It returns a `Task` so we can use `WhenAll()` to wait for the input channels to complete. This allows us to also capture potential exceptions. In the end, we know that there's nothing left to be read, so we can safely close the writer.  
+Our `Merge<T>()` now also works with an arbitrary number of inputs.
+We've created the local asynchronous `Redirect()` function which takes a channel as an input writes its messages to the consolidated output. It returns a `Task` so we can use `WhenAll()` to wait for the input channels to complete. This allows us to also capture potential exceptions. In the end, we know that there's nothing left to be read, so we can safely close the writer.
 
 Our code is concurrent and non-blocking. The messages are being processed at the time of arrival and there's no need to use locks or any kind of conditional logic. While we're waiting, the thread is free to perform other work. We also don't have to handle the case when one of the writers complete (as you can see Ann has sent all of her messages before Joe).
 
@@ -347,6 +347,8 @@ Reader 1: Joe 7
 Reader 2: Joe 8
 Reader 0: Joe 9
 ```
+
+**NB**: To keep things simple, in `Split<T>` and `Merge<T>` examples we ended up with uncollected tasks. In production scenarios you'd want to ensure they're also collected. A way to do it would be to pass those tasks back to the caller to be awaited on. Ensure that awaiting those tasks are concurrent with the reading from the multiplexed/demultiplexed channels.
 
 ## Conclusion
 

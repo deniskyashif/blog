@@ -1,7 +1,7 @@
 ---
 title: "My Org-Mode Workflow"
 date: 2023-04-01T12:43:13+03:00
-draft: false
+draft: true
 ---
 
 This is how I use Spacemacs and Org-mode.
