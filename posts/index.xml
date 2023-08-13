@@ -6,19 +6,7 @@
     <description>Recent content in Posts on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 01 Apr 2023 12:43:13 +0300</lastBuildDate><atom:link href="https://deniskyashif.com/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>My Org-Mode Workflow</title>
-      <link>https://deniskyashif.com/2023/04/01/my-org-mode-workflow/</link>
-      <pubDate>Sat, 01 Apr 2023 12:43:13 +0300</pubDate>
-      
-      <guid>https://deniskyashif.com/2023/04/01/my-org-mode-workflow/</guid>
-      <description>This is how I use Spacemacs and Org-mode.
-Task Organization Top-level file(s) Task hierarchy Individual task - TODO Subtasks (checkboxes) Org Agenda Add file(s) to the Agenda (setq org-agenda-files &amp;#39;(&amp;#34;~/org&amp;#34;)) List agenda for - all, day, week
-Filter by tag
-Archive </description>
-    </item>
-    
+    <lastBuildDate>Tue, 06 Apr 2021 22:16:29 +0300</lastBuildDate><atom:link href="https://deniskyashif.com/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Set a Custom Name Claim Type in Azure AD Secured Web API</title>
       <link>https://deniskyashif.com/2021/04/06/set-a-custom-name-claim-type-in-azure-ad-secured-web-api/</link>
