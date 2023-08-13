@@ -16,6 +16,8 @@ Occasionaly, I <a href="/talks">speak</a> at confereces and conduct technical tr
     <li>Natural language processing</li>
 </ul>
 
-I'm also currently doing my Master's degree in Computational Linguistics at Sofia University. In this blog I write down my thoughts and experiences on technology and science.
+<!-- I'm also currently doing my Master's degree in Computational Linguistics at Sofia University. -->
+
+In this blog I write down my thoughts and experiences on technology and science.
 
 You can contact me at <strong>denis dot kyashif at gmail dot com</strong>
