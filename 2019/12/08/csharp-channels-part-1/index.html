@@ -140,7 +140,7 @@ Think of it this way - concurrency is about <strong>structure</strong> and paral
 </span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">await</span> ch.Writer.WriteAsync(<span style="color:#c30">&#34;My second message&#34;</span>);
 </span></span><span style="display:flex;"><span>ch.Writer.Complete();
 </span></span></code></pre></div><p>This is how we read from a channel:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">while</span> (<span style="color:#069;font-weight:bold">await</span> ch.Reader.WaitToReadAsync()) 
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">while</span> (<span style="color:#069;font-weight:bold">await</span> ch.Reader.WaitToReadAsync())
 </span></span><span style="display:flex;"><span>    Console.WriteLine(<span style="color:#069;font-weight:bold">await</span> ch.Reader.ReadAsync());
 </span></span></code></pre></div><p>The reader&rsquo;s <code>WaitToReadAsync()</code> will complete with <code>true</code> when data is available to read, or with <code>false</code> when no further data will ever be read, that is, after the writer invokes <code>Complete()</code>. The reader also provides an option to consume the data as an async stream by exposing a method that returns <code>IAsyncEnumerable&lt;T&gt;</code>:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> ch.Reader.ReadAllAsync())
@@ -232,7 +232,7 @@ Notice that we have created an <strong>unbounded</strong> channel, meaning that 
 </span></span><span style="display:flex;"><span><span style="color:#555">[</span>8:05:01 AM<span style="color:#555">]</span> Ann <span style="color:#f60">0</span>
 </span></span><span style="display:flex;"><span><span style="color:#555">[</span>8:05:02 AM<span style="color:#555">]</span> Joe <span style="color:#f60">1</span>
 </span></span><span style="display:flex;"><span><span style="color:#555">[</span>8:05:02 AM<span style="color:#555">]</span> Ann <span style="color:#f60">1</span>
-</span></span><span style="display:flex;"><span>Unhandled exception. System.Threading.Channels.ChannelClosedException: 
+</span></span><span style="display:flex;"><span>Unhandled exception. System.Threading.Channels.ChannelClosedException:
 </span></span><span style="display:flex;"><span>    The channel has been closed.
 </span></span></code></pre></div><p>A quick and dirty solution would be to wrap it in a try/catch block:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">try</span>
@@ -289,14 +289,14 @@ Notice that we have created an <strong>unbounded</strong> channel, meaning that 
 </span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">await</span> <span style="color:#069;font-weight:bold">foreach</span> (<span style="color:#078;font-weight:bold">var</span> item <span style="color:#069;font-weight:bold">in</span> input.ReadAllAsync())
 </span></span><span style="display:flex;"><span>                <span style="color:#069;font-weight:bold">await</span> output.Writer.WriteAsync(item);
 </span></span><span style="display:flex;"><span>    	}
-</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">await</span> Task.WhenAll(inputs.Select(i =&gt; Redirect(i)).ToArray());
 </span></span><span style="display:flex;"><span>        output.Writer.Complete();
 </span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> output;
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Our <code>Merge&lt;T&gt;()</code> now also works with an arbitrary number of inputs.<br>
+</span></span></code></pre></div><p>Our <code>Merge&lt;T&gt;()</code> now also works with an arbitrary number of inputs.
 We&rsquo;ve created the local asynchronous <code>Redirect()</code> function which takes a channel as an input writes its messages to the consolidated output. It returns a <code>Task</code> so we can use <code>WhenAll()</code> to wait for the input channels to complete. This allows us to also capture potential exceptions. In the end, we know that there&rsquo;s nothing left to be read, so we can safely close the writer.</p>
 <p>Our code is concurrent and non-blocking. The messages are being processed at the time of arrival and there&rsquo;s no need to use locks or any kind of conditional logic. While we&rsquo;re waiting, the thread is free to perform other work. We also don&rsquo;t have to handle the case when one of the writers complete (as you can see Ann has sent all of her messages before Joe).</p>
 <h3 id="demultiplexer">Demultiplexer</h3>
@@ -352,7 +352,8 @@ We&rsquo;ve created the local asynchronous <code>Redirect()</code> function whic
 </span></span><span style="display:flex;"><span>Reader 1: Joe <span style="color:#f60">7</span>
 </span></span><span style="display:flex;"><span>Reader 2: Joe <span style="color:#f60">8</span>
 </span></span><span style="display:flex;"><span>Reader 0: Joe <span style="color:#f60">9</span>
-</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+</span></span></code></pre></div><p><strong>NB</strong>: To keep things simple, in <code>Split&lt;T&gt;</code> and <code>Merge&lt;T&gt;</code> examples we ended up with uncollected tasks. In production scenarios you&rsquo;d want to ensure they&rsquo;re also collected. A way to do it would be to pass those tasks back to the caller to be awaited on. Ensure that awaiting those tasks are concurrent with the reading from the multiplexed/demultiplexed channels.</p>
+<h2 id="conclusion">Conclusion</h2>
 <p>In this article, we defined the term concurrency and discussed how it relates to parallelism. We explained why the two terms should not be confused. Then we explored C#&rsquo;s channel data structure and learned how to use it to implement publish/subscribe workflows. We&rsquo;ve seen how to make an efficient use multiple CPUs by distrubuting the reading/writing operations amongst several workers.</p>
 <p><em>Check out <a href="/csharp-channels-part-2">part 2</a> where we discuss some cancellation techniques and <a href="/csharp-channels-part-3">part 3</a> where we put what we&rsquo;ve learned into practice.</em></p>
 <h2 id="references--further-reading">References &amp; Further Reading</h2>
@@ -438,7 +439,7 @@ We&rsquo;ve created the local asynchronous <code>Redirect()</code> function whic
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2023-04-24 20:11:07.833277 &#43;0300 EEST m=&#43;0.295946780">2023</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2023-08-13 10:51:25.774769 &#43;0300 EEST m=&#43;0.049411126">2023</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
