@@ -1,36 +1,38 @@
 ---
-title: "Task Management using Emacs and org-mode"
+title: "Task Management using Emacs and Org Mode"
 date: 2023-08-27T09:43:13+03:00
-draft: true
-summary: "Desribing my org-mode workflow."
+draft: false
+summary: "How I organize my work in plain text."
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/"
 tags: ["emacs", "productivity"]
 ---
 
-During my daily work I need to be simultaneously on top of several projects. I do technical groundwork, plan, corrdinate, follow-up with people. This is not always easy as the context switching can be quite exhausting. I prefer to use my memory bandwidth sparingly only when really needed.
-
 Taks management is difficult to get right. One can easily overdo it, causing it to become a chore and increase one's workload. One can also underdo it, which then renders it useless.
 
-My task management is has two driving factors:
+During my daily work I must be on top of several projects. I do technical groundwork, plan, corrdinate, follow-up with people. This is not always easy as the context switching becomes quite exhausting. I try to use my memory bandwidth sparingly only when really needed in areas where I can bring the most value.
 
-- Easy Read - I should quickly get the information I need and never miss anything.
-- Easy Write - maintaining my tasks should not cause me an extra effort.
+My task management had to have two essential properties.
 
-It took me a while to come up with a process matching the above properties. I tried several tools - some had lots of features but required too much effort, others were simple but harder to navigate for larger workloads. I needed to setup my workflow using a tool and it has to feel _just right_ and I found it in Emacs and Org-mode.
+- __Easy to Read__ - I should quickly get the information I need and never miss anything.
+- __Easy Write__ - maintaining my tasks should not cause me an extra effort.
 
-## Not everything should be a task
+After all, the task management has to work for us, not the other way around.
 
-It's important to keep this in mind before diving into the workflow. Sometimes we just need to "do the thing" and move on. I add items to my task list only when I need to, otherwise I would end up with a cluttered agenda of mostly useless items and lose the "Easy Write" property.
+It took me a while to come up with a process matching the above properties. I tried several tools. Some had lots of features but required a lot of effort, others were simple but harder to navigate for larger workloads. I needed to setup my workflow using a tool and it has to be __just right__ and found it in Emacs and its org-mode.
+
+## Not everything has to be a task
+
+It's important to keep this in mind before diving into the workflow. Sometimes we just need to "do the thing" and move on. I add items to my task list sparingly, otherwise I'd end up with a cluttered agenda full of mostly useless information.
 
 ## Org-mode config
 
-I have a single org file on my computer `~/org/tasks.org`.
+I usually keep everything in a single file `~/org/tasks.org`.
 
 ```lisp
 (setq org-agenda-files '("~/org"))
 ```
 
-My tasks have three states - TODO, PROG, DONE. I delete cancelled tasks and archive the DONE ones (more on that later).
+My tasks have three states - `[TODO] -> [PROG] -> [DONE]`. I delete cancelled tasks and archive the DONE ones (more on that later).
 
 ```lisp
 (setq org-todo-keywords
@@ -50,15 +52,18 @@ This structure allows me to expand/collapse and easily navigate through projects
 
 Here is an example:
 
-[TASKS.ORG gif]
+<div>
+  <video width="100%" controls src="/images/posts/my-org-mode-workflow/tasks_org.mov" />
+</div>
+<br />
 
 Just like not everything deserves a to be a Task, not every Task deserves to have a deadline. I set deadlines only when sometihng is time critical. I set scheduled dates only for things which take more thay a day or two to complete. Not all tasks have to be completed either. We have shifting priorities so it's OK for a task to remain in the list for as long as it's needed.
 
-## Navigation
+## Navigation and Search
 
-I have a custom agenda view bound to the `n` key where I group my tasks by their state. It shows me the weekly distribution by deadline/schedule and a global list of tasks groped by their state.
+My custom agenda view shows me the weekly distribution by deadline/schedule and a global list of tasks groped by their state.
 
-```lisp
+```elisp
   ;; Customized view for the daily workflow. (Command: ", a n")
   (setq org-agenda-custom-commands
         '(("n" "Weekly Agenda View with All the Tasks"
@@ -75,29 +80,40 @@ I have a custom agenda view bound to the `n` key where I group my tasks by their
 (setq org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
 ```
 
-### Show my custom weekly agenda view
+### Show my custom weekly agenda view `(org-agenda) n`
 
-`(org-agenda) n`
+Most of the work I do in thus buffer falls down to:
 
-In my weekly agenda buffer I:
+- Checking my tasks for the day/week using the `d`/`w` keys.
+- Checking the tasks for a project by  using `\` and input `+{TagName}`
+- Updating a Task's state by pressing `t`.
+- Editing a task by placing the caret on it and pressing `[Tab]`.
+- Switching to next/previous week by pressing `f`/`b` respectively.
 
-- Switch to next/previous week by pressing `f`/`b` respectively.
-- Run the `(org-agenda-filter)` (bound to `\`) command and input `+TagName` to see only the tasks for a specific project (or General tasks).
-- Change a task state by pressing `t`.
-- Edit a task by placing the caret on it and pressing `[Tab]`.
+<div>
+  <video width="100%" controls src="/images/posts/my-org-mode-workflow/agenda-view-week.mov" />
+</div>
+<br />
 
-[WEEKLY AGENDA NAV GIF]
-
-### List all the TOOD entries
-
-`(org-agenda) t`
-
-[TODO LIST AGENDA NAV GIF]
+### List all the TOOD entries `(org-agenda) t`
 
 Here I filter my tasks by state.
 
+<div>
+  <video width="100%" controls src="/images/posts/my-org-mode-workflow/agenda-view-state.mov" />
+</div>
+<br />
+
+Org mode has plenty more [ways to search and navigate](https://orgmode.org/worg/org-tutorials/advanced-searching.html) but the above are the ones I use most of the time.
+
 ## Archiving
+
+I archive my completed tasks by pressing `$` when on a task in the Agenda buffer.
+
+<div>
+  <video width="100%" controls src="/images/posts/my-org-mode-workflow/archive.mov" />
+</div>
 
 ## Concluison
 
-There are still areas of org-mode and Emacs which I'm yet to learn. This wokrflow is what I've come up with so far and has been working well for my needs. The Agenda view is one of the screens I keep open most of the time and the task list is what I usually start my days with. Note that I'm using Spacemacs so the ergonomics might differ on other Emacs distributions.
+There are still areas of Org mode and Emacs which I'm yet to explore. This wokrflow has been meeting my needs so far. The Agenda view is one of the screens I keep open most of the time and the task list is what I usually start my days with. Note that I'm using Spacemacs so the ergonomics might differ on other distributions.
