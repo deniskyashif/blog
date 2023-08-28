@@ -2,25 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://deniskyashif.com/</loc>
+    <lastmod>2023-08-28T08:23:13+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/emacs/</loc>
+    <lastmod>2023-08-28T08:23:13+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/posts/</loc>
+    <lastmod>2023-08-28T08:23:13+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/productivity/</loc>
+    <lastmod>2023-08-28T08:23:13+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/</loc>
+    <lastmod>2023-08-28T08:23:13+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2023/08/28/task-management-using-emacs-and-org-mode/</loc>
+    <lastmod>2023-08-28T08:23:13+03:00</lastmod>
+  </url><url>
     <loc>https://deniskyashif.com/tags/azure/</loc>
     <lastmod>2021-04-06T22:16:29+03:00</lastmod>
   </url><url>
     <loc>https://deniskyashif.com/tags/csharp/</loc>
     <lastmod>2021-04-06T22:16:29+03:00</lastmod>
   </url><url>
-    <loc>https://deniskyashif.com/</loc>
-    <lastmod>2021-04-06T22:16:29+03:00</lastmod>
-  </url><url>
     <loc>https://deniskyashif.com/tags/dotnet/</loc>
     <lastmod>2021-04-06T22:16:29+03:00</lastmod>
   </url><url>
-    <loc>https://deniskyashif.com/posts/</loc>
-    <lastmod>2021-04-06T22:16:29+03:00</lastmod>
-  </url><url>
     <loc>https://deniskyashif.com/2021/04/06/set-a-custom-name-claim-type-in-azure-ad-secured-web-api/</loc>
-    <lastmod>2021-04-06T22:16:29+03:00</lastmod>
-  </url><url>
-    <loc>https://deniskyashif.com/tags/</loc>
     <lastmod>2021-04-06T22:16:29+03:00</lastmod>
   </url><url>
     <loc>https://deniskyashif.com/tags/algorithms/</loc>
