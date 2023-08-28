@@ -3,7 +3,7 @@ title: "Task Management using Emacs and Org-mode"
 date: 2023-08-28T08:23:13+03:00
 draft: false
 summary: "How I organize my work in plain text."
-editLink: "https://github.com/deniskyashif/blog/blob/master/content/"
+editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2023-08-28-my-org-mode-workflow.md"
 tags: ["emacs", "productivity"]
 ---
 
@@ -116,4 +116,4 @@ I archive my completed Tasks by pressing `$` when on a task in the Agenda buffer
 
 ## Concluison
 
-There are still areas of Org-mode and Emacs which I'm yet to explore. This wokrflow, however, has been working well for me. The Agenda view is one of the screens I keep open most of the time, and the Task list is what I usually start my days with. I'm using Spacemacsm, so the ergonomics of this workflow might differ in other distributions.
+There are still areas of Org-mode and Emacs which I'm yet to explore. This wokrflow, however, has been working well for me. The Agenda view is one of the screens I keep open most of the time, and the Task list is what I usually start my days with. I'm using Spacemacs, so the ergonomics of this workflow might differ in other distributions.
