@@ -17,7 +17,7 @@ I've had the pleasure to speak at various conferences and events. This is a list
             </span>
         </div>
         <ul>
-            <li>257 Podcast - Bulgarian National Radio - <img class="country-flag" src="/images/country-flags/Bulgaria24x24.png" /> Sofia, Bulgaria</li>
+            <li>257 Podcast - Bulgarian National Radio - 2023 - <img class="country-flag" src="/images/country-flags/Bulgaria24x24.png" /> Sofia, Bulgaria</li>
         </ul>
     </div>
     <div class="topic">
@@ -31,7 +31,7 @@ I've had the pleasure to speak at various conferences and events. This is a list
             </span>
         </div>
         <ul>
-            <li>DevReach 2018 - <img class="country-flag" src="/images/country-flags/Bulgaria24x24.png" /> Sofia, Bulgaria</li>
+            <li>DevReach - 2018 - <img class="country-flag" src="/images/country-flags/Bulgaria24x24.png" /> Sofia, Bulgaria</li>
         </ul>
     </div>
     <div class="topic">
@@ -44,7 +44,7 @@ I've had the pleasure to speak at various conferences and events. This is a list
             </span>
         </div>
         <ul>
-            <li>European Summer School in Logic, Language and Information 2018 - <img class="country-flag" src="/images/country-flags/Bulgaria24x24.png" /> Sofia, Bulgaria</li>
+            <li>European Summer School in Logic, Language and Information - 2018 - <img class="country-flag" src="/images/country-flags/Bulgaria24x24.png" /> Sofia, Bulgaria</li>
         </ul>
     </div>
     <div class="topic">
@@ -55,7 +55,7 @@ I've had the pleasure to speak at various conferences and events. This is a list
             </span>
         </div>
         <ul>
-            <li>Progress NEXT 2018 - <img class="country-flag" src="/images/country-flags/United-States24x24.png" /> Boston, MA</li>
+            <li>Progress NEXT - 2018 - <img class="country-flag" src="/images/country-flags/United-States24x24.png" /> Boston, MA</li>
         </ul>
     </div>
     <div class="topic">
@@ -67,7 +67,7 @@ I've had the pleasure to speak at various conferences and events. This is a list
             </span>
         </div>
         <ul>
-            <li>PUG Challenge EMEA 2017 - <img class="country-flag" src="/images/country-flags/Czech-Republic24x24.png" /> Prague, Czech Republic</li>
+            <li>PUG Challenge EMEA - 2017 - <img class="country-flag" src="/images/country-flags/Czech-Republic24x24.png" /> Prague, Czech Republic</li>
         </ul>
     </div>
     <div class="topic">
@@ -79,7 +79,7 @@ I've had the pleasure to speak at various conferences and events. This is a list
             </span>
         </div>
         <ul>
-            <li>PUG Challenge EMEA 2017 - <img class="country-flag" src="/images/country-flags/Czech-Republic24x24.png" /> Prague, Czech Republic</li>
+            <li>PUG Challenge EMEA - 2017 - <img class="country-flag" src="/images/country-flags/Czech-Republic24x24.png" /> Prague, Czech Republic</li>
         </ul>
     </div>
     <div class="topic">
@@ -90,8 +90,8 @@ I've had the pleasure to speak at various conferences and events. This is a list
             </span>
         </div>
         <ul>
-            <li>PUG Challenge Americas 2016, 2017 - <img class="country-flag" src="/images/country-flags/United-States24x24.png" /> Manchester, NH</li>
-            <li>PUG Challenge EMEA 2016 - <img class="country-flag" src="/images/country-flags/Netherlands24x24.png" /> Noordwijk, The Netherlands</li>
+            <li>PUG Challenge Americas - 2016, 2017 - <img class="country-flag" src="/images/country-flags/United-States24x24.png" /> Manchester, NH</li>
+            <li>PUG Challenge EMEA - 2016 - <img class="country-flag" src="/images/country-flags/Netherlands24x24.png" /> Noordwijk, The Netherlands</li>
         </ul>
     </div>
 </dl>
