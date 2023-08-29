@@ -10,6 +10,18 @@ I've had the pleasure to speak at various conferences and events. This is a list
 <dl class="talks">
     <div class="topic">
         <div>
+            <h2>Working at the World Bank Group</h2>
+            <span>
+                <a href="https://binar.bg/257-podcast-svetovnata-banka-otvatre/">[Radio]</a>
+                <a href="https://open.spotify.com/episode/1LQ5HNYdcANDQqmBOKZ1Ir?si=1cd6ff744f5d4f96">[Spotify]</a>
+            </span>
+        </div>
+        <ul>
+            <li>257 Podcast - Bulgarian National Radio - <img class="country-flag" src="/images/country-flags/Bulgaria24x24.png" /> Sofia, Bulgaria</li>
+        </ul>
+    </div>
+    <div class="topic">
+        <div>
             <h2>Scalable Angular Applications</h2>
             <span>
                 <a href="https://speakerdeck.com/deniskyashif/scalable-angular-applications">[slides]</a>
