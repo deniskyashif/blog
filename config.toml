@@ -19,16 +19,14 @@ googleAnalytics = "G-X7Z9LV9QY4"
   socialSharePinterest = false
   socialShareEmail = true
 
-[social]
-  twitter = "deniskyashif"
+
+
 
 [taxonomies]
   tags = "tags"
 
 [permalinks]
   posts = "/:year/:month/:day/:title/"
-
-# enableEmoji = true
 
 [markup.goldmark.renderer]
 unsafe= true
