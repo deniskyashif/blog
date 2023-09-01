@@ -4,7 +4,7 @@ date: 2023-08-28T08:23:13+03:00
 draft: false
 summary: "How I organize my work in plain text."
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2023-08-28-my-org-mode-workflow.md"
-tags: ["emacs", "productivity"]
+tags: ["emacs", "org-mode", "productivity"]
 ---
 
 During my daily work, I must be on top of several projects. I do the technical groundwork, plan, coordinate, and follow up with people. That is not always easy as the context switching becomes quite exhausting. I've become protective of my memory bandwidth. I use it sparingly, only when necessary, and in areas where I can bring the most value. Hence, I don't try to memorize my work agenda. A plain text file does it for me instead.
@@ -45,6 +45,7 @@ My tasks have three states - `[TODO] -> [PROG] -> [DONE]`. I delete the cancelle
 |-- Root
    |-- [Project]      :Tag:
       |-- [Task]
+      ...
    ...
 ```
 
@@ -66,7 +67,7 @@ My custom agenda view shows me the weekly distribution by deadline/schedule and 
 ```elisp
   ;; Customized view for the daily workflow. (Command: ", a n")
   (setq org-agenda-custom-commands
-        '(("n" "Weekly Agenda View with All the Tasks"
+        '(("n" "My Weekly Agenda"
            ((agenda "" nil)
             (todo "PROG" nil)
             (todo "TODO" nil)
