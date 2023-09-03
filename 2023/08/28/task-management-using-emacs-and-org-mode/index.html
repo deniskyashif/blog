@@ -114,17 +114,17 @@ if (!doNotTrack) {
 
 		
 
-		<p>During my daily work, I must be on top of several projects. I do the technical groundwork, plan, coordinate, and follow up with people. That is not always easy as the context switching becomes quite exhausting. I&rsquo;ve become protective of my memory bandwidth. I use it sparingly, only when necessary, and in areas where I can bring the most value. Hence, I don&rsquo;t try to memorize my work agenda. A plain text file does it for me instead.</p>
-<p>Task management is hard to get right. One can easily overdo it, causing it to become a chore and increase one&rsquo;s workload. One can also underdo it, which then renders it useless.</p>
+		<p>During my daily work, I must be on top of several projects. I do the technical groundwork, plan, coordinate, and follow up with people. That is not always easy as the context switching becomes quite exhausting. I&rsquo;ve become protective of my memory bandwidth. I use it sparingly, mostly in areas where I can bring the most value. Hence, I don&rsquo;t try to memorize my work agenda. A plain text file does it for me instead.</p>
+<p>Task management is hard to get right. One can easily overdo it, causing it to become a chore. One can also underdo it, which then renders it useless.</p>
 <p>My task management had to have two essential properties.</p>
 <ul>
 <li><strong>Easy Writing</strong> - Maintaining my tasks should not cause me extra effort.</li>
 <li><strong>Easy Reading</strong> - I should quickly get the needed information and never miss anything.</li>
 </ul>
-<p><strong>After all, the task management has to work for us, not the other way around.</strong></p>
+<p>After all, the task management has to work for us, not the other way around.</p>
 <p>It took me a while to find a process matching the above properties. I tried several tools. Some had many features, but I found them hard to work with. Others were simple but harder to navigate for larger workloads. I needed to set up my workflow using a tool, and it had to be <strong>just right</strong>. I found it in Emacs and its <a href="https://orgmode.org">Org-mode</a>.</p>
-<h2 id="not-everything-deservers-a-place-on-the-task-list">Not everything deservers a place on the Task list</h2>
-<p>It&rsquo;s important to keep this in mind before diving into the workflow. Sometimes, we only need to &ldquo;do the thing&rdquo; and move on. I add items to my task list sparingly. Otherwise I&rsquo;d end up with a cluttered agenda with mostly useless information.</p>
+<h2 id="not-everything-must-be-a-task">Not everything must be a Task</h2>
+<p>It&rsquo;s important to keep this in mind before diving into the workflow. Sometimes, we only need to do the thing and move on. I add items to my task list sparingly. Otherwise I&rsquo;d end up with a cluttered agenda with mostly useless information.</p>
 <h2 id="my-org-mode-config">My Org-mode config</h2>
 <p>I keep everything in a single file <code>~/org/tasks.org</code>.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lisp" data-lang="lisp"><span style="display:flex;"><span>(<span style="color:#069;font-weight:bold">setq</span> <span style="color:#033">org-agenda-files</span> <span style="color:#555">&#39;</span>(<span style="color:#c30">&#34;~/org&#34;</span>))
@@ -137,13 +137,13 @@ if (!doNotTrack) {
       |-- [Task]
       ...
    ...
-</code></pre><p>This structure allows me to expand/collapse and easily navigate through projects. I have a single root - Tasks and General/Project-based nodes. I tag each of those nodes so that the tasks below can inherit it. That comes handy when searching/filtering my agenda. My tree rarely gets deeper that three levels. Sometimes, I break down a task into subtasks using bullets. In general, however, I try to keep the structure flat.</p>
+</code></pre><p>This structure allows me to expand/collapse and easily navigate through projects. I have a single root and topic-based child nodes. I tag each of the topic nodes nodes so that the tasks below can inherit it. That comes handy when searching/filtering my agenda. My tree rarely gets deeper that three levels. Sometimes, I break down a task into subtasks using bullets. In general, however, I try to keep the structure flat and as simple as possible.</p>
 <p>Here is an example:</p>
 <div>
   <video width="100%" controls src="/images/posts/2023-08-28-my-org-mode-workflow/tasks_org.mov" />
 </div>
 <br />
-<p>Just like not everything deserves a to be a Task not every Task deserves to have a deadline. I set deadlines only when sometihng is time critical. I set scheduled dates only for things which take more thay a day or two to complete. Not all tasks have to be DONE either. We have shifting priorities, so it’s OK for a Task to remain in the list for as long as needed.</p>
+<p>Just like not everything deserves a to be a Task, not every Task deserves to have a deadline. I set deadlines only when sometihng is time sensitive. I set scheduled dates only for things which take more thay a day or two to complete. Not all tasks have to be DONE either. We have shifting priorities, so it’s OK for a Task to remain in the list for as long as it&rsquo;s needed.</p>
 <h2 id="navigation-and-search">Navigation and Search</h2>
 <p>My custom agenda view shows me the weekly distribution by deadline/schedule and a global list of tasks groped by their state.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elisp" data-lang="elisp"><span style="display:flex;"><span>  <span style="color:#09f;font-style:italic">;; Customized view for the daily workflow. (Command: &#34;, a n&#34;)</span>
@@ -186,13 +186,13 @@ if (!doNotTrack) {
   <video width="100%" controls src="/images/posts/2023-08-28-my-org-mode-workflow/archive.mov" />
 </div>
 <h2 id="concluison">Concluison</h2>
-<p>There are still areas of Org-mode and Emacs which I&rsquo;m yet to explore. This wokrflow, however, has been working well for me. The Agenda view is one of the screens I keep open most of the time, and the Task list is what I usually start my days with. I&rsquo;m using Spacemacs, so the ergonomics of this workflow might differ in other distributions.</p>
+<p>There are still areas of Org-mode and Emacs which I&rsquo;m yet to explore. This wokrflow, however, has been working well for me. The Agenda view is one of the screens I keep open most of the time, and the Task list is what I usually start my days with. I use Spacemacs, so the ergonomics of this workflow might differ in other distributions.</p>
 
 
 		<section class="social-share">
     
     
-    <a href="//twitter.com/share?url=https%3a%2f%2fdeniskyashif.com%2f2023%2f08%2f28%2ftask-management-using-emacs-and-org-mode%2f&amp;text=Task%20Management%20using%20Emacs%20and%20Org-mode&amp;via=deniskyashif" target="_blank" class="share-btn twitter">
+    <a href="//twitter.com/share?url=https%3a%2f%2fdeniskyashif.com%2f2023%2f08%2f28%2ftask-management-using-emacs-and-org-mode%2f&amp;text=Task%20Management%20using%20Emacs%20and%20Org-mode&amp;via=" target="_blank" class="share-btn twitter">
         <i class="fa fa-2x fa-twitter"></i>
     </a>
     
@@ -260,7 +260,7 @@ if (!doNotTrack) {
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2023-09-01 08:52:36.435099 &#43;0300 EEST m=&#43;0.153020834">2023</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2023-09-03 22:07:13.243448 &#43;0300 EEST m=&#43;0.140851251">2023</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
