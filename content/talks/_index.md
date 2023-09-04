@@ -10,7 +10,7 @@ I've had the pleasure to speak at various conferences and events. This is a list
 <dl class="talks">
     <div class="topic">
         <div>
-            <h2>Working at the World Bank Group</h2>
+            <h2>World Bank Group from the Inside</h2>
             <span>
                 <a href="https://binar.bg/257-podcast-svetovnata-banka-otvatre/">[Radio]</a>
                 <a href="https://open.spotify.com/episode/1LQ5HNYdcANDQqmBOKZ1Ir?si=1cd6ff744f5d4f96">[Spotify]</a>
