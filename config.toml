@@ -10,7 +10,7 @@ googleAnalytics = "G-X7Z9LV9QY4"
   homepage = "https://deniskyashif.com"
 
 [params]
-  description = "My personal blog on software development and computer science."
+  description = "My blog on computer science and software development."
   images = ["/images/site-feature-image.png"]
   socialShareTwitter = true
   socialShareFacebook = true
