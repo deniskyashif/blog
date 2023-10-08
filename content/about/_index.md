@@ -16,8 +16,8 @@ Occasionaly, I <a href="/talks">speak</a> at confereces and conduct technical tr
     <li>Natural Language Processing</li>
 </ul>
 
-<!-- I'm also currently doing my Master's degree in Computational Linguistics at Sofia University. -->
+I love writing code but I like deleting code even more.
 
-In this blog I write down my thoughts and experiences on technology and science.
+In this blog I share my thoughts and experiences on technology and science.
 
 You can contact me at <strong>denis dot kyashif at gmail dot com</strong>
