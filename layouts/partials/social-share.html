@@ -1,7 +1,7 @@
 <section class="social-share">
     <!-- Twitter -->
     {{ if .Site.Params.socialShareTwitter | default true}}
-    <a href="//twitter.com/share?url={{ .Permalink }}&amp;text={{ .Title }}&amp;via={{ .Site.Social.twitter }}" target="_blank" class="share-btn twitter">
+    <a href="//twitter.com/share?url={{ .Permalink }}&amp;text={{ .Title }}&amp;via={{ .Site.Params.Social.twitter }}" target="_blank" class="share-btn twitter">
         <i class="fa fa-2x fa-twitter"></i>
     </a>
     {{ end }}
@@ -32,7 +32,7 @@
     {{ end }}
     <!-- Email -->
     {{ if .Site.Params.socialShareEmail | default true}}
-    <a href="mailto:?subject=Check out '{{ .Title }}' by {{ .Site.Author.name }}&amp;body={{ .Permalink }}" target="_blank" class="share-btn email">
+    <a href="mailto:?subject=Check out '{{ .Title }}' by {{ .Site.Params.Author.name }}&amp;body={{ .Permalink }}" target="_blank" class="share-btn email">
         <i class="fa fa-2x fa-envelope"></i>
     </a>
     {{ end }}

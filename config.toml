@@ -5,23 +5,23 @@ theme = "tale"
 disqusShortname = "deniskyashif"
 googleAnalytics = "G-X7Z9LV9QY4"
 
-[author]
-  name = "Denis Kyashif"
-  homepage = "https://deniskyashif.com"
 
-[params]
-  description = "My blog on computer science and software development."
-  images = ["/images/site-feature-image.png"]
-  socialShareTwitter = true
-  socialShareFacebook = true
-  socialShareReddit = true
-  socialShareLinkedin = true
-  socialSharePinterest = false
-  socialShareEmail = true
-
-
-
-
+[Params]
+author = { name = "Denis Kyashif", homepage = "https://deniskyashif.com" }
+css = [
+  "https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700",
+  "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
+  "assets/my.css"
+]
+description = "My blog on computer science and software development."
+images = ["/images/site-feature-image.png"]
+socialShareTwitter = false
+socialShareFacebook = true
+socialShareReddit = true
+socialShareLinkedin = true
+socialSharePinterest = false
+socialShareEmail = true
+  
 [taxonomies]
   tags = "tags"
 

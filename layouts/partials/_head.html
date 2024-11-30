@@ -1,12 +1,14 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	{{- if eq .RelPermalink "/" }}
-	<meta name="description" content="{{ .Site.Params.Description }}">
+	  <meta name="description" content="{{ .Site.Params.Description }}">
 	{{- else if .Description }}
-	<meta name="description" content="{{ .Description }}">
+	  <meta name="description" content="{{ .Description }}">
 	{{- end }}
-    <meta name="author" content="{{if .Params.Author}}{{.Params.Author}}{{else}}{{ .Site.Author.name }}{{end}}" />
+
+    <meta name="author" content="{{if .Params.Author}}{{.Params.Author}}{{else}}{{ .Site.Params.Author.name }}{{end}}" />
 	
 	<title>
 		{{- if eq .RelPermalink "/" }}
@@ -17,7 +19,7 @@
 	</title>
 	
 	<!-- CSS -->
-	{{- $inServerMode	:= .Site.IsServer }}
+	{{- $inServerMode	:= .Site.Params.IsServer }}
 	{{- $cssTarget		:= "css/style.css" }}
 	{{- $cssOptions		:= cond ($inServerMode) (dict "targetPath" $cssTarget "enableSourceMap" true) (dict "targetPath" $cssTarget "outputStyle" "compressed") }}		
 	{{- $style			:= resources.Get "scss/tale.scss" | toCSS $cssOptions }}
