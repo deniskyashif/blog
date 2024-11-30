@@ -2,17 +2,17 @@ html, body, h1, h2, h3, h4, h5, .post-title, .post-info, .catalogue-title, nav a
     /* font-family: -apple-system,BlinkMacSystemFont,avenir next,avenir,helvetica neue,helvetica,ubuntu,roboto,noto,segoe ui,arial,sans-serif; */
 }
 
-.nav {
-    box-shadow: none;
-}
+/* .nav { */
+/*     box-shadow: none; */
+/* } */
 
-main {
-    border-top: 1px solid #aaa;
-}
+/* main { */
+/*      border-top: 1px solid red; */
+/* } */
 
-main, footer, .nav-container {
-    max-width: 768px;
-}
+/* main, footer, .nav-container { */
+/*     max-width: 768px; */
+/* } */
 
 main table {
     border-collapse: collapse;
@@ -35,7 +35,7 @@ main .social {
 }
 
 main .social > a {
-    margin-right: 10px;
+    margin-right: 8px;
 }
 
 main > .intro {

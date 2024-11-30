@@ -4,170 +4,135 @@
     <title>Tags on Denis Kyashif&#39;s Blog</title>
     <link>https://deniskyashif.com/tags/</link>
     <description>Recent content in Tags on Denis Kyashif&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 28 Aug 2023 08:23:13 +0300</lastBuildDate><atom:link href="https://deniskyashif.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Aug 2023 08:23:13 +0300</lastBuildDate>
+    <atom:link href="https://deniskyashif.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>emacs</title>
+      <title>Emacs</title>
       <link>https://deniskyashif.com/tags/emacs/</link>
       <pubDate>Mon, 28 Aug 2023 08:23:13 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/emacs/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>org-mode</title>
+      <title>Org-Mode</title>
       <link>https://deniskyashif.com/tags/org-mode/</link>
       <pubDate>Mon, 28 Aug 2023 08:23:13 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/org-mode/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>productivity</title>
+      <title>Productivity</title>
       <link>https://deniskyashif.com/tags/productivity/</link>
       <pubDate>Mon, 28 Aug 2023 08:23:13 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/productivity/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>azure</title>
+      <title>Azure</title>
       <link>https://deniskyashif.com/tags/azure/</link>
       <pubDate>Tue, 06 Apr 2021 22:16:29 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/azure/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>csharp</title>
+      <title>Csharp</title>
       <link>https://deniskyashif.com/tags/csharp/</link>
       <pubDate>Tue, 06 Apr 2021 22:16:29 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/csharp/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>dotnet</title>
+      <title>Dotnet</title>
       <link>https://deniskyashif.com/tags/dotnet/</link>
       <pubDate>Tue, 06 Apr 2021 22:16:29 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/dotnet/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>algorithms</title>
+      <title>Algorithms</title>
       <link>https://deniskyashif.com/tags/algorithms/</link>
       <pubDate>Mon, 17 Aug 2020 11:05:18 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/algorithms/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>compilers</title>
+      <title>Compilers</title>
       <link>https://deniskyashif.com/tags/compilers/</link>
       <pubDate>Mon, 17 Aug 2020 11:05:18 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/compilers/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>compsci</title>
+      <title>Compsci</title>
       <link>https://deniskyashif.com/tags/compsci/</link>
       <pubDate>Mon, 17 Aug 2020 11:05:18 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/compsci/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>javascript</title>
+      <title>Javascript</title>
       <link>https://deniskyashif.com/tags/javascript/</link>
       <pubDate>Mon, 17 Aug 2020 11:05:18 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/javascript/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>nlp</title>
+      <title>Nlp</title>
       <link>https://deniskyashif.com/tags/nlp/</link>
       <pubDate>Mon, 17 Aug 2020 11:05:18 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/nlp/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>concurrency</title>
+      <title>Concurrency</title>
       <link>https://deniskyashif.com/tags/concurrency/</link>
       <pubDate>Tue, 07 Jan 2020 07:42:15 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/tags/concurrency/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>software-design</title>
+      <title>Software-Design</title>
       <link>https://deniskyashif.com/tags/software-design/</link>
       <pubDate>Tue, 07 Jan 2020 07:42:15 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/tags/software-design/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>typescript</title>
+      <title>Typescript</title>
       <link>https://deniskyashif.com/tags/typescript/</link>
       <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/tags/typescript/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>angular</title>
+      <title>Angular</title>
       <link>https://deniskyashif.com/tags/angular/</link>
       <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/tags/angular/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>talks</title>
+      <title>Talks</title>
       <link>https://deniskyashif.com/tags/talks/</link>
       <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/tags/talks/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>telerik</title>
+      <title>Telerik</title>
       <link>https://deniskyashif.com/tags/telerik/</link>
       <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
-      
       <guid>https://deniskyashif.com/tags/telerik/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>kendoui</title>
+      <title>Kendoui</title>
       <link>https://deniskyashif.com/tags/kendoui/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://deniskyashif.com/tags/kendoui/</guid>
       <description></description>
     </item>
-    
   </channel>
 </rss>

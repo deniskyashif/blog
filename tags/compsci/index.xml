@@ -1,101 +1,82 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>compsci on Denis Kyashif&#39;s Blog</title>
+    <title>Compsci on Denis Kyashif&#39;s Blog</title>
     <link>https://deniskyashif.com/tags/compsci/</link>
-    <description>Recent content in compsci on Denis Kyashif&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Compsci on Denis Kyashif&#39;s Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 17 Aug 2020 11:05:18 +0300</lastBuildDate><atom:link href="https://deniskyashif.com/tags/compsci/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 Aug 2020 11:05:18 +0300</lastBuildDate>
+    <atom:link href="https://deniskyashif.com/tags/compsci/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Parsing Regex with Recursive Descent</title>
       <link>https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/</link>
       <pubDate>Mon, 17 Aug 2020 11:05:18 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/</guid>
       <description>A fast and simple way to parse regular expressions.</description>
     </item>
-    
     <item>
       <title>Introduction to Bimachines</title>
       <link>https://deniskyashif.com/2020/06/12/introduction-to-bimachines/</link>
       <pubDate>Fri, 12 Jun 2020 08:00:46 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/2020/06/12/introduction-to-bimachines/</guid>
       <description>A gentle overview of bimachines with examples.</description>
     </item>
-    
     <item>
       <title>Resolving Ambiguity in Text Rewriting</title>
       <link>https://deniskyashif.com/2020/02/22/resolving-ambiguity-in-text-rewriting/</link>
       <pubDate>Sat, 22 Feb 2020 09:10:37 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/2020/02/22/resolving-ambiguity-in-text-rewriting/</guid>
       <description>Strategies for resolving conflicts that occur when two replacement substrings overlap.</description>
     </item>
-    
     <item>
       <title>Finite-State Transducers for Text Rewriting</title>
       <link>https://deniskyashif.com/2020/02/18/finite-state-transducers-for-text-rewriting/</link>
       <pubDate>Tue, 18 Feb 2020 10:00:32 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/2020/02/18/finite-state-transducers-for-text-rewriting/</guid>
       <description>An formal overview of regular expression-based text rewriters.</description>
     </item>
-    
     <item>
       <title>A Practical Guide to  State Machines</title>
       <link>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</link>
       <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</guid>
       <description>Express application logic in a concise and declarative way using state machines and C#&amp;rsquo;s pattern matching.</description>
     </item>
-    
     <item>
       <title>Translation using Syntactic Rules</title>
       <link>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</link>
       <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
-      
       <guid>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</guid>
       <description>How to describe a formal language and build a translator with ANTLR and JavaScript.</description>
     </item>
-    
     <item>
       <title>Computing Ranges in Constant Time</title>
       <link>https://deniskyashif.com/2019/06/28/computing-ranges-in-constant-time/</link>
       <pubDate>Fri, 28 Jun 2019 13:26:25 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/2019/06/28/computing-ranges-in-constant-time/</guid>
       <description>Range Minimum Query with Sparse Table and Dynamic Programming.</description>
     </item>
-    
     <item>
       <title>Gödel&#39;s System T in TypeScript</title>
       <link>https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/</link>
       <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/</guid>
       <description>Experimenting with a rudimentary type system that ensures the programs always terminate.</description>
     </item>
-    
     <item>
       <title>On Recursive Functions</title>
       <link>https://deniskyashif.com/2019/05/15/on-recursive-functions/</link>
       <pubDate>Wed, 15 May 2019 15:16:00 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/2019/05/15/on-recursive-functions/</guid>
       <description>The Y combinator or how to implement recursion in a language that doesn&amp;rsquo;t support it.</description>
     </item>
-    
     <item>
       <title>Implementing a Regular Expression Engine</title>
       <link>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</guid>
       <description>Using Ken Thompson&amp;rsquo;s construction algorithm.</description>
     </item>
-    
   </channel>
 </rss>

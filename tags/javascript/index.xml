@@ -1,83 +1,68 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>javascript on Denis Kyashif&#39;s Blog</title>
+    <title>Javascript on Denis Kyashif&#39;s Blog</title>
     <link>https://deniskyashif.com/tags/javascript/</link>
-    <description>Recent content in javascript on Denis Kyashif&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Javascript on Denis Kyashif&#39;s Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 17 Aug 2020 11:05:18 +0300</lastBuildDate><atom:link href="https://deniskyashif.com/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 Aug 2020 11:05:18 +0300</lastBuildDate>
+    <atom:link href="https://deniskyashif.com/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Parsing Regex with Recursive Descent</title>
       <link>https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/</link>
       <pubDate>Mon, 17 Aug 2020 11:05:18 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/</guid>
       <description>A fast and simple way to parse regular expressions.</description>
     </item>
-    
     <item>
       <title>Translation using Syntactic Rules</title>
       <link>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</link>
       <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
-      
       <guid>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</guid>
       <description>How to describe a formal language and build a translator with ANTLR and JavaScript.</description>
     </item>
-    
     <item>
       <title>Gödel&#39;s System T in TypeScript</title>
       <link>https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/</link>
       <pubDate>Wed, 05 Jun 2019 17:31:07 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/2019/06/05/g%C3%B6dels-system-t-in-typescript/</guid>
       <description>Experimenting with a rudimentary type system that ensures the programs always terminate.</description>
     </item>
-    
     <item>
       <title>On Recursive Functions</title>
       <link>https://deniskyashif.com/2019/05/15/on-recursive-functions/</link>
       <pubDate>Wed, 15 May 2019 15:16:00 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/2019/05/15/on-recursive-functions/</guid>
       <description>The Y combinator or how to implement recursion in a language that doesn&amp;rsquo;t support it.</description>
     </item>
-    
     <item>
       <title>Implementing a Regular Expression Engine</title>
       <link>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</guid>
       <description>Using Ken Thompson&amp;rsquo;s construction algorithm.</description>
     </item>
-    
     <item>
       <title>Impressions from EMEA Pug Challenge 2017</title>
       <link>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</link>
       <pubDate>Tue, 21 Nov 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://deniskyashif.com/2017/11/21/impressions-from-emea-pug-challenge-2017/</guid>
       <description>I had the pleasure to speak at the annual EMEA PUG Challenge conference in Prague. This is my second visit to this event. I was very excited about it because I already had fond memories of the last year&amp;rsquo;s one in the Netherlands.</description>
     </item>
-    
     <item>
       <title>KendoUI TreeList Load on Demand</title>
       <link>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
-      
       <guid>https://deniskyashif.com/2017/06/20/kendoui-treelist-load-on-demand/</guid>
       <description>How to lazily load the descendant items of a record in a TreeList.</description>
     </item>
-    
     <item>
       <title>Validate any DOM element with the KendoUI validator</title>
       <link>https://deniskyashif.com/2016/05/30/validate-any-dom-element-with-the-kendoui-validator/</link>
       <pubDate>Mon, 30 May 2016 00:00:00 +0000</pubDate>
-      
       <guid>https://deniskyashif.com/2016/05/30/validate-any-dom-element-with-the-kendoui-validator/</guid>
       <description>Not only inputs.</description>
     </item>
-    
   </channel>
 </rss>

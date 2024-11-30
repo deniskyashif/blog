@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>angular on Denis Kyashif&#39;s Blog</title>
+    <title>Angular on Denis Kyashif&#39;s Blog</title>
     <link>https://deniskyashif.com/tags/angular/</link>
-    <description>Recent content in angular on Denis Kyashif&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Angular on Denis Kyashif&#39;s Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 26 Jan 2019 22:31:14 +0200</lastBuildDate><atom:link href="https://deniskyashif.com/tags/angular/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 26 Jan 2019 22:31:14 +0200</lastBuildDate>
+    <atom:link href="https://deniskyashif.com/tags/angular/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Scalable Angular Apps at DevReach 2018</title>
       <link>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</link>
       <pubDate>Sat, 26 Jan 2019 22:31:14 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/2019/01/26/scalable-angular-apps-at-devreach-2018/</guid>
       <description>DevReach is one of the largest tech conferences in Eastern Europe, focused on .NET and JavaScript. I had the pleasure to attend as a speaker, talking about Scalable Angular Applications.</description>
     </item>
-    
   </channel>
 </rss>

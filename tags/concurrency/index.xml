@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>concurrency on Denis Kyashif&#39;s Blog</title>
+    <title>Concurrency on Denis Kyashif&#39;s Blog</title>
     <link>https://deniskyashif.com/tags/concurrency/</link>
-    <description>Recent content in concurrency on Denis Kyashif&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Concurrency on Denis Kyashif&#39;s Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 07 Jan 2020 07:42:15 +0200</lastBuildDate><atom:link href="https://deniskyashif.com/tags/concurrency/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 07 Jan 2020 07:42:15 +0200</lastBuildDate>
+    <atom:link href="https://deniskyashif.com/tags/concurrency/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>C# Channels - Async Data Pipelines</title>
       <link>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</link>
       <pubDate>Tue, 07 Jan 2020 07:42:15 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</guid>
       <description>How to implement an assembly line concurrency model in .NET using channels.</description>
     </item>
-    
     <item>
       <title>C# Channels - Timeout and Cancellation</title>
       <link>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</link>
       <pubDate>Wed, 11 Dec 2019 15:01:01 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</guid>
       <description>Explore cancellation and timeout techniques with channels.</description>
     </item>
-    
     <item>
       <title>C# Channels - Publish / Subscribe Workflows</title>
       <link>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</link>
       <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</guid>
       <description>Concurrency patterns in .NET using channels.</description>
     </item>
-    
   </channel>
 </rss>

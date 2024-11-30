@@ -4,7 +4,8 @@
     <title>Talks on Denis Kyashif&#39;s Blog</title>
     <link>https://deniskyashif.com/talks/</link>
     <description>Recent content in Talks on Denis Kyashif&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://deniskyashif.com/talks/index.xml" rel="self" type="application/rss+xml" />
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="https://deniskyashif.com/talks/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

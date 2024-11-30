@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>compilers on Denis Kyashif&#39;s Blog</title>
+    <title>Compilers on Denis Kyashif&#39;s Blog</title>
     <link>https://deniskyashif.com/tags/compilers/</link>
-    <description>Recent content in compilers on Denis Kyashif&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Compilers on Denis Kyashif&#39;s Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 17 Aug 2020 11:05:18 +0300</lastBuildDate><atom:link href="https://deniskyashif.com/tags/compilers/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 Aug 2020 11:05:18 +0300</lastBuildDate>
+    <atom:link href="https://deniskyashif.com/tags/compilers/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Parsing Regex with Recursive Descent</title>
       <link>https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/</link>
       <pubDate>Mon, 17 Aug 2020 11:05:18 +0300</pubDate>
-      
       <guid>https://deniskyashif.com/2020/08/17/parsing-regex-with-recursive-descent/</guid>
       <description>A fast and simple way to parse regular expressions.</description>
     </item>
-    
     <item>
       <title>Translation using Syntactic Rules</title>
       <link>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</link>
       <pubDate>Fri, 13 Sep 2019 17:14:58 -0700</pubDate>
-      
       <guid>https://deniskyashif.com/2019/09/13/translation-using-syntactic-rules/</guid>
       <description>How to describe a formal language and build a translator with ANTLR and JavaScript.</description>
     </item>
-    
     <item>
       <title>Implementing a Regular Expression Engine</title>
       <link>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</link>
       <pubDate>Sun, 17 Feb 2019 15:05:00 +0200</pubDate>
-      
       <guid>https://deniskyashif.com/2019/02/17/implementing-a-regular-expression-engine/</guid>
       <description>Using Ken Thompson&amp;rsquo;s construction algorithm.</description>
     </item>
-    
   </channel>
 </rss>
