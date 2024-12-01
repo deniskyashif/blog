@@ -21,7 +21,7 @@ socialShareReddit = true
 socialShareLinkedin = true
 socialSharePinterest = false
 socialShareEmail = true
-  
+
 [taxonomies]
   tags = "tags"
 
@@ -29,7 +29,7 @@ socialShareEmail = true
   posts = "/:year/:month/:day/:title/"
 
 [markup.goldmark.renderer]
-unsafe= true
+unsafe = true
 
 [markup]
   [markup.highlight]
