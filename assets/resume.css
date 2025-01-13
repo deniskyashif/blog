@@ -15,9 +15,10 @@ h3, h4 {
 }
 
 ul {
-    list-style-type: none;
+    /* list-style-type: none; */
     margin-bottom: 0;
     padding: 0;
+    list-style-position: inside;
 }
 
 li {
@@ -25,7 +26,7 @@ li {
 }
 
 li::before {
-    content: '\FF0A  ';
+    /* content: '\2022  '; */
 }
 
 small {
@@ -161,15 +162,19 @@ section > div:last-child {
     content: none;
 }
 
+.certifications ul {
+    list-style-position: inside; 
+}
+
 .find-me-online li::before {
     content: none;
 }
 
 @media print {
     .exp-nvs {
-        margin-top: 100px;
+        margin-bottom: 100px;
     }
-    
+
     .wrapper {
         /* padding: 1rem 0; */
         margin-top: 0px;
@@ -178,6 +183,4 @@ section > div:last-child {
     .export {
         display: none;
     }
-
-    
 }
