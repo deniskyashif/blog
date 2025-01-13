@@ -65,8 +65,8 @@ title = "Resume"
                             <span>Azure PaaS/IaaS</span>
                             <span>C#/.NET</span>
                             <span>ESB</span>
-                            <span>Oracle</span>
                             <span>Angular</span>
+                            <span>Oracle</span>
                         </div>
                     </div>
                     <div>
@@ -80,7 +80,7 @@ title = "Resume"
                         <small><i class="fa fa-map-marker" aria-hidden="true"></i>
                             Sofia, Bulgaria</small>
                         <p>
-                            Coursedot Instructor Hub is a platform for providing and applying for technical training opportunities.
+                            Coursedot Instructor Hub is a web platform for providing and applying for technical training opportunities.
                         </p>
                         <ul>
                             <li>Establish and optimize end-to-end processes for design, implementation, quality assurance, and delivery of business-critical features.</li>
@@ -187,6 +187,7 @@ title = "Resume"
                         <li>ReactJS</li>
                         <li>HTML/CSS</li>
                         <li>SQL</li>
+                        <li>Data Factory</li>
                         <li>Git</li>
                         <li>Docker</li>
                         <li>Linux</li>
@@ -211,7 +212,7 @@ title = "Resume"
                         <h3>Bachelor's Degree in Linguistics</h3>
                         <h4 class="accent">Veliko Tarnovo University St. St. Cyril and Methodius</h4>
                         <small><i class="fa fa-calendar" aria-hidden="true"></i> 2009-2013</small>
-                        <p>Studied English and German languages as well as formal language theory.</p>
+                        <p>Studied English and German linguistics, with a focus on language theory and formal grammar.</p>
                     </div>
                 </section>
                 <section class="certifications">
@@ -226,7 +227,7 @@ title = "Resume"
                             </div>
                         </li>
                         <li>
-                            Mirosoft Azure Fundamentals (AZ900)
+                            Azure Fundamentals (AZ-900)
                             <div style="padding-left: 12px">
                                 <small></small>
                                 <small><i class="fa fa-link" aria-hidden="true"></i>
@@ -247,12 +248,12 @@ title = "Resume"
                 </section>
             </div>
         </div>
-        <div class="container" style="margin-topp: 65px"> <!-- style="margin-top: 65px" for PDF print -->
+        <div class="container">
             <div class="left">
                 <section class="projects">
                     <h2>Academic & Side Projects</h2>
                     <div>
-                        <h3>Blog on Computer Science and Software Development</h3>
+                        <h3>Blog on Computer Science and Software Engineering</h3>
                         <small><i class="fa fa-link" aria-hidden="true"></i>
                             <a href="https://deniskyashif.com" target="_blank">deniskyashif.com</a>
                         </small>
@@ -326,7 +327,7 @@ Collaborated with a team of students to develop a question-answering system and 
         </div>
     </main>
     <div class="export">
-        <a href="https://drive.google.com/file/d/1TbphFrgzWpy8Vx9E93kp0A1VYzqoXNaA/view?usp=sharing"
+        <a href="https://drive.google.com/file/d/1TNmnrpe5HXqYfNIPiXRzEt2hpFr5pgaz/view?usp=share_link"
            target="_blank">
             <i class="fa fa-3x fa-file-pdf-o" title="Open as PDF"></i>
         </a>
