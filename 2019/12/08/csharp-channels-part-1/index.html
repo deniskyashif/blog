@@ -130,8 +130,7 @@
 <p>The relationship between concurrency and parallelism is commonly misunderstood. In fact, two procedures being concurrent doesn&rsquo;t mean that they&rsquo;ll run in parallel. The following quote by Martin Kleppmann has stood out in my mind when it comes to concurrency:</p>
 <blockquote>
 <p>For defining concurrency, the exact time doesn&rsquo;t matter: we simply call two operations concurrent if they <strong>are both unaware of each other</strong>, regardless of the physical time at which they occurred.</p>
-<p>&ndash; <em>&ldquo;Designing Data-Intensive Applications&rdquo;</em> by Martin Kleppmann</p>
-</blockquote>
+<p>&ndash; <em>&ldquo;Designing Data-Intensive Applications&rdquo;</em> by Martin Kleppmann</p></blockquote>
 <p>Concurrency is something that <strong>enables parallelism</strong>. On a single processor, two procedures can be concurrent, yet they won&rsquo;t run in parallel. A concurrent program <strong>deals</strong> with a lot of things at once, whereas a parallel program <strong>does</strong> a lot of things at once.<br>
 Think of it this way - concurrency is about <strong>structure</strong> and parallelism is about <strong>execution</strong>. A concurrent program may benefit from parallelism, but that&rsquo;s not its goal. The goal of concurrency is a good structure.</p>
 <h2 id="channels">Channels</h2>
@@ -182,8 +181,7 @@ Notice that we have created an <strong>unbounded</strong> channel, meaning that 
 </span></span></code></pre></div><p>So when this limit is reached, <code>WriteAsync()</code> won&rsquo;t be able to write, until there&rsquo;s an available slot in the channel&rsquo;s buffer. A slot is freed up when a consumer reads from the channel.</p>
 <h2 id="concurrency-patterns">Concurrency Patterns</h2>
 <blockquote>
-<p>Don&rsquo;t communicate by sharing memory, share memory by communicating.</p>
-</blockquote>
+<p>Don&rsquo;t communicate by sharing memory, share memory by communicating.</p></blockquote>
 <p>It&rsquo;s time to explore a few concurrent programming techniques for working with channels. This part consists of several examples that are independent of each other. You can also find the interactive version of them on <a href="https://github.com/deniskyashif/trydotnet-channels">GitHub</a>.</p>
 <h3 id="the-generator">The Generator</h3>
 <p>A generator is a method that returns a channel. The one below creates a channel and writes a given number of messages asynchronously from a separate thread.</p>
@@ -439,7 +437,7 @@ We&rsquo;ve created the local asynchronous <code>Redirect()</code> function whic
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2025-01-13 19:38:05.985182 &#43;0200 EET m=&#43;0.209508835">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2025-05-18 12:17:14.426905 &#43;0300 EEST m=&#43;0.079113834">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

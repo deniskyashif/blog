@@ -180,7 +180,7 @@
 <img id="fig1.2" src="/images/posts/2019-02-20-regex/nfa.png" />
 <p class="text-center"><small>Figure 1.2: Nondeterministic Finite Automaton (NFA)</small></p>
 <p>We can see on <a href="#fig1.2">Fig 1.2</a> that from \(q_1\) on input <strong>&lsquo;b&rsquo;</strong> we can transition to two states - \(q_1\) and \(q_2\). In this case, we say that the machine is <strong>nondeterministic</strong> (NFA). It is easy to see that this machine is equivalent to the one in <a href="#fig1.1">Fig 1.1</a>, i.e. they recognize the same set of strings. Every NFA can be converted to its corresponding DFA, the proof and the conversion, however, are a subject of another article.</p>
-<h3 id="epsilon-nfa">ε-NFA</h3>
+<h3 id="ε-nfa">ε-NFA</h3>
 <p>We represent an ε-NFA exactly as we do an NFA but with one exception. It includes transitions on the <strong>empty string</strong> - ε. That means from one state we are able to transition into another without reading an input symbol. These transitions are usually denoted with the Greek letter ε (epsilon).</p>
 <img id="fig1.3" src="/images/posts/2019-02-20-regex/enfa.png" />
 <p class="text-center"><small>Figure 1.3: epsilon-NFA</small></p>
@@ -445,7 +445,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
   </tbody>
 </table>
 <p>We check if any state in the set of states that we end up with is an accepting state and if so - the string is recognized by the NFA. In the above case, the final set contains only \(q_9\) which is an accepting state.</p>
-<h4 id="dealing-with-epsilon-transitions">Dealing with ε-transitions</h4>
+<h4 id="dealing-with-ε-transitions">Dealing with ε-transitions</h4>
 <p>As mentioned above, Thompson&rsquo;s construction has two types of states. Ones with ε-transitions and ones with a transition on a symbol. So each time we end up in a state with ε-transition(s) we simply follow through to the next state(s) until we end up in one that has a transition on a symbol and insert it to the set of next states. This is obvious on step 3 from the example above, on \(q_7\) we read <strong>&lsquo;b&rsquo;</strong> and proceed to \(q_8\) which is an epsilon transition state. We follow the ε-transition and reach \(q_9\) which has no ε-transitions so we add it to the list of next states. This is a recursive procedure.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">function</span> addNextState(state, nextStates, visited) {
 </span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> (state.epsilonTransitions.length) {
@@ -579,7 +579,7 @@ For instance, in the arithmetic algebra we start with constants such as integers
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2025-01-13 19:38:05.977057 &#43;0200 EET m=&#43;0.201383501">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2025-05-18 12:17:14.421422 &#43;0300 EEST m=&#43;0.073630334">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
