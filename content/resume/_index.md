@@ -39,7 +39,7 @@ title = "Resume"
                 <section class="experience">
                     <h2>Experience</h2>
                     <div>
-                        <h3>Solutions Architect &nbsp;/ Engineering Lead</h3>
+                        <h3>Engineering Lead | Solutions Architect</h3>
                         <h4 class="accent">The World Bank Group - IFC</h4>
                         <small>
                             <i class="fa fa-calendar" aria-hidden="true"></i> 09/2020 - Ongoing
@@ -54,6 +54,7 @@ title = "Resume"
                         <p>IFC is the largest global development institution focused on the private sector in developing countries.</p>
                         <ul>
                             <li>Lead and manage distributed, cross-functional product teams and vendor relationships within IFC's Loan & Accounting portfolio, ensuring alignment with project goals and timelines.</li>
+                            <li>Oversee team performance and provide mentorship to foster professional growth and development.</li>
                             <li>Lead project planning and budgeting activities, ensuring alignment with business objectives and optimal resource utilization.</li>
                             <li>Author and review technical design documents, integration strategies, and system architecture specifications.</li>
                             <li>Establish and enforce coding standards and best practices; drive adoption of Agile methodologies and project management processes.</li>
@@ -63,7 +64,7 @@ title = "Resume"
                         </ul>
                         <div class="tools-list">
                             <span>Azure PaaS/IaaS</span>
-                            <span>C#/.NET</span>
+                            <span>.NET/C#</span>
                             <span>ESB</span>
                             <span>Angular</span>
                             <span>Oracle</span>
@@ -175,22 +176,25 @@ title = "Resume"
                 <section class="tools">
                     <h2>Tools</h2>
                     <ul>
-                        <li>C#/.NET</li>
+                        <li>.NET/C#</li>
                         <li>TypeScript</li>
                         <li>JavaScript</li>
-                        <li>Python</li>
-                        <li>Azure</li>
-                        <li>ML/GenAI</li>
                         <li>ASP.NET</li>
+                        <li>WebAPI</li>
+                        <li>Blazor</li>
+                        <li>MVC</li>
                         <li>node.js</li>
-                        <li>Angular</li>
-                        <li>ReactJS</li>
                         <li>HTML/CSS</li>
+                        <li>Angular</li>
+                        <li>React</li>
+                        <li>Python</li>
+                        <li>Kafka</li>
                         <li>SQL</li>
-                        <li>Data Factory</li>
                         <li>Git</li>
                         <li>Docker</li>
                         <li>Linux</li>
+                        <li>Bash</li>
+                        <li><u>Azure Cloud</u>: App Service, Functions, Service Bus, Logic Apps, Entra ID, Data Factory, Storage Services, AI, <br> API Management, Container Apps</li>
                     </ul>
                 </section>
                 <section class="education">
@@ -219,6 +223,14 @@ title = "Resume"
                     <h2>Certifications</h2>
                     <ul>
                         <li>
+                            SAFe 6 Product Owner/Product Manager
+                            <div style="padding-left: 20px">
+                                <small><i class="fa fa-link" aria-hidden="true"></i>
+                                    <a href="#" target="_blank">27965138-2939</a>
+                                </small>
+                            </div>
+                        </li>
+                        <li>
                             EXIN Agile Scrum Master (ASM)
                             <div style="padding-left: 20px">
                                 <small><i class="fa fa-link" aria-hidden="true"></i>
@@ -229,7 +241,6 @@ title = "Resume"
                         <li>
                             Azure Fundamentals (AZ-900)
                             <div style="padding-left: 12px">
-                                <small></small>
                                 <small><i class="fa fa-link" aria-hidden="true"></i>
                                     <a href="https://learn.microsoft.com/en-us/users/denisilmazkyashif-7576/credentials/513fe3ba6d50ebd8?ref=https%3A%2F%2Fwww.linkedin.com%2F" target="_blank">513FE3BA6D50EBD8</a>
                                 </small>

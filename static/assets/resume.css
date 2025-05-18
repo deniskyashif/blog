@@ -183,4 +183,8 @@ section > div:last-child {
     .export {
         display: none;
     }
+
+    section.tools {
+        margin-bottom: 15px;
+    }
 }
