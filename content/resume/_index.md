@@ -226,7 +226,7 @@ title = "Resume"
                             SAFe 6 Product Owner/Product Manager
                             <div style="padding-left: 20px">
                                 <small><i class="fa fa-link" aria-hidden="true"></i>
-                                    <a href="#" target="_blank">27965138-2939</a>
+                                    <a href="https://drive.google.com/file/d/1rXCD1Svfw_-a5eq_JeDeAtD_3eNQpBHt/view?usp=share_link" target="_blank">27965138-2939</a>
                                 </small>
                             </div>
                         </li>
