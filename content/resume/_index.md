@@ -58,16 +58,18 @@ title = "Resume"
                             <li>Lead project planning and budgeting activities, ensuring alignment with business objectives and optimal resource utilization.</li>
                             <li>Author and review technical design documents, integration strategies, and system architecture specifications.</li>
                             <li>Establish and enforce coding standards and best practices; drive adoption of Agile methodologies and project management processes.</li>
-                            <li>Oversee the RFP process, including drafting comprehensive documents, evaluating vendor proposals, and making recommendations.</li>
+                            <li>Oversee the RFP process, including drafting documents, evaluating proposals, and making recommendations.</li>
                             <li>Contribute to hiring efforts by participating in interview panels and identifying top-tier engineering talent.</li>
                             <li>Provide strategic guidance to senior management on technical direction, risk management, and resource allocation.</li>
                         </ul>
                         <div class="tools-list">
                             <span>Azure PaaS/IaaS</span>
                             <span>.NET/C#</span>
-                            <span>ESB</span>
+                            <span>JavaScript/TypeScript</span>
+                            <span>Python</span>
+                            <span>LLM/GenAI</span>
                             <span>Angular</span>
-                            <span>Oracle</span>
+                            <span>SQL</span>
                         </div>
                     </div>
                     <div>
@@ -94,7 +96,7 @@ title = "Resume"
                             <span>Angular</span>
                             <span>Azure</span>
                             <span>ASP.NET Core</span>
-                            <span>MS SQL Server</span>
+                            <span>SQL Server</span>
                         </div>
                     </div>
                     <div>
@@ -188,15 +190,14 @@ title = "Resume"
                         <li>Angular</li>
                         <li>React</li>
                         <li>Python</li>
+                        <li>LLM/GenAI</li>
                         <li>Kafka</li>
                         <li>SQL</li>
                         <li>Git</li>
                         <li>Docker</li>
                         <li>Linux</li>
-                        <li>Bash</li>
                         <li><u>Azure Cloud</u>: App Service, Functions, Service Bus, Logic Apps, Entra ID, Data Factory, Storage Services, AI, <br> API Management, Container Apps</li>
-                    </ul>
-                </section>
+                    </section>
                 <section class="education">
                     <h2>Education</h2>
                     <div>
@@ -338,7 +339,7 @@ Collaborated with a team of students to develop a question-answering system and 
         </div>
     </main>
     <div class="export">
-        <a href="https://drive.google.com/file/d/1TbphFrgzWpy8Vx9E93kp0A1VYzqoXNaA/view?usp=share_link" target="_blank">
+        <a href="https://drive.google.com/file/d/1d44qUm_04YoyB2UmNS6Odl0Z1cQh6y-3/view?usp=share_link" target="_blank">
             <i class="fa fa-3x fa-file-pdf-o" title="Open as PDF"></i>
         </a>
     </div>
