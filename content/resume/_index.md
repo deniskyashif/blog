@@ -39,8 +39,7 @@ title = "Resume"
                 <section class="experience">
                     <h2>Experience</h2>
                     <div>
-                        <h3>En
-gineering Lead | Solutions Architect</h3>
+                        <h3>Engineering Lead | Solutions Architect</h3>
                         <h4 class="accent">The World Bank Group - IFC</h4>
                         <small>
                             <i class="fa fa-calendar" aria-hidden="true"></i> 09/2020 - Ongoing
@@ -357,7 +356,7 @@ Collaborated with a team of students to develop a question-answering system and 
         </div>
     </main>
     <div class="export">
-        <a href="https://drive.google.com/file/d/18vULLnVr80oisN09iQkCQkvNV6RKbkCc/view?usp=sharing" target="_blank">
+        <a href="https://drive.google.com/file/d/17NMBj9LwV5p-6-BHTttP3YytYouhmA9x/view?usp=share_link" target="_blank">
             <i class="fa fa-3x fa-file-pdf-o" title="Open as PDF"></i>
         </a>
     </div>
