@@ -18,7 +18,7 @@ In this article, we'll examine some examples of real-world problems that can be 
 A finite state machine is an abstract device that has states and transitions between those states. It's always in one of its states and while it reads an input, it switches from state to state. Think of it as a directed graph. A state machine has no memory, that is, it does not keep track of the previous states it has been in. It only knows its current state. If there's no transition on a given input, the machine terminates.  
 For a state machine to be deterministic means that on each input there is one and only one state to which it can transition from its current state. All of the examples in this article are of deterministic state machines.  
 
-<img src="/images/posts/2019-11-20-guide-to-fsm/1.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/1.jpg" />
 <p class="text-center"><small>Figure 1: Representation of a door using a state machine</small></p>
 
 The state machine in Figure 1 has:
@@ -68,7 +68,7 @@ current = ChangeState(current, Input.Open); // throws
 
 Let's take a look at another example. This time we'll implement a process scheduler.
 
-<img src="/images/posts/2019-11-20-guide-to-fsm/2.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/2.jpg" />
 <p class="text-center"><small>Figure 2: The states of a process</small></p>
 
 In Figure 2 we have the following sets of states and inputs:
@@ -165,17 +165,17 @@ We have to ensure that the customer cannot use one issued payment multiple times
 
 We model a separate state machine for each participant. Let's start with the bank.
 
-<img src="/images/posts/2019-11-20-guide-to-fsm/31.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/31.jpg" />
 <p class="text-center"><small>Figure 3.1: The Bank</small></p>
 
 The initial state `1` represents the situation when the bank has issued the money but has not been requested to either _redeem_ it (by the store) or _cancel_ it (by the customer). Once the store _redeems_ the money, the bank enters state `3` and thus can to _transfer_ it to the store's account. When it's in state `2`, it restores the money to the customer's account. The fact that we don't allow the bank to leave state `2` prevents restoring the customer's money multiple times.
 
-<img src="/images/posts/2019-11-20-guide-to-fsm/32.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/32.jpg" />
 <p class="text-center"><small>Figure 3.2: The Store</small></p>
 
 When the _pay_ action is performed (by the customer), the store enters state `b`. It can then either _ship_ the items or _redeem_ the money from the bank. It can also ship when it has made a _redeem_ request and before the money is _transferred_, or at the end when the money is _transferred_ by the bank.
 
-<img src="/images/posts/2019-11-20-guide-to-fsm/33.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/33.jpg" />
 <p class="text-center"><small>Figure 3.3: The Customer</small></p>
 
 The customer's state machine has only one state and two input actions that lead back to the same state. This means that the customer **can do anything** any number of times.
@@ -185,9 +185,9 @@ The customer's state machine has only one state and two input actions that lead 
 To combine these state machines, they should be able to process action inputs simultaneously. We observe that some transitions are missing on some of the machines. For example, the store doesn't have a notion of the _cancel_ action. For the bank, _pay_ and _ship_ are irrelevant. To make the store "ignore" the _cancel_ action, we simply have to add a transition from each of its states to itself on _cancel_.
 Another potential problem would be when the customer executes _pay_ for a second time, while the store is in state `e`. We need to add a transition on `e` to itself on _pay_.
 
-<img src="/images/posts/2019-11-20-guide-to-fsm/341.svg" />
-<img src="/images/posts/2019-11-20-guide-to-fsm/342.svg" />
-<img src="/images/posts/2019-11-20-guide-to-fsm/343.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/341.jpg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/342.jpg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/343.jpg" />
 <p class="text-center"><small>Figure 3.4: The complete sets of transitions for the bank, the store and the customer</small></p>
 
 We added self-transitions to each of the participants' states for the actions that:
@@ -202,7 +202,7 @@ Keep in mind that the behavior of the state machines does not depend on who init
 It's still not quite obvious how the states in the store and the bank interact. To see this more clearly, we need to construct **the product** of those state machines. The product is a state machine itself, and since the customer automaton only has one state, the states of the product are **pairs of states from the bank and from the store**.
 For example, the state `(3,d)` represents the situation where the bank is in state `3` and the store is in state `d`. The total amount of states is 4x7=28. We group them in a table where the row corresponds to the state of the bank and the column to the state of the store. The initial state is the pair, both items of which are initial states of their respective machines - in our case `(1,a)`.
 
-<img src="/images/posts/2019-11-20-guide-to-fsm/35.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/35.jpg" />
 <p class="text-center"><small>Figure 3.5: The product of the bank's and the store's state machines; the reachable states are marked in green. <br />
 P - <em>pay</em>, C - <em>cancel</em>, R - <em>redeem</em>, S - <em>ship</em>, T - <em>transfer</em>
 </small></p>
@@ -213,7 +213,7 @@ We've drawn all of the state pairs and the transitions amongst them. We can now 
 
 We observe that not all states are reachable from the initial state `(1,a)`. For example, we cannot go to `(1,g)` where the store has shipped the goods after the money is transferred, but the bank is still waiting for a redeem - this makes no sense! We've modeled our system such that a case like this cannot occur. We also found a flaw in our logic, that is, when the machine is in `(2,c)`, the items have been shipped but the money hasn't been transferred because the customer has issued _cancel_.
 
-<img src="/images/posts/2019-11-20-guide-to-fsm/36.svg" />
+<img src="/images/posts/2019-11-20-guide-to-fsm/36.jpg" />
 <p class="text-center"><small>Figure 3.6: The combined state machine for the bank and the store.
 <br />
 P - <em>pay</em>, C - <em>cancel</em>, R - <em>redeem</em>, S - <em>ship</em>, T - <em>transfer</em></small>
