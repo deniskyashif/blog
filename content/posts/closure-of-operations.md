@@ -3,18 +3,16 @@ title: "Closure of Operations in Computer Programming"
 date: 2025-12-14T19:18:43+02:00
 summary: "Using set theory for a better software design."
 useMath: true
-draft: true
+draft: false
 ---
 
-## A Bit of Math
-
-In Algebra we say that a set is closed under a operation (or a rule) if applying that operation to elements of the set never produces something outside the set. For example, the set of integers \\( \mathbb{Z} \\) is closed under multiplication. Multipling two integers would always produce an integer.
+In algebra, we say that a set is closed under an operation (or rule) if applying that operation to elements of the set never produces a result outside the set. For example, the set of integers \\( \mathbb{Z} \\) is closed under multiplication. Multipling two integers would always produce an integer:
 
 \\[
 \forall a,b \in \mathbb{Z}, a * b \in \mathbb{Z}
 \\]
 
-Integers, however, are not closed under division, since dividing two integers can produce a fractional number that does not belong to the set of integers.
+However, the integers are not closed under division. Dividing one integer by another can produce a fractional value that does not belong to \\( \mathbb{Z} \\):
 
 \\[
 \exists a,b \in \mathbb{Z} \text{ such that } a \div b \notin \mathbb{Z}
@@ -26,13 +24,14 @@ For example:
 \frac{1}{2} \notin \mathbb{Z}
 \\]
 
-Applying the allowed operations, no matter how many times, never takes us outside of the set which always leaves us in a consistent state - the set is **self-contained**. We can multiply three, four, or more integers and the result will still be an integer. Mathematicians love closed sets because they provide stability, structure, and control. They make reasoning, proofs, and constructions much easier.
+When a set is closed under its allowed operations, repeatedly applying those operations—no matter how many times—never takes us outside the set. The system remains **self-contained and consistent**. We can multiply three, four, or even a hundred integers together, and the result will still be an integer.
+Mathematicians value closed sets because they provide stability, structure, and control. Closure makes reasoning more predictable, proofs cleaner, and mathematical constructions far easier to work with.
 
 ## Closure of Operations
 
-Closure of operatoins is extensively used in software design as well. It is all around us even though we don't always recognize it. Using it however leads to elegant solutions. 
+Closure of operations appears frequently in software design, even if we don’t always recognize it. When used intentionally, it tends to produce simpler and more elegant solutions.
 
-For example, strings are closed under contactenation. Another one - the set of all valid HTML documents is closed under DOM &rarr; DOM transformations. We know that the DOM API would always produce valid HTML. 
+For example, strings are closed under concatenation. Similarly, the set of all valid HTML documents is closed under DOM &rarr; DOM transformations: applying operations through the DOM API always produces another valid HTML document.
 
 ```js
 document.body.appendChild(document.createElement("div"));
@@ -42,7 +41,7 @@ This is powerful because closure gives us guarantees. Those guarantees scale—f
 
 ### Value Objects 
 
-This design approach is especially useful when we deal with value objects - objects defined by their value and not an identity. They are typically designed to be closed under thir core oprations. Let's see an example - we can represent money as a value object. The set of money objects is closed under the operations of addition and subtraction.
+This design approach is particularly useful when working with value objects—objects defined by their value rather than by identity. Value objects are typically designed to be closed under their core operations. For example, money can be modeled as a value object: the set of money values is closed under addition and subtraction.
 
 ```cs
 public readonly record struct Money(decimal Amount, string Currency) 
@@ -73,7 +72,7 @@ var total = wallet1.Add(wallet2);
 Console.WriteLine(total); // prints: Money { Amount = 80, Currency = USD }
 ```
 
-The operation never produces an invalid object (as long as currencies match). With this design we also have a few more useful properties:
+The operation never produces an invalid object as long as currencies match. With this design we also have a few more useful properties:
 
 **Equality by Value**
 
@@ -104,16 +103,77 @@ var sum = wallet1
 
 ### Entities
 
-### Abstract Types
+Closure of operations is natural for value objects but not typical for entities. Entities are defined by their identity and not by their value so two entities with identical data are not necessarily the same. Closure of operations on entities would mean that applying an operation to entities always produces another entity of the same type. This is rare and often undesireable. Let's take an example of a bank account.
 
-Collections, generics, LINQ
+```cs
+public class Account
+{
+    // Constructor skipped for brevity
+    public Guid Id { get; }
+    public Money Balance { get; private set; }
 
-### Partial Application
+    public void Deposit(Money money)
+    {
+        Balance = Balance.Add(money);
+    }
+    
+    public void Withdraw(Money money)
+    {
+       if (money.Amount > Balance.Amount) 
+           throw new InvalidOperationException();
+       Balance = Balance.Subtract(money)
+    }
+}
+```
+
+Typical entity operations are not closed, in the above case `Deposit`, and `Withdraw` mutate the state and do not produce a new `Account`. The `Account`, being an entity, has the following properties:
+
+- Has an identity (`Id`).
+- Has a lifecycle.
+- Changes over time.
+- Represents a process, not a value.
+- Can introduce side effects.
+
+We can force closure on the `Account` object but that would bring some undesireable behavior. Let's see an example.
+
+```cs
+public Account Deposit(Money money)
+{
+    return new Account(Id)
+    {
+        Balance = Balance.Add(money);
+    };
+}
+```
+
+```cs
+var a1 = new Account(Guid.New(), new Money(100, "USD"));
+var a2 = a1.Deposit(new Money(50, "USD"))
+```
+
+At this point, we can no longer tell which account instance represents the real entity. `a1` and `a2` share the same identity but have different state. When an entity is tracked by an ORM such as Entity Framework, creating additional instances breaks change tracking and can lead to subtle, hard-to-diagnose bugs.
+
+> Entities represent "things that happen over time", not things that we compute with.
+
+The correct design is to compose entities from value objects that are closed under their operations. In this example, `Account` is the entity and `Money` is the value object. `Money` encapsulates the domain invariants and remains closed under addition, while `Account` governs and orchestrates state transitions.
+
+### Closure using Abstract Types
+
+An operation can be closed over an abstract type, even if the concrete arguments involved are value objects or entities that are not themselves closed. This is powerful because it allows a single closed set to encompass multiple concrete types.
+
+A good example of this idea is the set of extension methods over collections in C# provided by `System.Linq`. The abstract type `IEnumerable<T>` is closed under many of its core operations, such as `Select()`, `Where()`, `OrderBy()`, `Union()`, and `Distinct()`. Because each of these operations returns another `IEnumerable<T>`, they can be freely composed, leading to elegant and expressive code:
+
+```cs
+var result = numbers
+    .Where(n => n > 2)
+    .Select(n => n * 10)
+    .OrderBy(n => n);
+```
+
+`IEnumerable<T>` is not closed over all of its extension methods. Such examples are `Count()`, `Any()`, `FirstOrDefault()`, etc. We can say here that we have a partial closure, however, partial closure can still be useful a lead to a better design.
+
+Of course, `IEnumerable<T>` is not closed under all of its extension methods. Operations like `Count()`, `Any()`, and `FirstOrDefault()` return scalar values instead of another sequence. In this sense, LINQ provides partial closure. Even so, partial closure is often sufficient and highly valuable because it encourages composability and leads to clearer, more maintainable designs.
 
 ## Conclusion
 
-Look for closures in your code. This leads to a better design. When possible.
-
-> “Where it fits, define an operation whose return type is the same as the type of its argument(s). If the implementer has state that is used in the computation, then the implementer is effectively an argument of the operation, so the argument(s) and return value should be of the same type as the implementer. Such an operation is closed under the set of instances of that type. A closed operation provides a high-level interface without introducing any dependency on other concepts.”
-
-> “The patterns presented in this chapter illustrate a general style of design and a way of thinking about design. Making software obvious, predictable, and communicative makes abstraction and encapsulation effective. Models can be factored so that objects are simple to use and understand yet still have rich, high-level interfaces.”
+Whenever possible, define operations whose return type matches the type of their arguments. If a method relies on the state of its object, consider that state as an implicit argument. This creates an opportunity to design the method so that it returns the same type as the object itself. Such operations are closed over the set of instances of that type, which promotes consistency and composability. This approach enhances the effectiveness of abstraction and encapsulation. By identifying closures in your code—whether obvious or subtle—and making them explicit, you create designs that are more robust, elegant, and maintainable.
