@@ -108,8 +108,8 @@ Closure of operations is natural for value objects but not typical for entities.
 ```cs
 public class Account
 {
-    // Constructor skipped for brevity
-    public Guid Id { get; }
+    // Constructors skipped for brevity
+    public Guid Id { get; private set; }
     public Money Balance { get; private set; }
 
     public void Deposit(Money money)
@@ -121,7 +121,7 @@ public class Account
     {
        if (money.Amount > Balance.Amount) 
            throw new InvalidOperationException();
-       Balance = Balance.Subtract(money)
+       Balance = Balance.Subtract(money);
     }
 }
 ```
@@ -139,10 +139,7 @@ We can force closure on the `Account` object but that would bring some undesirea
 ```cs
 public Account Deposit(Money money)
 {
-    return new Account(Id)
-    {
-        Balance = Balance.Add(money);
-    };
+    return new Account(Id, Balance.Add(money));
 }
 ```
 
@@ -151,11 +148,11 @@ var a1 = new Account(Guid.New(), new Money(100, "USD"));
 var a2 = a1.Deposit(new Money(50, "USD"))
 ```
 
-At this point, we can no longer tell which account instance represents the real entity. `a1` and `a2` share the same identity but have different state. When an entity is tracked by an ORM such as Entity Framework, creating additional instances breaks change tracking and can lead to subtle, hard-to-diagnose bugs.
+At this point, we can no longer tell which account instance represents the real entity. `a1` and `a2` share the same identity but have different states. When an entity is tracked by an ORM such as Entity Framework, creating additional instances breaks the change tracking and can lead to subtle, hard-to-diagnose bugs.
 
 > Entities represent "things that happen over time", not things that we compute with.
 
-The correct design is to compose entities from value objects that are closed under their operations. In this example, `Account` is the entity and `Money` is the value object. `Money` encapsulates the domain invariants and remains closed under addition, while `Account` governs and orchestrates state transitions.
+The correct design is to compose entities from value objects that are closed under their operations. In this example, `Account` is the entity and `Money` is the value object. `Money` encapsulates the domain invariants and remains closed under addition, while `Account` governs the state and orchestrates its transitions.
 
 ### Closure using Abstract Types
 
@@ -170,10 +167,8 @@ var result = numbers
     .OrderBy(n => n);
 ```
 
-`IEnumerable<T>` is not closed over all of its extension methods. Such examples are `Count()`, `Any()`, `FirstOrDefault()`, etc. We can say here that we have a partial closure, however, partial closure can still be useful a lead to a better design.
-
-Of course, `IEnumerable<T>` is not closed under all of its extension methods. Operations like `Count()`, `Any()`, and `FirstOrDefault()` return scalar values instead of another sequence. In this sense, LINQ provides partial closure. Even so, partial closure is often sufficient and highly valuable because it encourages composability and leads to clearer, more maintainable designs.
+`IEnumerable<T>`, however, is not closed over all of its operations. Such examples are `Count()`, `Any()`, `FirstOrDefault()`, etc. We can say here that we have a partial closure, however, partial closure can still be useful and lead to a cleaner design and a more maintainable design.
 
 ## Conclusion
 
-Whenever possible, define operations whose return type matches the type of their arguments. If a method relies on the state of its object, consider that state as an implicit argument. This creates an opportunity to design the method so that it returns the same type as the object itself. Such operations are closed over the set of instances of that type, which promotes consistency and composability. This approach enhances the effectiveness of abstraction and encapsulation. By identifying closures in your code—whether obvious or subtle—and making them explicit, you create designs that are more robust, elegant, and maintainable.
+Whenever possible, define operations whose return type matches the type of their arguments. If a method relies on the state of its object, consider that state as an implicit argument. This creates an opportunity to design the method so that it returns the same type as the object itself. Such operations are closed over the set of instances of that type, which promotes consistency and composability. This approach enhances the effectiveness of abstraction and encapsulation. By identifying closures in our code, whether obvious or subtle, and making them explicit, we create designs that are more robust, elegant, and maintainable.
