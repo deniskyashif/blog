@@ -13,7 +13,7 @@
       <link>https://deniskyashif.com/2025/12/18/closure-of-operations-in-computer-programming/</link>
       <pubDate>Thu, 18 Dec 2025 15:18:43 +0200</pubDate>
       <guid>https://deniskyashif.com/2025/12/18/closure-of-operations-in-computer-programming/</guid>
-      <description>Closure of operations isn’t just a math concept - it’s a powerful design principle in software. This post explores how closure shapes value objects, entities, and why it leads to more predictable, composable, and maintainable code.</description>
+      <description>A design technique leading to a more predictable, composable, and maintainable code.</description>
     </item>
     <item>
       <title>Parsing Regex with Recursive Descent</title>
