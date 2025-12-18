@@ -1,12 +1,14 @@
 ---
 title: "Closure of Operations in Computer Programming"
-date: 2025-12-14T19:18:43+02:00
-summary: "Using set theory for a better software design."
+date: 2025-12-18T15:18:43+02:00
 useMath: true
 draft: false
+tags: ["compsci", "software-design", "domain-driven design", "csharp"]
+summary: "A design technique leading to a more predictable, composable, and maintainable code."
+editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/closure-of-operations.md"
 ---
 
-In algebra, we say that a set is closed under an operation (or rule) if applying that operation to elements of the set never produces a result outside the set. For example, the set of integers \\( \mathbb{Z} \\) is closed under multiplication. Multipling two integers would always produce an integer:
+In algebra, we say that a set is closed under an operation (or rule) if applying that operation to elements of the set never produces a result outside the set. For example, the set of integers \\( \mathbb{Z} \\) is closed under multiplication. Multiplying two integers would always produce an integer:
 
 \\[
 \forall a,b \in \mathbb{Z}, a * b \in \mathbb{Z}
@@ -84,11 +86,11 @@ Console.WriteLine(a == b); // prints: True
 
 **Immutability**
 
-The `Amount` and `Currency` can't change after creation so we have thread safety bu default. Multiple parts of code can safely hold references to the same value object without risk of one part changing it for another.
+The `Amount` and `Currency` can't change after creation so we have thread safety by default. Multiple parts of code can safely hold references to the same value object without risk of one part changing it for another.
 
 **Encapsulation of Invariants**
 
-The rules we enforce during object creation remain valid throughout the lifetime of the object. Our design does not allow for a Currency mismatch. We catch this in runtime. The Amount is always a decimal (no invalid state).
+The rules we enforce during object creation remain valid throughout the lifetime of the object. Our design does not allow for a Currency mismatch. We catch this in runtime. The Amount is always a decimal.
 
 
 **Closure of Operations**
@@ -103,7 +105,7 @@ var sum = wallet1
 
 ### Entities
 
-Closure of operations is natural for value objects but not typical for entities. Entities are defined by their identity and not by their value so two entities with identical data are not necessarily the same. Closure of operations on entities would mean that applying an operation to entities always produces another entity of the same type. This is rare and often undesireable. Let's take an example of a bank account.
+Closure of operations is natural for value objects but not typical for entities. Entities are defined by their identity and not by their value so two entities with identical data are not necessarily the same. Closure of operations on entities would mean that applying an operation to entities always produces another entity of the same type. This is rare and often undesireble. Let's take an example of a bank account.
 
 ```cs
 public class Account
@@ -148,7 +150,7 @@ var a1 = new Account(Guid.New(), new Money(100, "USD"));
 var a2 = a1.Deposit(new Money(50, "USD"))
 ```
 
-At this point, we can no longer tell which account instance represents the real entity. `a1` and `a2` share the same identity but have different states. When an entity is tracked by an ORM such as Entity Framework, creating additional instances breaks the change tracking and can lead to subtle, hard-to-diagnose bugs.
+At this point, we can no longer tell which account instance represents the real entity. `a1` and `a2` share the same identity but have different states. When an entity is tracked by an ORM such as Entity Framework, creating additional instances breaks the change tracking and can lead to subtle, hard-to-diagnose bugs. This breaks the assumption that there is a single, authoritative instance for a given identity.
 
 > Entities represent "things that happen over time", not things that we compute with.
 
@@ -167,8 +169,8 @@ var result = numbers
     .OrderBy(n => n);
 ```
 
-`IEnumerable<T>`, however, is not closed over all of its operations. Such examples are `Count()`, `Any()`, `FirstOrDefault()`, etc. We can say here that we have a partial closure, however, partial closure can still be useful and lead to a cleaner design and a more maintainable design.
+`IEnumerable<T>`, however, is not closed over all of its operations. Such examples are `Count()`, `Any()`, `FirstOrDefault()`, etc. We can say here that we have a partial closure, however, it can still be useful and lead to a cleaner design and a more maintainable design.
 
 ## Conclusion
 
-Whenever possible, define operations whose return type matches the type of their arguments. If a method relies on the state of its object, consider that state as an implicit argument. This creates an opportunity to design the method so that it returns the same type as the object itself. Such operations are closed over the set of instances of that type, which promotes consistency and composability. This approach enhances the effectiveness of abstraction and encapsulation. By identifying closures in our code, whether obvious or subtle, and making them explicit, we create designs that are more robust, elegant, and maintainable.
+Whenever possible, define operations whose return type matches the type of their arguments. If a method relies on the state of its object, consider that state as an implicit argument. This creates an opportunity to design the method so that it returns the same type as the object itself. Such operations are closed over the set of instances of that type, which promotes consistency and composability. This approach enhances the effectiveness of abstraction and encapsulation. By identifying closures in code, whether obvious or subtle, and making them explicit, we create designs that are more robust, elegant, and maintainable.
