@@ -6,7 +6,7 @@
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-X7Z9LV9QY4"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -72,8 +72,7 @@
 
 	</div>
 </nav>
-
-        <div id="darkModeToggle" onclick="toggleDarkMode()">
+<div id="darkModeToggle" onclick="toggleDarkMode()">
   &#9680; 
 </div>
 
@@ -263,12 +262,12 @@ I&rsquo;ve put parentheses when the precedence of the operations is not obvious.
 <p>\[ \to factStep \space (factStep \space &hellip; \space (factStep \space (Y \space factStep))) \space 2 \]</p>
 <p>So the Y combinator is suited for languages with <strong>normal order</strong> (call by name) evaluation. Normal order evaluates the function first, before evaluating its arguments. In order to adapt it for an applicative order language we have to do a slight modification to our fixed-point combinator:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span><span style="background-color:#fcc">- λf.(λx.f (x x)) (λx.f (x x))
-</span></span></span><span style="display:flex;"><span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+ λf.(λx.λy.f (x x) y) (λx.λy.f (x x) y)
+</span></span></span><span style="display:flex;"><span><span style="background-color:#cfc">+ λf.(λx.λy.f (x x) y) (λx.λy.f (x x) y)
 </span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>function Y1(f) {
 </span></span><span style="display:flex;"><span>    const g = x =&gt; {
 </span></span><span style="display:flex;"><span><span style="background-color:#fcc">-       return f(x(x));
-</span></span></span><span style="display:flex;"><span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+       return y =&gt; f(x(x))(y);
-</span></span></span><span style="display:flex;"><span><span style="background-color:#cfc"></span>    };
+</span></span></span><span style="display:flex;"><span><span style="background-color:#cfc">+       return y =&gt; f(x(x))(y);
+</span></span></span><span style="display:flex;"><span>    };
 </span></span><span style="display:flex;"><span>    return g(g);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>We implement &ldquo;laziness&rdquo; by wrapping the function call into another function. A function definition is an evaluated term for JavaScript so it won&rsquo;t be reduced further. Now we are ready to implement <em>Factorial</em>:</p>
@@ -359,7 +358,7 @@ I&rsquo;ve put parentheses when the precedence of the operations is not obvious.
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2025-12-21 10:04:45.177976 &#43;0200 EET m=&#43;0.107119001">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2025-12-21 10:21:05.160923 &#43;0200 EET m=&#43;0.078769959">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

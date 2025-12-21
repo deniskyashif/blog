@@ -6,7 +6,7 @@
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-X7Z9LV9QY4"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -73,8 +73,7 @@
 
 	</div>
 </nav>
-
-        <div id="darkModeToggle" onclick="toggleDarkMode()">
+<div id="darkModeToggle" onclick="toggleDarkMode()">
   &#9680; 
 </div>
 
@@ -456,15 +455,15 @@ right = { 4, 7, 6, 3 }
 <p>Let&rsquo;s see how to compute range sums in constant time using a sparse table. We need to slightly modify our precomputation procedure. The main difference is that instead of storing indexes to elements in the array, we store sums.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>for (int i = 0; i &lt; N; i++)
 </span></span><span style="display:flex;"><span><span style="background-color:#fcc">-    M[i, 0] = i;
-</span></span></span><span style="display:flex;"><span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+    M[i, 0] = A[i];
+</span></span></span><span style="display:flex;"><span><span style="background-color:#cfc">+    M[i, 0] = A[i];
 </span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>for (int j = 1; j &lt; K; j++) {
 </span></span><span style="display:flex;"><span>    // 1 &lt;&lt; j = 2^j
 </span></span><span style="display:flex;"><span>    for (int i = 0; i + (1 &lt;&lt; j) &lt;= N; i++) {
 </span></span><span style="display:flex;"><span>        int left = M[i, j - 1];
 </span></span><span style="display:flex;"><span>        int right = M[i + (1 &lt;&lt; (j - 1)), j - 1];
 </span></span><span style="display:flex;"><span><span style="background-color:#fcc">-       M[i, j] = A[left] &lt;= A[right] ? left : right;
-</span></span></span><span style="display:flex;"><span><span style="background-color:#fcc"></span><span style="background-color:#cfc">+       M[i, j] = left + right;
-</span></span></span><span style="display:flex;"><span><span style="background-color:#cfc"></span>    }
+</span></span></span><span style="display:flex;"><span><span style="background-color:#cfc">+       M[i, j] = left + right;
+</span></span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>For computing a sum of an arbitrary range \(A[p &hellip; q]\), we&rsquo;re going to use the observation that any range is a union of subranges with lengths of powers of \(2\). We start with the largest such subrange contained in \(A[p &hellip; q]\) and continue by adding the sums of the subsequent smaller ones, but only if they are within the bounds of \(A[p &hellip; q]\).</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">public</span> <span style="color:#078;font-weight:bold">int</span> RSQ(<span style="color:#078;font-weight:bold">int</span>[,] M, <span style="color:#078;font-weight:bold">int</span> p, <span style="color:#078;font-weight:bold">int</span> q) {
@@ -565,7 +564,7 @@ right = { 4, 7, 6, 3 }
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2025-12-21 10:04:45.183379 &#43;0200 EET m=&#43;0.112522709">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2025-12-21 10:21:05.160766 &#43;0200 EET m=&#43;0.078612542">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
