@@ -1,5 +1,5 @@
 ---
-title: "Closure of Operations in Computer Programming"
+title: "Closure of Operations in Domain Modelling"
 date: 2025-12-18T15:18:43+02:00
 useMath: true
 draft: false
