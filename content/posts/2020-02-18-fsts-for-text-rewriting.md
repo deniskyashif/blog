@@ -226,9 +226,9 @@ Description of a direct composition algorithm is out of the scope of this articl
 
 ## Conclusion
 
-In this article, we've overviewed the text rewriting problem from a set-theoretic perspective. We've seen how the rewrite rules can be represented as regular string relations which on the other hand have an equivalent formalism namely the finite-state transducers. We've covered the differences between automata and transducers and saw how the latter can be extended to work on a larger set of inputs via concatenating string relations. We've also learned that the transducers can be composed in a single transducer which applies a set of rewrite rules.
+In this article, looked at the text rewriting problem from a set-theoretic perspective. We learned how the rewrite rules can be represented as regular string relations which on the other hand have an equivalent formalism namely the finite-state transducers. We covered the differences between automata and transducers and saw how the latter can be extended to work on a larger set of inputs via concatenating string relations. We also learned that the transducers can be composed in a single transducer which applies a set of rewrite rules.
 
-Some text can contain conflicting parts. Consider the "abc" and the rule \\( ab|bc \to d \\). The transducer in Figure 3.3 is not able to make a unanimous decision, thus, it will output both "dc" and "ad". In the following articles, we'll discuss some conflict resolution strategies and how to incorporate them within the means of regular sets and relations. We'll also narrow down the scope and work only with deterministic devices for obligatory text rewriting as they're more interesting from a practical standpoint. 
+Some text can contain conflicting parts. Consider the "abc" and the rule \\( ab|bc \to d \\). The transducer in Figure 3.3 is not able to make a unanimous decision, thus, it will output both "dc" and "ad". In the following articles, we'll discuss some conflict resolution strategies and how to incorporate them within the means of regular sets and relations. We'll also narrow down the scope and work only with deterministic devices for obligatory text rewriting as they're more interesting from a practical standpoint.
 
 You can find examples and resources on how to efficiently construct FSTs in the references below.
 

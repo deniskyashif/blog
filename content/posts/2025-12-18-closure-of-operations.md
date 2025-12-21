@@ -171,7 +171,7 @@ var result = numbers
     .OrderBy(n => n);
 ```
 
-`IEnumerable<T>`, however, is not closed over all of its operations. Such examples are `Count()`, `Any()`, `FirstOrDefault()`, etc. We can say here that we have a partial closure, however, it can still be useful and lead to a cleaner design and a more maintainable design.
+`IEnumerable<T>`, however, is not closed over all of its operations. Such examples are `Count()`, `Any()`, `FirstOrDefault()`, etc. We can say here that we have a partial closure, however, it can still be useful and lead to a cleaner and a more maintainable design.
 
 ## Conclusion
 
