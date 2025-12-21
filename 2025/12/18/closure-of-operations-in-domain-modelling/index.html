@@ -226,7 +226,7 @@ Mathematicians value closed sets because they provide stability, structure, and 
 </span></span><span style="display:flex;"><span>    .Where(n =&gt; n &gt; <span style="color:#f60">2</span>)
 </span></span><span style="display:flex;"><span>    .Select(n =&gt; n * <span style="color:#f60">10</span>)
 </span></span><span style="display:flex;"><span>    .OrderBy(n =&gt; n);
-</span></span></code></pre></div><p><code>IEnumerable&lt;T&gt;</code>, however, is not closed over all of its operations. Such examples are <code>Count()</code>, <code>Any()</code>, <code>FirstOrDefault()</code>, etc. We can say here that we have a partial closure, however, it can still be useful and lead to a cleaner design and a more maintainable design.</p>
+</span></span></code></pre></div><p><code>IEnumerable&lt;T&gt;</code>, however, is not closed over all of its operations. Such examples are <code>Count()</code>, <code>Any()</code>, <code>FirstOrDefault()</code>, etc. We can say here that we have a partial closure, however, it can still be useful and lead to a cleaner and a more maintainable design.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Whenever possible, define operations whose return type matches the type of their arguments. If a method relies on the state of its object, consider that state as an implicit argument. This creates an opportunity to design the method so that it returns the same type as the object itself. Such operations are closed over the set of instances of that type, which promotes consistency and composability. This approach enhances the effectiveness of abstraction and encapsulation. By identifying closures in code, whether obvious or subtle, and making them explicit, we create designs that are more robust, elegant, and maintainable.</p>
 
@@ -301,7 +301,7 @@ Mathematicians value closed sets because they provide stability, structure, and 
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2025-12-21 16:19:37.477578 &#43;0200 EET m=&#43;0.084467876">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2025-12-21 16:22:35.985547 &#43;0200 EET m=&#43;0.080600293">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

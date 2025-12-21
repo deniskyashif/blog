@@ -242,7 +242,7 @@ xcx
 \]</p>
 <p>Description of a direct composition algorithm is out of the scope of this article, but you can find some resources in the <a href="#references-and-further-reading">references</a>.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>In this article, we&rsquo;ve overviewed the text rewriting problem from a set-theoretic perspective. We&rsquo;ve seen how the rewrite rules can be represented as regular string relations which on the other hand have an equivalent formalism namely the finite-state transducers. We&rsquo;ve covered the differences between automata and transducers and saw how the latter can be extended to work on a larger set of inputs via concatenating string relations. We&rsquo;ve also learned that the transducers can be composed in a single transducer which applies a set of rewrite rules.</p>
+<p>In this article, looked at the text rewriting problem from a set-theoretic perspective. We learned how the rewrite rules can be represented as regular string relations which on the other hand have an equivalent formalism namely the finite-state transducers. We covered the differences between automata and transducers and saw how the latter can be extended to work on a larger set of inputs via concatenating string relations. We also learned that the transducers can be composed in a single transducer which applies a set of rewrite rules.</p>
 <p>Some text can contain conflicting parts. Consider the &ldquo;abc&rdquo; and the rule \( ab|bc \to d \). The transducer in Figure 3.3 is not able to make a unanimous decision, thus, it will output both &ldquo;dc&rdquo; and &ldquo;ad&rdquo;. In the following articles, we&rsquo;ll discuss some conflict resolution strategies and how to incorporate them within the means of regular sets and relations. We&rsquo;ll also narrow down the scope and work only with deterministic devices for obligatory text rewriting as they&rsquo;re more interesting from a practical standpoint.</p>
 <p>You can find examples and resources on how to efficiently construct FSTs in the references below.</p>
 <p><strong>Part 2:</strong> <a href="/2020/02/22/resolving-ambiguity-in-text-rewriting/">Resolving Ambiguity in Text Rewriting</a></p>
@@ -329,7 +329,7 @@ xcx
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2025-12-21 16:19:37.460388 &#43;0200 EET m=&#43;0.067277751">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2025-12-21 16:22:35.972299 &#43;0200 EET m=&#43;0.067352293">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
