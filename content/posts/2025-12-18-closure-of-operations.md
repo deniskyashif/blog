@@ -6,6 +6,8 @@ draft: false
 tags: ["compsci", "software-design", "domain-driven design", "csharp"]
 summary: "A design technique leading to a more predictable, composable, and maintainable code."
 editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/closure-of-operations.md"
+aliases:
+- /2025/12/18/closure-of-operations-in-computer-programming
 ---
 
 In algebra, we say that a set is closed under an operation (or rule) if applying that operation to elements of the set never produces a result outside the set. For example, the set of integers \\( \mathbb{Z} \\) is closed under multiplication. Multiplying two integers would always produce an integer:
