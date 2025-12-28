@@ -34,10 +34,10 @@ unsafe = true
 [markup]
   [markup.highlight]
     codeFences = true
+    noClasses = false
     hl_Lines = ""
     lineNoStart = 1
     lineNos = false
     lineNumbersInTable = true
-    noClasses = true
     style = "manni"
     tabWidth = 4
