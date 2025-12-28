@@ -9,10 +9,10 @@
     <lastBuildDate>Thu, 18 Dec 2025 15:18:43 +0200</lastBuildDate>
     <atom:link href="https://deniskyashif.com/tags/csharp/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Closure of Operations in Domain Modelling</title>
-      <link>https://deniskyashif.com/2025/12/18/closure-of-operations-in-domain-modelling/</link>
+      <title>Closure of Operations in Domain Modeling</title>
+      <link>https://deniskyashif.com/2025/12/18/closure-of-operations-in-domain-modeling/</link>
       <pubDate>Thu, 18 Dec 2025 15:18:43 +0200</pubDate>
-      <guid>https://deniskyashif.com/2025/12/18/closure-of-operations-in-domain-modelling/</guid>
+      <guid>https://deniskyashif.com/2025/12/18/closure-of-operations-in-domain-modeling/</guid>
       <description>A design technique leading to a more predictable, composable, and maintainable code.</description>
     </item>
     <item>

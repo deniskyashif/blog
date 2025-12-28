@@ -129,10 +129,10 @@
 <p>It&rsquo;s important to keep this in mind before diving into the workflow. Sometimes, we only need to do the thing and move on. I add items to my task list sparingly. Otherwise I&rsquo;d end up with a cluttered agenda with mostly useless information.</p>
 <h2 id="my-org-mode-config">My Org-mode config</h2>
 <p>I keep everything in a single file <code>~/org/tasks.org</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lisp" data-lang="lisp"><span style="display:flex;"><span>(<span style="color:#069;font-weight:bold">setq</span> <span style="color:#033">org-agenda-files</span> <span style="color:#555">&#39;</span>(<span style="color:#c30">&#34;~/org&#34;</span>))
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lisp" data-lang="lisp"><span class="line"><span class="cl"><span class="p">(</span><span class="k">setq</span> <span class="nv">org-agenda-files</span> <span class="o">&#39;</span><span class="p">(</span><span class="s">&#34;~/org&#34;</span><span class="p">))</span>
 </span></span></code></pre></div><p>My tasks have three states - <code>[TODO] -&gt; [PROG] -&gt; [DONE]</code>. I delete the cancelled tasks and archive the DONE ones (more on that later).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lisp" data-lang="lisp"><span style="display:flex;"><span>(<span style="color:#069;font-weight:bold">setq</span> <span style="color:#033">org-todo-keywords</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#555">&#39;</span>((<span style="color:#0a8;font-weight:bold">sequence</span> <span style="color:#c30">&#34;TODO(t)&#34;</span> <span style="color:#c30">&#34;PROG(p)&#34;</span> <span style="color:#c30">&#34;DONE(d)&#34;</span>)))
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lisp" data-lang="lisp"><span class="line"><span class="cl"><span class="p">(</span><span class="k">setq</span> <span class="nv">org-todo-keywords</span>
+</span></span><span class="line"><span class="cl">      <span class="o">&#39;</span><span class="p">((</span><span class="nc">sequence</span> <span class="s">&#34;TODO(t)&#34;</span> <span class="s">&#34;PROG(p)&#34;</span> <span class="s">&#34;DONE(d)&#34;</span><span class="p">)))</span>
 </span></span></code></pre></div><h2 id="structure">Structure</h2>
 <pre tabindex="0"><code>|-- Root
    |-- [Project]      :Tag:
@@ -148,20 +148,20 @@
 <p>Just like not everything deserves a to be a Task, not every Task deserves to have a deadline. I set deadlines only when sometihng is time sensitive. I set scheduled dates only for things which take more thay a day or two to complete. Not all tasks have to be DONE either. We have shifting priorities, so it’s OK for a Task to remain in the list for as long as it&rsquo;s needed.</p>
 <h2 id="navigation-and-search">Navigation and Search</h2>
 <p>My custom agenda view shows me the weekly distribution by deadline/schedule and a global list of tasks groped by their state.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elisp" data-lang="elisp"><span style="display:flex;"><span>  <span style="color:#09f;font-style:italic">;; Customized view for the daily workflow. (Command: &#34;, a n&#34;)</span>
-</span></span><span style="display:flex;"><span>  (<span style="color:#366">setq</span> <span style="color:#033">org-agenda-custom-commands</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#555">&#39;</span>((<span style="color:#c30">&#34;n&#34;</span> <span style="color:#c30">&#34;My Weekly Agenda&#34;</span>
-</span></span><span style="display:flex;"><span>           ((<span style="color:#033">agenda</span> <span style="color:#c30">&#34;&#34;</span> <span style="color:#360">nil</span>)
-</span></span><span style="display:flex;"><span>            (<span style="color:#033">todo</span> <span style="color:#c30">&#34;PROG&#34;</span> <span style="color:#360">nil</span>)
-</span></span><span style="display:flex;"><span>            (<span style="color:#033">todo</span> <span style="color:#c30">&#34;TODO&#34;</span> <span style="color:#360">nil</span>)
-</span></span><span style="display:flex;"><span>            (<span style="color:#033">todo</span> <span style="color:#c30">&#34;DONE&#34;</span> <span style="color:#360">nil</span>))
-</span></span><span style="display:flex;"><span>           <span style="color:#360">nil</span>)))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>(<span style="color:#366">setq</span> <span style="color:#033">org-todo-keyword-faces</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#555">&#39;</span>((<span style="color:#c30">&#34;PROG&#34;</span> <span style="color:#555">.</span> (<span style="color:#366">:foreground</span> <span style="color:#c30">&#34;yellow&#34;</span> <span style="color:#366">:weight</span> <span style="color:#033">bold</span>))))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">;; Hide the deadline prewarning prior to scheduled date.</span>
-</span></span><span style="display:flex;"><span>(<span style="color:#366">setq</span> <span style="color:#033">org-agenda-skip-deadline-prewarning-if-scheduled</span> <span style="color:#fc3">&#39;pre-scheduled</span>)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-elisp" data-lang="elisp"><span class="line"><span class="cl">  <span class="c1">;; Customized view for the daily workflow. (Command: &#34;, a n&#34;)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq</span> <span class="nv">org-agenda-custom-commands</span>
+</span></span><span class="line"><span class="cl">        <span class="o">&#39;</span><span class="p">((</span><span class="s">&#34;n&#34;</span> <span class="s">&#34;My Weekly Agenda&#34;</span>
+</span></span><span class="line"><span class="cl">           <span class="p">((</span><span class="nv">agenda</span> <span class="s">&#34;&#34;</span> <span class="no">nil</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="nv">todo</span> <span class="s">&#34;PROG&#34;</span> <span class="no">nil</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="nv">todo</span> <span class="s">&#34;TODO&#34;</span> <span class="no">nil</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="nv">todo</span> <span class="s">&#34;DONE&#34;</span> <span class="no">nil</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">           <span class="no">nil</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="nb">setq</span> <span class="nv">org-todo-keyword-faces</span>
+</span></span><span class="line"><span class="cl">      <span class="o">&#39;</span><span class="p">((</span><span class="s">&#34;PROG&#34;</span> <span class="o">.</span> <span class="p">(</span><span class="nb">:foreground</span> <span class="s">&#34;yellow&#34;</span> <span class="nb">:weight</span> <span class="nv">bold</span><span class="p">))))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;; Hide the deadline prewarning prior to scheduled date.</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="nb">setq</span> <span class="nv">org-agenda-skip-deadline-prewarning-if-scheduled</span> <span class="ss">&#39;pre-scheduled</span><span class="p">)</span>
 </span></span></code></pre></div><h3 id="show-my-custom-weekly-agenda-view-org-agenda-n">Show my custom weekly agenda view <code>(org-agenda) n</code></h3>
 <p>Most of the work I do in thus buffer falls down to:</p>
 <ul>
@@ -250,7 +250,7 @@
 
 	<div class="pagination">
 		<a href="/2021/04/06/set-a-custom-name-claim-type-in-azure-ad-secured-web-api/" class="left arrow">&#8592;</a>
-		<a href="/2025/12/18/closure-of-operations-in-domain-modelling/" class="right arrow">&#8594;</a>
+		<a href="/2025/12/18/closure-of-operations-in-domain-modeling/" class="right arrow">&#8594;</a>
 
 		<a href="#" class="top">Top</a>
 	</div>
@@ -259,7 +259,7 @@
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2025-12-21 16:39:07.032388 &#43;0200 EET m=&#43;0.073527710">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2025-12-28 19:33:17.093362 &#43;0200 EET m=&#43;0.077199501">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

@@ -164,20 +164,20 @@
 </ul>
 <p>Kendo UI depends on jQuery so we should rather use the one distributed with the framework instead of the one provided in the MVC template.</p>
 <p>Now add the follwing code to <code>App_Start/BundleConfig.cs</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">public</span> <span style="color:#069;font-weight:bold">static</span> <span style="color:#069;font-weight:bold">void</span> RegisterBundles(BundleCollection bundles)
-</span></span><span style="display:flex;"><span>{     
-</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic">/* other bundles */</span>
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    bundles.Add(<span style="color:#069;font-weight:bold">new</span> ScriptBundle(<span style="color:#c30">&#34;~/bundles/kendo&#34;</span>).Include(
-</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;~/Scripts/kendo/jszip.min.js&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;~/Scripts/kendo/kendo.all.min.js&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;~/Scripts/kendo/kendo.aspnetmvc.min.js&#34;</span>));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    bundles.Add(<span style="color:#069;font-weight:bold">new</span> StyleBundle(<span style="color:#c30">&#34;~/Content/kendo&#34;</span>).Include(
-</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;~/Content/kendo/kendo.common.min.css&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;~/Content/kendo/kendo.&lt;THEME_NAME&gt;.min.css&#34;</span>));       
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="k">void</span> <span class="n">RegisterBundles</span><span class="p">(</span><span class="n">BundleCollection</span> <span class="n">bundles</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>     
+</span></span><span class="line"><span class="cl">    <span class="cm">/* other bundles */</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">bundles</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">ScriptBundle</span><span class="p">(</span><span class="s">&#34;~/bundles/kendo&#34;</span><span class="p">).</span><span class="n">Include</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="s">&#34;~/Scripts/kendo/jszip.min.js&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s">&#34;~/Scripts/kendo/kendo.all.min.js&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s">&#34;~/Scripts/kendo/kendo.aspnetmvc.min.js&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">bundles</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">StyleBundle</span><span class="p">(</span><span class="s">&#34;~/Content/kendo&#34;</span><span class="p">).</span><span class="n">Include</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="s">&#34;~/Content/kendo/kendo.common.min.css&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s">&#34;~/Content/kendo/kendo.&lt;THEME_NAME&gt;.min.css&#34;</span><span class="p">));</span>       
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>The only thing left is to render these bundles inside our layout file. Keep in mind that Kendo UI&rsquo;s JavaScript files should be loaded after jQuery. Inside our <code>_Layout.cshtml</code> we add:</p>
 <pre tabindex="0"><code class="language-cshtml" data-lang="cshtml">
 @Styles.Render(&#34;~/Content/kendo&#34;)
@@ -253,7 +253,7 @@
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2025-12-21 16:39:07.025887 &#43;0200 EET m=&#43;0.067027126">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2025-12-28 19:33:17.087553 &#43;0200 EET m=&#43;0.071390960">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>

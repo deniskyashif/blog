@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+		
+		
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-X7Z9LV9QY4"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-X7Z9LV9QY4');
+        }
+      </script>
+		
+		<meta property="og:url" content="https://deniskyashif.com/2025/12/18/closure-of-operations-in-domain-modeling/">
+  <meta property="og:site_name" content="Denis Kyashif&#39;s Blog">
+  <meta property="og:title" content="Closure of Operations in Domain Modeling">
+  <meta property="og:description" content="A design technique leading to a more predictable, composable, and maintainable code.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-12-18T15:18:43+02:00">
+    <meta property="article:modified_time" content="2025-12-18T15:18:43+02:00">
+    <meta property="article:tag" content="Compsci">
+    <meta property="article:tag" content="Software-Design">
+    <meta property="article:tag" content="Domain-Driven Design">
+    <meta property="article:tag" content="Csharp">
+    <meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png">
+
+	
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Closure of Operations in Domain Modeling &middot; Denis Kyashif&#39;s Blog</title>
+
+		
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/fonts.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre&#43;Baskerville:400,400i,700">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/assets/my.css">
+		
+		<link rel="icon" href="/favicon.ico"/>
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+		
+		<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
+
+		<script src="/js/darkmode.js"></script>
+	</head>
+
+    <body>
+        <a href="https://github.com/deniskyashif/blog" class="github-corner" target="_blank" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#4a9ae1; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<nav class="nav">
+	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
+		<ul>
+    <li><a href="/">Posts</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/about">About</a></li>
+</ul>
+
+	</div>
+</nav>
+<div id="darkModeToggle" onclick="toggleDarkMode()">
+  &#9680; 
+</div>
+
+        
+
+<main>
+	
+
+
+        <div class="post">
+		<div class="post-info">
+    <time datetime="2025-12-18 15:18:43 &#43;0200 EET">December 18, 2025</time>
+    |
+    <a href="https://github.com/deniskyashif/blog/blob/main/content/posts/2025-12-18-closure-of-operations.md" target="_blank">
+        <i class="fa fa-edit"></i>&nbsp;Edit
+    </a>
+
+    
+    <div class="tags">
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/compsci/" class="tag">compsci</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/software-design/" class="tag">software-design</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/domain-driven-design/" class="tag">domain-driven design</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/csharp/" class="tag">csharp</a>
+        
+        
+    </div>
+</div>
+
+		<h1 class="post-title">Closure of Operations in Domain Modeling</h1>
+<div class="post-line"></div>
+
+		
+
+		<p>In algebra, we say that a set is closed under an operation (or rule) if applying that operation to elements of the set never produces a result outside the set. For example, the set of integers \( \mathbb{Z} \) is closed under multiplication. Multiplying two integers would always produce an integer:</p>
+<p>\[
+\forall a,b \in \mathbb{Z}, a * b \in \mathbb{Z}
+\]</p>
+<p>However, the integers are not closed under division. Dividing one integer by another can produce a fractional value that does not belong to \( \mathbb{Z} \):</p>
+<p>\[
+\exists a,b \in \mathbb{Z} \text{ such that } a \div b \notin \mathbb{Z}
+\]</p>
+<p>For example:</p>
+<p>\[
+\frac{1}{2} \notin \mathbb{Z}
+\]</p>
+<p>When a set is closed under its allowed operations, repeatedly applying those operations—no matter how many times—never takes us outside the set. The system remains <strong>self-contained and consistent</strong>. We can multiply three, four, or even a hundred integers together, and the result will still be an integer.
+Mathematicians value closed sets because they provide stability, structure, and control. Closure makes reasoning more predictable, proofs cleaner, and mathematical constructions far easier to work with.</p>
+<h2 id="closure-of-operations">Closure of Operations</h2>
+<p>Closure of operations appears frequently in software design, even if we don’t always recognize it. When used intentionally, it tends to produce simpler and more elegant solutions.</p>
+<p>For example, strings are closed under concatenation. Similarly, the set of all valid HTML documents is closed under DOM → DOM transformations: applying operations through the DOM API always produces another valid HTML document.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&#34;div&#34;</span><span class="p">));</span>
+</span></span></code></pre></div><p>This is powerful because closure gives us guarantees. Those guarantees scale—from reasoning about tiny functions to designing whole systems by combining closed operations.</p>
+<h3 id="value-objects">Value Objects</h3>
+<p>This design approach is particularly useful when working with value objects—objects defined by their value rather than by identity. Value objects are typically designed to be closed under their core operations. For example, money can be modeled as a value object: the set of money values is closed under addition and subtraction.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">readonly</span> <span class="k">record</span> <span class="nc">struct</span> <span class="n">Money</span><span class="p">(</span><span class="kt">decimal</span> <span class="n">Amount</span><span class="p">,</span> <span class="kt">string</span> <span class="n">Currency</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Money</span> <span class="n">Add</span><span class="p">(</span><span class="n">Money</span> <span class="n">other</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">Currency</span> <span class="p">!=</span> <span class="n">other</span><span class="p">.</span><span class="n">Currency</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&#34;Cannot add money in different currencies.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="n">Amount</span> <span class="p">+</span> <span class="n">other</span><span class="p">.</span><span class="n">Amount</span><span class="p">,</span> <span class="n">Currency</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Money</span> <span class="n">Subtract</span><span class="p">(</span><span class="n">Money</span> <span class="n">other</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">Currency</span> <span class="p">!=</span> <span class="n">other</span><span class="p">.</span><span class="n">Currency</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&#34;Cannot subtract money in different currencies.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="n">Amount</span> <span class="p">-</span> <span class="n">other</span><span class="p">.</span><span class="n">Amount</span><span class="p">,</span> <span class="n">Currency</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Usage</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">wallet1</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="m">50</span><span class="p">,</span> <span class="s">&#34;USD&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">wallet2</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="m">30</span><span class="p">,</span> <span class="s">&#34;USD&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">total</span> <span class="p">=</span> <span class="n">wallet1</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">wallet2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">total</span><span class="p">);</span> <span class="c1">// prints: Money { Amount = 80, Currency = USD }</span>
+</span></span></code></pre></div><p>The operation never produces an invalid object as long as currencies match. With this design we also have a few more useful properties:</p>
+<p><strong>Equality by Value</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">a</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="m">50</span><span class="p">,</span> <span class="s">&#34;USD&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">b</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="m">50</span><span class="p">,</span> <span class="s">&#34;USD&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">a</span> <span class="p">==</span> <span class="n">b</span><span class="p">);</span> <span class="c1">// prints: True</span>
+</span></span></code></pre></div><p><strong>Immutability</strong></p>
+<p>The <code>Amount</code> and <code>Currency</code> can&rsquo;t change after creation so we have thread safety by default. Multiple parts of code can safely hold references to the same value object without risk of one part changing it for another.</p>
+<p><strong>Encapsulation of Invariants</strong></p>
+<p>The rules we enforce during object creation remain valid throughout the lifetime of the object. Our design does not allow for a Currency mismatch. We catch this in runtime. The Amount is always a decimal.</p>
+<p><strong>Closure of Operations</strong></p>
+<p>We can safely chain operations without worrying that we can lead us into an invalid state.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">sum</span> <span class="p">=</span> <span class="n">wallet1</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">wallet2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="m">20</span><span class="p">,</span> <span class="s">&#34;USD&#34;</span><span class="p">));</span>
+</span></span></code></pre></div><h3 id="entities">Entities</h3>
+<p>Closure of operations is natural for value objects but not typical for entities. Entities are defined by their identity and not by their value so two entities with identical data are not necessarily the same. Closure of operations on entities would mean that applying an operation to entities always produces another entity of the same type. This is rare and often undesireble. Let&rsquo;s take an example of a bank account.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Account</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Constructors skipped for brevity</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Money</span> <span class="n">Balance</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Deposit</span><span class="p">(</span><span class="n">Money</span> <span class="n">money</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">=</span> <span class="n">Balance</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">money</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Withdraw</span><span class="p">(</span><span class="n">Money</span> <span class="n">money</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">       <span class="k">if</span> <span class="p">(</span><span class="n">money</span><span class="p">.</span><span class="n">Amount</span> <span class="p">&gt;</span> <span class="n">Balance</span><span class="p">.</span><span class="n">Amount</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">           <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">       <span class="n">Balance</span> <span class="p">=</span> <span class="n">Balance</span><span class="p">.</span><span class="n">Subtract</span><span class="p">(</span><span class="n">money</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Typical entity operations are not closed, in the above case <code>Deposit</code>, and <code>Withdraw</code> mutate the state and do not produce a new <code>Account</code>. The <code>Account</code>, being an entity, has the following properties:</p>
+<ul>
+<li>Has an identity (<code>Id</code>).</li>
+<li>Has a lifecycle.</li>
+<li>Changes over time.</li>
+<li>Represents a process, not a value.</li>
+<li>Can introduce side effects.</li>
+</ul>
+<p>We can force closure on the <code>Account</code> object but that would bring some undesireable behavior. Let&rsquo;s see an example.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="n">Account</span> <span class="n">Deposit</span><span class="p">(</span><span class="n">Money</span> <span class="n">money</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">Account</span><span class="p">(</span><span class="n">Id</span><span class="p">,</span> <span class="n">Balance</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">money</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">a1</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Account</span><span class="p">(</span><span class="n">Guid</span><span class="p">.</span><span class="n">New</span><span class="p">(),</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="s">&#34;USD&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">a2</span> <span class="p">=</span> <span class="n">a1</span><span class="p">.</span><span class="n">Deposit</span><span class="p">(</span><span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="m">50</span><span class="p">,</span> <span class="s">&#34;USD&#34;</span><span class="p">))</span>
+</span></span></code></pre></div><p>At this point, we can no longer tell which account instance represents the real entity. <code>a1</code> and <code>a2</code> share the same identity but have different states. When an entity is tracked by an ORM such as Entity Framework, creating additional instances breaks the change tracking and can lead to subtle, hard-to-diagnose bugs. This breaks the assumption that there is a single, authoritative instance for a given identity.</p>
+<blockquote>
+<p>Entities represent &ldquo;things that happen over time&rdquo;, not things that we compute with.</p>
+</blockquote>
+<p>The correct design is to compose entities from value objects that are closed under their operations. In this example, <code>Account</code> is the entity and <code>Money</code> is the value object. <code>Money</code> encapsulates the domain invariants and remains closed under addition, while <code>Account</code> governs the state and orchestrates its transitions.</p>
+<h3 id="closure-using-abstract-types">Closure using Abstract Types</h3>
+<p>An operation can be closed over an abstract type, even if the concrete arguments involved are value objects or entities that are not themselves closed. This is powerful because it allows a single closed set to encompass multiple concrete types.</p>
+<p>A good example of this idea is the set of extension methods over collections in C# provided by <code>System.Linq</code>. The abstract type <code>IEnumerable&lt;T&gt;</code> is closed under many of its core operations, such as <code>Select()</code>, <code>Where()</code>, <code>OrderBy()</code>, <code>Union()</code>, and <code>Distinct()</code>. Because each of these operations returns another <code>IEnumerable&lt;T&gt;</code>, they can be freely composed, leading to elegant and expressive code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="n">numbers</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">n</span> <span class="p">=&gt;</span> <span class="n">n</span> <span class="p">&gt;</span> <span class="m">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">n</span> <span class="p">=&gt;</span> <span class="n">n</span> <span class="p">*</span> <span class="m">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">OrderBy</span><span class="p">(</span><span class="n">n</span> <span class="p">=&gt;</span> <span class="n">n</span><span class="p">);</span>
+</span></span></code></pre></div><p><code>IEnumerable&lt;T&gt;</code>, however, is not closed over all of its operations. Such examples are <code>Count()</code>, <code>Any()</code>, <code>FirstOrDefault()</code>, etc. We can say here that we have a partial closure, however, it can still be useful and lead to a cleaner and a more maintainable design.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Whenever possible, define operations whose return type matches the type of their arguments. If a method relies on the state of its object, consider that state as an implicit argument. This creates an opportunity to design the method so that it returns the same type as the object itself. Such operations are closed over the set of instances of that type, which promotes consistency and composability. This approach enhances the effectiveness of abstraction and encapsulation. By identifying closures in code, whether obvious or subtle, and making them explicit, we create designs that are more robust, elegant, and maintainable.</p>
+
+
+		<section class="social-share">
+    
+    
+    
+    
+    <a href="//reddit.com/submit?url=https%3a%2f%2fdeniskyashif.com%2f2025%2f12%2f18%2fclosure-of-operations-in-domain-modeling%2f&amp;title=Closure%20of%20Operations%20in%20Domain%20Modeling" target="_blank" class="share-btn reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    
+    
+    
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdeniskyashif.com%2f2025%2f12%2f18%2fclosure-of-operations-in-domain-modeling%2f" target="_blank" class="share-btn facebook">
+        <i class="fa fa-2x fa-facebook"></i>
+    </a>
+    
+    
+    
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fdeniskyashif.com%2f2025%2f12%2f18%2fclosure-of-operations-in-domain-modeling%2f&amp;title=Closure%20of%20Operations%20in%20Domain%20Modeling" target="_blank" class="share-btn linkedin">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:?subject=Check out 'Closure%20of%20Operations%20in%20Domain%20Modeling' by Denis%20Kyashif&amp;body=https%3a%2f%2fdeniskyashif.com%2f2025%2f12%2f18%2fclosure-of-operations-in-domain-modeling%2f" target="_blank" class="share-btn email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    
+</section>
+
+<div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "deniskyashif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+	</div>
+
+	<div class="pagination">
+		<a href="/2023/08/28/task-management-using-emacs-and-org-mode/" class="left arrow">&#8592;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+</main>
+
+
+        <footer>
+	<span>
+		&copy;&nbsp;<time datetime="2025-12-28 19:33:17.103003 &#43;0200 EET m=&#43;0.086840668">2025</time>&nbsp;<a href="/about">Denis Kyashif</a>
+	</span>
+    <br/>
+</footer>
+
+    </body>
+</html>
