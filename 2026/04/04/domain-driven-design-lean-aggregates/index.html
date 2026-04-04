@@ -152,8 +152,8 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">AttachDocument</span><span class="p">(</span><span class="n">Document</span> <span class="n">document</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_documents</span><span class="p">.</span><span class="n">Any</span><span class="p">(</span><span class="n">d</span> <span class="p">=&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">Name</span> <span class="p">==</span> <span class="n">document</span><span class="p">.</span><span class="n">Name</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">DomainException</span><span class="p">(</span><span class="s">&#34;A document with this name already exists.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">Status</span> <span class="p">==</span> <span class="n">ProjectStatus</span><span class="p">.</span><span class="n">Completed</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">DomainException</span><span class="p">(</span><span class="s">&#34;Cannot attach documents to a completed project.&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">_documents</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">document</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
@@ -223,7 +223,7 @@
 </span></span></code></pre></div><p>In this first version, <code>Document</code> is fully responsible for the attach operation because it has all the information needed for that rule.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">document</span> <span class="p">=</span> <span class="n">Document</span><span class="p">.</span><span class="n">Attach</span><span class="p">(</span><span class="n">projectId</span><span class="p">,</span> <span class="n">fileName</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="k">await</span> <span class="n">_documentRepository</span><span class="p">.</span><span class="n">AddAsync</span><span class="p">(</span><span class="n">document</span><span class="p">);</span>
-</span></span></code></pre></div><p>Now assume we add a new rule: <em>we cannot attach a document if the project is completed</em>. This rule spans two aggregates (<code>Project</code> and <code>Document</code>), so it should not live inside <code>Document</code>.</p>
+</span></span></code></pre></div><p>Now assume we add a new rule: <em>we cannot attach a document if the project is completed</em>. This rule was easy to enforce in the fat aggregate - <code>Project</code> had all the data in memory, so a simple status check was enough. After the split, this rule spans two aggregates (<code>Project</code> and <code>Document</code>), so it should not live inside <code>Document</code>. Does that mean we made a mistake by splitting? No - we just need to be explicit about where cross-aggregate rules live.</p>
 <p>That is the point where we split responsibilities explicitly:</p>
 <ol>
 <li>A <strong>domain service</strong> that encapsulates the cross-aggregate business rule.</li>
@@ -403,7 +403,7 @@
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2026-04-04 21:49:23.381022 &#43;0300 EEST m=&#43;0.101003210">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2026-04-04 22:00:32.163598 &#43;0300 EEST m=&#43;0.083238626">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
