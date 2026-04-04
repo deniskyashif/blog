@@ -187,9 +187,7 @@
 <blockquote>
 <p>An aggregate should contain all the information about the business situation and not more.</p>
 </blockquote>
-<p>The key question is simple: <strong>what must be consistent in the same transaction?</strong></p>
-<p>If two pieces of data do not need to change together, they probably should not live in the same aggregate.</p>
-<p>For example, attaching a document does not need tasks and team members loaded into memory. That suggests a refactor: keep <code>Project</code> lean, and move documents and tasks into separate aggregates that reference <code>ProjectId</code>.</p>
+<p>The key question is simple: <strong>what must be consistent in the same transaction?</strong> If two pieces of data do not need to change together, they probably should not live in the same aggregate. For example, attaching a document does not need tasks and team members loaded into memory. That suggests a refactor: keep <code>Project</code> lean, and move documents and tasks into separate aggregates that reference <code>ProjectId</code>.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Project</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
@@ -267,14 +265,13 @@
 </span></span></code></pre></div><p>Usage:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="k">await</span> <span class="n">_documentApplicationService</span><span class="p">.</span><span class="n">AttachDocument</span><span class="p">(</span><span class="n">projectId</span><span class="p">,</span> <span class="n">fileName</span><span class="p">);</span>
 </span></span></code></pre></div><p>This keeps the model honest: local invariants stay in aggregates, cross-aggregate rules live in domain services, and orchestration lives in application services.</p>
-<p>This approach is better for three reasons.</p>
+<p>This approach is better for several reasons.</p>
 <ol>
 <li><strong>Performance</strong>: each write touches fewer tables and rows, so queries are faster and locks are smaller.</li>
 <li><strong>Concurrency</strong>: two users can update different parts of the same project (for example tasks and documents) with less contention.</li>
 <li><strong>Maintainability</strong>: business rules are grouped by true consistency boundary, which keeps each model smaller and easier to reason about.</li>
 </ol>
-<p>There is one implication: some rules that used to live in one in-memory object now span aggregates. We enforce those rules explicitly during command handling (typically through a small application-service flow that invokes domain logic).</p>
-<p>In other words, we trade a little orchestration complexity for a much healthier model under real production load.</p>
+<p>There is one implication: some rules that used to live in one in-memory object now span aggregates. We enforce those rules explicitly during command handling (typically through a small application-service flow that invokes domain logic). In other words, we trade a little orchestration complexity for a much healthier model under real production load.</p>
 <h2 id="common-pitfalls">Common Pitfalls</h2>
 <p>Refactoring toward lean aggregates helps a lot, but there are a few traps teams often fall into.</p>
 <ol>
@@ -403,7 +400,7 @@
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2026-04-04 22:00:32.163598 &#43;0300 EEST m=&#43;0.083238626">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2026-04-04 22:12:06.67387 &#43;0300 EEST m=&#43;0.082139085">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
