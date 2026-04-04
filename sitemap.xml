@@ -2,28 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://deniskyashif.com/tags/csharp/</loc>
+    <lastmod>2026-04-04T17:39:14+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/</loc>
+    <lastmod>2026-04-04T17:39:14+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/domain-driven-design/</loc>
+    <lastmod>2026-04-04T17:39:14+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2026/04/04/domain-driven-design-lean-aggregates/</loc>
+    <lastmod>2026-04-04T17:39:14+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/posts/</loc>
+    <lastmod>2026-04-04T17:39:14+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/software-design/</loc>
+    <lastmod>2026-04-04T17:39:14+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/</loc>
+    <lastmod>2026-04-04T17:39:14+03:00</lastmod>
+  </url><url>
     <loc>https://deniskyashif.com/2025/12/18/closure-of-operations-in-domain-modeling/</loc>
     <lastmod>2025-12-18T15:18:43+02:00</lastmod>
   </url><url>
     <loc>https://deniskyashif.com/tags/compsci/</loc>
-    <lastmod>2025-12-18T15:18:43+02:00</lastmod>
-  </url><url>
-    <loc>https://deniskyashif.com/tags/csharp/</loc>
-    <lastmod>2025-12-18T15:18:43+02:00</lastmod>
-  </url><url>
-    <loc>https://deniskyashif.com/</loc>
-    <lastmod>2025-12-18T15:18:43+02:00</lastmod>
-  </url><url>
-    <loc>https://deniskyashif.com/tags/domain-driven-design/</loc>
-    <lastmod>2025-12-18T15:18:43+02:00</lastmod>
-  </url><url>
-    <loc>https://deniskyashif.com/posts/</loc>
-    <lastmod>2025-12-18T15:18:43+02:00</lastmod>
-  </url><url>
-    <loc>https://deniskyashif.com/tags/software-design/</loc>
-    <lastmod>2025-12-18T15:18:43+02:00</lastmod>
-  </url><url>
-    <loc>https://deniskyashif.com/tags/</loc>
     <lastmod>2025-12-18T15:18:43+02:00</lastmod>
   </url><url>
     <loc>https://deniskyashif.com/tags/emacs/</loc>

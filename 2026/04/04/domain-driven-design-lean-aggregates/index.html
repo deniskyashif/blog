@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+		
+		
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-X7Z9LV9QY4"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-X7Z9LV9QY4');
+        }
+      </script>
+		
+		<meta property="og:url" content="https://deniskyashif.com/2026/04/04/domain-driven-design-lean-aggregates/">
+  <meta property="og:site_name" content="Denis Kyashif&#39;s Blog">
+  <meta property="og:title" content="Domain-Driven Design: Lean Aggregates">
+  <meta property="og:description" content="Design aggregates around true consistency boundaries, not around all related data, to keep domain logic clear and write paths performant as the system grows.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-04-04T17:39:14+03:00">
+    <meta property="article:modified_time" content="2026-04-04T17:39:14+03:00">
+    <meta property="article:tag" content="Software-Design">
+    <meta property="article:tag" content="Domain-Driven Design">
+    <meta property="article:tag" content="Csharp">
+    <meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png">
+
+	
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Domain-Driven Design: Lean Aggregates &middot; Denis Kyashif&#39;s Blog</title>
+
+		
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/fonts.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre&#43;Baskerville:400,400i,700">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/assets/my.css">
+		
+		<link rel="icon" href="/favicon.ico"/>
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+		
+		<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
+
+		<script src="/js/darkmode.js"></script>
+	</head>
+
+    <body>
+        <a href="https://github.com/deniskyashif/blog" class="github-corner" target="_blank" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#4a9ae1; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<nav class="nav">
+	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
+		<ul>
+    <li><a href="/">Posts</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/about">About</a></li>
+</ul>
+
+	</div>
+</nav>
+<div id="darkModeToggle" onclick="toggleDarkMode()">
+  &#9680; 
+</div>
+
+        
+
+<main>
+	
+
+
+        <div class="post">
+		<div class="post-info">
+    <time datetime="2026-04-04 17:39:14 &#43;0300 EEST">April 4, 2026</time>
+    |
+    <a href="https://github.com/deniskyashif/blog/blob/main/content/posts/2026-04-04-ddd-lean-aggregates.md" target="_blank">
+        <i class="fa fa-edit"></i>&nbsp;Edit
+    </a>
+
+    
+    <div class="tags">
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/software-design/" class="tag">software-design</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/domain-driven-design/" class="tag">domain-driven design</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/csharp/" class="tag">csharp</a>
+        
+        
+    </div>
+</div>
+
+		<h1 class="post-title">Domain-Driven Design: Lean Aggregates</h1>
+<div class="post-line"></div>
+
+		
+
+		<p>In this article we&rsquo;ll walk through a common DDD antipattern that&rsquo;s easy to fall into. We&rsquo;ll see how to refactor toward a better design and, more importantly, how to think differently to avoid it in the first place.</p>
+<h2 id="fat-aggregates">Fat Aggregates</h2>
+<p>When modeling domain objects, we tend to think about <em>what they contain</em> before thinking about <em>what they do</em>. This is natural - but it&rsquo;s also where things can go wrong.</p>
+<p>Say we&rsquo;re building a project management system. <code>Project</code> is our aggregate root - it governs the project&rsquo;s lifecycle and enforces its business rules. A project has tasks, team members, attached documents, and more - so we pull them all in:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Project</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">ProjectStatus</span> <span class="n">Status</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="k">readonly</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ProjectTask</span><span class="p">&gt;</span> <span class="n">_tasks</span> <span class="p">=</span> <span class="k">new</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="k">readonly</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">TeamMember</span><span class="p">&gt;</span> <span class="n">_members</span> <span class="p">=</span> <span class="k">new</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="k">readonly</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Document</span><span class="p">&gt;</span> <span class="n">_documents</span> <span class="p">=</span> <span class="k">new</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">IReadOnlyList</span><span class="p">&lt;</span><span class="n">ProjectTask</span><span class="p">&gt;</span> <span class="n">Tasks</span> <span class="p">=&gt;</span> <span class="n">_tasks</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">IReadOnlyList</span><span class="p">&lt;</span><span class="n">TeamMember</span><span class="p">&gt;</span> <span class="n">Members</span> <span class="p">=&gt;</span> <span class="n">_members</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">IReadOnlyList</span><span class="p">&lt;</span><span class="n">Document</span><span class="p">&gt;</span> <span class="n">Documents</span> <span class="p">=&gt;</span> <span class="n">_documents</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Since we&rsquo;re modeling a rich Domain Model - not a procedural design where classes are just data holders and all logic lives in service classes - <code>Project</code> also encapsulates behavior:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Project</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">AssignTask</span><span class="p">(</span><span class="kt">string</span> <span class="n">title</span><span class="p">,</span> <span class="n">TeamMember</span> <span class="n">assignee</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_members</span><span class="p">.</span><span class="n">All</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">Id</span> <span class="p">!=</span> <span class="n">assignee</span><span class="p">.</span><span class="n">Id</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">DomainException</span><span class="p">(</span><span class="s">&#34;Assignee must be a project member.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">Status</span> <span class="p">==</span> <span class="n">ProjectStatus</span><span class="p">.</span><span class="n">Completed</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">DomainException</span><span class="p">(</span><span class="s">&#34;Cannot add tasks to a completed project.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">_tasks</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">ProjectTask</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">assignee</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">AttachDocument</span><span class="p">(</span><span class="n">Document</span> <span class="n">document</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_documents</span><span class="p">.</span><span class="n">Any</span><span class="p">(</span><span class="n">d</span> <span class="p">=&gt;</span> <span class="n">d</span><span class="p">.</span><span class="n">Name</span> <span class="p">==</span> <span class="n">document</span><span class="p">.</span><span class="n">Name</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">DomainException</span><span class="p">(</span><span class="s">&#34;A document with this name already exists.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">_documents</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">document</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Complete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_tasks</span><span class="p">.</span><span class="n">Any</span><span class="p">(</span><span class="n">t</span> <span class="p">=&gt;</span> <span class="p">!</span><span class="n">t</span><span class="p">.</span><span class="n">IsDone</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">DomainException</span><span class="p">(</span><span class="s">&#34;Cannot complete project while there are open tasks.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Status</span> <span class="p">=</span> <span class="n">ProjectStatus</span><span class="p">.</span><span class="n">Completed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>This looks correct: the aggregate protects its invariants and prevents invalid state. But problems start to surface as the system grows.</p>
+<p>In DDD, repositories load the full aggregate before any write, so all invariants can be verified. If <code>Project</code> is the central aggregate, then every write operation - assigning a task, adding a member, attaching a document, adjusting the budget - must load the entire object graph. This causes table locks, performance bottlenecks, and contention between concurrent operations.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">ProjectRepository</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">Project</span><span class="p">&gt;</span> <span class="n">GetByIdAsync</span><span class="p">(</span><span class="n">Guid</span> <span class="n">id</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">await</span> <span class="n">_db</span><span class="p">.</span><span class="n">Projects</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">Include</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Tasks</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">Include</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Members</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">Include</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Documents</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">FirstOrDefaultAsync</span><span class="p">(</span><span class="n">p</span> <span class="p">=&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">Id</span> <span class="p">==</span> <span class="n">id</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">??</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="s">$&#34;Project {id} not found.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Worse, every new business rule gets added to <code>Project</code>. The aggregate grows into a God class: bloated, hard to reason about, and increasingly risky to change.</p>
+<h2 id="trimming-down-the-aggregate">Trimming Down the Aggregate</h2>
+<blockquote>
+<p>An aggregate should contain all the information about the business situation and not more.</p>
+</blockquote>
+<p>The key question is simple: <strong>what must be consistent in the same transaction?</strong></p>
+<p>If two pieces of data do not need to change together, they probably should not live in the same aggregate.</p>
+<p>For example, attaching a document does not need tasks and team members loaded into memory. That suggests a refactor: keep <code>Project</code> lean, and move documents and tasks into separate aggregates that reference <code>ProjectId</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Project</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">ProjectStatus</span> <span class="n">Status</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Complete</span><span class="p">()</span> <span class="p">=&gt;</span> <span class="n">Status</span> <span class="p">=</span> <span class="n">ProjectStatus</span><span class="p">.</span><span class="n">Completed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">Document</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span> <span class="n">ProjectId</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Document</span><span class="p">(</span><span class="n">Guid</span> <span class="n">projectId</span><span class="p">,</span> <span class="kt">string</span> <span class="n">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Id</span> <span class="p">=</span> <span class="n">Guid</span><span class="p">.</span><span class="n">NewGuid</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ProjectId</span> <span class="p">=</span> <span class="n">projectId</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Name</span> <span class="p">=</span> <span class="n">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Document</span> <span class="n">Attach</span><span class="p">(</span><span class="n">Guid</span> <span class="n">projectId</span><span class="p">,</span> <span class="kt">string</span> <span class="n">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">DomainException</span><span class="p">(</span><span class="s">&#34;Document name is required.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">Document</span><span class="p">(</span><span class="n">projectId</span><span class="p">,</span> <span class="n">name</span><span class="p">.</span><span class="n">Trim</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>In this first version, <code>Document</code> is fully responsible for the attach operation because it has all the information needed for that rule.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kt">var</span> <span class="n">document</span> <span class="p">=</span> <span class="n">Document</span><span class="p">.</span><span class="n">Attach</span><span class="p">(</span><span class="n">projectId</span><span class="p">,</span> <span class="n">fileName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">await</span> <span class="n">_documentRepository</span><span class="p">.</span><span class="n">AddAsync</span><span class="p">(</span><span class="n">document</span><span class="p">);</span>
+</span></span></code></pre></div><p>Now assume we add a new rule: <em>we cannot attach a document if the project is completed</em>. This rule spans two aggregates (<code>Project</code> and <code>Document</code>), so it should not live inside <code>Document</code>.</p>
+<p>That is the point where we split responsibilities explicitly:</p>
+<ol>
+<li>A <strong>domain service</strong> that encapsulates the cross-aggregate business rule.</li>
+<li>An <strong>application service</strong> that orchestrates repositories and persistence.</li>
+</ol>
+<p>Domain service:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">DocumentDomainService</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">EnsureCanAttach</span><span class="p">(</span><span class="n">Project</span> <span class="n">project</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">project</span><span class="p">.</span><span class="n">Status</span> <span class="p">==</span> <span class="n">ProjectStatus</span><span class="p">.</span><span class="n">Completed</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">DomainException</span><span class="p">(</span><span class="s">&#34;Cannot attach documents to a completed project.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Application service:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">DocumentApplicationService</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">readonly</span> <span class="n">IProjectRepository</span> <span class="n">_projectRepository</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">readonly</span> <span class="n">IDocumentRepository</span> <span class="n">_documentRepository</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">readonly</span> <span class="n">DocumentDomainService</span> <span class="n">_documentDomainService</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">DocumentApplicationService</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">IProjectRepository</span> <span class="n">projectRepository</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">IDocumentRepository</span> <span class="n">documentRepository</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">DocumentDomainService</span> <span class="n">documentDomainService</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_projectRepository</span> <span class="p">=</span> <span class="n">projectRepository</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_documentRepository</span> <span class="p">=</span> <span class="n">documentRepository</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_documentDomainService</span> <span class="p">=</span> <span class="n">documentDomainService</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">async</span> <span class="n">Task</span> <span class="n">AttachDocument</span><span class="p">(</span><span class="n">Guid</span> <span class="n">projectId</span><span class="p">,</span> <span class="kt">string</span> <span class="n">fileName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">var</span> <span class="n">project</span> <span class="p">=</span> <span class="k">await</span> <span class="n">_projectRepository</span><span class="p">.</span><span class="n">GetByIdAsync</span><span class="p">(</span><span class="n">projectId</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_documentDomainService</span><span class="p">.</span><span class="n">EnsureCanAttach</span><span class="p">(</span><span class="n">project</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">var</span> <span class="n">document</span> <span class="p">=</span> <span class="n">Document</span><span class="p">.</span><span class="n">Attach</span><span class="p">(</span><span class="n">projectId</span><span class="p">,</span> <span class="n">fileName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">await</span> <span class="n">_documentRepository</span><span class="p">.</span><span class="n">AddAsync</span><span class="p">(</span><span class="n">document</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Usage:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="k">await</span> <span class="n">_documentApplicationService</span><span class="p">.</span><span class="n">AttachDocument</span><span class="p">(</span><span class="n">projectId</span><span class="p">,</span> <span class="n">fileName</span><span class="p">);</span>
+</span></span></code></pre></div><p>This keeps the model honest: local invariants stay in aggregates, cross-aggregate rules live in domain services, and orchestration lives in application services.</p>
+<p>This approach is better for three reasons.</p>
+<ol>
+<li><strong>Performance</strong>: each write touches fewer tables and rows, so queries are faster and locks are smaller.</li>
+<li><strong>Concurrency</strong>: two users can update different parts of the same project (for example tasks and documents) with less contention.</li>
+<li><strong>Maintainability</strong>: business rules are grouped by true consistency boundary, which keeps each model smaller and easier to reason about.</li>
+</ol>
+<p>There is one implication: some rules that used to live in one in-memory object now span aggregates. We enforce those rules explicitly during command handling (typically through a small application-service flow that invokes domain logic).</p>
+<p>In other words, we trade a little orchestration complexity for a much healthier model under real production load.</p>
+<h2 id="common-pitfalls">Common Pitfalls</h2>
+<p>Refactoring toward lean aggregates helps a lot, but there are a few traps teams often fall into.</p>
+<ol>
+<li><strong>Putting orchestration into domain services</strong></li>
+</ol>
+<p>A domain service should express business rules. Loading repositories, managing transactions, and persisting changes is orchestration and belongs to an application service (or command handler).</p>
+<ol start="2">
+<li><strong>Splitting by tables, not by consistency boundaries</strong></li>
+</ol>
+<p>If we split only because &ldquo;this table is big&rdquo;, we may end up with models that still need to change together. A better signal is business consistency: if two things must always be valid together in one transaction, they likely belong to the same aggregate.</p>
+<p>Example: imagine we split <code>ProjectTask</code> and <code>TaskAssignment</code> into separate aggregates, but the business rule says that whenever a task is moved to <code>InProgress</code>, an assignee must exist in the same transaction. If this must always happen together, the split is likely wrong (or the boundary needs to be revisited).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">ProjectTask</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">TaskStatus</span> <span class="n">Status</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Status</span> <span class="p">=</span> <span class="n">TaskStatus</span><span class="p">.</span><span class="n">InProgress</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">TaskAssignment</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span> <span class="n">TaskId</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span> <span class="n">AssigneeId</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>With this split, <code>ProjectTask.Start()</code> can be called even when there is no <code>TaskAssignment</code>. If the rule says that &ldquo;InProgress&rdquo; always requires an assignee, then these two concepts are likely part of the same consistency boundary.</p>
+<p>Refactored version with an enforced consistency boundary:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cs" data-lang="cs"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">ProjectTask</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Guid</span><span class="p">?</span> <span class="n">AssigneeId</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">TaskStatus</span> <span class="n">Status</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">AssignTo</span><span class="p">(</span><span class="n">Guid</span> <span class="n">assigneeId</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">AssigneeId</span> <span class="p">=</span> <span class="n">assigneeId</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">AssigneeId</span> <span class="k">is</span> <span class="kc">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">DomainException</span><span class="p">(</span><span class="s">&#34;A task must be assigned before it can start.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Status</span> <span class="p">=</span> <span class="n">TaskStatus</span><span class="p">.</span><span class="n">InProgress</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Now the invariant is protected inside one aggregate: the task cannot enter <code>InProgress</code> without an assignee.</p>
+<p>Common symptoms of a wrong split:</p>
+<ul>
+<li>We often load multiple aggregates just to enforce a single invariant.</li>
+<li>We keep adding cross-aggregate checks for operations that conceptually feel like one consistency rule.</li>
+<li>We see temporary invalid states that business users consider unacceptable.</li>
+<li>We frequently need distributed transactions for one user action.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Lean aggregates start with a simple discipline: <strong>model intrinsic behavior first, and include only the data required to protect that behavior</strong>. An aggregate is not a container for all related data; it is a consistency boundary around rules that must hold together.</p>
+<p>When we design boundaries this way, the model becomes smaller, clearer, and easier to evolve. We avoid God aggregates, reduce contention in write paths, and keep domain rules explicit where they belong.</p>
+
+
+		<section class="social-share">
+    
+    
+    
+    
+    <a href="//reddit.com/submit?url=https%3a%2f%2fdeniskyashif.com%2f2026%2f04%2f04%2fdomain-driven-design-lean-aggregates%2f&amp;title=Domain-Driven%20Design%3a%20Lean%20Aggregates" target="_blank" class="share-btn reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    
+    
+    
+    <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdeniskyashif.com%2f2026%2f04%2f04%2fdomain-driven-design-lean-aggregates%2f" target="_blank" class="share-btn facebook">
+        <i class="fa fa-2x fa-facebook"></i>
+    </a>
+    
+    
+    
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fdeniskyashif.com%2f2026%2f04%2f04%2fdomain-driven-design-lean-aggregates%2f&amp;title=Domain-Driven%20Design%3a%20Lean%20Aggregates" target="_blank" class="share-btn linkedin">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:?subject=Check out 'Domain-Driven%20Design%3a%20Lean%20Aggregates' by Denis%20Kyashif&amp;body=https%3a%2f%2fdeniskyashif.com%2f2026%2f04%2f04%2fdomain-driven-design-lean-aggregates%2f" target="_blank" class="share-btn email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    
+</section>
+
+<div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "deniskyashif" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	</div>
+
+	<div class="pagination">
+		<a href="/2025/12/18/closure-of-operations-in-domain-modeling/" class="left arrow">&#8592;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+</main>
+
+
+        <footer>
+	<span>
+		&copy;&nbsp;<time datetime="2026-04-04 21:49:23.381022 &#43;0300 EEST m=&#43;0.101003210">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+	</span>
+    <br/>
+</footer>
+
+    </body>
+</html>
