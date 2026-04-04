@@ -52,8 +52,8 @@ public class Project
 
     public void AttachDocument(Document document)
     {
-        if (_documents.Any(d => d.Name == document.Name))
-            throw new DomainException("A document with this name already exists.");
+        if (Status == ProjectStatus.Completed)
+            throw new DomainException("Cannot attach documents to a completed project.");
 
         _documents.Add(document);
     }
@@ -141,7 +141,7 @@ var document = Document.Attach(projectId, fileName);
 await _documentRepository.AddAsync(document);
 ```
 
-Now assume we add a new rule: *we cannot attach a document if the project is completed*. This rule spans two aggregates (`Project` and `Document`), so it should not live inside `Document`.
+Now assume we add a new rule: *we cannot attach a document if the project is completed*. This rule was easy to enforce in the fat aggregate - `Project` had all the data in memory, so a simple status check was enough. After the split, this rule spans two aggregates (`Project` and `Document`), so it should not live inside `Document`. Does that mean we made a mistake by splitting? No - we just need to be explicit about where cross-aggregate rules live.
 
 That is the point where we split responsibilities explicitly:
 
