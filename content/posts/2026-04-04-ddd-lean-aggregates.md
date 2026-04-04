@@ -95,11 +95,7 @@ Worse, every new business rule gets added to `Project`. The aggregate grows into
 
 > An aggregate should contain all the information about the business situation and not more.
 
-The key question is simple: **what must be consistent in the same transaction?**
-
-If two pieces of data do not need to change together, they probably should not live in the same aggregate.
-
-For example, attaching a document does not need tasks and team members loaded into memory. That suggests a refactor: keep `Project` lean, and move documents and tasks into separate aggregates that reference `ProjectId`.
+The key question is simple: **what must be consistent in the same transaction?** If two pieces of data do not need to change together, they probably should not live in the same aggregate. For example, attaching a document does not need tasks and team members loaded into memory. That suggests a refactor: keep `Project` lean, and move documents and tasks into separate aggregates that reference `ProjectId`.
 
 ```cs
 public class Project
@@ -199,15 +195,13 @@ await _documentApplicationService.AttachDocument(projectId, fileName);
 
 This keeps the model honest: local invariants stay in aggregates, cross-aggregate rules live in domain services, and orchestration lives in application services.
 
-This approach is better for three reasons.
+This approach is better for several reasons.
 
 1. **Performance**: each write touches fewer tables and rows, so queries are faster and locks are smaller.
 2. **Concurrency**: two users can update different parts of the same project (for example tasks and documents) with less contention.
 3. **Maintainability**: business rules are grouped by true consistency boundary, which keeps each model smaller and easier to reason about.
 
-There is one implication: some rules that used to live in one in-memory object now span aggregates. We enforce those rules explicitly during command handling (typically through a small application-service flow that invokes domain logic).
-
-In other words, we trade a little orchestration complexity for a much healthier model under real production load.
+There is one implication: some rules that used to live in one in-memory object now span aggregates. We enforce those rules explicitly during command handling (typically through a small application-service flow that invokes domain logic). In other words, we trade a little orchestration complexity for a much healthier model under real production load.
 
 ## Common Pitfalls
 
