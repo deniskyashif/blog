@@ -10,7 +10,7 @@ aliases:
 images:
 - "/images/posts/2019-12-08-csharp-channels-part1/channel-sketch-featured.png"
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-12-08-csharp-channels-part-1.md"
-tags: ["software-design", "csharp", "concurrency", "dotnet"]
+tags: ["software-architecture", "csharp", "concurrency", "dotnet"]
 ---
 
 In this article, we'll explore the synchronization data structures in .NET's `System.Threading.Channels` namespace and learn how to use them for designing concurrent workflows. It would be helpful to have some basic understanding of .NET's [Task Parallel Library

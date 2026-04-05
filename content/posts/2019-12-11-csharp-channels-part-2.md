@@ -9,7 +9,7 @@ aliases:
 images: 
 - "/images/posts/2019-12-11-csharp-channels-part2/featured-image.png"
 editLink: "https://github.com/deniskyashif/blog/blob/master/content/posts/2019-12-11-csharp-channels-part-2.md"
-tags: ["software-design", "csharp", "concurrency", "dotnet"]
+tags: ["software-architecture", "csharp", "concurrency", "dotnet"]
 ---
 
 This is a continuation of the article on [how to build publish/subscribe workflows in C#](/csharp-channels-part-1) where we learned how to use channels in C#. We also went through some techniques about distributing computations among several workers to make use of the modern-day, multi-core CPUs.

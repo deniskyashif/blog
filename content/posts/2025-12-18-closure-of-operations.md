@@ -3,7 +3,7 @@ title: "Closure of Operations in Domain Modeling"
 date: 2025-12-18T15:18:43+02:00
 useMath: true
 draft: false
-tags: ["compsci", "software-design", "domain-driven design", "csharp"]
+tags: ["compsci", "software-architecture", "domain-driven design", "csharp"]
 summary: "A design technique leading to a more predictable, composable, and maintainable code."
 editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/2025-12-18-closure-of-operations.md"
 aliases:
