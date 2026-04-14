@@ -6,13 +6,13 @@
     <description>Recent content in Software-Architecture on Denis Kyashif&#39;s Blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 04 Apr 2026 20:11:06 +0300</lastBuildDate>
+    <lastBuildDate>Mon, 13 Apr 2026 20:11:06 +0300</lastBuildDate>
     <atom:link href="https://deniskyashif.com/tags/software-architecture/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>The Domain Model Pattern in Practice</title>
-      <link>https://deniskyashif.com/2026/04/04/the-domain-model-pattern-in-practice/</link>
-      <pubDate>Sat, 04 Apr 2026 20:11:06 +0300</pubDate>
-      <guid>https://deniskyashif.com/2026/04/04/the-domain-model-pattern-in-practice/</guid>
+      <link>https://deniskyashif.com/2026/04/13/the-domain-model-pattern-in-practice/</link>
+      <pubDate>Mon, 13 Apr 2026 20:11:06 +0300</pubDate>
+      <guid>https://deniskyashif.com/2026/04/13/the-domain-model-pattern-in-practice/</guid>
       <description>How a rich domain model keeps the business invariants consistent, testable, and easier to evolve.</description>
     </item>
     <item>
