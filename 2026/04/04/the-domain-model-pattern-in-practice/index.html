@@ -198,9 +198,7 @@
 <p>Additionally, entities that expose public setters allow any part of the codebase to mutate state directly. That makes business invariants harder to enforce consistently. For example, any caller can set <code>Balance</code> to an arbitrary value without going through withdrawal/deposit rules (insufficient funds checks, positive amount checks, auditing, etc.).</p>
 <h1 id="implementing-the-domain-model-pattern">Implementing the Domain Model Pattern</h1>
 <p>A domain model encapsulates both data and behavior in the same objects - it is where business invariants live and are consistently enforced. Let&rsquo;s refactor the previous example:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">record</span> <span class="nc">AccountId</span><span class="p">(</span><span class="kt">int</span> <span class="n">Value</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// A value object encapsulates related data and behavior together.</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">// A value object encapsulates related data and behavior together.</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">record</span> <span class="nc">Money</span><span class="p">(</span><span class="kt">decimal</span> <span class="n">Amount</span><span class="p">,</span> <span class="kt">string</span> <span class="n">Currency</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Money</span><span class="p">(</span><span class="kt">decimal</span> <span class="n">amount</span><span class="p">,</span> <span class="kt">string</span> <span class="n">currency</span><span class="p">)</span>
@@ -230,6 +228,7 @@
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="n">Amount</span> <span class="p">-</span> <span class="n">other</span><span class="p">.</span><span class="n">Amount</span><span class="p">,</span> <span class="n">Currency</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">record</span> <span class="nc">AccountId</span><span class="p">(</span><span class="kt">int</span> <span class="n">Value</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">class</span> <span class="nc">BankAccount</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
@@ -383,7 +382,7 @@
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2026-04-14 15:23:02.840615969 &#43;0300 EEST m=&#43;0.133559678">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2026-04-14 16:42:51.268701125 &#43;0300 EEST m=&#43;0.207686448">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
