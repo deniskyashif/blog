@@ -98,8 +98,6 @@ Additionally, entities that expose public setters allow any part of the codebase
 A domain model encapsulates both data and behavior in the same objects - it is where business invariants live and are consistently enforced. Let's refactor the previous example:
 
 ```csharp
-public sealed record AccountId(int Value);
-
 // A value object encapsulates related data and behavior together.
 public sealed record Money(decimal Amount, string Currency)
 {
@@ -130,6 +128,10 @@ public sealed record Money(decimal Amount, string Currency)
         return new Money(Amount - other.Amount, Currency);
     }
 }
+```
+
+```csharp
+public sealed record AccountId(int Value);
 
 public sealed class BankAccount
 {
