@@ -28,6 +28,13 @@ main > .intro {
 
 pre > code {
     font-size: 0.9rem;
+    white-space: pre;
+    overflow-x: auto;
+    display: block;
+}
+
+pre {
+    overflow-x: auto;
 }
 
 .img-center {

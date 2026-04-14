@@ -126,10 +126,10 @@
 
 
 		<h1 id="transaction-scripts">Transaction Scripts</h1>
-<p>Most web applications follow a layered architecture: <code>Presentation → Service → Data</code>. The data layer holds plain entities — POCOs with public getters and setters — plus data access infrastructure. Business logic lives in the service layer, one method per use case. The presentation layer stays thin and simply delegates.</p>
+<p>Most web applications follow a layered architecture: <code>Presentation → Service → Data</code>. The data layer holds plain entities - POCOs with public getters and setters - plus data access infrastructure. Business logic lives in the service layer, one method per use case. The presentation layer stays thin and simply delegates.</p>
 <img src="/images/posts/2026-04-14-the-domain-model-in-practice/3-tier-arch.png" alt="3 Tier Architecture" />
 <p>Let&rsquo;s look at this simplified example of a banking application.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">// Data layer — plain entities, no behavior</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">// Data layer - plain entities, no behavior</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">BankAccount</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
@@ -138,7 +138,7 @@
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">bool</span> <span class="n">IsFrozen</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// Service layer — all business logic lives here</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Service layer - all business logic lives here</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">TransferService</span><span class="p">(</span><span class="n">IAccountRepository</span> <span class="n">accounts</span><span class="p">,</span> <span class="n">IUnitOfWork</span> <span class="n">uow</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Transfer</span><span class="p">(</span><span class="kt">int</span> <span class="n">fromId</span><span class="p">,</span> <span class="kt">int</span> <span class="n">toId</span><span class="p">,</span> <span class="kt">decimal</span> <span class="n">amount</span><span class="p">)</span>
@@ -165,7 +165,7 @@
 </span></span><span class="line"><span class="cl">        <span class="p">});</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>This is also called a <a href="https://martinfowler.com/eaaCatalog/transactionScript.html">Transaction Script</a>: a single procedure per use case that reads data, runs the logic, and writes back the result. It looks clean and sensible — straightforward and easy to follow. But as business complexity grows, the cracks start to show.</p>
+</span></span></code></pre></div><p>This is also called a <a href="https://martinfowler.com/eaaCatalog/transactionScript.html">Transaction Script</a>: a single procedure per use case that reads data, runs the logic, and writes back the result. It looks clean and sensible - straightforward and easy to follow. But as business complexity grows, the cracks start to show.</p>
 <p>One of the earliest signs of trouble is the scattering of cross-cutting business rules. Consider a rule like: <em>&ldquo;a frozen account cannot perform any money operation.&rdquo;</em> In a transaction-script design, every service method that needs to enforce this rule must check it independently:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">TransferService</span><span class="p">(</span><span class="n">IAccountRepository</span> <span class="n">accounts</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
@@ -193,11 +193,11 @@
 </span></span><span class="line"><span class="cl">        <span class="c1">// ... ATM withdrawal logic</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>This duplication is easy to miss and hard to fix. When the rule changes — say, <em>&ldquo;frozen accounts may now receive money but not send it</em>&rdquo; — we have to track down every place it was applied. Forget one, and we have a bug. A real application has hundreds of such rules; multiply that by the number of enforcement points and the codebase becomes fragile very fast.</p>
-<p>This structure — objects that carry data but no behavior, with all logic pushed into a service layer — is called an <a href="https://martinfowler.com/bliki/AnemicDomainModel.html">Anemic Domain Model</a>. The entities look like a domain model on the surface, but they lack the one thing that makes object-oriented design worthwhile: behavior.</p>
+</span></span></code></pre></div><p>This duplication is easy to miss and hard to fix. When the rule changes - say, <em>&ldquo;frozen accounts may now receive money but not send it</em>&rdquo; - we have to track down every place it was applied. Forget one, and we have a bug. A real application has hundreds of such rules; multiply that by the number of enforcement points and the codebase becomes fragile very fast.</p>
+<p>This structure - objects that carry data but no behavior, with all logic pushed into a service layer - is called an <a href="https://martinfowler.com/bliki/AnemicDomainModel.html">Anemic Domain Model</a>. The entities look like a domain model on the surface, but they lack the one thing that makes object-oriented design worthwhile: behavior.</p>
 <p>Additionally, entities that expose public setters allow any part of the codebase to mutate state directly. That makes business invariants harder to enforce consistently. For example, any caller can set <code>Balance</code> to an arbitrary value without going through withdrawal/deposit rules (insufficient funds checks, positive amount checks, auditing, etc.).</p>
 <h1 id="implementing-the-domain-model-pattern">Implementing the Domain Model Pattern</h1>
-<p>A domain model encapsulates both data and behavior in the same objects — it is where business invariants live and are consistently enforced. Let&rsquo;s refactor the previous example:</p>
+<p>A domain model encapsulates both data and behavior in the same objects - it is where business invariants live and are consistently enforced. Let&rsquo;s refactor the previous example:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">record</span> <span class="nc">AccountId</span><span class="p">(</span><span class="kt">int</span> <span class="n">Value</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// A value object encapsulates related data and behavior together.</span>
@@ -255,41 +255,41 @@
 </span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&#34;Frozen accounts cannot send money.&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Withdraw</span><span class="p">(</span><span class="n">Money</span> <span class="n">amount</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Withdraw</span><span class="p">(</span><span class="n">Money</span> <span class="n">money</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">EnsureCanSendMoney</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">amount</span><span class="p">.</span><span class="n">Amount</span> <span class="p">&lt;=</span> <span class="m">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">money</span><span class="p">.</span><span class="n">Amount</span> <span class="p">&lt;=</span> <span class="m">0</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentException</span><span class="p">(</span><span class="s">&#34;Amount must be positive.&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">=</span> <span class="n">Balance</span><span class="p">.</span><span class="n">Subtract</span><span class="p">(</span><span class="n">amount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">=</span> <span class="n">Balance</span><span class="p">.</span><span class="n">Subtract</span><span class="p">(</span><span class="n">money</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Deposit</span><span class="p">(</span><span class="n">Money</span> <span class="n">amount</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Deposit</span><span class="p">(</span><span class="n">Money</span> <span class="n">money</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">amount</span><span class="p">.</span><span class="n">Amount</span> <span class="p">&lt;=</span> <span class="m">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">money</span><span class="p">.</span><span class="n">Amount</span> <span class="p">&lt;=</span> <span class="m">0</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentException</span><span class="p">(</span><span class="s">&#34;Amount must be positive.&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">=</span> <span class="n">Balance</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">amount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">=</span> <span class="n">Balance</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">money</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// Thin application service: orchestration only.</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">class</span> <span class="nc">TransferMoneyHandler</span><span class="p">(</span><span class="n">IAccountRepository</span> <span class="n">accounts</span><span class="p">,</span> <span class="n">IUnitOfWork</span> <span class="n">uow</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Handle</span><span class="p">(</span><span class="n">AccountId</span> <span class="n">fromId</span><span class="p">,</span> <span class="n">AccountId</span> <span class="n">toId</span><span class="p">,</span> <span class="n">Money</span> <span class="n">amount</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Handle</span><span class="p">(</span><span class="n">AccountId</span> <span class="n">fromId</span><span class="p">,</span> <span class="n">AccountId</span> <span class="n">toId</span><span class="p">,</span> <span class="n">Money</span> <span class="n">money</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">uow</span><span class="p">.</span><span class="n">ExecuteInTransaction</span><span class="p">(()</span> <span class="p">=&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="kt">var</span> <span class="k">from</span> <span class="p">=</span> <span class="n">accounts</span><span class="p">.</span><span class="n">GetById</span><span class="p">(</span><span class="n">fromId</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">            <span class="kt">var</span> <span class="n">to</span> <span class="p">=</span> <span class="n">accounts</span><span class="p">.</span><span class="n">GetById</span><span class="p">(</span><span class="n">toId</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            <span class="k">from</span><span class="p">.</span><span class="n">Withdraw</span><span class="p">(</span><span class="n">amount</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">to</span><span class="p">.</span><span class="n">Deposit</span><span class="p">(</span><span class="n">amount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">from</span><span class="p">.</span><span class="n">Withdraw</span><span class="p">(</span><span class="n">money</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">to</span><span class="p">.</span><span class="n">Deposit</span><span class="p">(</span><span class="n">money</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="p">});</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>The rules now live in the domain objects and are enforced in one place. Notice that <code>Money</code> is a <strong>value object</strong> — it bundles amount and currency together and owns the behavior for combining them. This is more expressive than a raw <code>decimal</code>:</p>
+</span></span></code></pre></div><p>The rules now live in the domain objects and are enforced in one place. Notice that <code>Money</code> is a <strong>value object</strong> - it bundles amount and currency together and owns the behavior for combining them. This is more expressive than a raw <code>decimal</code>:</p>
 <ul>
 <li><code>Money.Add()</code> and <code>Money.Subtract()</code> enforce currency compatibility at runtime; mixing currencies throws an exception rather than silently producing wrong results.</li>
 <li>Invalid state (negative amounts, missing currency) is impossible to construct.</li>
@@ -297,11 +297,11 @@
 </ul>
 <p>Value objects are immutable and compared by their content, not identity. When we transfer money, we are not mutating a single balance; we are replacing it with a new one. This clarity makes reasoning about state transitions easier.</p>
 <p>The service layer is pure orchestration. A rich domain model makes business rules evident and explicit, which makes them easier to reason about, understand, and change.</p>
-<p>Because business behavior changes often, the domain layer should be easy to evolve and test — which means keeping it free of dependencies on web frameworks, ORMs, or transport concerns.</p>
+<p>Because business behavior changes often, the domain layer should be easy to evolve and test - which means keeping it free of dependencies on web frameworks, ORMs, or transport concerns.</p>
 <h2 id="dependency-inversion">Dependency Inversion</h2>
 <p>In the transaction-script setup, the data layer often contains both repository contracts and concrete ORM implementations. In a domain-model design, ORM-specific code does not belong in the domain layer. The <a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">Dependency Inversion</a> principle is to keep abstractions in the domain (i.e., repository interfaces) and place implementations in infrastructure, which references the domain, not the other way around.</p>
 <h2 id="the-pipeline">The Pipeline</h2>
-<p>The dependency flow becomes: <code>Presentation and Infrastructure → Service → Domain</code> — low-level concerns at the edges, business behavior at the base. The service layer loads aggregates, invokes domain behavior, and persists results.</p>
+<p>The dependency flow becomes: <code>Presentation and Infrastructure → Service → Domain</code> - low-level concerns at the edges, business behavior at the base. The service layer loads aggregates, invokes domain behavior, and persists results.</p>
 <img src="/images/posts/2026-04-14-the-domain-model-in-practice/ddd-arch.png" alt="DDD Architecture" />
 <h2 id="a-pragmatic-approach">A Pragmatic Approach</h2>
 <p>Not all business rules need to live in the domain. For example, an account number should be unique. There is no need to pre-check uniqueness in domain code before every create operation; this is a great fit for a database constraint. Some rules can live in the DB, and that is perfectly fine. Business rules that determine whether an action is allowed are better candidates for the domain model.</p>
@@ -383,7 +383,7 @@
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2026-04-14 15:08:28.160289651 &#43;0300 EEST m=&#43;0.218631605">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2026-04-14 15:23:02.840615969 &#43;0300 EEST m=&#43;0.133559678">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
