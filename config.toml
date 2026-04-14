@@ -21,6 +21,7 @@ socialShareReddit = true
 socialShareLinkedin = true
 socialSharePinterest = false
 socialShareEmail = true
+enableComments = false
 
 [taxonomies]
   tags = "tags"

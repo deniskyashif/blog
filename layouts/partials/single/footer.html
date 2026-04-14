@@ -1,5 +1,7 @@
 {{ partial "social-share.html" . }}
+{{ if and .Site.Params.enableComments (gt (len .Site.Config.Services.Disqus.Shortname) 0) }}
 {{ template "_internal/disqus.html" . }}
+{{ end }}
 
 {{ if .Params.useMath }}
     {{ partial "mathjax.html" }}
