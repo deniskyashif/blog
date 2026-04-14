@@ -133,6 +133,7 @@
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="nc">BankAccount</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">string</span> <span class="n">Currency</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">decimal</span> <span class="n">Balance</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">bool</span> <span class="n">IsFrozen</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -149,6 +150,9 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">            <span class="kt">var</span> <span class="k">from</span> <span class="p">=</span> <span class="n">accounts</span><span class="p">.</span><span class="n">GetById</span><span class="p">(</span><span class="n">fromId</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">            <span class="kt">var</span> <span class="n">to</span> <span class="p">=</span> <span class="n">accounts</span><span class="p">.</span><span class="n">GetById</span><span class="p">(</span><span class="n">toId</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="k">from</span><span class="p">.</span><span class="n">Currency</span> <span class="p">!=</span> <span class="n">to</span><span class="p">.</span><span class="n">Currency</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&#34;Cannot transfer between accounts with different currencies.&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="k">from</span><span class="p">.</span><span class="n">IsFrozen</span> <span class="p">||</span> <span class="n">to</span><span class="p">.</span><span class="n">IsFrozen</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">                <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&#34;Frozen accounts cannot transact.&#34;</span><span class="p">);</span>
@@ -194,16 +198,49 @@
 <p>Additionally, entities that expose public setters allow any part of the codebase to mutate state directly. That makes business invariants harder to enforce consistently. For example, any caller can set <code>Balance</code> to an arbitrary value without going through withdrawal/deposit rules (insufficient funds checks, positive amount checks, auditing, etc.).</p>
 <h1 id="implementing-the-domain-model-pattern">Implementing the Domain Model Pattern</h1>
 <p>A domain model encapsulates both data and behavior in the same objects — it is where business invariants live and are consistently enforced. Let&rsquo;s refactor the previous example:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">class</span> <span class="nc">BankAccount</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">record</span> <span class="nc">AccountId</span><span class="p">(</span><span class="kt">int</span> <span class="n">Value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// A value object encapsulates related data and behavior together.</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">record</span> <span class="nc">Money</span><span class="p">(</span><span class="kt">decimal</span> <span class="n">Amount</span><span class="p">,</span> <span class="kt">string</span> <span class="n">Currency</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">decimal</span> <span class="n">Balance</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Money</span><span class="p">(</span><span class="kt">decimal</span> <span class="n">amount</span><span class="p">,</span> <span class="kt">string</span> <span class="n">currency</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">amount</span> <span class="p">&lt;</span> <span class="m">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentException</span><span class="p">(</span><span class="s">&#34;Amount cannot be negative.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">currency</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentException</span><span class="p">(</span><span class="s">&#34;Currency is required.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">Amount</span> <span class="p">=</span> <span class="n">amount</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Currency</span> <span class="p">=</span> <span class="n">currency</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Money</span> <span class="n">Add</span><span class="p">(</span><span class="n">Money</span> <span class="n">other</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">Currency</span> <span class="p">!=</span> <span class="n">Currency</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&#34;Cannot add different currencies.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="n">Amount</span> <span class="p">+</span> <span class="n">other</span><span class="p">.</span><span class="n">Amount</span><span class="p">,</span> <span class="n">Currency</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Money</span> <span class="n">Subtract</span><span class="p">(</span><span class="n">Money</span> <span class="n">other</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">Currency</span> <span class="p">!=</span> <span class="n">Currency</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&#34;Cannot subtract different currencies.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">Amount</span> <span class="p">&gt;</span> <span class="n">Amount</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&#34;Insufficient funds.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">Money</span><span class="p">(</span><span class="n">Amount</span> <span class="p">-</span> <span class="n">other</span><span class="p">.</span><span class="n">Amount</span><span class="p">,</span> <span class="n">Currency</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">class</span> <span class="nc">BankAccount</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">AccountId</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Money</span> <span class="n">Balance</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">bool</span> <span class="n">IsFrozen</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="kd">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">BankAccount</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">decimal</span> <span class="n">balance</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">BankAccount</span><span class="p">(</span><span class="n">AccountId</span> <span class="n">id</span><span class="p">,</span> <span class="n">Money</span> <span class="n">initialBalance</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Id</span> <span class="p">=</span> <span class="n">id</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">=</span> <span class="n">balance</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">=</span> <span class="n">initialBalance</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">IsFrozen</span> <span class="p">=</span> <span class="kc">false</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -212,38 +249,35 @@
 </span></span><span class="line"><span class="cl">        <span class="n">IsFrozen</span> <span class="p">=</span> <span class="kc">true</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">EnsureCanSendMoney</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="k">void</span> <span class="n">EnsureCanSendMoney</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">IsFrozen</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&#34;Frozen accounts cannot send money.&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Withdraw</span><span class="p">(</span><span class="kt">decimal</span> <span class="n">amount</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Withdraw</span><span class="p">(</span><span class="n">Money</span> <span class="n">amount</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">EnsureCanSendMoney</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">amount</span> <span class="p">&lt;=</span> <span class="m">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">amount</span><span class="p">.</span><span class="n">Amount</span> <span class="p">&lt;=</span> <span class="m">0</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentException</span><span class="p">(</span><span class="s">&#34;Amount must be positive.&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">Balance</span> <span class="p">&lt;</span> <span class="n">amount</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidOperationException</span><span class="p">(</span><span class="s">&#34;Insufficient funds.&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">-=</span> <span class="n">amount</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">=</span> <span class="n">Balance</span><span class="p">.</span><span class="n">Subtract</span><span class="p">(</span><span class="n">amount</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Deposit</span><span class="p">(</span><span class="kt">decimal</span> <span class="n">amount</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Deposit</span><span class="p">(</span><span class="n">Money</span> <span class="n">amount</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">amount</span> <span class="p">&lt;=</span> <span class="m">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">amount</span><span class="p">.</span><span class="n">Amount</span> <span class="p">&lt;=</span> <span class="m">0</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="n">ArgumentException</span><span class="p">(</span><span class="s">&#34;Amount must be positive.&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">+=</span> <span class="n">amount</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Balance</span> <span class="p">=</span> <span class="n">Balance</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">amount</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// Thin application service: orchestration only.</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">sealed</span> <span class="k">class</span> <span class="nc">TransferMoneyHandler</span><span class="p">(</span><span class="n">IAccountRepository</span> <span class="n">accounts</span><span class="p">,</span> <span class="n">IUnitOfWork</span> <span class="n">uow</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Handle</span><span class="p">(</span><span class="kt">int</span> <span class="n">fromId</span><span class="p">,</span> <span class="kt">int</span> <span class="n">toId</span><span class="p">,</span> <span class="kt">decimal</span> <span class="n">amount</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="k">void</span> <span class="n">Handle</span><span class="p">(</span><span class="n">AccountId</span> <span class="n">fromId</span><span class="p">,</span> <span class="n">AccountId</span> <span class="n">toId</span><span class="p">,</span> <span class="n">Money</span> <span class="n">amount</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">uow</span><span class="p">.</span><span class="n">ExecuteInTransaction</span><span class="p">(()</span> <span class="p">=&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
@@ -255,7 +289,14 @@
 </span></span><span class="line"><span class="cl">        <span class="p">});</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>The rules now live in the domain objects and are enforced in one place. The service layer is pure orchestration. A rich domain model makes business rules evident and explicit, which makes them easier to reason about, understand, and change.</p>
+</span></span></code></pre></div><p>The rules now live in the domain objects and are enforced in one place. Notice that <code>Money</code> is a <strong>value object</strong> — it bundles amount and currency together and owns the behavior for combining them. This is more expressive than a raw <code>decimal</code>:</p>
+<ul>
+<li><code>Money.Add()</code> and <code>Money.Subtract()</code> enforce currency compatibility at runtime; mixing currencies throws an exception rather than silently producing wrong results.</li>
+<li>Invalid state (negative amounts, missing currency) is impossible to construct.</li>
+<li>Business rules like &ldquo;insufficient funds&rdquo; live in the value object, not scattered across services.</li>
+</ul>
+<p>Value objects are immutable and compared by their content, not identity. When we transfer money, we are not mutating a single balance; we are replacing it with a new one. This clarity makes reasoning about state transitions easier.</p>
+<p>The service layer is pure orchestration. A rich domain model makes business rules evident and explicit, which makes them easier to reason about, understand, and change.</p>
 <p>Because business behavior changes often, the domain layer should be easy to evolve and test — which means keeping it free of dependencies on web frameworks, ORMs, or transport concerns.</p>
 <h2 id="dependency-inversion">Dependency Inversion</h2>
 <p>In the transaction-script setup, the data layer often contains both repository contracts and concrete ORM implementations. In a domain-model design, ORM-specific code does not belong in the domain layer. The <a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">Dependency Inversion</a> principle is to keep abstractions in the domain (i.e., repository interfaces) and place implementations in infrastructure, which references the domain, not the other way around.</p>
@@ -342,7 +383,7 @@
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2026-04-14 14:45:35.13374166 &#43;0300 EEST m=&#43;0.132812214">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2026-04-14 15:08:28.160289651 &#43;0300 EEST m=&#43;0.218631605">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
