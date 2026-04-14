@@ -1,39 +1,57 @@
 <section class="social-share">
+    <!-- Email -->
+    {{ if .Site.Params.socialShareEmail | default true}}
+    <a href="mailto:?subject=Check out '{{ .Title }}' by {{ .Site.Params.Author.name }}&amp;body={{ .Permalink }}" target="_blank" class="share-btn email" title="Share via Email" aria-label="Share via Email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    {{ end }}
+    <!-- LinkedIn -->
+    {{ if .Site.Params.socialShareLinkedin | default true}}
+    <a href="//www.linkedin.com/shareArticle?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" class="share-btn linkedin" title="Share on LinkedIn" aria-label="Share on LinkedIn">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    {{ end }}
     <!-- Twitter -->
     {{ if .Site.Params.socialShareTwitter | default true}}
-    <a href="//twitter.com/share?url={{ .Permalink }}&amp;text={{ .Title }}&amp;via={{ .Site.Params.Social.twitter }}" target="_blank" class="share-btn twitter">
+    <a href="//twitter.com/share?url={{ .Permalink }}&amp;text={{ .Title }}&amp;via={{ .Site.Params.Social.twitter }}" target="_blank" class="share-btn twitter" title="Share on Twitter" aria-label="Share on Twitter">
         <i class="fa fa-2x fa-twitter"></i>
     </a>
     {{ end }}
     <!-- Reddit -->
     {{ if .Site.Params.socialShareReddit | default true}}
-    <a href="//reddit.com/submit?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" class="share-btn reddit">
+    <a href="//reddit.com/submit?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" class="share-btn reddit" title="Share on Reddit" aria-label="Share on Reddit">
         <i class="fa fa-2x fa-reddit-alien"></i>
     </a>
     {{ end }}
-    <!-- Facebook -->
-    {{ if .Site.Params.socialShareFacebook | default true}}
-    <a href="//www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" class="share-btn facebook">
-        <i class="fa fa-2x fa-facebook"></i>
+    <!-- Hacker News -->
+    {{ if .Site.Params.socialShareHackerNews | default true}}
+    <a href="//news.ycombinator.com/submitlink?u={{ .Permalink }}&amp;t={{ .Title }}" target="_blank" class="share-btn hacker-news" title="Share on Hacker News" aria-label="Share on Hacker News">
+        <i class="fa fa-2x fa-hacker-news"></i>
     </a>
     {{ end }}
-    <!-- LinkedIn -->
-    {{ if .Site.Params.socialShareLinkedin | default true}}
-    <a href="//www.linkedin.com/shareArticle?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" class="share-btn linkedin">
-        <i class="fa fa-2x fa-linkedin"></i>
+    <!-- Lobsters -->
+    {{ if .Site.Params.socialShareLobsters | default true}}
+    <a href="//lobste.rs/stories/new?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" class="share-btn lobsters" title="Share on Lobsters" aria-label="Share on Lobsters">
+        <span class="share-glyph" aria-hidden="true">L</span>
+    </a>
+    {{ end }}
+     <!-- Bluesky -->
+    {{ if .Site.Params.socialShareBluesky | default true}}
+    <a href="https://bsky.app/intent/compose?text={{ .Title }} {{ .Permalink }}" target="_blank" class="share-btn bluesky" title="Share on Bluesky" aria-label="Share on Bluesky">
+        <span class="share-glyph" aria-hidden="true">B</span>
     </a>
     {{ end }}
     <!-- Pintrest -->
     {{ if .Site.Params.socialSharePinterest | default true}}
-    <a href="//www.pinterest.com/pin/create/button/?url={{ .Permalink }}&amp;description={{ .Title }}" target="_blank" class="share-btn pinterest">
+    <a href="//www.pinterest.com/pin/create/button/?url={{ .Permalink }}&amp;description={{ .Title }}" target="_blank" class="share-btn pinterest" title="Share on Pinterest" aria-label="Share on Pinterest">
         <i class="fa fa-2x fa-pinterest-p"></i>
         <p>Pinterest</p>
     </a>
     {{ end }}
-    <!-- Email -->
-    {{ if .Site.Params.socialShareEmail | default true}}
-    <a href="mailto:?subject=Check out '{{ .Title }}' by {{ .Site.Params.Author.name }}&amp;body={{ .Permalink }}" target="_blank" class="share-btn email">
-        <i class="fa fa-2x fa-envelope"></i>
+    <!-- Facebook -->
+    {{ if .Site.Params.socialShareFacebook | default true}}
+    <a href="//www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" class="share-btn facebook" title="Share on Facebook" aria-label="Share on Facebook">
+        <i class="fa fa-2x fa-facebook"></i>
     </a>
     {{ end }}
 </section>
