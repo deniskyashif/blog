@@ -3,7 +3,7 @@ title: "Domain-Driven Design: Lean Aggregates"
 date: 2026-04-04T17:39:14+03:00
 draft: false
 summary: "Design aggregates around true consistency boundaries, not around all related data, to keep domain logic clear and write paths performant as the system grows."
-tags: ["software-architecture", "domain-driven design", "csharp"]
+tags: ["software-architecture", "domain-driven-design", "csharp"]
 editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/2026-04-04-ddd-lean-aggregates.md"
 ---
 

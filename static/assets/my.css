@@ -162,6 +162,22 @@ main .post .post-title {
     padding-top: 1.5rem;
 }
 
+.series-disclaimer {
+    margin: 1rem 0 1.5rem 0;
+    padding: 0.85rem 1rem;
+    border-left: 4px solid #2f6f9f;
+    background: #eef6fb;
+}
+
+.series-disclaimer p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.series-disclaimer a {
+    font-weight: 700;
+}
+
 .post-info .tags > a::after {
     content: ", ";
 }

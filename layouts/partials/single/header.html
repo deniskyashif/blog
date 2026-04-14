@@ -1,0 +1,9 @@
+{{ $dddTag := "domain-driven-design" }}
+{{ if in .Params.tags $dddTag }}
+<div class="series-disclaimer" role="note" aria-label="Series disclaimer">
+  <p>
+    This article is part of an ongoing series on Domain-Driven Design. You can check out the rest of the articles 
+    <a href="{{ (printf "/tags/%s/" ($dddTag | urlize)) | relURL }}">here</a>.
+  </p>
+</div>
+{{ end }}
