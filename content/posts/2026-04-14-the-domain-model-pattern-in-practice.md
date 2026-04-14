@@ -9,14 +9,14 @@ editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/2026-04-
 
 # Transaction Scripts
 
-Most web applications follow a layered architecture: `Presentation → Service → Data`. The data layer holds plain entities — POCOs with public getters and setters — plus data access infrastructure. Business logic lives in the service layer, one method per use case. The presentation layer stays thin and simply delegates.
+Most web applications follow a layered architecture: `Presentation → Service → Data`. The data layer holds plain entities - POCOs with public getters and setters - plus data access infrastructure. Business logic lives in the service layer, one method per use case. The presentation layer stays thin and simply delegates.
 
 <img src="/images/posts/2026-04-14-the-domain-model-in-practice/3-tier-arch.png" alt="3 Tier Architecture" />
 
 Let's look at this simplified example of a banking application.
 
 ```csharp
-// Data layer — plain entities, no behavior
+// Data layer - plain entities, no behavior
 public class BankAccount
 {
     public int Id { get; set; }
@@ -25,7 +25,7 @@ public class BankAccount
     public bool IsFrozen { get; set; }
 }
 
-// Service layer — all business logic lives here
+// Service layer - all business logic lives here
 public class TransferService(IAccountRepository accounts, IUnitOfWork uow)
 {
     public void Transfer(int fromId, int toId, decimal amount)
@@ -54,7 +54,7 @@ public class TransferService(IAccountRepository accounts, IUnitOfWork uow)
 }
 ```
 
-This is also called a [Transaction Script](https://martinfowler.com/eaaCatalog/transactionScript.html): a single procedure per use case that reads data, runs the logic, and writes back the result. It looks clean and sensible — straightforward and easy to follow. But as business complexity grows, the cracks start to show.
+This is also called a [Transaction Script](https://martinfowler.com/eaaCatalog/transactionScript.html): a single procedure per use case that reads data, runs the logic, and writes back the result. It looks clean and sensible - straightforward and easy to follow. But as business complexity grows, the cracks start to show.
 
 One of the earliest signs of trouble is the scattering of cross-cutting business rules. Consider a rule like: *"a frozen account cannot perform any money operation."* In a transaction-script design, every service method that needs to enforce this rule must check it independently:
 
@@ -87,15 +87,15 @@ public class AtmWithdrawalService(IAccountRepository accounts)
 }
 ```
 
-This duplication is easy to miss and hard to fix. When the rule changes — say, *"frozen accounts may now receive money but not send it*" — we have to track down every place it was applied. Forget one, and we have a bug. A real application has hundreds of such rules; multiply that by the number of enforcement points and the codebase becomes fragile very fast.
+This duplication is easy to miss and hard to fix. When the rule changes - say, *"frozen accounts may now receive money but not send it*" - we have to track down every place it was applied. Forget one, and we have a bug. A real application has hundreds of such rules; multiply that by the number of enforcement points and the codebase becomes fragile very fast.
 
-This structure — objects that carry data but no behavior, with all logic pushed into a service layer — is called an [Anemic Domain Model](https://martinfowler.com/bliki/AnemicDomainModel.html). The entities look like a domain model on the surface, but they lack the one thing that makes object-oriented design worthwhile: behavior.
+This structure - objects that carry data but no behavior, with all logic pushed into a service layer - is called an [Anemic Domain Model](https://martinfowler.com/bliki/AnemicDomainModel.html). The entities look like a domain model on the surface, but they lack the one thing that makes object-oriented design worthwhile: behavior.
 
 Additionally, entities that expose public setters allow any part of the codebase to mutate state directly. That makes business invariants harder to enforce consistently. For example, any caller can set `Balance` to an arbitrary value without going through withdrawal/deposit rules (insufficient funds checks, positive amount checks, auditing, etc.).
 
 # Implementing the Domain Model Pattern
 
-A domain model encapsulates both data and behavior in the same objects — it is where business invariants live and are consistently enforced. Let's refactor the previous example:
+A domain model encapsulates both data and behavior in the same objects - it is where business invariants live and are consistently enforced. Let's refactor the previous example:
 
 ```csharp
 public sealed record AccountId(int Value);
@@ -155,43 +155,43 @@ public sealed class BankAccount
             throw new InvalidOperationException("Frozen accounts cannot send money.");
     }
 
-    public void Withdraw(Money amount)
+    public void Withdraw(Money money)
     {
         EnsureCanSendMoney();
 
-        if (amount.Amount <= 0)
+        if (money.Amount <= 0)
             throw new ArgumentException("Amount must be positive.");
 
-        Balance = Balance.Subtract(amount);
+        Balance = Balance.Subtract(money);
     }
 
-    public void Deposit(Money amount)
+    public void Deposit(Money money)
     {
-        if (amount.Amount <= 0)
+        if (money.Amount <= 0)
             throw new ArgumentException("Amount must be positive.");
 
-        Balance = Balance.Add(amount);
+        Balance = Balance.Add(money);
     }
 }
 
 // Thin application service: orchestration only.
 public sealed class TransferMoneyHandler(IAccountRepository accounts, IUnitOfWork uow)
 {
-    public void Handle(AccountId fromId, AccountId toId, Money amount)
+    public void Handle(AccountId fromId, AccountId toId, Money money)
     {
         uow.ExecuteInTransaction(() =>
         {
             var from = accounts.GetById(fromId);
             var to = accounts.GetById(toId);
 
-            from.Withdraw(amount);
-            to.Deposit(amount);
+            from.Withdraw(money);
+            to.Deposit(money);
         });
     }
 }
 ```
 
-The rules now live in the domain objects and are enforced in one place. Notice that `Money` is a **value object** — it bundles amount and currency together and owns the behavior for combining them. This is more expressive than a raw `decimal`:
+The rules now live in the domain objects and are enforced in one place. Notice that `Money` is a **value object** - it bundles amount and currency together and owns the behavior for combining them. This is more expressive than a raw `decimal`:
 
 - `Money.Add()` and `Money.Subtract()` enforce currency compatibility at runtime; mixing currencies throws an exception rather than silently producing wrong results.
 - Invalid state (negative amounts, missing currency) is impossible to construct.
@@ -201,7 +201,7 @@ Value objects are immutable and compared by their content, not identity. When we
 
 The service layer is pure orchestration. A rich domain model makes business rules evident and explicit, which makes them easier to reason about, understand, and change.
 
-Because business behavior changes often, the domain layer should be easy to evolve and test — which means keeping it free of dependencies on web frameworks, ORMs, or transport concerns.
+Because business behavior changes often, the domain layer should be easy to evolve and test - which means keeping it free of dependencies on web frameworks, ORMs, or transport concerns.
 
 ## Dependency Inversion
 
@@ -209,7 +209,7 @@ In the transaction-script setup, the data layer often contains both repository c
 
 ## The Pipeline
 
-The dependency flow becomes: `Presentation and Infrastructure → Service → Domain` — low-level concerns at the edges, business behavior at the base. The service layer loads aggregates, invokes domain behavior, and persists results.
+The dependency flow becomes: `Presentation and Infrastructure → Service → Domain` - low-level concerns at the edges, business behavior at the base. The service layer loads aggregates, invokes domain behavior, and persists results.
 
 <img src="/images/posts/2026-04-14-the-domain-model-in-practice/ddd-arch.png" alt="DDD Architecture" />
 
