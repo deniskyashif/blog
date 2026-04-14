@@ -1,6 +1,6 @@
 ---
 title: "The Domain Model Pattern in Practice"
-date: 2026-04-04T20:11:06+03:00
+date: 2026-04-13T20:11:06+03:00
 draft: false
 summary: "How a rich domain model keeps the business invariants consistent, testable, and easier to evolve."
 tags: ["software-architecture", "domain-driven-design", "csharp"]
