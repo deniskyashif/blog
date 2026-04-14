@@ -117,6 +117,8 @@
 
 		
 
+
+
 		<p>Recently, I&rsquo;ve been reading Bove and Dybjer’s paper on <a href="http://www.cse.chalmers.se/~peterd/papers/DependentTypesAtWork.pdf"><em>&ldquo;Dependent Types at Work&rdquo;</em></a> where Kurt Gödel&rsquo;s <strong>System T</strong> is briefly described. It is a type system based on the <a href="https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus">Simply Typed Lambda Calculus</a> and includes <strong>booleans</strong> and <strong>natural numbers</strong>. The unusual thing about it is that it allows us to perform <strong>only</strong> <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=3&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwiBqeT41M_iAhUK4aQKHeBYDowQFjACegQICxAG&amp;url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FPrimitive_recursive_function&amp;usg=AOvVaw293_OtMzAukv1lsqcq0V4H">primitive recursion</a>, which considerably limits the number of possible programs we can write but on the other hand it guarantees that these programs <strong>always terminate</strong>. This means that <strong>System T</strong> is <strong>not Turing complete</strong> as we can express only a <a href="https://cs.stackexchange.com/questions/266/why-are-the-total-functions-not-enumerable">subset of the <strong>total computable functions</strong></a>.</p>
 <h3 id="how-come-we-only-have-primitive-recursion">How come we only have primitive recursion?</h3>
 <p>In Untyped Lambda Calculus we can define fixed point combinators which allow us to simulate recursion. So if <strong>System T</strong> is based lambda calculus, how come we can&rsquo;t have non-primitive recursion? The reason is - the type system. Let&rsquo;s recall from the <a href="/on-recursive-functions">article <em>&ldquo;On Recursive Functions&rdquo;</em></a> - and the \(\omega\) combinator which applies a term to itself:</p>
@@ -336,7 +338,7 @@ We have seen that using a language with a particular type system always comes wi
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2026-04-14 11:01:49.573382174 &#43;0300 EEST m=&#43;0.119990965">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2026-04-14 14:42:36.469434188 &#43;0300 EEST m=&#43;0.169748182">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
