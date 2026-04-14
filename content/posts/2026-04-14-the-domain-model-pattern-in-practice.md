@@ -20,6 +20,7 @@ Let's look at this simplified example of a banking application.
 public class BankAccount
 {
     public int Id { get; set; }
+    public string Currency { get; set; }
     public decimal Balance { get; set; }
     public bool IsFrozen { get; set; }
 }
@@ -36,6 +37,9 @@ public class TransferService(IAccountRepository accounts, IUnitOfWork uow)
 
             var from = accounts.GetById(fromId);
             var to = accounts.GetById(toId);
+
+            if (from.Currency != to.Currency)
+                throw new InvalidOperationException("Cannot transfer between accounts with different currencies.");
 
             if (from.IsFrozen || to.IsFrozen)
                 throw new InvalidOperationException("Frozen accounts cannot transact.");
@@ -94,16 +98,49 @@ Additionally, entities that expose public setters allow any part of the codebase
 A domain model encapsulates both data and behavior in the same objects — it is where business invariants live and are consistently enforced. Let's refactor the previous example:
 
 ```csharp
+public sealed record AccountId(int Value);
+
+// A value object encapsulates related data and behavior together.
+public sealed record Money(decimal Amount, string Currency)
+{
+    public Money(decimal amount, string currency)
+    {
+        if (amount < 0)
+            throw new ArgumentException("Amount cannot be negative.");
+        if (string.IsNullOrWhiteSpace(currency))
+            throw new ArgumentException("Currency is required.");
+        
+        Amount = amount;
+        Currency = currency;
+    }
+
+    public Money Add(Money other)
+    {
+        if (other.Currency != Currency)
+            throw new InvalidOperationException("Cannot add different currencies.");
+        return new Money(Amount + other.Amount, Currency);
+    }
+
+    public Money Subtract(Money other)
+    {
+        if (other.Currency != Currency)
+            throw new InvalidOperationException("Cannot subtract different currencies.");
+        if (other.Amount > Amount)
+            throw new InvalidOperationException("Insufficient funds.");
+        return new Money(Amount - other.Amount, Currency);
+    }
+}
+
 public sealed class BankAccount
 {
-    public int Id { get; }
-    public decimal Balance { get; private set; }
+    public AccountId Id { get; }
+    public Money Balance { get; private set; }
     public bool IsFrozen { get; private set; }
 
-    public BankAccount(int id, decimal balance)
+    public BankAccount(AccountId id, Money initialBalance)
     {
         Id = id;
-        Balance = balance;
+        Balance = initialBalance;
         IsFrozen = false;
     }
 
@@ -112,38 +149,35 @@ public sealed class BankAccount
         IsFrozen = true;
     }
 
-    public void EnsureCanSendMoney()
+    private void EnsureCanSendMoney()
     {
         if (IsFrozen)
             throw new InvalidOperationException("Frozen accounts cannot send money.");
     }
 
-    public void Withdraw(decimal amount)
+    public void Withdraw(Money amount)
     {
         EnsureCanSendMoney();
 
-        if (amount <= 0)
+        if (amount.Amount <= 0)
             throw new ArgumentException("Amount must be positive.");
 
-        if (Balance < amount)
-            throw new InvalidOperationException("Insufficient funds.");
-
-        Balance -= amount;
+        Balance = Balance.Subtract(amount);
     }
 
-    public void Deposit(decimal amount)
+    public void Deposit(Money amount)
     {
-        if (amount <= 0)
+        if (amount.Amount <= 0)
             throw new ArgumentException("Amount must be positive.");
 
-        Balance += amount;
+        Balance = Balance.Add(amount);
     }
 }
 
 // Thin application service: orchestration only.
 public sealed class TransferMoneyHandler(IAccountRepository accounts, IUnitOfWork uow)
 {
-    public void Handle(int fromId, int toId, decimal amount)
+    public void Handle(AccountId fromId, AccountId toId, Money amount)
     {
         uow.ExecuteInTransaction(() =>
         {
@@ -157,7 +191,15 @@ public sealed class TransferMoneyHandler(IAccountRepository accounts, IUnitOfWor
 }
 ```
 
-The rules now live in the domain objects and are enforced in one place. The service layer is pure orchestration. A rich domain model makes business rules evident and explicit, which makes them easier to reason about, understand, and change.
+The rules now live in the domain objects and are enforced in one place. Notice that `Money` is a **value object** — it bundles amount and currency together and owns the behavior for combining them. This is more expressive than a raw `decimal`:
+
+- `Money.Add()` and `Money.Subtract()` enforce currency compatibility at runtime; mixing currencies throws an exception rather than silently producing wrong results.
+- Invalid state (negative amounts, missing currency) is impossible to construct.
+- Business rules like "insufficient funds" live in the value object, not scattered across services.
+
+Value objects are immutable and compared by their content, not identity. When we transfer money, we are not mutating a single balance; we are replacing it with a new one. This clarity makes reasoning about state transitions easier.
+
+The service layer is pure orchestration. A rich domain model makes business rules evident and explicit, which makes them easier to reason about, understand, and change.
 
 Because business behavior changes often, the domain layer should be easy to evolve and test — which means keeping it free of dependencies on web frameworks, ORMs, or transport concerns.
 
