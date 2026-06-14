@@ -1,61 +1,66 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Software-Architecture on Denis Kyashif&#39;s Blog</title>
-    <link>https://deniskyashif.com/tags/software-architecture/</link>
-    <description>Recent content in Software-Architecture on Denis Kyashif&#39;s Blog</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 14 Apr 2026 10:11:06 +0300</lastBuildDate>
-    <atom:link href="https://deniskyashif.com/tags/software-architecture/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>The Domain Model Pattern in Practice</title>
-      <link>https://deniskyashif.com/2026/04/14/the-domain-model-pattern-in-practice/</link>
-      <pubDate>Tue, 14 Apr 2026 10:11:06 +0300</pubDate>
-      <guid>https://deniskyashif.com/2026/04/14/the-domain-model-pattern-in-practice/</guid>
-      <description>How a rich domain model keeps the business invariants consistent, testable, and easier to evolve.</description>
-    </item>
-    <item>
-      <title>Domain-Driven Design: Lean Aggregates</title>
-      <link>https://deniskyashif.com/2026/04/04/domain-driven-design-lean-aggregates/</link>
-      <pubDate>Sat, 04 Apr 2026 17:39:14 +0300</pubDate>
-      <guid>https://deniskyashif.com/2026/04/04/domain-driven-design-lean-aggregates/</guid>
-      <description>Design aggregates around true consistency boundaries, not around all related data, to keep domain logic clear and write paths performant as the system grows.</description>
-    </item>
-    <item>
-      <title>Closure of Operations in Domain Modeling</title>
-      <link>https://deniskyashif.com/2025/12/18/closure-of-operations-in-domain-modeling/</link>
-      <pubDate>Thu, 18 Dec 2025 15:18:43 +0200</pubDate>
-      <guid>https://deniskyashif.com/2025/12/18/closure-of-operations-in-domain-modeling/</guid>
-      <description>A design technique leading to a more predictable, composable, and maintainable code.</description>
-    </item>
-    <item>
-      <title>C# Channels - Async Data Pipelines</title>
-      <link>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</link>
-      <pubDate>Tue, 07 Jan 2020 07:42:15 +0200</pubDate>
-      <guid>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</guid>
-      <description>How to implement an assembly line concurrency model in .NET using channels.</description>
-    </item>
-    <item>
-      <title>C# Channels - Timeout and Cancellation</title>
-      <link>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</link>
-      <pubDate>Wed, 11 Dec 2019 15:01:01 +0200</pubDate>
-      <guid>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</guid>
-      <description>Explore cancellation and timeout techniques with channels.</description>
-    </item>
-    <item>
-      <title>C# Channels - Publish / Subscribe Workflows</title>
-      <link>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</link>
-      <pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
-      <guid>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</guid>
-      <description>Concurrency patterns in .NET using channels.</description>
-    </item>
-    <item>
-      <title>A Practical Guide to  State Machines</title>
-      <link>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</link>
-      <pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
-      <guid>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</guid>
-      <description>Express application logic in a concise and declarative way using state machines and C#&amp;rsquo;s pattern matching.</description>
-    </item>
-  </channel>
+	<channel>
+		<title>Software-Architecture on Denis Kyashif&#39;s Blog</title>
+		<link>https://deniskyashif.com/tags/software-architecture/</link>
+		<description>Recent content in Software-Architecture on Denis Kyashif&#39;s Blog</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 14 Apr 2026 10:11:06 +0300</lastBuildDate>
+		
+			<atom:link href="https://deniskyashif.com/tags/software-architecture/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>The Domain Model Pattern in Practice</title>
+				<link>https://deniskyashif.com/2026/04/14/the-domain-model-pattern-in-practice/</link>
+				<pubDate>Tue, 14 Apr 2026 10:11:06 +0300</pubDate>
+				<guid>https://deniskyashif.com/2026/04/14/the-domain-model-pattern-in-practice/</guid>
+				<description>How a rich domain model keeps the business invariants consistent, testable, and easier to evolve.</description>
+			</item>
+			<item>
+				<title>Domain-Driven Design: Lean Aggregates</title>
+				<link>https://deniskyashif.com/2026/04/04/domain-driven-design-lean-aggregates/</link>
+				<pubDate>Sat, 04 Apr 2026 17:39:14 +0300</pubDate>
+				<guid>https://deniskyashif.com/2026/04/04/domain-driven-design-lean-aggregates/</guid>
+				<description>Design aggregates around true consistency boundaries, not around all related data, to keep domain logic clear and write paths performant as the system grows.</description>
+			</item>
+			<item>
+				<title>Closure of Operations in Domain Modeling</title>
+				<link>https://deniskyashif.com/2025/12/18/closure-of-operations-in-domain-modeling/</link>
+				<pubDate>Thu, 18 Dec 2025 15:18:43 +0200</pubDate>
+				<guid>https://deniskyashif.com/2025/12/18/closure-of-operations-in-domain-modeling/</guid>
+				<description>A design technique leading to a more predictable, composable, and maintainable code.</description>
+			</item>
+			<item>
+				<title>C# Channels - Async Data Pipelines</title>
+				<link>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</link>
+				<pubDate>Tue, 07 Jan 2020 07:42:15 +0200</pubDate>
+				<guid>https://deniskyashif.com/2020/01/07/csharp-channels-part-3/</guid>
+				<description>How to implement an assembly line concurrency model in .NET using channels.</description>
+			</item>
+			<item>
+				<title>C# Channels - Timeout and Cancellation</title>
+				<link>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</link>
+				<pubDate>Wed, 11 Dec 2019 15:01:01 +0200</pubDate>
+				<guid>https://deniskyashif.com/2019/12/11/csharp-channels-part-2/</guid>
+				<description>Explore cancellation and timeout techniques with channels.</description>
+			</item>
+			<item>
+				<title>C# Channels - Publish / Subscribe Workflows</title>
+				<link>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</link>
+				<pubDate>Sun, 08 Dec 2019 08:02:09 +0200</pubDate>
+				<guid>https://deniskyashif.com/2019/12/08/csharp-channels-part-1/</guid>
+				<description>Concurrency patterns in .NET using channels.</description>
+			</item>
+			<item>
+				<title>A Practical Guide to  State Machines</title>
+				<link>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</link>
+				<pubDate>Wed, 20 Nov 2019 07:28:47 +0200</pubDate>
+				<guid>https://deniskyashif.com/2019/11/20/a-practical-guide-to-state-machines/</guid>
+				<description>Express application logic in a concise and declarative way using state machines and C#&amp;rsquo;s pattern matching.</description>
+			</item>
+	</channel>
 </rss>
