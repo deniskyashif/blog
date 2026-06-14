@@ -32,6 +32,15 @@ body {
     position: relative;
 }
 
+.resume-actions {
+    position: fixed;
+    top: 32px;
+    left: calc(50% + 441px);
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-end;
+}
+
 /* ---------- Header ---------- */
 header {
     border-bottom: 3px solid var(--accent);
@@ -261,12 +270,8 @@ ul.bullets li {
     color: #2c3340;
 }
 
-/* ---------- Floating download button ---------- */
+/* ---------- Download button ---------- */
 .pdf-download-btn {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    z-index: 1000;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -301,13 +306,12 @@ ul.bullets li {
 }
 
 @media (max-width: 980px) {
-    .pdf-download-btn {
+    .resume-actions {
         top: 16px;
+        left: auto;
         right: 16px;
     }
-}
 
-@media (max-width: 600px) {
     .pdf-download-btn span {
         display: none;
     }
@@ -325,6 +329,7 @@ ul.bullets li {
 
 @media print {
 
+    .resume-actions,
     .pdf-download-btn {
         display: none !important;
     }
