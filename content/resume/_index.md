@@ -17,8 +17,8 @@ title = "Resume"
                 Technology &amp; Engineering Leader | Senior Solutions Architect
             </div>
             <p class="tagline">
-                <strong>Core capabilities:</strong> Portfolio strategy &amp; governance &middot; Enterprise architecture
-                &middot; Platform modernization &middot; Distributed engineering leadership &middot; Cloud, Data &amp; AI platforms
+                <strong>Core capabilities:</strong> Portfolio Strategy &amp; Governance &middot; Enterprise Architecture
+                &middot; Distributed Systems &middot; System Modernization &middot; Cloud, Data &amp; AI platforms
             </p>
             <div class="contact">
                 <span class="item"><i class="fa-solid fa-location-dot"></i>Sofia, Bulgaria</span>
@@ -43,7 +43,7 @@ title = "Resume"
             Portfolio Lead and Senior Solutions Architect at The World Bank Group, leading product strategy,
             architecture, vendor oversight, and delivery for systems used by country offices and Operations Policy
             &amp; Country Services worldwide. Recent work includes finance and accounting systems modernization, with
-            hands-on depth in distributed systems, cloud platforms, data engineering, and AI-enabled solutions.
+            hands-on depth in Distributed Systems, Cloud platforms, Data engineering, and AI-enabled solutions.
         </p>
     </section>
     <section>
@@ -69,7 +69,7 @@ title = "Resume"
                     Govern a 5-product enterprise portfolio, vendor ecosystem, and technology roadmap, while contributing to enterprise architecture decisions through the Enterprise Design Authority.
                 </li>
                 <li>
-                    Champion AI-enabled engineering and platform modernization initiatives to enhance delivery effectiveness, operational efficiency, and business outcomes.
+                    Established the institution’s first semantic intelligence platform, combining GraphRAG, enterprise taxonomy, and AI and ML capabilities to unlock large-scale unstructured data and deliver advanced search, classification, recommendation, and knowledge discovery across portfolio products.
                 </li>
             </ul>
         </div>
@@ -80,20 +80,18 @@ title = "Resume"
                 <div class="role-meta">Sep 2020 &ndash; Nov 2025 &middot; Sofia, Bulgaria</div>
             </div>
             <p class="role-context">
-                Led architecture and delivery for IFC's loan management modernization program, replacing a legacy
+                Led architecture and delivery for IFC's Loan Management Modernization program, replacing a legacy
                 off-the-shelf product with a modern cloud-native platform on Azure as part of a multi-year, $30M+
                 transformation across loans, guarantees, and trade finance.
             </p>
             <ul class="bullets">
                 <li>
-                    Assembled and managed cross-functional teams across multiple delivery workstreams, including
-                    internal engineers, vendor teams, and integrating application teams, setting technical direction
-                    and coordinating execution across organizational boundaries.
+                    Assembled and managed 30+ internal engineers and external vendors across multiple delivery workstreams and integrating application teams, driving technical direction and cross-boundary execution for the transformation program.
                 </li>
                 <li>
                     Owned integration and infrastructure architecture for a standards-compliant landscape spanning
                     20+ enterprise systems and 70 interfaces, aligning senior leadership, product stakeholders,
-                    vendors, and application owners across loan servicing, accounting, settlement, risk, and
+                    vendors, and application owners across loan servicing, accounting, settlement, payments, and
                     downstream financial operations.
                 </li>
                 <li>
