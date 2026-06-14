@@ -80,24 +80,26 @@ title = "Resume"
                 <div class="role-meta">Sep 2020 &ndash; Nov 2025 &middot; Sofia, Bulgaria</div>
             </div>
             <p class="role-context">
-                Modernized IFC's loan management platform for loans, guarantees, and trade finance, replacing a
-                legacy off-the-shelf product with a modern cloud-native system on Azure as part of a multi-year,
-                $30M+ transformation program.
+                Led architecture and delivery for IFC's loan management modernization program, replacing a legacy
+                off-the-shelf product with a modern cloud-native platform on Azure as part of a multi-year, $30M+
+                transformation across loans, guarantees, and trade finance.
             </p>
             <ul class="bullets">
                 <li>
-                    Owned integration and infrastructure architecture across multiple delivery workstreams,
-                    advising senior leadership on technology strategy, leading RFPs, and building a cross-functional
-                    internal team to deliver alongside vendors.
+                    Assembled and managed cross-functional teams across multiple delivery workstreams, including
+                    internal engineers, vendor teams, and integrating application teams, setting technical direction
+                    and coordinating execution across organizational boundaries.
                 </li>
                 <li>
-                    Designed a standards-compliant integration landscape across 20+ enterprise systems and 70
-                    interfaces, supporting loan servicing, accounting, settlement, risk, and downstream financial
-                    operations.
+                    Owned integration and infrastructure architecture for a standards-compliant landscape spanning
+                    20+ enterprise systems and 70 interfaces, aligning senior leadership, product stakeholders,
+                    vendors, and application owners across loan servicing, accounting, settlement, risk, and
+                    downstream financial operations.
                 </li>
                 <li>
                     Supported major business process reengineering that reduced financial processing cycles from
-                    multiple days to near real time, improving operational throughput and decision timeliness.
+                    multiple days to near real time, improving operational throughput, delivery confidence, and
+                    decision timeliness.
                 </li>
             </ul>
         </div>
@@ -122,7 +124,7 @@ title = "Resume"
         <section>
             <h2 class="section-title">Earlier Experience</h2>
             <div class="earlier-item">
-                <p class="earlier-role">Software Engineer</p>
+                <p class="earlier-role">Senior Software Engineer</p>
                 <div class="earlier-company">Prevalent Inc.</div>
                 <div class="earlier-meta">2018 &ndash; 2019 &middot; Scalable multi-tenant analytics SaaS APIs; code
                     reviews &amp; mentorship.</div>
