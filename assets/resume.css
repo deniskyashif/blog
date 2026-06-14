@@ -29,6 +29,7 @@ body {
     background: var(--page);
     padding: 48px 56px;
     box-shadow: 0 4px 24px rgba(26, 31, 41, 0.12);
+    position: relative;
 }
 
 /* ---------- Header ---------- */
@@ -52,6 +53,7 @@ header {
     height: 175px;
     border-radius: 50%;
     object-fit: cover;
+    clip-path: circle(50%);
     border: 3px solid var(--accent);
     box-shadow: 0 2px 8px rgba(26, 31, 41, 0.18);
     -webkit-print-color-adjust: exact;
@@ -259,6 +261,62 @@ ul.bullets li {
     color: #2c3340;
 }
 
+/* ---------- Floating download button ---------- */
+.pdf-download-btn {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(26, 31, 41, 0.28);
+    opacity: 0.95;
+    transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pdf-download-btn:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(26, 31, 41, 0.34);
+}
+
+.pdf-download-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.pdf-download-btn i {
+    font-size: 15px;
+    color: #d6342c;
+}
+
+@media (max-width: 980px) {
+    .pdf-download-btn {
+        top: 16px;
+        right: 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    .pdf-download-btn span {
+        display: none;
+    }
+
+    .pdf-download-btn {
+        padding: 13px;
+    }
+}
+
 /* ---------- Print ---------- */
 @page {
     size: A4;
@@ -266,6 +324,10 @@ ul.bullets li {
 }
 
 @media print {
+
+    .pdf-download-btn {
+        display: none !important;
+    }
 
     html,
     body {
@@ -296,6 +358,7 @@ ul.bullets li {
     .photo {
         width: 130px;
         height: 130px;
+        clip-path: circle(50%);
     }
 
     .name {
