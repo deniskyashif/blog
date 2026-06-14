@@ -2,362 +2,231 @@
 title = "Resume"
 +++
 
-<div class="wrapper">
+<main class="page">
     <header>
-        <div class="container">
-            <section class="intro left">
-                <h1>Denis Kyashif</h1>
-                <h3 class="accent job-title">Software Engineering Lead</h3>
-                <div class="contact">
-                    <div class="left">
-                        <div> <i class="fa fa-envelope accent" aria-hidden="true"></i>
-                            <a href="mailto:denis.kyashif@gmail.com">denis.kyashif@gmail.com</a>
-                        </div>
-                        <div> <i class="fa fa-link accent" aria-hidden="true"></i>
-                            <a href="https://deniskyashif.com" target="_blank">deniskyashif.com</a>
-                        </div>
-                    </div>
-                    <div class="right">
-                        <div><i class="fa fa-phone accent" aria-hidden="true"></i>
-                            <a href="tel:+359898445935">+359 898 445 935</a>
-                        </div>
-                        <div>
-                            <i class="fa fa-map-marker accent" aria-hidden="true"></i>
-                            <span>Sofia, Bulgaria</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="photo right">
-                <img src="/images/me.jpeg" alt="Photo" />
-            </section>
+        <div class="header-info">
+            <h1 class="name">Denis Kyashif</h1>
+            <div class="title">
+                Technology &amp; Engineering Leader | Senior Solutions Architect
+            </div>
+            <p class="tagline">
+                Technology and engineering leader with 10+ years of experience spanning hands-on software delivery,
+                enterprise architecture, and portfolio-level ownership of mission-critical platforms in globally
+                distributed, regulated environments.
+            </p>
+            <div class="contact">
+                <span class="item"><i class="fa-solid fa-location-dot"></i>Sofia, Bulgaria</span>
+                <span class="item"><i class="fa-solid fa-envelope"></i><a
+                        href="mailto:denis.kyashif@gmail.com">denis.kyashif@gmail.com</a></span>
+                <span class="item"><i class="fa-brands fa-linkedin"></i><a
+                        href="https://www.linkedin.com/in/denis-kyashif/">linkedin.com/in/denis-kyashif</a></span>
+                <span class="item"><i class="fa-brands fa-github"></i><a
+                        href="https://github.com/deniskyashif">github.com/deniskyashif</a></span>
+                <span class="item" title="Personal blog on software"><i class="fa-solid fa-blog"></i><a
+                        href="https://deniskyashif.com">deniskyashif.com</a></span>
+            </div>
         </div>
+        <img class="photo"
+            src="https://media.licdn.com/dms/image/v2/D4D03AQGYy-2-sEOkaQ/profile-displayphoto-crop_800_800/B4DZvxZj9XG8AI-/0/1769281569324?e=1782950400&v=beta&t=6zpsQKhnBYGMobN8ZyEeugsNPSXqJNgSy5kqu1pfBME"
+            alt="Denis Kyashif" />
     </header>
-    <main>
-        <div class="container">
-            <div class="left">
-                <section class="experience">
-                    <h2>Experience</h2>
-                    <div>
-                        <h3>Engineering Lead | Solutions Architect</h3>
-                        <h4 class="accent">The World Bank Group - IFC</h4>
-                        <small>
-                            <i class="fa fa-calendar" aria-hidden="true"></i> 09/2020 - Ongoing
-                        </small>
-                        <small>
-                            <i class="fa fa-link" aria-hidden="true"></i>
-                            <a href="https://www.ifc.org/" target="_blank">ifc.org</a>
-                        </small>
-                        <small>
-                            <i class="fa fa-map-marker" aria-hidden="true"></i> Sofia, Bulgaria
-                        </small>
-                        <p>IFC is the largest global development institution focused on the private sector in developing countries.</p>
-                        <ul>
-                            <li>Manage distributed, cross-functional product teams and vendor relationships within IFC's Loan & Accounting portfolio, including IFC's Loan System Modernization (Project IRIS).</li>
-                            <li>Oversee team performance and provide mentorship to foster professional growth and development.</li>
-                            <li>Lead project planning and budgeting activities, ensuring alignment with business objectives and optimal resource utilization.</li>
-                            <li>Author and review technical design documents, integration strategies, and system architecture specifications.</li>
-                            <li>Establish and enforce coding standards and best practices; drive adoption of Agile methodologies and process standardization across the department.</li>
-                            <li>Oversee the RFP processes, including drafting documents, evaluating proposals, and making recommendations.</li>
-                            <li>Contribute to hiring efforts by participating in interview panels and identifying top-tier engineering talent.</li>
-                            <li>Provide strategic guidance to senior management on technology adoption, risk management, and resource allocation.</li>
-                        </ul>
-                        <div class="tools-list">
-                            <span>Azure PaaS/IaaS</span>
-                            <span>.NET/C#</span>
-                            <span>JavaScript</span>
-                            <span>Python</span>
-                            <span>LLM/GenAI</span>
-                            <span>Angular</span>
-                            <span>SQL</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Software Engineering Lead</h3>
-                        <h4 class="accent">Coursedot Instructor Hub</h4>
-                        <small>
-                            <i class="fa fa-calendar" aria-hidden="true"></i> 08/2018 - 08/2020
-                        </small>
-                        <small><i class="fa fa-link" aria-hidden="true"></i>
-                            <a href="https://hub.coursedot.com" target="_blank">hub.coursedot.com</a></small>
-                        <small><i class="fa fa-map-marker" aria-hidden="true"></i>
-                            Sofia, Bulgaria</small>
-                        <p>
-                            Coursedot Instructor Hub is a web platform for providing and applying for technical training opportunities.
-                        </p>
-                        <ul>
-                            <li>Lead the implementation from an idea, through an MVP, to a mature product.</li>
-                            <li>Establish and optimize end-to-end processes for design, implementation, quality assurance, and delivery of business-critical features.</li>
-                            <li>Collaborate closely with business stakeholders to define product roadmaps and feature requirements, while maintaining full technical ownership of the platform.</li>
-                            <li>Lead the development and testing of key features, including application workflows, roles and permissions, search functionality, message template engine, certificate verification API, and third-party integrations.</li>
-                            <li>Conduct code reviews and mentor team members, ensuring adherence to best practices and facilitating smooth onboarding of new engineers.</li>
-                        </ul>
-                        <div class="tools-list">
-                            <span>C#/.NET</span>
-                            <span>Angular</span>
-                            <span>Azure</span>
-                            <span>ASP.NET Core</span>
-                            <span>SQL Server</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Senior Software Engineer</h3>
-                        <h4 class="accent">Prevalent Inc.</h4>
-                        <small><i class="fa fa-calendar" aria-hidden="true"></i>10/2018 - 03/2019</small>
-                        <small><i class="fa fa-link" aria-hidden="true"></i>
-                            <a href="https://www.prevalent.net/" target="_blank">prevalent.net</a></small>
-                        <small><i class="fa fa-map-marker" aria-hidden="true"></i>
-                            Sofia, Bulgaria</small>
-                        <p>
-                            Prevalent provides third party risk management solutions that help companies meet compliance requirements and reduce risk.
-                        </p>
-                        <ul>
-                            <li>Design and implement scalable backend APIs for Prevalent’s multi-tenant analytics SaaS platform, ensuring high performance and reliability.</li>
-                            <li>Lead code reviews, provide mentorship, and facilitate the onboarding of new team members, fostering a collaborative and high-quality engineering environment.</li>
-                        </ul>
-                        <div class="tools-list">
-                            <span>.NET</span>
-                            <span>node.js</span>
-                            <span>ReactJS</span>
-                            <span>AWS Cloud</span>
-                            <span>PostgreSQL</span>
-                            <span>Docker</span>
-                        </div>
-                    </div>
-                    <div class="exp-nvs" style="margin-top: 0">
-                        <h3>Senior Software Engineer and Consultant</h3>
-                        <h4 class="accent">New Venture Software</h4>
-                        <small><i class="fa fa-calendar" aria-hidden="true"></i> 11/2015 - 08/2018</small>
-                        <!-- <small><i class="fa fa-link" aria-hidden="true"></i> -->
-                        <!--     <a href="https://www.newventuresoftware.com/" -->
-                        <!--        target="_blank">newventuresoftware.com</a></small> -->
-                        <small><i class="fa fa-map-marker" aria-hidden="true"></i>
-                            Sofia, Bulgaria</small>
-                        <p>
-                            New Venture Software is a high-quality development and consulting company, specialising in Web, Mobile, and UX.
-                        </p>
-                        <ul>
-                            <li>Design and implement web applications for companies from various industries.</li>
-                            <li>Provide project estimations and maintain proactive communication with clients on project status, proposals, and technical challenges.</li>
-                            <li>Offer expert consultation and deliver trainings to both onsite and remote teams on best practices for working with .NET, Kendo UI, and Angular technologies.</li>
-                            <li>Represent the company as a speaker on various international conferences across Europe and the United States.</li>
-                        </ul>
-                        <div class="tools-list">
-                            <span>.NET/Core</span>
-                            <span>Azure PaaS</span>
-                            <span>Angular</span>
-                            <span>Kendo UI</span>
-                            <span>NativeScript</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Software Developer</h3>
-                        <h4 class="accent">Grafixoft Ltd.</h4>
-                        <small><i class="fa fa-calendar" aria-hidden="true"></i> 11/2014 - 10/2015</small>
-                        <small><i class="fa fa-link" aria-hidden="true"></i>
-                            <a href="https://www.linkedin.com/company/p3bulgaria/about" target="_blank">grafixoft.com</a></small>
-                        <small><i class="fa fa-map-marker" aria-hidden="true"></i>
-                            Sofia, Bulgaria</small>
-                        <p>Designed and implemented key features of the Retain ERP system to streamline operations and enhance functionality.</p>
-                        <div class="tools-list"><span>AngularJS</span><span>Delphi</span></div>
-                    </div>
-                </section>
+    <section>
+        <h2 class="section-title">Summary</h2>
+        <p class="summary-lead">
+            Technology and engineering leader with 10+ years of experience progressing from hands-on software
+            delivery
+            to portfolio-level ownership of enterprise platforms in globally distributed, regulated environments.
+        </p>
+        <p class="summary">
+            Portfolio Lead and Senior Solutions Architect at The World Bank Group (IBRD), responsible for
+            multi-product
+            strategy, architecture, and delivery for Global &amp; Country Engagement systems. Previously led IFC’s
+            core
+            banking loan platform modernization, including end-to-end redesign and complex enterprise integrations.
+        </p>
+        <p class="summary">
+            Deep expertise in distributed systems, cloud-native architecture, and domain-driven design, with applied
+            experience in DevOps practices and AI-enabled systems, including RAG and agentic workflows.
+        </p>
+    </section>
+    <section>
+        <h2 class="section-title">Professional Experience</h2>
+        <div class="role">
+            <div class="role-head">
+                <p class="role-title">Portfolio Lead &amp; Senior Solutions Architect &mdash; <span
+                        class="role-company">The World Bank Group - IBRD</span></p>
+                <div class="role-meta">Dec 2025 &ndash; Present &middot; Sofia, Bulgaria</div>
             </div>
-            <div class="right">
-                <section class="summary">
-                    <h2>Summary</h2>
-                    <p>
-                        Experienced Software Engineering Lead and Architect with a strong passion for innovative software design, architecture, and web technologies.
-                    </p>
-                    <p>
-                        Proven track record in leading cross-functional teams to build high-quality, scalable products, while driving technical strategy and fostering a culture of continuous improvement.
-                    </p>
-                    <p>
-                    Strong advocate for best practices and team development, with a deep interest in linguistics and natural language processing while continuously exploring emerging technologies and paradigms.
-                    </p>
-                </section>
-                <section class="tools">
-                    <h2>Tools</h2>
-                    <ul>
-                        <li>.NET/C#</li>
-                        <li>TypeScript</li>
-                        <li>JavaScript</li>
-                        <li>ASP.NET</li>
-                        <li>WebAPI</li>
-                        <li>Blazor</li>
-                        <li>MVC</li>
-                        <li>node.js</li>
-                        <li>HTML/CSS</li>
-                        <li>Angular</li>
-                        <li>React</li>
-                        <li>Python</li>
-                        <li>LLM/GenAI</li>
-                        <li>Kafka</li>
-                        <li>SQL</li>
-                        <li>Git</li>
-                        <li>Docker</li>
-                        <li>Linux</li>
-                        <li><u>Azure Cloud</u>: App Service, Functions, Service Bus, Logic Apps, Entra ID, Data Factory, Storage Services, AI, <br> API Management, Container Apps</li>
-                    </section>
-                <section class="education">
-                    <h2>Education</h2>
-                    <div>
-                        <h3>Master's Degree in Computational Linguistics</h3>
-                        <h4 class="accent">Sofia University St. Kliment Ohridski</h4>
-                        <small><i class="fa fa-calendar" aria-hidden="true"></i> 2016-2020 (thesis defense due)</small>
-                        <ul>
-                            <p>Specialized in text processing algorithms, information retrieval, and machine learning, with a focus on lexical analysis in compilers for the thesis project.</p>
-                        </ul>
-                    </div>
-                    <div class="erasmus">
-                        <h3>Erasmus Student Exchange Program</h3>
-                        <h4 class="accent">Friedrich Schiller University of Jena, Germany</h4>
-                        <small><i class="fa fa-calendar" aria-hidden="true"></i> 2011</small>
-                    </div>
-                    <div>
-                        <h3>Bachelor's Degree in Linguistics</h3>
-                        <h4 class="accent">Veliko Tarnovo University St. St. Cyril and Methodius</h4>
-                        <small><i class="fa fa-calendar" aria-hidden="true"></i> 2009-2013</small>
-                        <p>Studied English and German linguistics, with a focus on language theory and formal grammar.</p>
-                    </div>
-                </section>
-                <section class="certifications">
-                    <h2>Certifications</h2>
-                    <ul>
-                        <li>
-                            SAFe 6 Product Owner/Product Manager
-                            <div style="padding-left: 20px">
-                                <small><i class="fa fa-link" aria-hidden="true"></i>
-                                    <a href="https://drive.google.com/file/d/1rXCD1Svfw_-a5eq_JeDeAtD_3eNQpBHt/view?usp=share_link" target="_blank">27965138-2939</a>
-                                </small>
-                            </div>
-                        </li>
-                        <li>
-                            Certified SAFe® Agilist
-                            <div style="padding-left: 20px">
-                                <small><i class="fa fa-link" aria-hidden="true"></i>
-                                    <a href="https://drive.google.com/file/d/1t66h_RyJQd3wf1aimSmHm2_xO6DNqwM9/view" target="_blank">05683717-2848</a>
-                                </small>
-                            </div>
-                        </li>
-                        <li>
-                            Certified SAFe 6 Scrum Master
-                            <div style="padding-left: 20px">
-                                <small><i class="fa fa-link" aria-hidden="true"></i>
-                                    <a href="https://drive.google.com/file/d/1XLoUoUEdujxMlGUQhTSm5RiWyGYvatwO/view" target="_blank">26526929-3285</a>
-                                </small>
-                            </div>
-                        </li>
-                        <li>
-                            EXIN Agile Scrum Master (ASM)
-                            <div style="padding-left: 20px">
-                                <small><i class="fa fa-link" aria-hidden="true"></i>
-                                    <a href="https://mylogin.exin.nl/?CERTIFICATENUMBER=6500514.20854190&LASTNAME=Kyashif&MODULEID=630589&PAGEID=0&SID=b0f11112c9cba5d8573cf5d449d7a2b8&TOOLNAME=CertificateCheckTool" target="_blank">6500514.20854190</a>
-                                </small>
-                            </div>
-                        </li>
-                        <li>
-                            Azure Fundamentals (AZ-900)
-                            <div style="padding-left: 12px">
-                                <small><i class="fa fa-link" aria-hidden="true"></i>
-                                    <a href="https://learn.microsoft.com/en-us/users/denisilmazkyashif-7576/credentials/513fe3ba6d50ebd8?ref=https%3A%2F%2Fwww.linkedin.com%2F" target="_blank">513FE3BA6D50EBD8</a>
-                                </small>
-                            </div>
-                        </li>
-                    </ul>
-                </section>
-                <section class="languages">
-                    <h2>Languages</h2>
-                    <ul>
-                        <li>Bulgarian</li>
-                        <li>English</li>
-                        <li>German</li>
-                        <li>Turkish</li>
-                    </ul>
-                </section>
-            </div>
+            <p class="role-context">
+                Portfolio Lead for the Global &amp; Country Engagement line of business at the World Bank,
+                responsible for product direction, architecture, engineering leadership, vendor governance, and
+                organizational performance across globally distributed teams.
+            </p>
+            <ul class="bullets">
+                <li>
+                    Own a 5-product enterprise portfolio, accountable for product direction, delivery
+                    prioritization,
+                    operational performance, and portfolio-level architecture governance across interconnected
+                    enterprise
+                    platforms, in collaboration with senior stakeholders and external vendors.
+                </li>
+                <li>
+                    Lead globally distributed engineering teams, including hiring, performance management, and
+                    organizational
+                    design in a regulated enterprise environment.
+                </li>
+                <li>
+                    Drive adoption of AI-enabled engineering capabilities to improve delivery efficiency,
+                    decision-making,
+                    and operational effectiveness across the portfolio.
+                </li>
+            </ul>
         </div>
-        <div class="container">
-            <div class="left">
-                <section class="projects">
-                    <h2>Academic & Side Projects</h2>
-                    <div>
-                        <h3>Blog on Computer Science and Software Engineering</h3>
-                        <small><i class="fa fa-link" aria-hidden="true"></i>
-                            <a href="https://deniskyashif.com" target="_blank">deniskyashif.com</a>
-                        </small>
-                    </div>
-                    <div>
-                        <h3>Machine Comprehension Using Commonsense Knowledge</h3>
-                        <small><i class="fa fa-link" aria-hidden="true"></i>
-                            <a target="_blank"
-                               href="https://github.com/deniskyashif/sweet-reason/blob/master/research/abstract.pdf">
-                                https://github.com/deniskyashif/sweet-reason
-                            </a>
-                        </small>
-                        <p>
-Collaborated with a team of students to develop a question-answering system and co-authored a paper on the project. Presented it to the "International Workshop on Semantic Evaluation," where our team was one of the few globally to successfully solve the challenge.
-                        </p>
-                        <div class="tools-list">
-                            <span>Python</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>ssfst - an efficient dictionary-based text rewriter</h3>
-                        <small><i class="fa fa-link" aria-hidden="true"></i>
-                            <a href="http://github.com/deniskyashif/ssfst" target="_blank">
-                                github.com/deniskyashif/ssfst
-                            </a>
-                        </small>
-                        <p>
-                            An efficient dictionary-based text rewriter implemented in JavaScript.
-                            <br>
-                            <div class="tools-list">
-                                <span>JavaScript</span>
-                                <span>node.js</span>
-                            </div>
-                        </p>
-                    </div>
-                </section>
+        <div class="role">
+            <div class="role-head">
+                <p class="role-title">Solutions Architect &mdash; <span class="role-company">The
+                        World Bank Group - IFC</span></p>
+                <div class="role-meta">Sep 2020 &ndash; Nov 2025 &middot; Sofia, Bulgaria</div>
             </div>
-            <div class="right">
-                <section class="references" style="display: none">
-                    <h2>References</h2>
-                    <div>
-                        <strong class="accent">Milan Nankov</strong> <br>
-                        milan@nankov.com <br>
-                        (+359) 887 660 414
-                    </div>
-                    <br>
-                    <div>
-                        <strong class="accent">Vladimir Milev</strong><br>
-                        vmilev@outlook.com <br>
-                        (+359) 887 560 005
-                    </div>
-                </section>
-                <section class="find-me-online">
-                    <h2>Find Me Online</h2>
-                    <ul>
-                        <li>
-                            <i class="fa fa-link accent" aria-hidden="true"></i>
-                            <a href="https://deniskyashif.com" target="_blank">deniskyashif.com</a>
-                        </li>
-                        <li>
-                            <i class="fa fa-github accent" aria-hidden="true"></i>
-                            <a href="https://github.com/deniskyashif" target="_blank">github.com/deniskyashif</a>
-                        </li>
-                        <li>
-                            <i class="fa fa-linkedin accent" aria-hidden="true"></i>
-                            <a href="https://linkedin.com/in/denis-kyashif" target="_blank">linkedin.com/in/denis-kyashif</a>
-                        </li>
-                    </ul>
-                </section>
-            </div>
+            <p class="role-context">
+                Led the end-to-end modernization of a mission-critical core banking platform supporting loan
+                origination, accounting, settlement, and financial operations. Responsible for architecture,
+                delivery execution, system integration, and migration from legacy financial systems under strict
+                operational continuity requirements.
+            </p>
+            <ul class="bullets">
+                <li>
+                    Designed a distributed financial platform spanning loan origination, accounting, and settlement
+                    systems, enabling consistent data flows and integration across enterprise financial processes.
+                </li>
+                <li>
+                    Led cross-functional engineering teams responsible for delivery execution, quality assurance,
+                    compliance, security accreditation, and production readiness.
+                </li>
+                <li>
+                    Managed vendor selection and delivery governance (RFP, contracting, oversight), while advising
+                    senior leadership on platform strategy, risk, and modernization decisions.
+                </li>
+            </ul>
         </div>
-    </main>
-    <div class="export">
-        <a href="https://drive.google.com/file/d/17NMBj9LwV5p-6-BHTttP3YytYouhmA9x/view?usp=share_link" target="_blank">
-            <i class="fa fa-3x fa-file-pdf-o" title="Open as PDF"></i>
-        </a>
+        <div class="role">
+            <div class="role-head">
+                <p class="role-title">Software Engineering Lead — <span class="role-company">Coursedot Instructor
+                        Hub</span>
+                </p>
+                <div class="role-meta">Aug 2018 &ndash; Aug 2020 &middot; Sofia, Bulgaria</div>
+            </div>
+            <p class="role-context">
+                Led engineering for a web-based platform connecting instructors and learners in technical training
+                programs,
+                owning system design, implementation, and delivery.
+            </p>
+            <ul class="bullets">
+                <li>Owned end-to-end delivery of the platform, including architecture, development, QA coordination,
+                    and release management.</li>
+                <li>Defined technical direction with stakeholders, translating product needs into system
+                    requirements and roadmap execution; improved engineering execution through stronger release
+                    processes, code reviews, mentoring, and onboarding.</li>
+                <li>Built core platform capabilities including role-based access control, workflows, search,
+                    messaging, certificate verification APIs, and third-party integrations.</li>
+            </ul>
+        </div>
+    </section>
+    <div class="grid">
+        <section>
+            <h2 class="section-title">Earlier Experience</h2>
+            <div class="earlier-item">
+                <p class="earlier-role">Software Engineer</p>
+                <div class="earlier-company">Prevalent Inc.</div>
+                <div class="earlier-meta">2018 &ndash; 2019 &middot; Scalable multi-tenant analytics SaaS APIs; code
+                    reviews &amp; mentorship.</div>
+            </div>
+            <div class="earlier-item">
+                <p class="earlier-role">Senior Software Engineer &amp; Consultant</p>
+                <div class="earlier-company">New Venture Software</div>
+                <div class="earlier-meta">2015 &ndash; 2018 &middot; Web apps across industries; client consulting
+                    and training on .NET, Angular &amp; Kendo UI; international conference speaker.</div>
+            </div>
+            <div class="earlier-item">
+                <p class="earlier-role">Software Developer</p>
+                <div class="earlier-company">Grafixoft Ltd.</div>
+                <div class="earlier-meta">2014 &ndash; 2015 &middot; Core features of the Retain ERP system.</div>
+            </div>
+        </section>
+        <section>
+            <h2 class="section-title">Education</h2>
+            <div class="edu-item">
+                <p class="edu-degree">M.Sc., Computational Linguistics</p>
+                <div class="edu-school">Sofia University St. Kliment Ohridski</div>
+                <div class="edu-meta">2016 &ndash; 2020</div>
+            </div>
+            <div class="edu-item">
+                <p class="edu-degree">B.A., Applied Linguistics with English and German</p>
+                <div class="edu-school">St. Cyril and St. Methodius University, Veliko Tarnovo</div>
+                <div class="edu-meta">2009 &ndash; 2013</div>
+            </div>
+            <div class="edu-item">
+                <p class="edu-degree">Linguistics (Exchange)</p>
+                <div class="edu-school">Friedrich-Schiller-Universität Jena</div>
+                <div class="edu-meta">2011</div>
+            </div>
+        </section>
     </div>
-</div>
+    <section>
+        <h2 class="section-title">Leadership & Technical Focus</h2>
+        <div class="skill-group">
+            <span class="skill-label">Leadership:</span>
+            <span class="skill-list">
+                Technical strategy &middot; Portfolio & architecture governance &middot;
+                Large-scale team leadership &middot; Hiring & mentorship &middot;
+                Vendor selection & RFP governance &middot;
+                Executive stakeholder management &middot;
+                Budgeting & resource planning
+            </span>
+        </div>
+        <div class="skill-group">
+            <span class="skill-label">Architecture:</span>
+            <span class="skill-list">
+                Enterprise & Business architecture &middot; Distributed systems design &middot;
+                Domain-driven design &middot; Integration & platform strategy &middot;
+                Modernization of legacy enterprise systems &middot; SAFe & Agile methodologies
+            </span>
+        </div>
+        <div class="skill-group">
+            <span class="skill-label">Cloud & DevOps:</span>
+            <span class="skill-list">
+                Cloud-native architecture &middot;
+                Microsoft Azure (App Service, AKS, Functions, Logic Apps, API Management, Service Bus, Data Factory, AI Search, Document Intelligence, OpenAI Service)
+                &middot;
+                CI/CD automation & engineering productivity &middot;
+                Azure DevOps &middot;
+                Containers (Docker, Kubernetes) &middot;
+                Infrastructure-as-code &middot;
+                Observability, reliability & platform operations
+            </span>
+        </div>
+        <div class="skill-group">
+            <span class="skill-label">Languages & Platforms:</span>
+            <span class="skill-list">
+                C#/.NET &middot;
+                ASP.NET &middot;
+                Python &middot;
+                JavaScript / TypeScript &middot;
+                Angular & React &middot;
+                Node.js &middot;
+                SQL (PostgreSQL, Oracle, SQL Server)
+            </span>
+        </div>
+        <div class="skill-group">
+            <span class="skill-label">AI & Intelligent Systems:</span>
+            <span class="skill-list">
+                Retrieval-augmented generation (RAG) system design &middot;
+                LLM-based application architecture &middot;
+                AI-driven workflow and decision automation &middot;
+                Microsoft Semantic Kernel (agent orchestration and tool integration) &middot;
+                Python-based NLP and information retrieval systems &middot;
+                Structured text extraction and document processing pipelines
+            </span>
+        </div>
+    </section>
+</main>
