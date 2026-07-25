@@ -4,6 +4,7 @@ date: 2026-07-25T08:14:19+03:00
 draft: false
 summary: "Learn how to model domain events, raise them from aggregates, and react through focused handlers without coupling facts to their consequences."
 tags: ["software-architecture", "domain-driven-design"]
+editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/2026-07-25-ddd-domain-events.md"
 ---
 
 In this article we'll explore techniques to better react to changes in our domain, namely:
@@ -115,6 +116,20 @@ class RecordInAnalytics:
 
 Each policy reads as "when this happened, do that." Handlers do not know about one another and can be added without changing the model that raised the event. The ordered list of unrelated work becomes a set of focused reactions, each able to have its own failure and retry behaviour.
 
+```text
+                         +--------------------+
+                     +-->+ Send confirmation  |
+                     |   +--------------------+
+                     |
++-------------+      |   +--------------------+
+| OrderPlaced +------+-->+ Notify fulfilment  |
++-------------+      |   +--------------------+
+                     |
+                     |   +--------------------+
+                     +-->+ Record analytics   |
+                         +--------------------+
+```
+
 ### Who calls the handlers?
 
 The aggregate collects events but never dispatches them. Infrastructure must route them to matching handlers. For an in-process implementation, the unit of work is a natural place to do this because it knows which aggregates participated and whether the transaction committed:
@@ -146,6 +161,22 @@ class ReserveStock:
 
 This is a **second transaction**, not an extension of the first. For a brief period the order exists but stock is not yet reserved: the two aggregates are **eventually consistent**. A single transaction across both may sometimes be justified, but it couples their lifecycles. The [one-aggregate-per-transaction](https://www.dddcommunity.org/library/vernon_2011/) guideline encourages us to model the gap explicitly instead.
 
+```text
+Transaction 1                         Transaction 2
+
++-------------------+                 +---------------------+
+| Order.place(...)  |                 | Inventory.reserve() |
+| raise OrderPlaced |                 | change stock        |
+| save Order        |                 | save Inventory      |
++---------+---------+                 +----------+----------+
+          |                                      ^
+        commit                                   |
+          |                                      |
+          +-------- OrderPlaced handler ---------+
+
+          <--- eventual-consistency window --->
+```
+
 The command against `Inventory` may produce `InventoryReserved`, which can trigger further policies. Such chains are legitimate, but every hop adds another failure point and makes the causal flow harder to follow. Keep chains short, handlers focused, and operations idempotent.
 
 ## Boundaries matter
@@ -154,15 +185,29 @@ Aggregates are not the only boundaries that matter. Domain events also belong to
 
 When a fact must cross that boundary, translate it into an intentionally designed **integration event** containing only what external consumers should depend on. Domain and integration events may describe the same occurrence, but they serve different audiences and should evolve independently.
 
-## Do not overdo it
+```text
++-----------------------+                  +-----------------------+
+| Ordering context      |                  | Fulfilment context    |
+|                       |                  |                       |
+| OrderPlaced           |                  | PrepareOrder          |
+|   (domain event)      |                  |   (local behavior)    |
+|         |             |                  |          ^            |
+|         v             |                  |          |            |
+| translate at boundary +------------------+----------+            |
+|         |             |  integration     |                       |
+|         +-------------+---- event ------>+                       |
++-----------------------+                  +-----------------------+
+```
+
+## Don't overdo it
 
 Not every state change deserves an event. Events are useful when a change represents a meaningful domain fact and one or more policies need to react to it. Creating an event for every setter or database update produces noise rather than a useful model.
 
 Prefer a direct call when the dependency is part of one clear operation and gains nothing from being separated. Events should expose meaningful facts, not hide dependencies that would be easier to understand if they were explicit.
 
-## Closing
+## Conclusion
 
-Our original script mixed one decision with all of its consequences. Modeled with events, its causal flow becomes:
+Our initial transaction script mixed one decision with all of its consequences. Modeled with events, its causal flow becomes:
 
 ```text
 PlaceOrder
