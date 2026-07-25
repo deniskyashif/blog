@@ -1,8 +1,8 @@
 ---
-title: "Making Things Happen with Domain Events"
+title: "Modeling Facts and Reactions with Domain Events"
 date: 2026-07-25T08:14:19+03:00
 draft: false
-summary: "A practical guide to working with events in domain modeling."
+summary: "Learn how to model domain events, raise them from aggregates, and react through focused handlers without coupling facts to their consequences."
 tags: ["software-architecture", "domain-driven-design"]
 ---
 
@@ -41,13 +41,13 @@ It also couples the customer-facing request to external systems. The order may b
 
 Each consequence needs its own error handling, retries, and fault tolerance.
 
-There is a subtler problem too. Order creation may not happen in just one place, so the same list of consequences has to be repeated at every call site, and the paths quietly drift apart when one of them is forgotten.
+There is a subtler problem too. Placing an order may not happen in just one place, so the same list of consequences has to be repeated at every call site, and the paths quietly drift apart when one of them is forgotten.
 
-There must be a better way to handle this. To get there, we must first ask: 
+There must be a better way to handle this. To get there, we must first ask:
 
 > What happened, and who needs to know?
 
-And then model this business logic in a single place within our domain.
+And then record the domain fact in one place, allowing each consequence to react to it independently.
 
 ## Domain events describe facts
 
@@ -61,6 +61,7 @@ An event needs enough information to identify and understand the fact. That usua
 OrderPlaced
   orderId
   customerId
+  itemIds
   placedAt
 ```
 
@@ -79,7 +80,7 @@ class Order:
   static place(customerId, items):
     if items is empty: reject
     order = new Order(customerId, items)
-    order.events.add(OrderPlaced(order.id, customerId, now))
+    order.events.add(OrderPlaced(order.id, customerId, items.ids, now))
     return order
 ```
 
@@ -129,7 +130,7 @@ unitOfWork.commit():
   clearEvents(trackedAggregates)
 ```
 
-Handlers run **after** the producing transaction. An email failure should not undo an accepted order, but this also means the handler cannot rely on that transaction for reliability. If one handler succeeds and the next fails, retrying may invoke the first one again. Handlers should therefore be safe to repeat where practical.
+Handlers run **after** the producing transaction. An email failure should not undo an accepted order, but this also means the handler cannot rely on that transaction for reliability. If one handler succeeds and the next fails, retrying may invoke the first one again. Handlers should therefore be safe to repeat where practical. This simple in-process dispatcher separates responsibilities, but it does not provide durable delivery.
 
 ## Crossing aggregate boundaries
 
@@ -138,7 +139,7 @@ A handler that changes another aggregate should invoke that aggregate's behavior
 ```text
 class ReserveStock:
   handle(OrderPlaced event):
-    inventory = inventoryRepo.forOrder(event.orderId)
+    inventory = inventoryRepo.forItems(event.itemIds)
     inventory.reserve(event.orderId)     // may raise InventoryReserved
     unitOfWork.commit()
 ```
@@ -149,7 +150,7 @@ The command against `Inventory` may produce `InventoryReserved`, which can trigg
 
 ## Boundaries matter
 
-Domain events describe facts within a **bounded context** and may reflect its internal language and model. Other bounded contexts should not consume those events directly, because doing so turns internal details into shared contracts.
+Aggregates are not the only boundaries that matter. Domain events also belong to a **bounded context** and may reflect its internal language and model. Other bounded contexts should not consume those events directly, because doing so turns internal details into shared contracts.
 
 When a fact must cross that boundary, translate it into an intentionally designed **integration event** containing only what external consumers should depend on. Domain and integration events may describe the same occurrence, but they serve different audiences and should evolve independently.
 
