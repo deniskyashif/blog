@@ -95,20 +95,75 @@ repository.add(order)
 unitOfWork.commit()   // the fact becomes durable here
 ```
 
-The events ride along on the aggregate and are dispatched after the unit of work commits successfully. That commit is the instant the fact becomes true and durable, which is why dispatch waits for it. Turning that "after a successful commit" into something reliable is harder than it looks, and we return to it later in this article ([Delivery is a separate problem](#delivery-is-a-separate-problem)).
-
-Recording the event inside the model keeps intent and fact together, and it makes the event part of the model's **public language**. `OrderCreated`, `OrderConfirmed`, and `OrderCancelled` describe what the domain can do in the same vocabulary the business uses to talk about it. 
+The events ride along on the aggregate and are dispatched after the unit of work commits successfully. Recording the event inside the model keeps intent and fact together, and it makes the event part of the model's **public language**. `OrderCreated`, `OrderConfirmed`, and `OrderCancelled` describe what the domain can do in the same vocabulary the business uses to talk about it.
 
 This also resolves the drift we saw earlier. It no longer matters whether order creation is triggered from a checkout endpoint, an admin tool, or a background import: every path goes through `Order.create`, and the fact is recorded in exactly one place. The consequences are no longer copied into each call site; they follow from the event. Adding analytics or fulfilment later means subscribing to `OrderCreated` once, not remembering to update every caller.
 
 ## Handling events
 
-- Separate raising an event from handling it.
-- Use handlers for follow-up policies: allocate stock, start fulfilment, notify a
-  customer, update a read model.
-- Keep the command path understandable: a handler is a policy reacting to a fact.
-- Call out that an event handler can issue a command, but should not bypass the
-  receiving aggregate's rules.
+Recording a fact and reacting to it are two different things. The aggregate's job ends once it has raised `OrderCreated`, it should know nothing about emails, fulfilment, or analytics. The reactions live in **event handlers**: small, focused pieces of code that subscribe to an event and carry out one follow-up policy each.
+
+```text
+class SendConfirmationEmail:
+  handle(OrderCreated event):
+    email = buildConfirmation(event.orderId)
+    mailer.send(email)
+
+class NotifyFulfilment:
+  handle(OrderCreated event):
+    fulfilment.startFor(event.orderId)
+
+class RecordInAnalytics:
+  handle(OrderCreated event):
+    analytics.track("order_created", event)
+```
+
+Each handler is a **policy** that reads as "when this happened, do that." One event can have many handlers, and none of them know about the others. This is exactly what untangles the ordered list of consequences we started with: the growing script of unrelated work becomes a set of independent reactions, each with its own error handling and retry behaviour, added or removed without touching the code that raised the event.
+
+### Who calls the handlers?
+
+The aggregate collects events but never dispatches them; something outside has to pick them up and route them to the handlers. That something is a **dispatcher**, and the natural place to invoke it is the unit of work, because it already knows which aggregates took part in the transaction and when that transaction succeeds.
+
+Recall the earlier warning: an event is a past-tense fact, and delivering it before the state change is durable would let us announce something that might still roll back. So the dispatcher runs **after the commit**. Once the transaction succeeds, the unit of work drains the events that rode along on each aggregate and hands them to the matching handlers.
+
+```text
+unitOfWork.commit():
+  transaction:
+    persist(trackedAggregates)   // the facts become durable
+  events = collectEvents(trackedAggregates)
+  for event in events:
+    for handler in handlersFor(event):
+      handler.handle(event)
+  clearEvents(trackedAggregates)
+```
+
+The application service stays unchanged, it still just asks the model to do the work and commits. Wiring the dispatch into the unit of work keeps the call site unaware of who reacts.
+
+Dispatching after the commit has one consequence worth stating: the handlers run **outside** the transaction that produced the event. The order is already durable when `SendConfirmationEmail` runs, so if that handler fails, the order does not disappear with it. That is usually what we want, an email failure should not undo an accepted order, but it means each handler now owns its own reliability.
+
+Keeping raising and handling separate also keeps the command path readable. `Order.create` expresses one decision; the handlers express what follows from it. A newcomer can understand order creation without wading through email templates, and can find every consequence of the fact by looking at who subscribes to `OrderCreated`.
+
+### A handler that changes another aggregate
+
+A handler often needs to change other state, and it should do so the same way any other caller would: by issuing a **command** against the receiving aggregate rather than reaching in and mutating it directly, so that aggregate can still enforce its own invariants. Say a handler must react to `OrderCreated` by reserving stock in a separate `Inventory` aggregate. Because the handler runs after the original commit, it cannot simply piggyback on the order's transaction. It loads the target aggregate, invokes its command, and commits its own unit of work:
+
+```text
+class ReserveStock:
+  handle(OrderCreated event):
+    inventory = inventoryRepo.forItems(event.orderId)
+    inventory.reserve(event.orderId)     // enforces its own rules, may raise InventoryReserved
+    unitOfWork.commit()
+```
+
+Two things follow from this, and it is important to be honest about them.
+
+First, this is a **second transaction**, not an extension of the first. The order and the reservation are now committed separately, which means they are **eventually consistent**: for a brief window the order exists but stock is not yet reserved. Wrapping both aggregates in one transaction to avoid this is tempting, but it couples their lifecycles and breaks the [one-aggregate-per-transaction](https://www.dddcommunity.org/library/vernon_2011/) guideline that keeps aggregates independent. Prefer the two-transaction model and design for the gap rather than trying to close it.
+
+Second, `Inventory` can raise its own event, `InventoryReserved`, which its own handlers then react to. This is the chaining from before, now spanning aggregates: one fact drives a policy, which produces the next fact. It is legitimate, but each hop widens the window of inconsistency and lengthens the causal chain, so keep the chains short and make each link idempotent.
+
+Because handlers run after the commit, in their own transactions, and possibly in another process entirely, "just call the handler" stops being a safe assumption. If the reservation handler crashes before it commits, the order is already durable but the stock is never reserved. Getting that handoff right is a problem of its own.
+
+This chaining is powerful and easy to abuse. A handler that issues a command can trigger another event, which triggers another handler, and the causal flow becomes hard to follow. Keep each handler small, let it do one thing, and let the resulting command decide on its own terms whether to raise a further event.
 
 ## Delivery is a separate problem
 
@@ -149,7 +204,7 @@ transaction:
 - Explain translation, stable contracts, and why event names alone do not create
   decoupling.
 - Domain and integration events
-- This design can scale if we move from logical to physical decoupling i.e. microservices
+- Keeping the command and its consequences loosely coupled is also what later lets us turn these logical boundaries into physical ones, evolving toward a service-oriented architecture.
 
 ## Do not overdo it
 
