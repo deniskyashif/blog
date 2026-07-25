@@ -1,8 +1,9 @@
 ---
-title: "Making Things Happen: A Practical Guide to Domain Events"
+title: "Making Things Happen with Domain Events"
 date: 2026-07-25T08:14:19+03:00
 draft: false
-summary: "Events modeling in practice."
+summary: "A practical guide to working with events in domain modeling."
+tags: ["software-architecture", "domain-driven-design"]
 ---
 
 In this article we'll explore techniques to better react to changes in our domain, namely:
@@ -36,7 +37,7 @@ updateAnalytics(order)
 
 Now we have an ordered list of unrelated work that grows with the system. It obscures the domain fact that an order was created and makes it harder to see which consequences are essential.
 
-It also couples the customer-facing request to external systems. The order may be saved successfully while email delivery, fulfilment notification, or analytics fails. These operations cannot usually be made atomic with the order write, despite being grouped in the same script. Reporting the whole operation as failed can mislead the customer into placing a duplicate order; reporting it as successful can leave follow-up work unfinished.
+It also couples the customer-facing request to external systems. The order may be saved successfully while email delivery, fulfilment notification, or analytics fails. These operations cannot usually be made atomic with the order write, despite being grouped in the same script. Reporting the whole operation as failed can mislead the customer into placing a duplicate order, whereas reporting it as successful can leave follow-up work unfinished.
 
 Each consequence needs its own error handling, retries, and fault tolerance. There must be a better way to handle this. To get there, we must first ask: 
 
@@ -46,7 +47,7 @@ Each consequence needs its own error handling, retries, and fault tolerance. The
 
 An order being created is a fact in the domain. A domain event records such a fact in the language the business uses. It is not an instruction to perform work: `SendConfirmationEmail` describes a technical task, while `OrderCreated` describes something that has already happened.
 
-Events are named in the past tense because they are historical records. No subscriber can reject or undo `OrderCreated`; it can only decide how to react to it. For the same reason, an event should be immutable. If the order later changes, that is a new fact and may warrant a new event rather than changing the record of what happened before.
+Events are named in the **past tense** because they are historical records. No subscriber can reject or undo `OrderCreated`, it can only decide how to react to it. For the same reason, an event should be **immutable**. If the order later changes, that is a new fact and may warrant a new event rather than changing the record of what happened before.
 
 An event carries the information a recipient needs to understand the fact without reaching back into the domain model. At a minimum, that usually means the identity of the affected entity, the relevant values at the time, and when the event occurred.
 
@@ -75,8 +76,9 @@ OrderCreated
 - Call out that an event handler can issue a command, but should not bypass the
   receiving aggregate's rules.
 
-## Commands express intent; events record facts
+## Commands and Events are not the same 
 
+- Commands express intent; events record facts
 - A command asks the model to do something and can be rejected: `ConfirmOrder`.
 - An event states something that already happened: `OrderConfirmed`.
 - Commands are imperative and normally have one responsible handler; events are
@@ -123,8 +125,9 @@ transaction:
 - Domain and integration events
 
 ## Eventual Consistency and Event Sourcing
+TODO: add notes
 
-## When not to use them
+## Do not overdo it
 
 - Do not create an event for every setter or database update.
 - Prefer direct collaboration when there is no meaningful domain fact or policy

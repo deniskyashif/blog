@@ -10,6 +10,7 @@ googleAnalytics = "G-X7Z9LV9QY4"
 author = { name = "Denis Kyashif", homepage = "https://deniskyashif.com" }
 css = [
   "https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700",
+  "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap",
   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
   "assets/my.css"
 ]
