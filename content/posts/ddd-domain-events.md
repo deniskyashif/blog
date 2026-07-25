@@ -39,9 +39,15 @@ Now we have an ordered list of unrelated work that grows with the system. It obs
 
 It also couples the customer-facing request to external systems. The order may be saved successfully while email delivery, fulfilment notification, or analytics fails. These operations cannot usually be made atomic with the order write, despite being grouped in the same script. Reporting the whole operation as failed can mislead the customer into placing a duplicate order, whereas reporting it as successful can leave follow-up work unfinished.
 
-Each consequence needs its own error handling, retries, and fault tolerance. There must be a better way to handle this. To get there, we must first ask: 
+Each consequence needs its own error handling, retries, and fault tolerance.
+
+There is a subtler problem too. Order creation may not happen in just one place, so the same list of consequences has to be repeated at every call site, and the paths quietly drift apart when one of them is forgotten.
+
+There must be a better way to handle this. To get there, we must first ask: 
 
 > What happened, and who needs to know?
+
+And then model this business logic in a single place within our domain.
 
 ## A domain event is a past-tense fact
 
@@ -58,14 +64,42 @@ OrderCreated
   createdAt
 ```
 
+## Events and Commands are not the same
+
+A **command** expresses intent: it asks the model to do something and can be refused. Think of `CreateOrder` as the `POST /orders` request behind it, handled in one place, enforcing the rules, and free to reject the call. An **event** records a fact that follows from a command that succeeded: once `Order.create` accepts the request and commits, `OrderCreated` states that it happened and cannot be undone.
+
 ## Raise events where the decision is made
 
-- Put the event at the aggregate or domain-model operation that enforces the
-  invariant.
-- Show the sequence: validate rule, change state, record event.
-- Explain why application services should not infer domain events by observing
-  persistence changes.
-- Discuss events as part of the model's public language, not incidental logs.
+If an event records a fact, then the place to record it is where that fact becomes true. In a rich domain model, that is the aggregate or domain operation that enforces the rule. `OrderCreated` is not simply "a row was written to the orders table", it is the moment the model accepted a request, checked its invariants, and committed to a new state. The event belongs to that decision, so it should be raised there.
+
+The sequence inside the operation reads the same way every time: validate the rule, change the state, then record the event. The aggregate keeps its own list of events and appends to it as part of the state change, so the event cannot exist unless the change that justifies it has already happened.
+
+```text
+class Order:
+  events = []
+
+  static create(customerId, items):
+    if items is empty: reject
+    order = new Order(customerId, items)          // state change
+    order.events.add(OrderCreated(order.id, customerId, now))
+    return order
+```
+
+The order matters. An event is a past-tense fact, so it can only be recorded once the state change it describes has actually happened. Appending the event before the invariants are checked would let us announce something that might never become true.
+
+Notice that nothing outside the aggregate raises the event. The application service only asks the model to do the work and then persists the result. It never constructs an `OrderCreated` itself.
+
+```text
+order = Order.create(customerId, items)
+repository.add(order)
+unitOfWork.commit()   // the fact becomes durable here
+```
+
+The events ride along on the aggregate and are dispatched after the unit of work commits successfully. That commit is the instant the fact becomes true and durable, which is why dispatch waits for it. Turning that "after a successful commit" into something reliable is harder than it looks, and we return to it later in this article ([Delivery is a separate problem](#delivery-is-a-separate-problem)).
+
+Recording the event inside the model keeps intent and fact together, and it makes the event part of the model's **public language**. `OrderCreated`, `OrderConfirmed`, and `OrderCancelled` describe what the domain can do in the same vocabulary the business uses to talk about it. 
+
+This also resolves the drift we saw earlier. It no longer matters whether order creation is triggered from a checkout endpoint, an admin tool, or a background import: every path goes through `Order.create`, and the fact is recorded in exactly one place. The consequences are no longer copied into each call site; they follow from the event. Adding analytics or fulfilment later means subscribing to `OrderCreated` once, not remembering to update every caller.
 
 ## Handling events
 
@@ -76,17 +110,9 @@ OrderCreated
 - Call out that an event handler can issue a command, but should not bypass the
   receiving aggregate's rules.
 
-## Commands and Events are not the same 
-
-- Commands express intent; events record facts
-- A command asks the model to do something and can be rejected: `ConfirmOrder`.
-- An event states something that already happened: `OrderConfirmed`.
-- Commands are imperative and normally have one responsible handler; events are
-  declarative, past tense, and may have zero or many subscribers.
-- Commands enforce rules; events let policies react to their outcome.
-- Explain why an event must not be used as an asynchronous command in disguise.
-
 ## Delivery is a separate problem
+
+So far we've treated raising and handling as if they happen together, in memory, within the same unit of work. In practice they often don't. A handler may run in another process, on another machine, or long after the original operation, and any of the steps in between can fail. Once an event has to leave the process that raised it, delivery becomes a problem in its own right.
 
 - Raising an in-process domain event does not guarantee that it will be delivered.
 - Show the failure window in a naive implementation:
@@ -123,9 +149,7 @@ transaction:
 - Explain translation, stable contracts, and why event names alone do not create
   decoupling.
 - Domain and integration events
-
-## Eventual Consistency and Event Sourcing
-TODO: add notes
+- This design can scale if we move from logical to physical decoupling i.e. microservices
 
 ## Do not overdo it
 
@@ -138,4 +162,6 @@ TODO: add notes
 
 - Recap: model meaningful facts first; choose handlers and transport second.
 - Return to the example and show how its causal flow reads in domain language.
+- Point to further areas worth exploring: eventual consistency as a first-class
+  design concern, and event sourcing as a way to treat events as the source of truth.
 - Tease the next post: making cross-boundary reactions reliable.
