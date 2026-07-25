@@ -15,27 +15,27 @@ In this article we'll explore techniques to better react to changes in our domai
 Consider this simple workflow.
 
 ```text
-createOrder(...)
+placeOrder(...)
 save(order)
 sendConfirmationEmailToClient(order)
 ```
 
-For a simple application, defining this in a [Transaction script](https://martinfowler.com/eaaCatalog/transactionScript.html) makes sense. Zoom in a little, however, and the code tells another story. The important domain fact is that an order was created. Sending a confirmation email is a consequence of that fact, not part of the fact itself.
+For a simple application, defining this in a [Transaction script](https://martinfowler.com/eaaCatalog/transactionScript.html) makes sense. Zoom in a little, however, and the code tells another story. The important domain fact is that an order was placed. Sending a confirmation email is a consequence of that fact, not part of the fact itself.
 
 Coupling facts and consequences creates several potential issues with our design. Let's update our requirements:
 
-- We want the order creation to also notify our fulfilment department.
+- We want placing the order to also notify our fulfilment department.
 - We want this order to be recorded in analytics.
 
 ```text
-createOrder(...)
+placeOrder(...)
 save(order)
 sendConfirmationEmailToClient(order)
 notifyFulfilment(order)
 updateAnalytics(order)
 ```
 
-Now we have an ordered list of unrelated work that grows with the system. It obscures the domain fact that an order was created and makes it harder to see which consequences are essential.
+Now we have an ordered list of unrelated work that grows with the system. It obscures the domain fact that an order was placed and makes it harder to see which consequences are essential.
 
 It also couples the customer-facing request to external systems. The order may be saved successfully while email delivery, fulfilment notification, or analytics fails. These operations cannot usually be made atomic with the order write, despite being grouped in the same script. Reporting the whole operation as failed can mislead the customer into placing a duplicate order, whereas reporting it as successful can leave follow-up work unfinished.
 
@@ -49,87 +49,79 @@ There must be a better way to handle this. To get there, we must first ask:
 
 And then model this business logic in a single place within our domain.
 
-## A domain event is a past-tense fact
+## Domain events describe facts
 
-An order being created is a fact in the domain. A domain event records such a fact in the language the business uses. It is not an instruction to perform work: `SendConfirmationEmail` describes a technical task, while `OrderCreated` describes something that has already happened.
+An order being placed is a fact in the domain. A domain event records such a fact in the language the business uses. It is not an instruction to perform work: `SendConfirmationEmail` describes a technical task, while `OrderPlaced` describes something that has already happened.
 
-Events are named in the **past tense** because they are historical records. No subscriber can reject or undo `OrderCreated`, it can only decide how to react to it. For the same reason, an event should be **immutable**. If the order later changes, that is a new fact and may warrant a new event rather than changing the record of what happened before.
+Events are named in the **past tense** because they are historical records. A subscriber cannot reject `OrderPlaced`; it can only decide how to react. For the same reason, an event should be **immutable**. If the order later changes, that is a new fact and may warrant a new event rather than a revision of the old one.
 
-An event carries the information a recipient needs to understand the fact without reaching back into the domain model. At a minimum, that usually means the identity of the affected entity, the relevant values at the time, and when the event occurred.
+An event needs enough information to identify and understand the fact. That usually includes the affected entity, relevant values at the time, and when the event occurred. The exact payload is a design choice: a consumer may use identifiers to query a read model, while a self-contained event may carry a snapshot of the values consumers need. Avoid exposing the aggregate's internal representation merely for convenience.
 
 ```text
-OrderCreated
+OrderPlaced
   orderId
   customerId
-  createdAt
+  placedAt
 ```
 
-## Events and Commands are not the same
-
-A **command** expresses intent: it asks the model to do something and can be refused. Think of `CreateOrder` as the `POST /orders` request behind it, handled in one place, enforcing the rules, and free to reject the call. An **event** records a fact that follows from a command that succeeded: once `Order.create` accepts the request and commits, `OrderCreated` states that it happened and cannot be undone.
+This is also what distinguishes an event from a **command**. A command expresses intent: `PlaceOrder` asks the model to do something and can be refused. An event records the outcome: once the model accepts that command, `OrderPlaced` records the decision. The event is raised in the model at that point. The fact becomes durable when the transaction commits, after which the event can be published to interested consumers.
 
 ## Raise events where the decision is made
 
-If an event records a fact, then the place to record it is where that fact becomes true. In a rich domain model, that is the aggregate or domain operation that enforces the rule. `OrderCreated` is not simply "a row was written to the orders table", it is the moment the model accepted a request, checked its invariants, and committed to a new state. The event belongs to that decision, so it should be raised there.
+The place to record a fact is where it becomes true. In a rich domain model, that is the aggregate or domain operation that enforces the relevant rules. `OrderPlaced` does not mean merely that a row was inserted. It means the model accepted the request and satisfied its invariants, so the event belongs to that decision.
 
-The sequence inside the operation reads the same way every time: validate the rule, change the state, then record the event. The aggregate keeps its own list of events and appends to it as part of the state change, so the event cannot exist unless the change that justifies it has already happened.
+The sequence is: validate the rules, change the state, then record the event. The aggregate keeps the event alongside its state until the unit of work collects it.
 
 ```text
 class Order:
   events = []
 
-  static create(customerId, items):
+  static place(customerId, items):
     if items is empty: reject
-    order = new Order(customerId, items)          // state change
-    order.events.add(OrderCreated(order.id, customerId, now))
+    order = new Order(customerId, items)
+    order.events.add(OrderPlaced(order.id, customerId, now))
     return order
 ```
 
-The order matters. An event is a past-tense fact, so it can only be recorded once the state change it describes has actually happened. Appending the event before the invariants are checked would let us announce something that might never become true.
-
-Notice that nothing outside the aggregate raises the event. The application service only asks the model to do the work and then persists the result. It never constructs an `OrderCreated` itself.
+Nothing outside the aggregate constructs `OrderPlaced`. The application service asks the model to do the work and persists the result:
 
 ```text
-order = Order.create(customerId, items)
+order = Order.place(customerId, items)
 repository.add(order)
-unitOfWork.commit()   // the fact becomes durable here
+unitOfWork.commit()   // the domain fact becomes durable
 ```
 
-The events ride along on the aggregate and are dispatched after the unit of work commits successfully. Recording the event inside the model keeps intent and fact together, and it makes the event part of the model's **public language**. `OrderCreated`, `OrderConfirmed`, and `OrderCancelled` describe what the domain can do in the same vocabulary the business uses to talk about it.
+This removes the drift from our original transaction script. Whether an order comes from checkout, an admin tool, or an import, every path through `Order.place` records the same fact. Adding analytics or fulfilment later no longer requires updating every caller.
 
-This also resolves the drift we saw earlier. It no longer matters whether order creation is triggered from a checkout endpoint, an admin tool, or a background import: every path goes through `Order.create`, and the fact is recorded in exactly one place. The consequences are no longer copied into each call site; they follow from the event. Adding analytics or fulfilment later means subscribing to `OrderCreated` once, not remembering to update every caller.
+## React to events with handlers
 
-## Handling events
-
-Recording a fact and reacting to it are two different things. The aggregate's job ends once it has raised `OrderCreated`, it should know nothing about emails, fulfilment, or analytics. The reactions live in **event handlers**: small, focused pieces of code that subscribe to an event and carry out one follow-up policy each.
+Recording a fact and reacting to it are separate responsibilities. The aggregate knows that an order was placed, but nothing about email, fulfilment, or analytics. Those reactions live in **event handlers**, with each handler implementing one policy:
 
 ```text
 class SendConfirmationEmail:
-  handle(OrderCreated event):
+  handle(OrderPlaced event):
     email = buildConfirmation(event.orderId)
     mailer.send(email)
 
 class NotifyFulfilment:
-  handle(OrderCreated event):
+  handle(OrderPlaced event):
     fulfilment.startFor(event.orderId)
 
 class RecordInAnalytics:
-  handle(OrderCreated event):
-    analytics.track("order_created", event)
+  handle(OrderPlaced event):
+    analytics.track("order_placed", event)
 ```
 
-Each handler is a **policy** that reads as "when this happened, do that." One event can have many handlers, and none of them know about the others. This is exactly what untangles the ordered list of consequences we started with: the growing script of unrelated work becomes a set of independent reactions, each with its own error handling and retry behaviour, added or removed without touching the code that raised the event.
+Each policy reads as "when this happened, do that." Handlers do not know about one another and can be added without changing the model that raised the event. The ordered list of unrelated work becomes a set of focused reactions, each able to have its own failure and retry behaviour.
 
 ### Who calls the handlers?
 
-The aggregate collects events but never dispatches them; something outside has to pick them up and route them to the handlers. That something is a **dispatcher**, and the natural place to invoke it is the unit of work, because it already knows which aggregates took part in the transaction and when that transaction succeeds.
-
-Recall the earlier warning: an event is a past-tense fact, and delivering it before the state change is durable would let us announce something that might still roll back. So the dispatcher runs **after the commit**. Once the transaction succeeds, the unit of work drains the events that rode along on each aggregate and hands them to the matching handlers.
+The aggregate collects events but never dispatches them. Infrastructure must route them to matching handlers. For an in-process implementation, the unit of work is a natural place to do this because it knows which aggregates participated and whether the transaction committed:
 
 ```text
 unitOfWork.commit():
   transaction:
-    persist(trackedAggregates)   // the facts become durable
+    persist(trackedAggregates)
   events = collectEvents(trackedAggregates)
   for event in events:
     for handler in handlersFor(event):
@@ -137,86 +129,50 @@ unitOfWork.commit():
   clearEvents(trackedAggregates)
 ```
 
-The application service stays unchanged, it still just asks the model to do the work and commits. Wiring the dispatch into the unit of work keeps the call site unaware of who reacts.
+Handlers run **after** the producing transaction. An email failure should not undo an accepted order, but this also means the handler cannot rely on that transaction for reliability. If one handler succeeds and the next fails, retrying may invoke the first one again. Handlers should therefore be safe to repeat where practical.
 
-Dispatching after the commit has one consequence worth stating: the handlers run **outside** the transaction that produced the event. The order is already durable when `SendConfirmationEmail` runs, so if that handler fails, the order does not disappear with it. That is usually what we want, an email failure should not undo an accepted order, but it means each handler now owns its own reliability.
+## Crossing aggregate boundaries
 
-Keeping raising and handling separate also keeps the command path readable. `Order.create` expresses one decision; the handlers express what follows from it. A newcomer can understand order creation without wading through email templates, and can find every consequence of the fact by looking at who subscribes to `OrderCreated`.
-
-### A handler that changes another aggregate
-
-A handler often needs to change other state, and it should do so the same way any other caller would: by issuing a **command** against the receiving aggregate rather than reaching in and mutating it directly, so that aggregate can still enforce its own invariants. Say a handler must react to `OrderCreated` by reserving stock in a separate `Inventory` aggregate. Because the handler runs after the original commit, it cannot simply piggyback on the order's transaction. It loads the target aggregate, invokes its command, and commits its own unit of work:
+A handler that changes another aggregate should invoke that aggregate's behavior rather than mutate its state directly. The receiving aggregate must still enforce its own invariants. To reserve stock after an order is placed, a handler loads `Inventory`, asks it to reserve the items, and commits a new unit of work:
 
 ```text
 class ReserveStock:
-  handle(OrderCreated event):
-    inventory = inventoryRepo.forItems(event.orderId)
-    inventory.reserve(event.orderId)     // enforces its own rules, may raise InventoryReserved
+  handle(OrderPlaced event):
+    inventory = inventoryRepo.forOrder(event.orderId)
+    inventory.reserve(event.orderId)     // may raise InventoryReserved
     unitOfWork.commit()
 ```
 
-Two things follow from this, and it is important to be honest about them.
+This is a **second transaction**, not an extension of the first. For a brief period the order exists but stock is not yet reserved: the two aggregates are **eventually consistent**. A single transaction across both may sometimes be justified, but it couples their lifecycles. The [one-aggregate-per-transaction](https://www.dddcommunity.org/library/vernon_2011/) guideline encourages us to model the gap explicitly instead.
 
-First, this is a **second transaction**, not an extension of the first. The order and the reservation are now committed separately, which means they are **eventually consistent**: for a brief window the order exists but stock is not yet reserved. Wrapping both aggregates in one transaction to avoid this is tempting, but it couples their lifecycles and breaks the [one-aggregate-per-transaction](https://www.dddcommunity.org/library/vernon_2011/) guideline that keeps aggregates independent. Prefer the two-transaction model and design for the gap rather than trying to close it.
-
-Second, `Inventory` can raise its own event, `InventoryReserved`, which its own handlers then react to. This is the chaining from before, now spanning aggregates: one fact drives a policy, which produces the next fact. It is legitimate, but each hop widens the window of inconsistency and lengthens the causal chain, so keep the chains short and make each link idempotent.
-
-Because handlers run after the commit, in their own transactions, and possibly in another process entirely, "just call the handler" stops being a safe assumption. If the reservation handler crashes before it commits, the order is already durable but the stock is never reserved. Getting that handoff right is a problem of its own.
-
-This chaining is powerful and easy to abuse. A handler that issues a command can trigger another event, which triggers another handler, and the causal flow becomes hard to follow. Keep each handler small, let it do one thing, and let the resulting command decide on its own terms whether to raise a further event.
-
-## Delivery is a separate problem
-
-So far we've treated raising and handling as if they happen together, in memory, within the same unit of work. In practice they often don't. A handler may run in another process, on another machine, or long after the original operation, and any of the steps in between can fail. Once an event has to leave the process that raised it, delivery becomes a problem in its own right.
-
-- Raising an in-process domain event does not guarantee that it will be delivered.
-- Show the failure window in a naive implementation:
-
-```text
-save(order)
-publish(OrderCreated)
-```
-
-- Explain the crash between these operations: the order exists, but email,
-  fulfilment, and analytics may never react to it.
-- Introduce a transactional outbox as the durable handoff:
-
-```text
-transaction:
-  save(order)
-  save(outboxMessage(OrderCreated))
-```
-
-- A separate publisher reads pending outbox messages and delivers them, retrying
-  failures without losing the event.
-- Explain that consumers must be idempotent because a message can be delivered
-  more than once.
-- State the limits: the outbox commits state and the event atomically, but does
-  not provide immediate consistency or solve ordering in every context.
-- Preview retries and observability.
-- Link this discussion to the eventual-consistency follow-up post.
+The command against `Inventory` may produce `InventoryReserved`, which can trigger further policies. Such chains are legitimate, but every hop adds another failure point and makes the causal flow harder to follow. Keep chains short, handlers focused, and operations idempotent.
 
 ## Boundaries matter
 
-- Domain events are primarily internal to a bounded context.
-- Other contexts should receive an intentionally designed integration event, not
-  the domain object's private representation.
-- Explain translation, stable contracts, and why event names alone do not create
-  decoupling.
-- Domain and integration events
-- Keeping the command and its consequences loosely coupled is also what later lets us turn these logical boundaries into physical ones, evolving toward a service-oriented architecture.
+Domain events describe facts within a **bounded context** and may reflect its internal language and model. Other bounded contexts should not consume those events directly, because doing so turns internal details into shared contracts.
+
+When a fact must cross that boundary, translate it into an intentionally designed **integration event** containing only what external consumers should depend on. Domain and integration events may describe the same occurrence, but they serve different audiences and should evolve independently.
 
 ## Do not overdo it
 
-- Do not create an event for every setter or database update.
-- Prefer direct collaboration when there is no meaningful domain fact or policy
-  boundary.
-- Avoid using domain events to hide a dependency that should be explicit.
+Not every state change deserves an event. Events are useful when a change represents a meaningful domain fact and one or more policies need to react to it. Creating an event for every setter or database update produces noise rather than a useful model.
+
+Prefer a direct call when the dependency is part of one clear operation and gains nothing from being separated. Events should expose meaningful facts, not hide dependencies that would be easier to understand if they were explicit.
 
 ## Closing
 
-- Recap: model meaningful facts first; choose handlers and transport second.
-- Return to the example and show how its causal flow reads in domain language.
-- Point to further areas worth exploring: eventual consistency as a first-class
-  design concern, and event sourcing as a way to treat events as the source of truth.
-- Tease the next post: making cross-boundary reactions reliable.
+Our original script mixed one decision with all of its consequences. Modeled with events, its causal flow becomes:
+
+```text
+PlaceOrder
+  -> OrderPlaced
+     -> Send confirmation
+     -> Notify fulfilment
+     -> Record in analytics
+```
+
+Start with the fact the domain cares about. Record it where the decision is made, react through focused policies, and choose the delivery mechanism only after the transaction and consistency requirements are clear.
+
+Domain events do not make failures or coupling disappear. They make those concerns visible at the right boundaries.
+
+Several related topics sit beyond the scope of this article. Reliable cross-process delivery requires patterns such as a transactional outbox, retries, idempotent consumers, and observability. Longer event chains raise questions about ordering, eventual consistency, and coordination through process managers or sagas. Event sourcing goes further still by using events as the source of state rather than as notifications about state changes. Each builds on the distinctions made here, but solves a different problem.
