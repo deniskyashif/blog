@@ -6,6 +6,7 @@ googleAnalytics = "G-X7Z9LV9QY4"
 
 
 [Params]
+hideDarkModeToggle = true
 author = { name = "Denis Kyashif", homepage = "https://deniskyashif.com" }
 css = [
   "https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700",
