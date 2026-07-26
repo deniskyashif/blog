@@ -2,7 +2,7 @@
 title: "Modeling Facts and Reactions with Domain Events"
 date: 2026-07-25T08:14:19+03:00
 draft: false
-summary: "When something happens, something else should happen. Model that cleanly with domain events—decoupling facts from their consequences."
+summary: "How to decouple facts from their consequences."
 tags: ["software-architecture", "domain-driven-design"]
 editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/2026-07-25-ddd-domain-events.md"
 ---
