@@ -18,7 +18,7 @@
 				<link>https://deniskyashif.com/2026/07/25/modeling-facts-and-reactions-with-domain-events/</link>
 				<pubDate>Sat, 25 Jul 2026 08:14:19 +0300</pubDate>
 				<guid>https://deniskyashif.com/2026/07/25/modeling-facts-and-reactions-with-domain-events/</guid>
-				<description>When something happens, something else should happen. Model that cleanly with domain events—decoupling facts from their consequences.</description>
+				<description>How to decouple facts from their consequences.</description>
 			</item>
 			<item>
 				<title>The Domain Model Pattern in Practice</title>
