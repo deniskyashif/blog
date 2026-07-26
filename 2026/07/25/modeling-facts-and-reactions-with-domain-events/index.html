@@ -119,7 +119,7 @@
 
 
 
-		<p>Most business logic eventually falls down to the following shape:</p>
+		<p>Most business logic eventually boils down to the following shape:</p>
 <blockquote>
 <p>When something happens, something else should happen.</p>
 </blockquote>
@@ -149,9 +149,9 @@
 </blockquote>
 <p>Then record the domain fact in one place, allowing each consequence to react to it independently.</p>
 <h2 id="domain-events-describe-facts">Domain events describe facts</h2>
-<p>An order being placed is a fact in the domain. A domain event records such a fact in the language the business uses. It is not an instruction to perform work, e.g. <code>SendConfirmationEmail</code> describes a technical task, while <code>OrderPlaced</code> describes something that has already happened.</p>
+<p>An order being placed is a fact in the domain. A domain event records such a fact in the language the business uses. It is not an instruction to perform work: <code>SendConfirmationEmail</code> describes a technical task, while <code>OrderPlaced</code> describes something that has already happened.</p>
 <p>Events are named in the <strong>past tense</strong> because they are historical records. A handler cannot reject <code>OrderPlaced</code>; it can only decide how to react. For the same reason, an event should be <strong>immutable</strong>. If the order later changes, that is a new fact and may warrant a new event rather than a revision of the old one.</p>
-<p>An event needs enough information to identify and understand the fact. That usually includes the affected entity, relevant values at the time, and when the event occurred. The exact payload is a design choice: a handler may use identifiers to query a read model, while a self-contained event may carry a snapshot of the values handlers need. Avoid exposing the aggregate&rsquo;s internal representation merely for convenience. As a rule of thumb, prefer lean events, unless you have a clear justification to do so otherwise.</p>
+<p>An event needs enough information to identify and understand the fact. That usually includes the affected entity, relevant values at the time, and when the event occurred. The exact payload is a design choice: a handler may use identifiers to query a read model, while a self-contained event may carry a snapshot of the values handlers need. Avoid exposing the aggregate&rsquo;s internal representation merely for convenience. As a rule of thumb, prefer lean events, unless you have a clear reason not to.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">OrderPlaced
 </span></span><span class="line"><span class="cl">  orderId
 </span></span><span class="line"><span class="cl">  customerId
@@ -175,7 +175,7 @@
 </span></span><span class="line"><span class="cl">unitOfWork.commit()   // the domain fact becomes durable
 </span></span></code></pre></div><p>This resolves another issue with our original transaction script. Whether an order comes from checkout, an admin tool, or a data import, every path through <code>Order.place</code> records the same fact. Adding analytics or fulfillment later no longer requires updating every caller.</p>
 <h2 id="react-to-events-with-handlers">React to events with handlers</h2>
-<p>Recording a fact and reacting to it are separate responsibilities. The aggregate knows that an order was placed, but nothing about email, fulfillment, or analytics. Those reactions live in <strong>event handlers</strong>, with each handler implementing its own behavior with a single responsiblity:</p>
+<p>Recording a fact and reacting to it are separate responsibilities. The aggregate knows that an order was placed, but nothing about email, fulfillment, or analytics. Those reactions live in <strong>event handlers</strong>, with each handler implementing its own behavior with a single responsibility:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">class SendConfirmationEmail:
 </span></span><span class="line"><span class="cl">  handle(OrderPlaced event):
 </span></span><span class="line"><span class="cl">    email = buildConfirmation(event.orderId)
@@ -309,7 +309,7 @@
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2026-07-26 16:47:23.612957 &#43;0300 EEST m=&#43;0.092551459">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2026-07-26 16:49:02.638034 &#43;0300 EEST m=&#43;0.091546835">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
