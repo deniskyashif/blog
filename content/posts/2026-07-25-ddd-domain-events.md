@@ -148,15 +148,15 @@ class ReserveStock:
     unitOfWork.commit()   // failure handling omitted for brevity
 ```
 
-This is a **second transaction**, not an extension of the first. For a brief period the order exists but stock is not yet reserved: the two aggregates are **eventually consistent**. A single transaction across both may sometimes be justified, but it couples their lifecycles. As a rule of thumb, follow the one-aggregate-per-transaction guideline and model the gap explicitly instead.
+This is a **second transaction**, not an extension of the first. For a brief period the order exists but stock is not yet reserved: the two aggregates are **eventually consistent**. A single transaction across both may sometimes be justified, but it couples their lifecycles. As a rule of thumb, follow the one-aggregate-per-transaction guideline and model the gap explicitly instead. Having to update two aggregates within a single transaction might indicate a deeper problem within our domain model's design.
 
 If these reactions are later processed asynchronously, this design also improves availability: Ordering can continue accepting orders while Inventory resolves shortages, because unavailable stock delays fulfillment rather than causing the order itself to be rejected.
 
-<img src="/images/posts/2026-07-25-ddd-domain-events/2.svg" style="max-width: 600px; margin-top: 20px; margin-bottom: 15px" alt="An aggregate event triggers a change in another aggregate." />
+<img src="/images/posts/2026-07-25-ddd-domain-events/2.svg" style="width: 600px; margin-top: 20px; margin-bottom: 15px" alt="An aggregate event triggers a change in another aggregate." />
 
-The command against `Inventory` may produce `InventoryReserved`, which can trigger further policies. Such chains are legitimate, but every hop adds another failure point and makes the causal flow harder to follow. Hence, it's important to keep the event chains short, handlers focused, and operations idempotent.
+The command against `Inventory` may produce `InventoryReserved`, which can trigger further policies. Such chains are legitimate, but every hop adds another failure point and makes the causal flow harder to follow. Hence, it's important to keep the event chains short, handlers focused, and operations [idempotent](https://en.wikipedia.org/wiki/Idempotence).
 
-## Crossing bounded-context boundaries
+## Crossing context boundaries
 
 The inventory example crossed an aggregate boundary while remaining inside one bounded context. `OrderPlaced` could therefore be handled using Ordering's own domain language and an in-process dispatcher. Now suppose the fulfillment department from our original workflow is represented by its own Fulfillment context.
 
@@ -164,7 +164,7 @@ Crossing into another bounded context is different. A domain event belongs to th
 
 <img src="/images/posts/2026-07-25-ddd-domain-events/3.svg" style="margin-top: 20px; margin-bottom: 15px" alt="Integration event across bounded contexts" />
 
-`OrderReadyForFulfillment` is an **integration event**: Fulfillment consumes it at the boundary and translates it into its own local command or behavior, such as `PrepareOrder`. It does not need to understand Ordering's aggregates or internal event model. This translation need not be one-to-one: a context may combine several domain facts and invoke different behaviors for different consumers.
+`OrderReadyForFulfillment` is an **integration event**: Fulfillment consumes it at the boundary and translates it into its own local command or behavior, such as `PrepareOrder`. It does not need to understand Ordering's aggregates or internal event model. This translation doesn't need to be one-to-one. A context may combine several domain facts and invoke different behaviors for different consumers.
 
 Bounded contexts are often deployed as separate processes or services, although they do not have to be. When they are, integration events are typically delivered asynchronously through messaging infrastructure such as Kafka, RabbitMQ, or Azure Service Bus. Unlike the in-process dispatcher shown earlier, this introduces serialization, delivery failures, duplicates, and versioned contracts. Reliable publication usually requires a [transactional outbox](https://en.wikipedia.org/wiki/Inbox_and_outbox_pattern) or an equivalent mechanism.
 
@@ -176,4 +176,4 @@ Prefer a direct call, via domain or application services, when the dependency is
 
 ## Conclusion
 
-As a rule of thumb, start with the fact the business cares about. Raise the domain event where the decision is made, react through focused handlers, and translate it into an integration event when crossing a bounded-context boundary. Choose synchronous or durable asynchronous delivery only after the transaction, consistency, and failure requirements are clear.
+As a rule of thumb, start with the fact the business cares about. Raise the domain event where the decision is made, react through focused handlers, and translate it into an integration event when crossing boundaries. Choose between synchronous or durable asynchronous delivery only after the transaction, consistency, and failure requirements are clear.
