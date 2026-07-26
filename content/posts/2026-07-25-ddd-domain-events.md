@@ -116,21 +116,9 @@ class RecordInAnalytics:
 
 Each policy reads as "when this happened, do that." Handlers do not know about one another and can be added without changing the model that raised the event. The ordered list of unrelated work becomes a set of focused reactions, each able to have its own failure and retry behaviour.
 
-```text
-                         +--------------------+
-                     +-->+ Send confirmation  |
-                     |   +--------------------+
-                     |
-+-------------+      |   +--------------------+
-| OrderPlaced +------+-->+ Notify fulfilment  |
-+-------------+      |   +--------------------+
-                     |
-                     |   +--------------------+
-                     +-->+ Record analytics   |
-                         +--------------------+
-```
-
 ### Who calls the handlers?
+
+<img src="/images/posts/2026-07-25-ddd-domain-events/1.svg" width="450px" alt="Order placed event being dispatched to its handlers" />
 
 The aggregate collects events but never dispatches them. Infrastructure must route them to matching handlers. For an in-process implementation, the unit of work is a natural place to do this because it knows which aggregates participated and whether the transaction committed:
 
@@ -149,7 +137,7 @@ Handlers run **after** the producing transaction. An email failure should not un
 
 ## Crossing aggregate boundaries
 
-A handler that changes another aggregate should invoke that aggregate's behavior rather than mutate its state directly. The receiving aggregate must still enforce its own invariants. To reserve stock after an order is placed, a handler loads `Inventory`, asks it to reserve the items, and commits a new unit of work:
+A handler that triggers side effects within one or more other aggregates should invoke that aggregate's behavior rather than mutate its state directly. The receiving aggregate must still enforce its own invariants. To reserve stock after an order is placed, a handler loads `Inventory`, asks it to reserve the items, and commits a new unit of work:
 
 ```text
 class ReserveStock:
@@ -161,21 +149,7 @@ class ReserveStock:
 
 This is a **second transaction**, not an extension of the first. For a brief period the order exists but stock is not yet reserved: the two aggregates are **eventually consistent**. A single transaction across both may sometimes be justified, but it couples their lifecycles. The [one-aggregate-per-transaction](https://www.dddcommunity.org/library/vernon_2011/) guideline encourages us to model the gap explicitly instead.
 
-```text
-Transaction 1                         Transaction 2
-
-+-------------------+                 +---------------------+
-| Order.place(...)  |                 | Inventory.reserve() |
-| raise OrderPlaced |                 | change stock        |
-| save Order        |                 | save Inventory      |
-+---------+---------+                 +----------+----------+
-          |                                      ^
-        commit                                   |
-          |                                      |
-          +-------- OrderPlaced handler ---------+
-
-          <--- eventual-consistency window --->
-```
+<img src="/images/posts/2026-07-25-ddd-domain-events/2.svg" width="500px" style="margin-top: 20px; margin-bottom: 15px" alt="An aggregate event triggers a change in another aggregate." />
 
 The command against `Inventory` may produce `InventoryReserved`, which can trigger further policies. Such chains are legitimate, but every hop adds another failure point and makes the causal flow harder to follow. Keep chains short, handlers focused, and operations idempotent.
 
