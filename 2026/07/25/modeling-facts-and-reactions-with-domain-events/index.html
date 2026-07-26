@@ -211,21 +211,21 @@
 </span></span><span class="line"><span class="cl">      inventory = inventoryRepository.get(itemId)
 </span></span><span class="line"><span class="cl">      inventory.reserve(event.orderId)   // may raise InventoryReserved
 </span></span><span class="line"><span class="cl">    unitOfWork.commit()   // failure handling omitted for brevity
-</span></span></code></pre></div><p>This is a <strong>second transaction</strong>, not an extension of the first. For a brief period the order exists but stock is not yet reserved: the two aggregates are <strong>eventually consistent</strong>. A single transaction across both may sometimes be justified, but it couples their lifecycles. As a rule of thumb, follow the one-aggregate-per-transaction guideline and model the gap explicitly instead.</p>
+</span></span></code></pre></div><p>This is a <strong>second transaction</strong>, not an extension of the first. For a brief period the order exists but stock is not yet reserved: the two aggregates are <strong>eventually consistent</strong>. A single transaction across both may sometimes be justified, but it couples their lifecycles. As a rule of thumb, follow the one-aggregate-per-transaction guideline and model the gap explicitly instead. Having to update two aggregates within a single transaction might indicate a deeper problem within our domain model&rsquo;s design.</p>
 <p>If these reactions are later processed asynchronously, this design also improves availability: Ordering can continue accepting orders while Inventory resolves shortages, because unavailable stock delays fulfillment rather than causing the order itself to be rejected.</p>
-<img src="/images/posts/2026-07-25-ddd-domain-events/2.svg" style="max-width: 600px; margin-top: 20px; margin-bottom: 15px" alt="An aggregate event triggers a change in another aggregate." />
-<p>The command against <code>Inventory</code> may produce <code>InventoryReserved</code>, which can trigger further policies. Such chains are legitimate, but every hop adds another failure point and makes the causal flow harder to follow. Hence, it&rsquo;s important to keep the event chains short, handlers focused, and operations idempotent.</p>
-<h2 id="crossing-bounded-context-boundaries">Crossing bounded-context boundaries</h2>
+<img src="/images/posts/2026-07-25-ddd-domain-events/2.svg" style="width: 600px; margin-top: 20px; margin-bottom: 15px" alt="An aggregate event triggers a change in another aggregate." />
+<p>The command against <code>Inventory</code> may produce <code>InventoryReserved</code>, which can trigger further policies. Such chains are legitimate, but every hop adds another failure point and makes the causal flow harder to follow. Hence, it&rsquo;s important to keep the event chains short, handlers focused, and operations <a href="https://en.wikipedia.org/wiki/Idempotence">idempotent</a>.</p>
+<h2 id="crossing-context-boundaries">Crossing context boundaries</h2>
 <p>The inventory example crossed an aggregate boundary while remaining inside one bounded context. <code>OrderPlaced</code> could therefore be handled using Ordering&rsquo;s own domain language and an in-process dispatcher. Now suppose the fulfillment department from our original workflow is represented by its own Fulfillment context.</p>
 <p>Crossing into another bounded context is different. A domain event belongs to the model that produced it: its name and payload may expose assumptions that make sense inside Ordering but should not become dependencies of Fulfillment.</p>
 <img src="/images/posts/2026-07-25-ddd-domain-events/3.svg" style="margin-top: 20px; margin-bottom: 15px" alt="Integration event across bounded contexts" />
-<p><code>OrderReadyForFulfillment</code> is an <strong>integration event</strong>: Fulfillment consumes it at the boundary and translates it into its own local command or behavior, such as <code>PrepareOrder</code>. It does not need to understand Ordering&rsquo;s aggregates or internal event model. This translation need not be one-to-one: a context may combine several domain facts and invoke different behaviors for different consumers.</p>
+<p><code>OrderReadyForFulfillment</code> is an <strong>integration event</strong>: Fulfillment consumes it at the boundary and translates it into its own local command or behavior, such as <code>PrepareOrder</code>. It does not need to understand Ordering&rsquo;s aggregates or internal event model. This translation doesn&rsquo;t need to be one-to-one. A context may combine several domain facts and invoke different behaviors for different consumers.</p>
 <p>Bounded contexts are often deployed as separate processes or services, although they do not have to be. When they are, integration events are typically delivered asynchronously through messaging infrastructure such as Kafka, RabbitMQ, or Azure Service Bus. Unlike the in-process dispatcher shown earlier, this introduces serialization, delivery failures, duplicates, and versioned contracts. Reliable publication usually requires a <a href="https://en.wikipedia.org/wiki/Inbox_and_outbox_pattern">transactional outbox</a> or an equivalent mechanism.</p>
 <h2 id="dont-overdo-it">Don&rsquo;t overdo it</h2>
 <p>Not every state change deserves an event. Events are useful when a change represents a meaningful domain fact and one or more consumers need to react to it. Creating an event for every setter or database update produces noise rather than a useful model.</p>
 <p>Prefer a direct call, via domain or application services, when the dependency is part of one clear operation and gains nothing from being separated. Events should expose meaningful facts, not hide dependencies that would be easier to understand if they were explicit.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>As a rule of thumb, start with the fact the business cares about. Raise the domain event where the decision is made, react through focused handlers, and translate it into an integration event when crossing a bounded-context boundary. Choose synchronous or durable asynchronous delivery only after the transaction, consistency, and failure requirements are clear.</p>
+<p>As a rule of thumb, start with the fact the business cares about. Raise the domain event where the decision is made, react through focused handlers, and translate it into an integration event when crossing boundaries. Choose between synchronous or durable asynchronous delivery only after the transaction, consistency, and failure requirements are clear.</p>
 
 
 		<section class="social-share">
@@ -290,7 +290,7 @@
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2026-07-26 10:47:38.214835 &#43;0300 EEST m=&#43;0.089767126">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2026-07-26 11:10:27.212938 &#43;0300 EEST m=&#43;0.104874376">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
