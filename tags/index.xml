@@ -10,28 +10,28 @@
 		
 		
 		
-			<lastBuildDate>Tue, 14 Apr 2026 10:11:06 +0300</lastBuildDate>
+			<lastBuildDate>Sat, 25 Jul 2026 08:14:19 +0300</lastBuildDate>
 		
 			<atom:link href="https://deniskyashif.com/tags/index.xml" rel="self" type="application/rss+xml" />
 			<item>
-				<title>Csharp</title>
-				<link>https://deniskyashif.com/tags/csharp/</link>
-				<pubDate>Tue, 14 Apr 2026 10:11:06 +0300</pubDate>
-				<guid>https://deniskyashif.com/tags/csharp/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>Domain-Driven-Design</title>
 				<link>https://deniskyashif.com/tags/domain-driven-design/</link>
-				<pubDate>Tue, 14 Apr 2026 10:11:06 +0300</pubDate>
+				<pubDate>Sat, 25 Jul 2026 08:14:19 +0300</pubDate>
 				<guid>https://deniskyashif.com/tags/domain-driven-design/</guid>
 				<description></description>
 			</item>
 			<item>
 				<title>Software-Architecture</title>
 				<link>https://deniskyashif.com/tags/software-architecture/</link>
-				<pubDate>Tue, 14 Apr 2026 10:11:06 +0300</pubDate>
+				<pubDate>Sat, 25 Jul 2026 08:14:19 +0300</pubDate>
 				<guid>https://deniskyashif.com/tags/software-architecture/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Csharp</title>
+				<link>https://deniskyashif.com/tags/csharp/</link>
+				<pubDate>Tue, 14 Apr 2026 10:11:06 +0300</pubDate>
+				<guid>https://deniskyashif.com/tags/csharp/</guid>
 				<description></description>
 			</item>
 			<item>

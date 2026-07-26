@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+		
+		
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-X7Z9LV9QY4"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-X7Z9LV9QY4');
+        }
+      </script>
+		
+		<meta property="og:url" content="https://deniskyashif.com/2026/07/25/modeling-facts-and-reactions-with-domain-events/">
+	<meta property="og:site_name" content="Denis Kyashif&#39;s Blog">
+	<meta property="og:title" content="Modeling Facts and Reactions with Domain Events">
+	<meta property="og:description" content="Learn how to model domain events, raise them from aggregates, and react through focused handlers without coupling facts to their consequences.">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2026-07-25T08:14:19+03:00">
+		<meta property="article:modified_time" content="2026-07-25T08:14:19+03:00">
+		<meta property="article:tag" content="Software-Architecture">
+		<meta property="article:tag" content="Domain-Driven-Design">
+		<meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png">
+
+	
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Modeling Facts and Reactions with Domain Events &middot; Denis Kyashif&#39;s Blog</title>
+
+		
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/fonts.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre&#43;Baskerville:400,400i,700">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto&#43;Sans:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/assets/my.css">
+		
+		<link rel="icon" href="/favicon.ico"/>
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+		
+		<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
+
+		<script src="/js/darkmode.js"></script>
+	</head>
+
+    <body>
+        <a href="https://github.com/deniskyashif/blog" class="github-corner" target="_blank" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#4a9ae1; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<nav class="nav">
+	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
+		<ul>
+    <li><a href="/">Posts</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/about">About</a></li>
+</ul>
+
+	</div>
+</nav>
+<div id="darkModeToggle" onclick="toggleDarkMode()">
+  &#9680; 
+</div>
+
+        
+
+<main>
+	
+
+
+        <div class="post">
+		<div class="post-info">
+    <time datetime="2026-07-25 08:14:19 &#43;0300 EEST">July 25, 2026</time>
+    |
+    <a href="https://github.com/deniskyashif/blog/blob/main/content/posts/2026-07-25-ddd-domain-events.md" target="_blank">
+        <i class="fa fa-edit"></i>&nbsp;Edit
+    </a>
+
+    
+    <div class="tags">
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/software-architecture/" class="tag">software-architecture</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/domain-driven-design/" class="tag">domain-driven-design</a>
+        
+        
+    </div>
+</div>
+
+		<h1 class="post-title">Modeling Facts and Reactions with Domain Events</h1>
+<div class="post-line"></div>
+
+		
+
+<div class="series-disclaimer" role="note" aria-label="Series disclaimer">
+  <p>
+    This article is a part of an ongoing series on Domain-Driven Design.<br />You can check out the rest of the series <a href="/tags/domain-driven-design/">here</a>.
+  </p>
+</div>
+
+
+
+		<p>Most business logic eventually runs into the same shape:</p>
+<blockquote>
+<p>When something happens, something else should happen.</p>
+</blockquote>
+<p>In this article we look at <strong>domain events</strong>: a way to record what happened, and let each consequence react to it independently, without the fact having to know about any of them.</p>
+<h2 id="the-problem">The problem</h2>
+<p>Consider this simple workflow.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">placeOrder(...)
+</span></span><span class="line"><span class="cl">save(order)
+</span></span><span class="line"><span class="cl">sendConfirmationEmailToClient(order)
+</span></span></code></pre></div><p>For a simple application, defining this in a <a href="https://martinfowler.com/eaaCatalog/transactionScript.html">transaction script</a> makes sense. Zoom in a little, however, and the code tells another story. The important domain fact is that an order was placed. Sending a confirmation email is a consequence of that fact, not part of the fact itself.</p>
+<p>Coupling facts and consequences creates several potential issues with our design. Let&rsquo;s update our requirements:</p>
+<ul>
+<li>We want placing the order to also notify our fulfillment department.</li>
+<li>We want this order to be recorded in analytics.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">placeOrder(...)
+</span></span><span class="line"><span class="cl">save(order)
+</span></span><span class="line"><span class="cl">sendConfirmationEmailToClient(order)
+</span></span><span class="line"><span class="cl">notifyFulfillment(order)
+</span></span><span class="line"><span class="cl">updateAnalytics(order)
+</span></span></code></pre></div><p>Now we have an ordered list of unrelated work that grows as our system gets more complex. It obscures the domain fact that an order was placed and makes it harder to see which consequences are essential.</p>
+<p>It also couples the customer-facing request to external systems. The order may be saved successfully while email delivery, fulfillment notification, or analytics fails. These operations cannot usually be made atomic with the order write, despite being grouped in the same script. Reporting the whole operation as failed can mislead the customer into placing a duplicate order, whereas reporting it as successful can leave follow-up work unfinished. Each consequence needs its own error handling, retries, and fault tolerance.</p>
+<p>There is a subtler problem too. Placing an order may not happen in just one place, so we have to remember to include the same set of subsequent actions at every call site.</p>
+<p>There must be a better way to handle this. To get there, we must first ask:</p>
+<blockquote>
+<p>What happened, and who needs to know?</p>
+</blockquote>
+<p>Then record the domain fact in one place, allowing each consequence to react to it independently.</p>
+<h2 id="domain-events-describe-facts">Domain events describe facts</h2>
+<p>An order being placed is a fact in the domain. A domain event records such a fact in the language the business uses. It is not an instruction to perform work: <code>SendConfirmationEmail</code> describes a technical task, while <code>OrderPlaced</code> describes something that has already happened.</p>
+<p>Events are named in the <strong>past tense</strong> because they are historical records. A handler cannot reject <code>OrderPlaced</code>; it can only decide how to react. For the same reason, an event should be <strong>immutable</strong>. If the order later changes, that is a new fact and may warrant a new event rather than a revision of the old one.</p>
+<p>An event needs enough information to identify and understand the fact. That usually includes the affected entity, relevant values at the time, and when the event occurred. The exact payload is a design choice: a handler may use identifiers to query a read model, while a self-contained event may carry a snapshot of the values handlers need. Avoid exposing the aggregate&rsquo;s internal representation merely for convenience. As a rule of thumb, prefer lean events, unless you have a clear justification to do otherwise.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">OrderPlaced
+</span></span><span class="line"><span class="cl">  orderId
+</span></span><span class="line"><span class="cl">  customerId
+</span></span><span class="line"><span class="cl">  items
+</span></span><span class="line"><span class="cl">  placedAt
+</span></span></code></pre></div><p>This is also what distinguishes an <strong>event</strong> from a <strong>command</strong>. A command expresses intent: <code>PlaceOrder</code> asks the model to do something and can be refused. An event records the outcome: once the model accepts that command, <code>OrderPlaced</code> records the decision. The event is raised in memory at that point, the fact becomes durable when the transaction commits, and the event can then be dispatched to interested handlers.</p>
+<h2 id="raise-events-where-the-decision-is-made">Raise events where the decision is made</h2>
+<p>The place to record a fact is where the fact becomes true. In a rich domain model, that is the aggregate or domain operation that enforces the relevant rules. <code>OrderPlaced</code> does not mean merely that a row was inserted. It means the model accepted the request and satisfied its invariants, so the event belongs to that decision.</p>
+<p>The sequence is: validate the rules, change the state, then record the event. The aggregate keeps the event alongside its state until the <a href="https://martinfowler.com/eaaCatalog/unitOfWork.html">unit of work</a> collects it.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">class Order:
+</span></span><span class="line"><span class="cl">  events = []
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  static place(customerId, items):
+</span></span><span class="line"><span class="cl">    if items is empty: reject
+</span></span><span class="line"><span class="cl">    order = new Order(customerId, items)
+</span></span><span class="line"><span class="cl">    order.events.add(OrderPlaced(order.id, customerId, items.ids, now))
+</span></span><span class="line"><span class="cl">    return order
+</span></span></code></pre></div><p>Nothing outside the aggregate constructs <code>OrderPlaced</code>. The application service asks the model to do the work and persists the result:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">order = Order.place(customerId, items)
+</span></span><span class="line"><span class="cl">repository.add(order)
+</span></span><span class="line"><span class="cl">unitOfWork.commit()   // the domain fact becomes durable
+</span></span></code></pre></div><p>This resolves another issue with our original transaction script. Whether an order comes from checkout, an admin tool, or a data import, every path through <code>Order.place</code> records the same fact. Adding analytics or fulfillment later no longer requires updating every caller.</p>
+<h2 id="react-to-events-with-handlers">React to events with handlers</h2>
+<p>Recording a fact and reacting to it are separate responsibilities. The aggregate knows that an order was placed, but nothing about email, fulfillment, or analytics. Those reactions live in <strong>event handlers</strong>, with each handler implementing one policy:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">class SendConfirmationEmail:
+</span></span><span class="line"><span class="cl">  handle(OrderPlaced event):
+</span></span><span class="line"><span class="cl">    email = buildConfirmation(event.orderId)
+</span></span><span class="line"><span class="cl">    mailer.send(email)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class NotifyFulfillment:
+</span></span><span class="line"><span class="cl">  handle(OrderPlaced event):
+</span></span><span class="line"><span class="cl">    fulfillment.startFor(event.orderId)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class RecordInAnalytics:
+</span></span><span class="line"><span class="cl">  handle(OrderPlaced event):
+</span></span><span class="line"><span class="cl">    analytics.track(&#34;order_placed&#34;, event)
+</span></span></code></pre></div><p>Each handler reads as &ldquo;when this happened, do that.&rdquo; Handlers do not know about one another and can be added without changing the model that raised the event. The ordered list of unrelated work becomes a set of independent actions, each able to have its own failure and retry behavior.</p>
+<h3 id="who-calls-the-handlers">Who calls the handlers?</h3>
+<img src="/images/posts/2026-07-25-ddd-domain-events/1.svg" width="450px" alt="Order placed event being dispatched to its handlers" />
+<p>The aggregate collects events but never dispatches them. Infrastructure must route them to matching handlers. For an in-process implementation, the unit of work is a natural place to do this because it knows which aggregates participated and whether the transaction committed:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">unitOfWork.commit():
+</span></span><span class="line"><span class="cl">  transaction:
+</span></span><span class="line"><span class="cl">    persist(trackedAggregates)
+</span></span><span class="line"><span class="cl">  events = collectEvents(trackedAggregates)
+</span></span><span class="line"><span class="cl">  for event in events:
+</span></span><span class="line"><span class="cl">    for handler in handlersFor(event):
+</span></span><span class="line"><span class="cl">      handler.handle(event)   // error handling and retries omitted for brevity
+</span></span><span class="line"><span class="cl">  clearEvents(trackedAggregates)
+</span></span></code></pre></div><blockquote>
+<p><strong>A note on execution:</strong> This refactoring improves separation, but the dispatcher remains synchronous: the request waits for every handler, and delivery is not durable. The naive loop above also lets one handler&rsquo;s failure affect the others, so each reaction needs its own error handling and retries. For asynchronous, reliable delivery, look into the <a href="https://en.wikipedia.org/wiki/Inbox_and_outbox_pattern">transactional outbox</a> pattern. Handlers should still be safe to repeat.</p>
+</blockquote>
+<h2 id="crossing-aggregate-boundaries">Crossing aggregate boundaries</h2>
+<p>Some handlers call external systems, while others initiate behavior elsewhere in the domain. A handler that triggers a change in another aggregate should invoke that aggregate&rsquo;s behavior rather than mutate its state directly. The receiving aggregate must still enforce its own invariants. For example, within the same bounded context, reserving stock after an order is placed requires a handler to load <code>Inventory</code>, ask it to reserve the items, and commit a new unit of work:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">class ReserveStock:
+</span></span><span class="line"><span class="cl">  handle(OrderPlaced event):
+</span></span><span class="line"><span class="cl">    for itemId in event.itemIds:
+</span></span><span class="line"><span class="cl">      inventory = inventoryRepository.get(itemId)
+</span></span><span class="line"><span class="cl">      inventory.reserve(event.orderId)   // may raise InventoryReserved
+</span></span><span class="line"><span class="cl">    unitOfWork.commit()   // failure handling omitted for brevity
+</span></span></code></pre></div><p>This is a <strong>second transaction</strong>, not an extension of the first. For a brief period the order exists but stock is not yet reserved: the two aggregates are <strong>eventually consistent</strong>. A single transaction across both may sometimes be justified, but it couples their lifecycles. As a rule of thumb, follow the one-aggregate-per-transaction guideline and model the gap explicitly instead.</p>
+<p>If these reactions are later processed asynchronously, this design also improves availability: Ordering can continue accepting orders while Inventory resolves shortages, because unavailable stock delays fulfillment rather than causing the order itself to be rejected.</p>
+<img src="/images/posts/2026-07-25-ddd-domain-events/2.svg" style="max-width: 600px; margin-top: 20px; margin-bottom: 15px" alt="An aggregate event triggers a change in another aggregate." />
+<p>The command against <code>Inventory</code> may produce <code>InventoryReserved</code>, which can trigger further policies. Such chains are legitimate, but every hop adds another failure point and makes the causal flow harder to follow. Hence, it&rsquo;s important to keep the event chains short, handlers focused, and operations idempotent.</p>
+<h2 id="crossing-bounded-context-boundaries">Crossing bounded-context boundaries</h2>
+<p>The inventory example crossed an aggregate boundary while remaining inside one bounded context. <code>OrderPlaced</code> could therefore be handled using Ordering&rsquo;s own domain language and an in-process dispatcher. Now suppose the fulfillment department from our original workflow is represented by its own Fulfillment context.</p>
+<p>Crossing into another bounded context is different. A domain event belongs to the model that produced it: its name and payload may expose assumptions that make sense inside Ordering but should not become dependencies of Fulfillment.</p>
+<img src="/images/posts/2026-07-25-ddd-domain-events/3.svg" style="margin-top: 20px; margin-bottom: 15px" alt="Integration event across bounded contexts" />
+<p><code>OrderReadyForFulfillment</code> is an <strong>integration event</strong>: Fulfillment consumes it at the boundary and translates it into its own local command or behavior, such as <code>PrepareOrder</code>. It does not need to understand Ordering&rsquo;s aggregates or internal event model. This translation need not be one-to-one: a context may combine several domain facts and invoke different behaviors for different consumers.</p>
+<p>Bounded contexts are often deployed as separate processes or services, although they do not have to be. When they are, integration events are typically delivered asynchronously through messaging infrastructure such as Kafka, RabbitMQ, or Azure Service Bus. Unlike the in-process dispatcher shown earlier, this introduces serialization, delivery failures, duplicates, and versioned contracts. Reliable publication usually requires a <a href="https://en.wikipedia.org/wiki/Inbox_and_outbox_pattern">transactional outbox</a> or an equivalent mechanism.</p>
+<h2 id="dont-overdo-it">Don&rsquo;t overdo it</h2>
+<p>Not every state change deserves an event. Events are useful when a change represents a meaningful domain fact and one or more consumers need to react to it. Creating an event for every setter or database update produces noise rather than a useful model.</p>
+<p>Prefer a direct call, via domain or application services, when the dependency is part of one clear operation and gains nothing from being separated. Events should expose meaningful facts, not hide dependencies that would be easier to understand if they were explicit.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>As a rule of thumb, start with the fact the business cares about. Raise the domain event where the decision is made, react through focused handlers, and translate it into an integration event when crossing a bounded-context boundary. Choose synchronous or durable asynchronous delivery only after the transaction, consistency, and failure requirements are clear.</p>
+
+
+		<section class="social-share">
+    
+    
+    <a href="mailto:?subject=Check out 'Modeling%20Facts%20and%20Reactions%20with%20Domain%20Events' by Denis%20Kyashif&amp;body=https%3a%2f%2fdeniskyashif.com%2f2026%2f07%2f25%2fmodeling-facts-and-reactions-with-domain-events%2f" target="_blank" class="share-btn email" title="Share via Email" aria-label="Share via Email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    
+    
+    
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fdeniskyashif.com%2f2026%2f07%2f25%2fmodeling-facts-and-reactions-with-domain-events%2f&amp;title=Modeling%20Facts%20and%20Reactions%20with%20Domain%20Events" target="_blank" class="share-btn linkedin" title="Share on LinkedIn" aria-label="Share on LinkedIn">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="//reddit.com/submit?url=https%3a%2f%2fdeniskyashif.com%2f2026%2f07%2f25%2fmodeling-facts-and-reactions-with-domain-events%2f&amp;title=Modeling%20Facts%20and%20Reactions%20with%20Domain%20Events" target="_blank" class="share-btn reddit" title="Share on Reddit" aria-label="Share on Reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    
+    
+    
+    <a href="//news.ycombinator.com/submitlink?u=https%3a%2f%2fdeniskyashif.com%2f2026%2f07%2f25%2fmodeling-facts-and-reactions-with-domain-events%2f&amp;t=Modeling%20Facts%20and%20Reactions%20with%20Domain%20Events" target="_blank" class="share-btn hacker-news" title="Share on Hacker News" aria-label="Share on Hacker News">
+        <i class="fa fa-2x fa-hacker-news"></i>
+    </a>
+    
+    
+    
+    <a href="//lobste.rs/stories/new?url=https%3a%2f%2fdeniskyashif.com%2f2026%2f07%2f25%2fmodeling-facts-and-reactions-with-domain-events%2f&amp;title=Modeling%20Facts%20and%20Reactions%20with%20Domain%20Events" target="_blank" class="share-btn lobsters" title="Share on Lobsters" aria-label="Share on Lobsters">
+        <span class="share-glyph" aria-hidden="true">L</span>
+    </a>
+    
+     
+    
+    <a href="https://bsky.app/intent/compose?text=Modeling%20Facts%20and%20Reactions%20with%20Domain%20Events https%3a%2f%2fdeniskyashif.com%2f2026%2f07%2f25%2fmodeling-facts-and-reactions-with-domain-events%2f" target="_blank" class="share-btn bluesky" title="Share on Bluesky" aria-label="Share on Bluesky">
+        <span class="share-glyph" aria-hidden="true">B</span>
+    </a>
+    
+    
+    
+    
+    
+</section>
+
+
+
+
+
+
+	</div>
+
+	<div class="pagination">
+		<a href="/2026/04/14/the-domain-model-pattern-in-practice/" class="left arrow">&#8592;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+</main>
+
+
+        <footer>
+	<span>
+		&copy;&nbsp;<time datetime="2026-07-26 10:39:18.614213 &#43;0300 EEST m=&#43;0.106443334">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+	</span>
+    <br/>
+</footer>
+
+    </body>
+</html>

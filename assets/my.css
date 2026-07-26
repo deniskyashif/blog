@@ -165,8 +165,18 @@ main .post .post-title {
     content: '\FF0A  ';
 }
 
+main {
+    font-family: "Noto Sans", sans-serif, "Helvetica Neue";
+}
+
 .post {
     padding-top: 1.5rem;
+}
+
+.post-info,
+.catalogue-time,
+.pagination {
+    font-family: "Noto Sans", sans-serif, "Helvetica Neue";
 }
 
 .series-disclaimer {
