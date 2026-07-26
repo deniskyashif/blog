@@ -1,0 +1,35 @@
+{{ define "main" }}
+
+<main>
+	{{ partial "toc.html" . }}
+
+        <div class="post">
+		{{ partial "single/post-info.html" . }}
+		{{ partial "single/title.html" . }}
+
+		{{ partial "single/header.html" . }}
+
+		{{ .Content }}
+
+		{{ partial "single/footer.html" . }}
+	</div>
+
+	<div class="pagination">
+		{{- if .Page.Prev }}
+		<a href="{{ .Page.Prev.RelPermalink }}" class="left arrow">&#8592;</a>
+		{{- end }}
+		{{- if .Page.Next }}
+		<a href="{{ .Page.Next.RelPermalink }}" class="right arrow">&#8594;</a>
+		{{- end }}
+
+		<a href="#" class="top">Top</a>
+	</div>
+
+	{{- if .Site.Params.enableComments }}
+	<div class="comments">
+		{{ partial "comments.html" . }}
+	</div>
+	{{- end }}
+</main>
+
+{{ end }}

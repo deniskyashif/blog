@@ -2,7 +2,6 @@ baseURL = "https://deniskyashif.com"
 locale = "en-us"
 title = "Denis Kyashif's Blog"
 theme = "tale"
-disqusShortname = "deniskyashif"
 googleAnalytics = "G-X7Z9LV9QY4"
 
 
@@ -25,7 +24,7 @@ socialShareEmail = true
 socialShareBluesky = true
 socialShareHackerNews = true
 socialShareLobsters = true
-enableComments = false
+enableComments = true
 
 [taxonomies]
   tags = "tags"
