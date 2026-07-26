@@ -7,7 +7,7 @@ tags: ["software-architecture", "domain-driven-design"]
 editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/2026-07-25-ddd-domain-events.md"
 ---
 
-Most business logic eventually falls down to the following shape:
+Most business logic eventually boils down to the following shape:
 
 > When something happens, something else should happen.
 
@@ -52,11 +52,11 @@ Then record the domain fact in one place, allowing each consequence to react to 
 
 ## Domain events describe facts
 
-An order being placed is a fact in the domain. A domain event records such a fact in the language the business uses. It is not an instruction to perform work, e.g. `SendConfirmationEmail` describes a technical task, while `OrderPlaced` describes something that has already happened.
+An order being placed is a fact in the domain. A domain event records such a fact in the language the business uses. It is not an instruction to perform work: `SendConfirmationEmail` describes a technical task, while `OrderPlaced` describes something that has already happened.
 
 Events are named in the **past tense** because they are historical records. A handler cannot reject `OrderPlaced`; it can only decide how to react. For the same reason, an event should be **immutable**. If the order later changes, that is a new fact and may warrant a new event rather than a revision of the old one.
 
-An event needs enough information to identify and understand the fact. That usually includes the affected entity, relevant values at the time, and when the event occurred. The exact payload is a design choice: a handler may use identifiers to query a read model, while a self-contained event may carry a snapshot of the values handlers need. Avoid exposing the aggregate's internal representation merely for convenience. As a rule of thumb, prefer lean events, unless you have a clear justification to do so otherwise.
+An event needs enough information to identify and understand the fact. That usually includes the affected entity, relevant values at the time, and when the event occurred. The exact payload is a design choice: a handler may use identifiers to query a read model, while a self-contained event may carry a snapshot of the values handlers need. Avoid exposing the aggregate's internal representation merely for convenience. As a rule of thumb, prefer lean events, unless you have a clear reason not to.
 
 ```text
 OrderPlaced
@@ -97,7 +97,7 @@ This resolves another issue with our original transaction script. Whether an ord
 
 ## React to events with handlers
 
-Recording a fact and reacting to it are separate responsibilities. The aggregate knows that an order was placed, but nothing about email, fulfillment, or analytics. Those reactions live in **event handlers**, with each handler implementing its own behavior with a single responsiblity:
+Recording a fact and reacting to it are separate responsibilities. The aggregate knows that an order was placed, but nothing about email, fulfillment, or analytics. Those reactions live in **event handlers**, with each handler implementing its own behavior with a single responsibility:
 
 ```text
 class SendConfirmationEmail:
