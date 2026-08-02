@@ -1,10 +1,13 @@
 ---
-title: "Taking Domain Events Across Boundaries"
+title: "Crossing Boundaries with Integration Events"
 date: 2026-07-25T12:00:00+03:00
 draft: true
 summary: "How to turn internal domain facts into reliable contracts between bounded contexts."
 tags: ["software-architecture", "domain-driven-design", "distributed-systems"]
+editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/ddd-integration-events.md"
 ---
+
+This is a follow-up to [Modeling Facts and Reactions with Domain Events](/posts/2026-07-25-ddd-domain-events/), which ended by naming the transactional outbox and versioned contracts as open problems. Here we pick those up.
 
 Domain events describe meaningful facts inside a bounded context. But what happens when another context needs to know about one of those facts?
 
@@ -17,19 +20,19 @@ This article explores how to cross that boundary deliberately:
 ## The boundary changes the problem
 
 - Continue with `OrderPlaced` from the domain-events article.
-- Introduce a separate Fulfilment bounded context that needs to prepare the order.
+- Introduce a separate Fulfillment bounded context that needs to prepare the order.
 - Contrast an in-process handler with communication between independently owned contexts.
 - Explain that crossing a boundary introduces two concerns:
   - What contract should be shared?
   - How should it be delivered reliably?
 
 ```text
-Ordering context                       Fulfilment context
+Ordering context                       Fulfillment context
 
 OrderPlaced (domain event)
         |
         v
-OrderReadyForFulfilment  ----------->  PrepareOrder
+OrderReadyForFulfillment  ----------->  PrepareOrder
    (integration event)
 ```
 
@@ -48,7 +51,7 @@ Domain event:
     customerId
 
 Integration event:
-  OrderReadyForFulfilmentV1
+  OrderReadyForFulfillmentV1
     messageId
     orderId
     warehouseId
@@ -66,6 +69,16 @@ Integration event:
 - Avoid leaking sensitive or unnecessary data.
 - Make ownership explicit: the producer owns the contract and consumers depend on it.
 
+## When the consumer needs more data
+
+- A consumer often needs data owned by the producing context to act on the fact.
+- Present three approaches and their tradeoffs:
+  - **Event-carried state transfer:** the event carries enough data that no callback is needed. Maximizes autonomy and availability at the cost of larger payloads and deliberate data duplication. Prefer this default across contexts.
+  - **Thin notification plus callback:** the event carries identifiers; the consumer queries the producer for details. Smaller payloads, but reintroduces temporal coupling, a runtime dependency on the producer, and a consistency hazard (data may have changed since the event).
+  - **Local replica:** the consumer maintains its own read model from a stream of events. Strong autonomy at the cost of more infrastructure.
+- State the principle: **notification does not transfer ownership.** The consumer must not become authoritative for the producer's data.
+- If the consumer needs the producer's data to make its own decision, prefer carrying it in the event (as of that moment) over calling back.
+
 ## Translate at the edge
 
 - Keep translation outside the aggregate.
@@ -75,11 +88,11 @@ Integration event:
 
 ```text
 on OrderPlaced event:
-  message = OrderReadyForFulfilmentV1(
+  message = OrderReadyForFulfillmentV1(
     messageId = newId(),
     orderId = event.orderId,
     warehouseId = selectWarehouse(event),
-    items = loadFulfilmentItems(event.orderId),
+    items = loadFulfillmentItems(event.orderId),
     occurredAt = event.occurredAt
   )
 ```
@@ -90,7 +103,7 @@ on OrderPlaced event:
 
 ```text
 save(order)
-publish(OrderReadyForFulfilmentV1)
+publish(OrderReadyForFulfillmentV1)
 ```
 
 - Explain both failure directions:
@@ -107,7 +120,7 @@ publish(OrderReadyForFulfilmentV1)
 ```text
 transaction:
   save(order)
-  saveOutboxMessage(OrderReadyForFulfilmentV1)
+  saveOutboxMessage(OrderReadyForFulfillmentV1)
 commit
 ```
 
@@ -163,6 +176,16 @@ commit
 - Alert on stalled delivery rather than relying on logs alone.
 - Be careful when replaying messages whose side effects are not idempotent.
 
+## Transport is a separate decision
+
+- Integration events are a pattern, not a transport. Separate three things:
+  - the fact itself (the contract),
+  - how it is delivered between contexts (durable messaging),
+  - how end users are notified (a downstream concern).
+- **Pub/sub (topic-based messaging):** the natural fit. The producer publishes a fact; any number of consumers subscribe independently. Matches producer-owned contracts and one-to-many, fire-and-forget delivery. This is the model assumed throughout this article.
+- **Async request-response:** this is a **command or query with a reply, not an event**. It solves a different use case — "I need a specific answer from a specific context to continue" — versus "this fact happened; whoever cares can react." It is one-to-one and expects a response, and it reintroduces a logical dependency on the responder. The callback from the earlier section is exactly this: an async query, not part of the event contract. Mixing it up with pub/sub is how synchronous coupling gets disguised behind a broker.
+- **WebSockets / SSE:** these push to end clients (a browser or UI), not between contexts. They provide no durability, outbox semantics, ordering, or replay, and are connection-scoped. They sit downstream: a context consumes an integration event, updates its state, and then pushes a UI notification. They are not a substitute for durable messaging between contexts.
+
 ## Know when not to use an integration event
 
 - Prefer a direct API when the caller needs an immediate answer to continue.
@@ -186,4 +209,8 @@ domain decision
 ```
 
 - Reinforce that messaging creates temporal decoupling, not an absence of coupling.
-- Point to eventual consistency, sagas/process managers, and failure recovery as related topics beyond this article.
+- Point to related topics beyond this article:
+  - eventual consistency,
+  - sagas/process managers,
+  - failure recovery,
+  - integrating many systems (hub-and-spoke, contract governance, and why the hub should not own a data model) — where the business process spans systems and the goal is to couple the experience while decoupling the systems.
