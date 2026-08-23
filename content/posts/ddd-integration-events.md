@@ -42,7 +42,7 @@ OrderItem
   quantity: Quantity
 ```
 
-This event is designed for Ordering's internal handlers. Its `ProductId`, `Quantity`, and other typed identifiers are value objects that enforce invariants and communicate intent: `Quantity` forbids negative values, and an `OrderId` cannot be passed where a `CustomerRef` is expected. These are classes with behavior, not a serialization format. Publishing the event directly would turn its internal types and payload into a public contract, so consumers would be affected by changes made only for Ordering's own needs. The payload is also a poor fit for the Fulfillment boundary: it exposes `customer`, which Fulfillment does not need, and expresses products using Ordering's internal identifiers.
+This event is designed for Ordering's internal handlers. Its `ProductId`, `Quantity`, and other typed identifiers are value objects that enforce invariants and communicate intent: `Quantity` forbids negative values, and an `OrderId` cannot be passed where a `CustomerRef` is expected. These are classes with behavior, not a serialization format. Publishing the event directly would turn its internal types and payload into a public contract. Consumers would then be affected by changes made only for Ordering's own needs. The payload is also a poor fit for the Fulfillment boundary: it exposes `customer`, which Fulfillment does not need, and expresses products using Ordering's internal identifiers.
 
 Instead, Ordering can translate the same fact into an integration event designed for the Fulfillment boundary:
 
@@ -112,7 +112,7 @@ OrderFulfilled
 
 A CDC record such as `OrderRow.status changed from 2 to 5` forces consumers to know that status `5` means "fulfilled" and to infer a business fact from a database mutation. Exposing an event-sourced stream creates similar coupling at a higher semantic level: consumers become dependent on records that the producer may need to split, merge, or reshape as its model evolves. Treat both streams as internal sources from which integration events may be derived.
 
-## When the consumer needs more data
+### When the consumer needs more data
 
 A consumer often needs data owned by the producing context to act on the fact. There are three common approaches, each with a different tradeoff between autonomy and coupling:
 
@@ -122,7 +122,7 @@ A consumer often needs data owned by the producing context to act on the fact. T
 
 Whichever you choose, one principle holds: **notification does not transfer ownership.** The consumer must not become authoritative for the producer's data. When the consumer needs values as they existed at the time of the fact, and carrying them is practical and appropriate, prefer including them in the event over calling back for potentially newer data.
 
-## Translate at the edge
+### Translate at the edge
 
 Translation from internal fact to public contract belongs at the boundary, not inside the aggregate.
 
