@@ -7,19 +7,19 @@ tags: ["software-architecture", "domain-driven-design", "distributed-systems"]
 editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/ddd-integration-events.md"
 ---
 
-A domain event records a meaningful business fact, such as `OrderPlaced`, inside the model where that fact became true. It can trigger local reactions, but its name, types, and payload belong to that model and are free to evolve with it. We can therefore think of domain events as **internal events**. For a fuller introduction, see [Modeling Facts and Reactions with Domain Events](/2026/07/25/modeling-facts-and-reactions-with-domain-events).
+A domain event records a meaningful business fact inside the model where that fact became true. It can trigger local reactions, but its name, types, and payload belong to that domain model and are free to evolve with it. We can therefore think of domain events as **internal events**. For a fuller introduction, see [Modeling Facts and Reactions with Domain Events](/2026/07/25/modeling-facts-and-reactions-with-domain-events).
 
-This article concerns what happens when that fact must cross into another bounded context: a model with its own language and responsibilities. Suppose Ordering and Fulfillment are independently owned and deployed, and Fulfillment needs to prepare a newly placed order.
+In this article, we cover what happens when that fact must cross into another bounded context: a model with its own language and responsibilities.
 
 ## Crossing the boundary
 
-The contexts need a stable public contract containing the business information Fulfillment requires, without coupling it to Ordering's internal model. That contract is an **integration event**, which we can think of as an **external event**.
+Suppose Ordering and Fulfillment are independently owned and deployed contexts, and Fulfillment needs to prepare a newly placed order. They need a stable public contract containing the business information that Fulfillment requires, without coupling it to Ordering's internal model. This contract is an **integration event**, which we can think of as an **external event**.
 
 <img src="/images/posts/ddd-integration-events/1.svg" alt="Integration event between two contexts" />
 
 Delivered through durable asynchronous messaging, using infrastructure such as Apache Kafka, RabbitMQ, or Azure Service Bus, integration events let Ordering finish without waiting for Fulfillment. Each context can process work at its own pace, temporary outages do not have to propagate back to the producer, and messages can remain available until a consumer is ready to handle them.
 
-These benefits come with new challenges: messages may be delayed or duplicated, either context may be unavailable, and the two contexts cannot share a database transaction. We therefore have two problems to solve:
+These benefits come with new challenges:  either context may be unavailable, messages may be delayed or duplicated, and the two contexts cannot share a database transaction. We therefore have two problems to solve:
 
 1. Designing the contract
 2. Delivering it reliably
@@ -28,7 +28,7 @@ These benefits come with new challenges: messages may be delayed or duplicated, 
 
 ### Shape the payload for the boundary, not the producer's model
 
-Suppose Ordering raises this domain event when an order is placed:
+Suppose that, in this model, placing an order makes it ready to enter Fulfillment, and Ordering raises this domain event when that happens:
 
 ```text
 OrderPlaced
@@ -60,7 +60,9 @@ Instead, Ordering can translate the same fact into an integration event designed
 }
 ```
 
-The two events describe the same occurrence without having the same name or shape. The integration event uses stable, serialized values rather than Ordering's value-object classes. It includes a message identifier for deduplication, the time of the fact, and a schema version (more on this later when we talk about versioning). It omits `customer`, which Fulfillment does not need, and represents each product with a stable code agreed at this boundary. Fulfillment maps that code to its own SKU and selects a warehouse according to inventory and picking rules that it owns.
+The example uses a flat message structure. `type`, `version`, `messageId`, and `occurredAt` form the message envelope: metadata used to identify, route, deduplicate, and interpret the message. `orderId` and `items` form the business payload consumed by Fulfillment. Some messaging platforms keep the envelope in headers instead; the important distinction is semantic rather than structural.
+
+The two events describe the same occurrence without having the same name or shape. The integration event uses stable, serialized values rather than Ordering's value-object classes. It includes a message identifier for deduplication, the time of the fact, and a schema version so the contract can evolve deliberately. It omits `customer`, which Fulfillment does not need, and represents each product with a stable code agreed at this boundary. Fulfillment maps that code to its own product code and selects a warehouse according to inventory and picking rules that it owns.
 
 Ordering still owns this boundary-specific contract. Another boundary may require a different integration event derived from the same domain event.
 
@@ -81,54 +83,57 @@ A related mistake is to over-share by serializing the producer's object graph, l
 
 The nesting becomes part of the public contract, so a refactor such as replacing `OrderLine.product` with a product reference now affects every consumer. Include the facts the consumer needs to act and nothing more. How much data to carry, versus letting the consumer fetch it, is its own tradeoff, covered in the next section.
 
+An integration event is a published interface, so once another context depends on it, it deserves the same care as a versioned REST or gRPC API: document its schema, field meanings, and guarantees, and evolve it deliberately using an explicit compatibility and versioning policy.
+
 ### Publish business facts, not internal state changes
 
-Names can leak the internal model just as easily as payloads. Consider an event published only to keep another context's status field synchronized:
+Names can leak the internal model just as easily as payloads. Suppose Fulfillment publishes the following event for Ordering:
 
 ```text
-OrderStatusChanged
+FulfillmentStatusChanged
   orderId
-  oldStatus: PROCESSING
-  newStatus: FULFILLED
+  oldStatus: PICKING
+  newStatus: DISPATCHED
 ```
 
-This contract makes Fulfillment understand Ordering's set of statuses and reproduce part of its state machine. Adding, renaming, removing, or redefining a status can therefore require changes in Fulfillment and any other consumer, even when the business fact they care about has not changed. The contract couples other contexts to Ordering's internal data model and leaks implementation details.
+This contract makes Ordering understand Fulfillment's statuses and reproduce part of its state machine. It may expose every transition when Ordering cares about only a few. Changing a status can then affect every consumer, even when the business fact they need has not changed. The contract couples other contexts to Fulfillment's internal model and leaks implementation details.
 
-> Asynchronous messaging does not remove that coupling; the contract still needs to express the business meaning at the boundary.
+Asynchronous messaging does not remove coupling by itself; the contract still needs to express the business meaning.
 
-Prefer publishing the fact that matters at the boundary:
+Prefer publishing the fact that matters:
 
 ```text
-OrderFulfilled
+OrderDispatched
   orderId
-  fulfilledAt
+  dispatchedAt
 ```
 
-`OrderFulfilled` communicates what happened without requiring consumers to interpret Ordering's internal lifecycle. `OrderStatusChanged` is not inherently wrong when a status change is itself meaningful domain language; it becomes problematic when it merely synchronizes fields or exposes implementation details.
+`OrderDispatched` communicates what happened without requiring Ordering to interpret Fulfillment's internal lifecycle. `FulfillmentStatusChanged` is not inherently wrong when a status change is itself meaningful domain language; it becomes problematic when it merely synchronizes fields or exposes implementation details.
 
 ### Data events are not integration contracts
 
 [Event sourcing](https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) and [Change Data Capture](https://en.wikipedia.org/wiki/Change_data_capture) produce their own streams of events, and it is tempting to treat them as ready-made integration events. They are not. An event-sourced event is a persistence record used to reconstruct internal state. It may express a genuine business fact such as `OrderPlaced`, but its name, schema, and evolution still serve the producer's model and persistence needs. A change-data-capture stream is lower-level: it is a row-level feed of database mutations that describes how stored data changed, usually without expressing why it changed in business terms. Both streams are internal contracts, not public integration contracts.
 
-A CDC record such as `OrderRow.status changed from 2 to 5` forces consumers to know that status `5` means "fulfilled" and to infer a business fact from a database mutation. Exposing an event-sourced stream creates similar coupling at a higher semantic level: consumers become dependent on records that the producer may need to split, merge, or reshape as its model evolves. Treat both streams as internal sources from which integration events may be derived.
+A CDC record such as `OrderRow.status changed from 2 to 5` forces consumers to know that status `5` means "fulfilled" and to infer a business fact from a database mutation. Exposing an event-sourced stream creates similar coupling at a higher semantic level: consumers become dependent on records that the producer may need to split, merge, or reshape as its model evolves. Hence, we should treat both streams as internal sources from which integration events may be derived.
 
 ### When the consumer needs more data
 
 A consumer often needs data owned by the producing context to act on the fact. There are three common approaches, each with a different tradeoff between autonomy and coupling:
 
 - **Event-carried state transfer:** each event includes the producer-owned data needed to react to that fact. The consumer can act without calling the producer, at the cost of larger payloads and duplicated data.
-- **Thin notification plus callback:** the event carries identifiers, and the consumer queries the producer for details. This keeps payloads small but creates a runtime dependency and may return data that has changed since the event occurred.
-- **Local replica:** the consumer builds a non-authoritative read model by processing the producer's event stream. It can query that data without depending on the producer's availability, but must operate and synchronize additional storage and tolerate replication lag. (A fuller treatment belongs with eventual consistency.)
+- **Thin notification plus callback:** the event carries identifiers, and the consumer queries the producer for details via the producer's public API. This keeps payloads small but creates a runtime dependency and may return data that has changed since the event occurred.
+- **Local replica:** the consumer builds a read model by processing a public integration-event stream from the producer. It can query that data without depending on the producer's availability, but must operate and synchronize additional storage and tolerate replication lag.
 
-Whichever you choose, one principle holds: **notification does not transfer ownership.** The consumer must not become authoritative for the producer's data. When the consumer needs values as they existed at the time of the fact, and carrying them is practical and appropriate, prefer including them in the event over calling back for potentially newer data.
+Whichever we choose, one principle holds: **notification does not transfer ownership.** The consumer must not become authoritative for the producer's data. When the consumer needs values as they existed at the time of the fact, and carrying them is practical and appropriate, prefer including them in the event over calling back for potentially newer data.
 
 ### Translate at the edge
 
 Translation from internal fact to public contract belongs at the boundary, not inside the aggregate.
 
 - Map the domain event to an integration event in the application or infrastructure layer.
-- Keep the aggregate unaware of the wire contract; it raises a domain event and nothing more.
-- Not every domain event needs to leave the bounded context: one domain event may produce no integration event, or a contract tailored to a specific boundary.
+- Keep the aggregate unaware of the integration contract; it raises a domain event and nothing more.
+- Not every domain event needs to leave the bounded context: one domain event may produce no integration event.
+- It is possible for a single domain event to produce more than one integration event.
 
 <img src="/images/posts/ddd-integration-events/2.svg" alt="Concentric architecture layers showing a domain event translated into an integration event at the edge of a bounded context" />
 
@@ -138,7 +143,7 @@ on OrderPlaced event:
     messageId = newId(),
     orderId = event.orderId,
     items = event.items.map(item -> {
-      productCode = productCodeFor(item.product),
+      productCode = item.product.code,
       quantity = item.quantity.value
     }),
     occurredAt = event.occurredAt)
@@ -168,8 +173,6 @@ commit
 
 - A separate publisher reads pending messages, sends them to the broker, and marks them published only after the broker acknowledges. Mention polling vs. change-data-capture in one line.
 - State what the outbox guarantees (a committed change never loses its publication intent) and what it does not (immediate delivery, exactly-once processing).
-
-_Evolve contracts deliberately (folded paragraph):_ treat integration events as public APIs. Prefer additive, backward-compatible changes; never silently change the meaning of an existing field; introduce a new version for breaking structural or semantic changes and support old versions for an explicit migration period. Back this with producer and consumer contract tests.
 
 ## Consume reliably: duplicates and order
 
