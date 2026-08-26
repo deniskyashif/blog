@@ -181,24 +181,29 @@ The order and its publication intent now commit or roll back together. A separat
 
 ## Consume reliably: duplicates and order
 
-When a message may be delivered more than once, the consumer has to be **idempotent**: processing the same message repeatedly must have the same effect as processing it once. Some operations are naturally idempotent. Setting a known value, for example, may produce the same result every time. Incrementing a counter, reserving inventory, or charging a payment usually does not.
+The outbox prevents an event from being lost between the producer's database and the broker, but it does not guarantee that the event is published only once. The publisher can send a message successfully and then crash before marking the outbox record as published. On restart, it sends the same message again. A similar window exists on the consumer side: the handler can commit its work and lose the acknowledgement, causing the broker to redeliver the message. This is **at-least-once delivery**: a message is not silently discarded, but duplicates are possible.
+
+The consumer must therefore be **idempotent**: processing the same message repeatedly must have the same business effect as processing it once. Some operations are naturally idempotent. Setting a shipment address to a particular value, for example, has the same result each time. Incrementing a counter, reserving inventory, or charging a payment usually does not.
 
 For operations that are not naturally idempotent, Fulfillment can use the event's `messageId` as a deduplication key. It keeps an inbox, or simply a table of processed message identifiers, and records the identifier in the same transaction as the business change:
 
 ```text
+on OrderReadyForFulfillment message:
 transaction:
-  if messageId was already processed:
-    return
-  prepareOrder(message)
-  recordProcessed(messageId)
+  if messageId was not already processed:
+    prepareOrder(message)
+    recordProcessed(messageId)
 commit
+acknowledge message
 ```
 
-If processing fails, the transaction rolls back and the broker can deliver the message again. If it succeeds but the acknowledgement to the broker is lost, the next delivery finds the recorded identifier and does nothing. The business change and the processed-message record must be atomic; otherwise, a crash between them brings back the same inconsistency we solved with the outbox.
+If processing fails, the transaction rolls back and the message can be retried. If it succeeds but the acknowledgement is lost, the next delivery finds the recorded identifier and does nothing. The business change and the processed-message record must be atomic; otherwise, a crash between them recreates the dual-write problem that the producer solved with its outbox. A unique constraint on the processed `messageId` also protects against two consumer instances receiving the duplicate concurrently.
 
-Delivery order requires a similar qualification. A global order across all messages is rarely available and, fortunately, rarely useful. Fulfillment does not need every order in the exact sequence in which Ordering placed them. It may, however, need events concerning one `orderId` to be processed in order. We should identify this smaller stream and partition messages by the aggregate identifier when the broker supports it.
+This inbox pattern covers changes made in the consumer's database. It cannot make a database update and an external side effect, such as calling a payment provider, atomic. Such a handler needs the same boundary treatment again: record an outgoing command in a local outbox, or call an external operation that accepts a stable idempotency key. Deduplicating only before the call is unsafe because the process may crash after the provider succeeds but before the message is recorded as processed.
 
-Even then, retries and concurrent consumers can make ordering less straightforward than it appears. A consumer should prefer explicit state transitions or an aggregate version carried by the event over assumptions about broker timing. It can reject an invalid transition, ignore an older version, or postpone a message until the missing version arrives. These choices depend on the business process and are part of the broader problem of eventual consistency.
+Messages can also arrive out of order. Fulfillment does not care whether unrelated orders arrive in sequence, but order matters for events about the same `orderId`. For example, `OrderCancelled` with `orderEventSequence: 5` might arrive before a delayed `OrderReadyForFulfillment` with `orderEventSequence: 4`. Processing the older event would prepare a cancelled order.
+
+Using `orderId` as the broker's partition or session key helps preserve per-order delivery order. The producer-assigned `orderEventSequence` provides a second safeguard: after recording sequence 5, Fulfillment can ignore sequence 4 as stale. Deduplication prevents one message from taking effect twice; sequence checks prevent older messages from undoing newer facts.
 
 ## Know when not to use an integration event
 
@@ -207,25 +212,3 @@ Use an integration event when a context can publish a fact and finish its work w
 Sending a request through a broker does not turn it into an event. A message asking a particular recipient to act is a command; one asking for information is a query. If the sender expects a reply, the interaction is still request-response. The callback described earlier is such a query: it is triggered by the event, but is not part of the event contract.
 
 Messaging also adds operational cost. Use it when contexts need to work independently or several consumers need the same fact. Otherwise, a direct call may be simpler.
-
-## Closing
-
-We've started with two problems: designing a contract for the boundary and delivering it reliably. The complete path now looks as follows:
-
-```text
-domain decision
-  -> domain event
-  -> integration event in the outbox
-  -> publisher
-  -> broker
-  -> idempotent consumer
-  -> receiving domain decision
-```
-
-The domain event remains an internal fact. At the edge of the bounded context, we translate it into a stable contract and store it in the outbox together with the domain change. The publisher eventually sends it, and an idempotent consumer translates it into a decision in its own domain model.
-
-Messaging gives these contexts **temporal decoupling**: they do not have to be available or working at the same time. It does not remove coupling. The producer and consumer still agree on the meaning and evolution of the contract, and they also agree on operational guarantees such as delivery, ordering, and retention.
-
-We need to make those guarantees observable. In practice, this means tracking the age of pending outbox messages, publication lag, retries, and failed deliveries. Messages that cannot be processed need a dead-letter path and a deliberate replay procedure. Correlation and causation identifiers help us follow one business flow across contexts, while replay deserves particular care whenever a handler has side effects that are not idempotent.
-
-Integration events are therefore not merely serialized domain events. They are public contracts combined with a delivery model. Once this foundation is in place, we can address longer-running concerns such as eventual consistency, sagas and process managers, and failure recovery. Integrating many systems introduces another set of questions around hub-and-spoke communication and contract governance, but the same boundary still matters: an integration hub may route and transform contracts; it should not become the owner of a shared domain model.
