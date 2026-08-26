@@ -24,9 +24,9 @@ These benefits come with new challenges:  either context may be unavailable, mes
 1. Designing the contract
 2. Delivering it reliably
 
-## Design the contract for the boundary
+## Designing the contract for the boundary
 
-### Shape the payload for the boundary, not the producer's model
+### A payload shaped for the boundary
 
 Suppose that, in this model, placing an order makes it ready to enter Fulfillment, and Ordering raises this domain event when that happens:
 
@@ -70,7 +70,7 @@ The two events describe the same occurrence without having the same name or shap
 
 Ordering still owns this boundary-specific contract. Another boundary may require a different integration event derived from the same domain event.
 
-A related mistake is to over-share by serializing the producer's object graph, letting the payload follow every association.
+Another possibility is to serialize the producer's object graph, letting the payload follow every association.
 
 ```json
 {
@@ -85,11 +85,11 @@ A related mistake is to over-share by serializing the producer's object graph, l
 }
 ```
 
-The nesting becomes part of the public contract, so a refactor such as replacing `OrderLine.product` with a product reference now affects every consumer. Include the facts the consumer needs to act and nothing more. How much data to carry, versus letting the consumer fetch it, is its own tradeoff, covered in the next section.
+The nesting becomes part of the public contract, so a refactor such as replacing `OrderLine.product` with a product reference now affects every consumer. A smaller contract containing only the facts needed by the consumer avoids this coupling. How much data to carry, versus letting the consumer fetch it, is its own tradeoff, covered in the next section.
 
-An integration event is a published interface, so once another context depends on it, it deserves the same care as a versioned REST or gRPC API: document its schema, field meanings, and guarantees, and evolve it deliberately using an explicit compatibility and versioning policy.
+An integration event is a published interface. Once another context depends on it, changes carry the same compatibility concerns as changes to a versioned REST or gRPC API. Its schema, field meanings, guarantees, and versioning policy become part of that interface.
 
-### Publish business facts, not internal state changes
+### Business facts rather than internal state changes
 
 Names can leak the internal model just as easily as payloads. Suppose Fulfillment publishes the following event for Ordering:
 
@@ -104,7 +104,7 @@ This contract makes Ordering understand Fulfillment's statuses and reproduce par
 
 Asynchronous messaging does not remove coupling by itself; the contract still needs to express the business meaning.
 
-Prefer publishing the fact that matters:
+The same interaction can instead be expressed as the fact that matters to Ordering:
 
 ```text
 OrderDispatched
@@ -118,7 +118,7 @@ OrderDispatched
 
 [Event sourcing](https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) and [Change Data Capture](https://en.wikipedia.org/wiki/Change_data_capture) produce their own streams of events, and it is tempting to treat them as ready-made integration events. They are not. An event-sourced event is a persistence record used to reconstruct internal state. It may express a genuine business fact such as `OrderPlaced`, but its name, schema, and evolution still serve the producer's model and persistence needs. A change-data-capture stream is lower-level: it is a row-level feed of database mutations that describes how stored data changed, usually without expressing why it changed in business terms. Both streams are internal contracts, not public integration contracts.
 
-A CDC record such as `OrderRow.status changed from 2 to 5` forces consumers to know that status `5` means "fulfilled" and to infer a business fact from a database mutation. Exposing an event-sourced stream creates similar coupling at a higher semantic level: consumers become dependent on records that the producer may need to split, merge, or reshape as its model evolves. Hence, we should treat both streams as internal sources from which integration events may be derived.
+A CDC record such as `OrderRow.status changed from 2 to 5` forces consumers to know that status `5` means "fulfilled" and to infer a business fact from a database mutation. Exposing an event-sourced stream creates similar coupling at a higher semantic level: consumers become dependent on records that the producer may need to split, merge, or reshape as its model evolves. Both streams can instead serve as internal sources from which integration events are derived.
 
 ### When the consumer needs more data
 
@@ -128,16 +128,16 @@ A consumer often needs data owned by the producing context to act on the fact. T
 - **Thin notification plus callback:** the event carries identifiers, and the consumer queries the producer for details via the producer's public API. This keeps payloads small but creates a runtime dependency and may return data that has changed since the event occurred.
 - **Local replica:** the consumer builds a read model by processing a public integration-event stream from the producer. It can query that data without depending on the producer's availability, but must operate and synchronize additional storage and tolerate replication lag.
 
-Whichever we choose, one principle holds: **notification does not transfer ownership.** The consumer must not become authoritative for the producer's data. When the consumer needs values as they existed at the time of the fact, and carrying them is practical and appropriate, prefer including them in the event over calling back for potentially newer data.
+Whichever approach we choose, **notification does not transfer ownership**: the producing context remains authoritative for its data. When the consumer needs values as they existed at the time of the fact, including them in the event avoids a callback returning potentially newer data, provided carrying them is practical and appropriate.
 
-### Translate at the edge
+### Translation at the edge
 
-Translation from internal fact to public contract belongs at the boundary, not inside the aggregate.
+Translation from an internal fact to a public contract can happen at the boundary rather than inside the aggregate:
 
-- Map the domain event to an integration event in the application or infrastructure layer.
-- Keep the aggregate unaware of the integration contract; it raises a domain event and nothing more.
-- Not every domain event needs to leave the bounded context: one domain event may produce no integration event.
-- It is possible for a single domain event to produce more than one integration event.
+- The application or infrastructure layer maps the domain event to an integration event.
+- The aggregate remains unaware of the integration contract and raises only its domain event.
+- A domain event may produce no integration event when the fact does not need to leave the bounded context.
+- A single domain event may also produce more than one integration event.
 
 <img src="/images/posts/ddd-integration-events/2.svg" alt="Concentric architecture layers showing a domain event translated into an integration event at the edge of a bounded context" />
 
@@ -153,7 +153,7 @@ on OrderPlaced event:
     occurredAt = event.occurredAt)
 ```
 
-## Publish reliably: the outbox
+## Reliable publication: the outbox
 
 Once we've designed the integration event, we still have to publish it. The naive sequence is unsafe:
 
@@ -179,11 +179,11 @@ commit
 
 The order and its publication intent now commit or roll back together. A separate publisher can poll for pending messages, send them, and mark them as published after the broker acknowledges them.
 
-## Consume reliably: duplicates and order
+## Reliable consumption: duplicates and order
 
 The outbox prevents an event from being lost between the producer's database and the broker, but it does not guarantee that the event is published only once. The publisher can send a message successfully and then crash before marking the outbox record as published. On restart, it sends the same message again. A similar window exists on the consumer side: the handler can commit its work and lose the acknowledgement, causing the broker to redeliver the message. This is **at-least-once delivery**: a message is not silently discarded, but duplicates are possible.
 
-The consumer must therefore be **idempotent**: processing the same message repeatedly must have the same business effect as processing it once. Some operations are naturally idempotent. Setting a shipment address to a particular value, for example, has the same result each time. Incrementing a counter, reserving inventory, or charging a payment usually does not.
+This means the consumer needs **idempotent** processing: handling the same message repeatedly has the same business effect as handling it once. Some operations are naturally idempotent. Setting a shipment address to a particular value, for example, has the same result each time. Incrementing a counter, reserving inventory, or charging a payment usually does not.
 
 For operations that are not naturally idempotent, Fulfillment can use the event's `messageId` as a deduplication key. It keeps an inbox, or simply a table of processed message identifiers, and records the identifier in the same transaction as the business change:
 
@@ -205,10 +205,10 @@ Messages can also arrive out of order. Fulfillment does not care whether unrelat
 
 Using `orderId` as the broker's partition or session key helps preserve per-order delivery order. The producer-assigned `orderEventSequence` provides a second safeguard: after recording sequence 5, Fulfillment can ignore sequence 4 as stale. Deduplication prevents one message from taking effect twice; sequence checks prevent older messages from undoing newer facts.
 
-## Know when not to use an integration event
+## When an integration event is not a good fit
 
-Use an integration event when a context can publish a fact and finish its work without waiting for a response. When it needs an immediate answer to continue, a direct API usually makes the dependency clearer.
+An integration event fits when a context can publish a fact and finish its work without waiting for a response. When it needs an immediate answer to continue, a direct API usually makes the dependency clearer.
 
 Sending a request through a broker does not turn it into an event. A message asking a particular recipient to act is a command; one asking for information is a query. If the sender expects a reply, the interaction is still request-response. The callback described earlier is such a query: it is triggered by the event, but is not part of the event contract.
 
-Messaging also adds operational cost. Use it when contexts need to work independently or several consumers need the same fact. Otherwise, a direct call may be simpler.
+Messaging also adds operational cost. It becomes useful when contexts need to work independently or several consumers need the same fact. Otherwise, a direct call may be simpler.
