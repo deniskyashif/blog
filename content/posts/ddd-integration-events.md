@@ -48,19 +48,23 @@ Instead, Ordering can translate the same fact into an integration event designed
 
 ```json
 {
-  "type": "order-ready-for-fulfillment",
-  "version": 1,
-  "messageId": "01JZ2Q5Y7M8K9N0P1R2S3T4V5W",
-  "occurredAt": "2026-07-25T09:42:18Z",
-  "orderId": "ord-8472",
-  "items": [
-    { "productCode": "CHAIR-BLK", "quantity": 2 },
-    { "productCode": "DESK-OAK", "quantity": 1 }
-  ]
+  "metadata": {
+    "type": "order-ready-for-fulfillment",
+    "version": 1,
+    "messageId": "01JZ2Q5Y7M8K9N0P1R2S3T4V5W",
+    "occurredAt": "2026-07-25T09:42:18Z"
+  },
+  "body": {
+    "orderId": "ord-8472",
+    "items": [
+      { "productCode": "CHAIR-BLK", "quantity": 2 },
+      { "productCode": "DESK-OAK", "quantity": 1 }
+    ]
+  }
 }
 ```
 
-The example uses a flat message structure. `type`, `version`, `messageId`, and `occurredAt` form the message envelope: metadata used to identify, route, deduplicate, and interpret the message. `orderId` and `items` form the business payload consumed by Fulfillment. Some messaging platforms keep the envelope in headers instead; the important distinction is semantic rather than structural.
+The envelope separates transport and contract metadata from the business payload. `metadata` identifies the event contract and carries information used to route, deduplicate, and interpret the message; `body` contains the fact consumed by Fulfillment. Keeping a consistent envelope across event types also lets messaging infrastructure handle concerns such as tracing and deduplication without understanding each body. This exact JSON shape is not essential: some messaging platforms place metadata in headers, and standards such as CloudEvents define their own envelope fields. The important distinction is semantic and consistent across producers and consumers.
 
 The two events describe the same occurrence without having the same name or shape. The integration event uses stable, serialized values rather than Ordering's value-object classes. It includes a message identifier for deduplication, the time of the fact, and a schema version so the contract can evolve deliberately. It omits `customer`, which Fulfillment does not need, and represents each product with a stable code agreed at this boundary. Fulfillment maps that code to its own product code and selects a warehouse according to inventory and picking rules that it owns.
 
@@ -151,18 +155,18 @@ on OrderPlaced event:
 
 ## Publish reliably: the outbox
 
-> _Skeleton — to write._
-
-The naive sequence is unsafe:
+Once we've designed the integration event, we still have to publish it. The naive sequence is unsafe:
 
 ```text
 save(order)
 publish(OrderReadyForFulfillmentV1)
 ```
 
-- Explain both failure directions: the order commits but publishing never happens; or publishing happens but the order transaction rolls back.
-- State why a database transaction cannot usually include an external broker atomically. The requirement: commit the domain change and the intent to publish together.
-- **The transactional outbox:** store the integration event in an outbox table in the **same database transaction** as the order. Two writes, one transaction.
+Suppose `save(order)` commits and the process crashes before publishing the event. Ordering now considers the order placed, but Fulfillment never finds out about it. Reversing the two operations does not help. If we publish first and saving the order then fails, Fulfillment may prepare an order that does not exist.
+
+The problem is that the database and the message broker are two independent systems. In most applications, we cannot wrap both in one atomic transaction. What we can do is commit the domain change and the **intent to publish** in the same database transaction. This is the idea behind the **transactional outbox** pattern.
+
+Instead of sending the event directly, we serialize it into an outbox table stored in the same database as the order:
 
 ```text
 transaction:
@@ -171,14 +175,15 @@ transaction:
 commit
 ```
 
-- A separate publisher reads pending messages, sends them to the broker, and marks them published only after the broker acknowledges. Mention polling vs. change-data-capture in one line.
-- State what the outbox guarantees (a committed change never loses its publication intent) and what it does not (immediate delivery, exactly-once processing).
+<img src="/images/posts/ddd-integration-events/3.svg" alt="Transactional outbox flow: save the order and outbox message atomically, then publish and mark the message after acknowledgement" />
+
+The order and its publication intent now commit or roll back together. A separate publisher can poll for pending messages, send them, and mark them as published after the broker acknowledges them.
 
 ## Consume reliably: duplicates and order
 
-> _Skeleton — to write._
+When a message may be delivered more than once, the consumer has to be **idempotent**: processing the same message repeatedly must have the same effect as processing it once. Some operations are naturally idempotent. Setting a known value, for example, may produce the same result every time. Incrementing a counter, reserving inventory, or charging a payment usually does not.
 
-- **At-least-once delivery:** the broker accepts a message but the publisher crashes before marking it complete; retries then redeliver. Make the consumer idempotent using `messageId` and an inbox / processed-message record, kept in the same transaction as the business change.
+For operations that are not naturally idempotent, Fulfillment can use the event's `messageId` as a deduplication key. It keeps an inbox, or simply a table of processed message identifiers, and records the identifier in the same transaction as the business change:
 
 ```text
 transaction:
@@ -189,24 +194,23 @@ transaction:
 commit
 ```
 
-- Mention naturally idempotent operations where they apply.
-- **Ordering is contextual:** global ordering is rarely available or necessary. Identify the stream that actually requires order (events for one `orderId`) and partition by aggregate identifier. Since retries can reorder messages, prefer version checks or explicit state transitions over assumptions about broker timing. Defer a deeper treatment to the eventual-consistency article.
+If processing fails, the transaction rolls back and the broker can deliver the message again. If it succeeds but the acknowledgement to the broker is lost, the next delivery finds the recorded identifier and does nothing. The business change and the processed-message record must be atomic; otherwise, a crash between them brings back the same inconsistency we solved with the outbox.
+
+Delivery order requires a similar qualification. A global order across all messages is rarely available and, fortunately, rarely useful. Fulfillment does not need every order in the exact sequence in which Ordering placed them. It may, however, need events concerning one `orderId` to be processed in order. We should identify this smaller stream and partition messages by the aggregate identifier when the broker supports it.
+
+Even then, retries and concurrent consumers can make ordering less straightforward than it appears. A consumer should prefer explicit state transitions or an aggregate version carried by the event over assumptions about broker timing. It can reject an invalid transition, ignore an older version, or postpone a message until the missing version arrives. These choices depend on the business process and are part of the broader problem of eventual consistency.
 
 ## Know when not to use an integration event
 
-> _Skeleton — to write._
+Use an integration event when a context can publish a fact and finish its work without waiting for a response. When it needs an immediate answer to continue, a direct API usually makes the dependency clearer.
 
-- Prefer a direct API when the caller needs an immediate answer to continue. Do not use events to disguise synchronous coupling.
-- **Pub/sub vs. async request-response:** an event is "this fact happened; whoever cares can react" (one-to-many, fire-and-forget, producer-owned contract). An async request-response is a **command or query with a reply** — one-to-one, expects an answer, reintroduces a logical dependency on the responder. The callback from the earlier section is exactly this: an async query, not part of the event contract. Mixing the two is how synchronous coupling gets disguised behind a broker.
-- **WebSockets / SSE** push to end clients, not between contexts: no durability, outbox semantics, ordering, or replay. They sit downstream — a context consumes an integration event, updates state, then pushes a UI notification — and are not a substitute for durable messaging between contexts.
-- Avoid asynchronous messaging when the operational cost outweighs the independence it provides.
+Sending a request through a broker does not turn it into an event. A message asking a particular recipient to act is a command; one asking for information is a query. If the sender expects a reply, the interaction is still request-response. The callback described earlier is such a query: it is triggered by the event, but is not part of the event contract.
+
+Messaging also adds operational cost. Use it when contexts need to work independently or several consumers need the same fact. Otherwise, a direct call may be simpler.
 
 ## Closing
 
-> _Skeleton — to write._
-
-- Return to the two concerns from the start: contract and delivery.
-- Recap the complete path:
+We've started with two problems: designing a contract for the boundary and delivering it reliably. The complete path now looks as follows:
 
 ```text
 domain decision
@@ -218,6 +222,10 @@ domain decision
   -> receiving domain decision
 ```
 
-- Reinforce that messaging creates temporal decoupling, not an absence of coupling.
-- _Observability (folded paragraph):_ track outbox age, publication lag, retries, and failed messages; provide dead-letter handling with a deliberate replay process; use correlation and causation identifiers to trace a business flow across contexts; be careful replaying messages whose side effects are not idempotent.
-- Point to related topics beyond this article: eventual consistency, sagas / process managers, failure recovery, and integrating many systems (hub-and-spoke, contract governance, and why the hub should not own a data model).
+The domain event remains an internal fact. At the edge of the bounded context, we translate it into a stable contract and store it in the outbox together with the domain change. The publisher eventually sends it, and an idempotent consumer translates it into a decision in its own domain model.
+
+Messaging gives these contexts **temporal decoupling**: they do not have to be available or working at the same time. It does not remove coupling. The producer and consumer still agree on the meaning and evolution of the contract, and they also agree on operational guarantees such as delivery, ordering, and retention.
+
+We need to make those guarantees observable. In practice, this means tracking the age of pending outbox messages, publication lag, retries, and failed deliveries. Messages that cannot be processed need a dead-letter path and a deliberate replay procedure. Correlation and causation identifiers help us follow one business flow across contexts, while replay deserves particular care whenever a handler has side effects that are not idempotent.
+
+Integration events are therefore not merely serialized domain events. They are public contracts combined with a delivery model. Once this foundation is in place, we can address longer-running concerns such as eventual consistency, sagas and process managers, and failure recovery. Integrating many systems introduces another set of questions around hub-and-spoke communication and contract governance, but the same boundary still matters: an integration hub may route and transform contracts; it should not become the owner of a shared domain model.

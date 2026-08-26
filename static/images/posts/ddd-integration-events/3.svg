@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="470" viewBox="0 0 900 470" role="img" aria-labelledby="title desc">
+  <title id="title">The transactional outbox pattern</title>
+  <desc id="desc">Ordering saves an order and an outbox message in one database transaction. A separate publisher reads pending messages, sends them to a message broker, and marks them published after acknowledgement.</desc>
+
+  <rect width="900" height="470" fill="#fff"/>
+
+  <rect x="20" y="20" width="550" height="430" rx="12" fill="none" stroke="#3a414a" stroke-width="2" stroke-dasharray="10 8"/>
+  <text x="44" y="54" fill="#3a414a" font-family="Arial, sans-serif" font-size="18" font-weight="700">Ordering bounded context</text>
+
+  <rect x="48" y="86" width="210" height="82" rx="8" fill="#3a414a"/>
+  <text x="153" y="120" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="16" font-weight="700">Place order</text>
+  <text x="153" y="143" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="13">application operation</text>
+
+  <path d="M153 168 V204" fill="none" stroke="#3a414a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="215" y="190" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="12">commit</text>
+  <circle cx="174" cy="186" r="10" fill="#fff" stroke="#3a414a" stroke-width="1.5"/>
+  <text x="174" y="190" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="12" font-weight="700">1</text>
+
+  <rect x="48" y="206" width="350" height="202" rx="10" fill="#eef1f4" stroke="#3a414a" stroke-width="2"/>
+  <text x="68" y="237" fill="#3a414a" font-family="Arial, sans-serif" font-size="15" font-weight="700">One database transaction</text>
+
+  <path d="M68 258 H378" fill="none" stroke="#3a414a" stroke-width="1.5" stroke-dasharray="5 5"/>
+
+  <rect x="72" y="280" width="132" height="76" rx="7" fill="#fff" stroke="#3a414a" stroke-width="2"/>
+  <text x="138" y="311" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="14" font-weight="700">Orders</text>
+  <text x="138" y="334" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="13">save order</text>
+
+  <rect x="242" y="280" width="132" height="76" rx="7" fill="#fff" stroke="#3a414a" stroke-width="2"/>
+  <text x="308" y="311" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="14" font-weight="700">Outbox</text>
+  <text x="308" y="334" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="13">save message</text>
+
+  <text x="223" y="398" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="13" font-weight="700">commit both or neither</text>
+
+  <rect x="475" y="280" width="112" height="76" rx="8" fill="#fff" stroke="#3a414a" stroke-width="2"/>
+  <text x="531" y="311" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="15" font-weight="700">Outbox</text>
+  <text x="531" y="333" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="15" font-weight="700">publisher</text>
+
+  <path d="M374 300 H475" fill="none" stroke="#3a414a" stroke-width="2" marker-end="url(#arrow)"/>
+  <circle cx="401" cy="284" r="10" fill="#fff" stroke="#3a414a" stroke-width="1.5"/>
+  <text x="401" y="288" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="12" font-weight="700">2</text>
+  <text x="434" y="289" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="12">read</text>
+
+  <path d="M706 280 H844 A18 38 0 0 1 844 356 H706 A18 38 0 0 1 706 280Z" fill="#3a414a"/>
+  <ellipse cx="706" cy="318" rx="18" ry="38" fill="#3a414a" stroke="#fff" stroke-width="1.5" opacity="0.9"/>
+  <text x="775" y="311" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="15" font-weight="700">Message</text>
+  <text x="775" y="333" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="15" font-weight="700">broker</text>
+
+  <path d="M587 300 H688" fill="none" stroke="#3a414a" stroke-width="2" marker-end="url(#arrow)"/>
+  <circle cx="610" cy="284" r="10" fill="#fff" stroke="#3a414a" stroke-width="1.5"/>
+  <text x="610" y="288" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="12" font-weight="700">3</text>
+  <text x="650" y="289" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="13">publish</text>
+
+  <path d="M688 340 H587" fill="none" stroke="#3a414a" stroke-width="2" marker-end="url(#arrow)"/>
+  <circle cx="590" cy="365" r="10" fill="#fff" stroke="#3a414a" stroke-width="1.5"/>
+  <text x="590" y="369" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="12" font-weight="700">4</text>
+  <text x="646" y="370" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="13">acknowledge</text>
+
+  <path d="M475 340 H374" fill="none" stroke="#3a414a" stroke-width="2" marker-end="url(#arrow)"/>
+  <circle cx="401" cy="365" r="10" fill="#fff" stroke="#3a414a" stroke-width="1.5"/>
+  <text x="401" y="369" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="12" font-weight="700">5</text>
+  <text x="444" y="364" text-anchor="middle" fill="#3a414a" font-family="Arial, sans-serif" font-size="12">
+    <tspan x="444" dy="0">mark</tspan>
+    <tspan x="444" dy="14">published</tspan>
+  </text>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#3a414a"/>
+    </marker>
+  </defs>
+</svg>
