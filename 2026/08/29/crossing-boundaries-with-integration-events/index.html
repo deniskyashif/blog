@@ -123,8 +123,7 @@
 
 
 
-		<p>Ordering saves an order and crashes before publishing the event. The customer sees &ldquo;order placed&rdquo;. Fulfillment never hears about it. Nobody ships anything.</p>
-<p>This article is about everything that has to go right for one bounded context to tell another that something happened - and how to design for the ways it goes wrong.</p>
+		<p>This article is about everything that has to go right for one bounded context to tell another that something happened - and how to design for the ways it goes wrong.</p>
 <p>In <a href="/2026/07/25/modeling-facts-and-reactions-with-domain-events">Modeling Facts and Reactions with Domain Events</a>, we saw how a domain event records a meaningful business fact inside the model where that fact became true. It can trigger local reactions, but its name, types, and payload belong to that domain model and are free to evolve with it. We can think of domain events as <strong>internal events</strong>. Here we cover what happens when a fact must cross into another bounded context: a model with its own language and responsibilities.</p>
 <h2 id="crossing-the-boundary">Crossing the boundary</h2>
 <p>Suppose Ordering and Fulfillment are independently owned and deployed contexts, and Fulfillment needs to prepare a newly placed order. They need a stable public contract containing the business information that Fulfillment requires, without coupling it to Ordering&rsquo;s internal model. This contract is an <strong>integration event</strong>, which we can think of as an <strong>external event</strong>.</p>
@@ -358,7 +357,7 @@
 
         <footer>
 	<span>
-		&copy;&nbsp;<time datetime="2026-08-29 18:33:51.227136 &#43;0300 EEST m=&#43;0.091258460">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+		&copy;&nbsp;<time datetime="2026-08-29 20:54:07.442786 &#43;0300 EEST m=&#43;0.083200126">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
 	</span>
     <br/>
 </footer>
