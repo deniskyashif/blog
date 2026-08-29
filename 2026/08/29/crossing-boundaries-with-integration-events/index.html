@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+		
+		
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-X7Z9LV9QY4"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-X7Z9LV9QY4');
+        }
+      </script>
+		
+		<meta property="og:url" content="https://deniskyashif.com/2026/08/29/crossing-boundaries-with-integration-events/">
+	<meta property="og:site_name" content="Denis Kyashif&#39;s Blog">
+	<meta property="og:title" content="Crossing Boundaries with Integration Events">
+	<meta property="og:description" content="How to turn internal domain facts into reliable contracts between bounded contexts.">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2026-08-29T07:00:00+03:00">
+		<meta property="article:modified_time" content="2026-08-29T07:00:00+03:00">
+		<meta property="article:tag" content="Software-Architecture">
+		<meta property="article:tag" content="Domain-Driven-Design">
+		<meta property="article:tag" content="Distributed-Systems">
+		<meta property="og:image" content="https://deniskyashif.com/images/site-feature-image.png">
+
+	
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Crossing Boundaries with Integration Events &middot; Denis Kyashif&#39;s Blog</title>
+
+		
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/fonts.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre&#43;Baskerville:400,400i,700">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto&#43;Sans:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/assets/my.css">
+		
+		<link rel="icon" href="/favicon.ico"/>
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+		
+		<link href="" rel="alternate" type="application/rss+xml" title="Denis Kyashif&#39;s Blog" />
+
+		
+		<script>document.documentElement.classList.add("light");</script>
+	</head>
+
+    <body>
+        <a href="https://github.com/deniskyashif/blog" class="github-corner" target="_blank" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#4a9ae1; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<nav class="nav">
+	<div class="nav-container">
+        <a href="/">
+			<h2 class="nav-title">Denis Kyashif&#39;s Blog</h2>
+		</a>
+		<ul>
+    <li><a href="/">Posts</a></li>
+    <li><a href="/talks">Talks</a></li>
+    <li><a href="/about">About</a></li>
+</ul>
+
+	</div>
+</nav>
+
+        
+
+<main>
+	
+
+
+        <div class="post">
+		<div class="post-info">
+    <time datetime="2026-08-29 07:00:00 &#43;0300 EEST">August 29, 2026</time>
+    |
+    <a href="https://github.com/deniskyashif/blog/blob/main/content/posts/2026-08-29-ddd-integration-events.md" target="_blank">
+        <i class="fa fa-edit"></i>&nbsp;Edit
+    </a>
+
+    
+    <div class="tags">
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/software-architecture/" class="tag">software-architecture</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/domain-driven-design/" class="tag">domain-driven-design</a>
+        
+        
+        
+        
+        <a href="https://deniskyashif.com/tags/distributed-systems/" class="tag">distributed-systems</a>
+        
+        
+    </div>
+</div>
+
+		<h1 class="post-title">Crossing Boundaries with Integration Events</h1>
+<div class="post-line"></div>
+
+		
+
+<div class="series-disclaimer" role="note" aria-label="Series disclaimer">
+  <p>
+    This article is a part of an ongoing series on Domain-Driven Design.<br />You can check out the rest of the series <a href="/tags/domain-driven-design/">here</a>.
+  </p>
+</div>
+
+
+
+		<p>Ordering saves an order and crashes before publishing the event. The customer sees &ldquo;order placed&rdquo;. Fulfillment never hears about it. Nobody ships anything.</p>
+<p>This article is about everything that has to go right for one bounded context to tell another that something happened - and how to design for the ways it goes wrong.</p>
+<p>In <a href="/2026/07/25/modeling-facts-and-reactions-with-domain-events">Modeling Facts and Reactions with Domain Events</a>, we saw how a domain event records a meaningful business fact inside the model where that fact became true. It can trigger local reactions, but its name, types, and payload belong to that domain model and are free to evolve with it. We can think of domain events as <strong>internal events</strong>. Here we cover what happens when a fact must cross into another bounded context: a model with its own language and responsibilities.</p>
+<h2 id="crossing-the-boundary">Crossing the boundary</h2>
+<p>Suppose Ordering and Fulfillment are independently owned and deployed contexts, and Fulfillment needs to prepare a newly placed order. They need a stable public contract containing the business information that Fulfillment requires, without coupling it to Ordering&rsquo;s internal model. This contract is an <strong>integration event</strong>, which we can think of as an <strong>external event</strong>.</p>
+<img src="/images/posts/2026-08-29-ddd-integration-events/1.svg" alt="Integration event between two contexts" />
+<p>Integration events travel over durable asynchronous messaging, using infrastructure such as Apache Kafka, RabbitMQ, or Azure Service Bus, so Ordering can finish without waiting for Fulfillment. Each context can process work at its own pace, temporary outages do not have to propagate back to the producer, and messages can remain available until a consumer is ready to handle them.</p>
+<p>These benefits come with new challenges: either context may be unavailable, messages may be delayed or duplicated, and the two contexts cannot share a database transaction. We therefore have two problems to solve:</p>
+<ol>
+<li>Designing the contract</li>
+<li>Delivering it reliably</li>
+</ol>
+<h2 id="designing-the-contract-for-the-boundary">Designing the contract for the boundary</h2>
+<h3 id="dont-publish-your-domain-model">Don&rsquo;t publish your domain model</h3>
+<p>Suppose that, in this model, placing an order makes it ready to enter Fulfillment, and Ordering raises this domain event when that happens:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">OrderPlaced
+</span></span><span class="line"><span class="cl">  orderId: OrderId
+</span></span><span class="line"><span class="cl">  customer: CustomerId
+</span></span><span class="line"><span class="cl">  items: List&lt;OrderItem&gt;
+</span></span><span class="line"><span class="cl">  placedAt: Timestamp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">OrderItem
+</span></span><span class="line"><span class="cl">  productId: ProductId
+</span></span><span class="line"><span class="cl">  quantity: Quantity
+</span></span></code></pre></div><p>This event is designed for Ordering&rsquo;s internal handlers. <code>ProductId</code>, <code>Quantity</code>, and the other typed identifiers are value objects that belong to Ordering&rsquo;s model and are free to change with it.</p>
+<p>Publishing the event directly turns those internals into a public contract - probably the most common mistake in event-driven integrations. It feels like reuse: the event already exists, why not share it? But now every consumer depends on Ordering&rsquo;s model, and every refactor made for Ordering&rsquo;s own needs starts breaking other teams. The payload is also a poor fit for the boundary: it exposes <code>customer</code>, which Fulfillment does not need, and describes products using Ordering&rsquo;s internal identifiers.</p>
+<p>Instead, Ordering can translate the same fact into an integration event designed for the Fulfillment context:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;metadata&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;order-ready-for-fulfillment&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;messageId&#34;</span><span class="p">:</span> <span class="s2">&#34;01JZ2Q5Y7M8K9N0P1R2S3T4V5W&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;occurredAt&#34;</span><span class="p">:</span> <span class="s2">&#34;2026-08-29T09:42:18Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;orderEventSequence&#34;</span><span class="p">:</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;body&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;orderId&#34;</span><span class="p">:</span> <span class="s2">&#34;ord-8472&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;items&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span> <span class="nt">&#34;productCode&#34;</span><span class="p">:</span> <span class="s2">&#34;CHAIR-BLK&#34;</span><span class="p">,</span> <span class="nt">&#34;quantity&#34;</span><span class="p">:</span> <span class="mi">2</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span> <span class="nt">&#34;productCode&#34;</span><span class="p">:</span> <span class="s2">&#34;DESK-OAK&#34;</span><span class="p">,</span> <span class="nt">&#34;quantity&#34;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The envelope separates transport and contract metadata from the business payload. <code>metadata</code> identifies the event contract and carries information used to route, deduplicate, and interpret the message; <code>body</code> contains the fact consumed by Fulfillment. The <code>orderEventSequence</code> is a producer-assigned counter per <code>orderId</code> - we&rsquo;ll see why it&rsquo;s useful later on.</p>
+<p>The exact JSON shape is not essential. Some messaging platforms place metadata in headers, and standards such as <a href="https://cloudevents.io">CloudEvents</a> define their own envelope fields. What matters is that the separation is semantic and consistent across producers and consumers - a uniform envelope lets messaging infrastructure handle concerns such as tracing and deduplication without understanding each body.</p>
+<p>The <code>OrderPlaced</code> domain event and this integration event describe the same occurrence without sharing a name or shape. The integration event carries stable, serialized values instead of Ordering&rsquo;s value-object classes, and drops <code>customer</code>, which Fulfillment does not need.</p>
+<p>Ordering owns this boundary-specific contract, and another boundary may need a different integration event derived from the same domain event. Keeping the payload to the facts the consumer needs limits coupling: the fewer producer-internal details it exposes, the less a producer-side refactor can ripple out. How much data to carry, versus letting the consumer fetch it, is its own tradeoff, which we cover below.</p>
+<p><strong>An integration event is a published interface.</strong> Once another context depends on it, changes carry the same compatibility concerns as changes to a versioned REST or gRPC API. Its schema, field meanings, guarantees, and versioning policy become part of that interface.</p>
+<h3 id="business-facts-rather-than-internal-state-changes">Business facts rather than internal state changes</h3>
+<p>Names can leak the internal domain model just as easily as payloads. Suppose Fulfillment publishes the following event for Ordering:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">FulfillmentStatusChanged
+</span></span><span class="line"><span class="cl">  orderId
+</span></span><span class="line"><span class="cl">  oldStatus: PICKING // or even worse - numeric keys instead of strings
+</span></span><span class="line"><span class="cl">  newStatus: DISPATCHED
+</span></span></code></pre></div><p>This contract makes Ordering understand Fulfillment&rsquo;s statuses and reproduce part of its state machine. It may expose every transition when Ordering cares about only a few. Changing a status can then affect every consumer, even when the business fact they need has not changed. The contract couples other contexts to Fulfillment&rsquo;s internal model and leaks implementation details.</p>
+<p><strong>Asynchronous messaging does not remove coupling by itself; the contract still needs to express the business meaning.</strong></p>
+<p>The same interaction can instead be expressed as the fact that matters to Ordering:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">OrderDispatched
+</span></span><span class="line"><span class="cl">  orderId
+</span></span><span class="line"><span class="cl">  dispatchedAt
+</span></span></code></pre></div><p><code>OrderDispatched</code> communicates what happened without requiring Ordering to interpret Fulfillment&rsquo;s internal lifecycle. <code>FulfillmentStatusChanged</code> is not inherently wrong when a status change is itself meaningful domain language; it becomes problematic when it merely synchronizes fields or exposes implementation details.</p>
+<h3 id="data-events-are-not-integration-contracts">Data events are not integration contracts</h3>
+<p><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing">Event sourcing</a> and <a href="https://en.wikipedia.org/wiki/Change_data_capture">Change Data Capture</a> produce their own streams of events, and it is tempting to treat them as ready-made integration events. They are not. An event-sourced event is a persistence record used to reconstruct internal state. It may express a genuine business fact such as <code>OrderPlaced</code>, but its name, schema, and evolution still serve the producer&rsquo;s model and persistence needs. A change-data-capture stream is lower-level: it is a row-level feed of database mutations that describes how stored data changed, usually without expressing why it changed in business terms. Both streams are internal contracts, not public integration contracts.</p>
+<p>A CDC record such as <code>OrderRow.status changed from 2 to 5</code> forces consumers to know that status <code>5</code> means &ldquo;fulfilled&rdquo; and to infer a business fact from a database mutation. Exposing an event-sourced stream creates similar coupling at a higher semantic level: consumers become dependent on records that the producer may need to split, merge, or reshape as its model evolves. Both streams can instead serve as internal sources from which integration events are derived.</p>
+<h3 id="when-the-consumer-needs-more-data">When the consumer needs more data</h3>
+<p>A consumer often needs data owned by the producing context to act on the fact. There are three common approaches, each with a different tradeoff between autonomy and coupling:</p>
+<ul>
+<li><strong>Event-carried state transfer:</strong> each event includes the producer-owned data needed to react to that fact. The consumer can act without calling the producer, at the cost of larger payloads and duplicated data. The <code>order-ready-for-fulfillment</code> event above takes this approach: it carries the items so Fulfillment never has to ask.</li>
+<li><strong>Thin notification plus callback:</strong> the event carries identifiers, and the consumer queries the producer for details via the producer&rsquo;s public API. This keeps payloads small but creates a runtime dependency and may return data that has changed since the event occurred. It fits when many consumers each need different data: rather than one payload bloated to satisfy everyone, each consumer fetches only what it needs.</li>
+<li><strong>Local replica:</strong> the consumer builds a read model by processing a public integration-event stream from the producer - for example, Fulfillment maintaining a local product table from a Catalog context&rsquo;s events, so it can look up weights and dimensions without calling Catalog per order. It can query that data without depending on the producer&rsquo;s availability, but must operate and synchronize additional storage and tolerate replication lag.</li>
+</ul>
+<p>Whichever approach we choose, <strong>notification does not transfer ownership</strong>: the producing context remains authoritative for its data.</p>
+<h2 id="translation-at-the-edge">Translation at the edge</h2>
+<p>Translation from an internal fact to a public contract can happen at the boundary rather than inside the aggregate:</p>
+<ul>
+<li>The application or infrastructure layer maps the domain event to an integration event.</li>
+<li>The aggregate remains unaware of the integration contract and raises only its domain event.</li>
+<li>A domain event may produce no integration event when the fact does not need to leave the bounded context.</li>
+<li>A single domain event may also produce more than one integration event.</li>
+</ul>
+<img src="/images/posts/2026-08-29-ddd-integration-events/2.svg" alt="Concentric architecture layers showing a domain event translated into an integration event at the edge of a bounded context" />
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">on OrderPlaced event:
+</span></span><span class="line"><span class="cl">  message = OrderReadyForFulfillmentV1(
+</span></span><span class="line"><span class="cl">    messageId = newId(),
+</span></span><span class="line"><span class="cl">    orderId = event.orderId,
+</span></span><span class="line"><span class="cl">    items = event.items.map(item -&gt; {
+</span></span><span class="line"><span class="cl">      productCode = productCodeFor(item.productId),
+</span></span><span class="line"><span class="cl">      quantity = item.quantity.value
+</span></span><span class="line"><span class="cl">    }),
+</span></span><span class="line"><span class="cl">    occurredAt = event.occurredAt,
+</span></span><span class="line"><span class="cl">    orderEventSequence = nextSequenceFor(event.orderId))
+</span></span><span class="line"><span class="cl">  publish(message)  // this line is about to become a problem
+</span></span></code></pre></div><p>This event handler is deliberately boring. It maps, flattens, assigns a sequence number, and hands the message off for publishing - no business decisions happen here, because the fact was already decided when the aggregate raised <code>OrderPlaced</code>. That is exactly what keeps the domain model free of transport concerns, and the contract free of domain internals.</p>
+<h2 id="surviving-the-crash-between-save-and-publish">Surviving the crash between save and publish</h2>
+<p>Once we&rsquo;ve designed the integration event, we still have to deliver it. Zoom out from the translation handler: it runs as part of placing the order, right after the aggregate is saved. The end-to-end sequence is:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">save(order)                       // commits; raising OrderPlaced triggers the handler
+</span></span><span class="line"><span class="cl">message = translate(orderPlaced)  // the handler builds the message...
+</span></span><span class="line"><span class="cl">publish(message)                  // ...and publishes it
+</span></span></code></pre></div><p>This is the failure from the opening of this article. <code>save(order)</code> commits, the process crashes, and the event never leaves the building. Ordering considers the order placed, Fulfillment never finds out, and the customer waits for a package nobody is preparing.</p>
+<p>Why not publish first, then save? Walk it through: the event goes out, saving the order fails, and now Fulfillment prepares an order that does not exist.</p>
+<p>The problem is that the database and the message broker are two independent systems. In most applications, we cannot wrap both in one atomic transaction. What we can do is commit the domain change and the <strong>intent to publish</strong> in the same database transaction. This is the idea behind the <strong>transactional outbox</strong> pattern.</p>
+<p>Instead of sending the event directly, we serialize it into an outbox table stored in the same database as the order:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">transaction:
+</span></span><span class="line"><span class="cl">  save(order)                 // OrderPlaced raised, handler builds message
+</span></span><span class="line"><span class="cl">  saveOutboxMessage(message)  // instead of publish(message)
+</span></span><span class="line"><span class="cl">commit
+</span></span></code></pre></div><img src="/images/posts/2026-08-29-ddd-integration-events/3.svg" alt="Transactional outbox flow: save the order and outbox message atomically, then publish and mark the message after acknowledgement" />
+<p>The order and its publication intent now commit or roll back together. A separate publisher can poll for pending messages, send them, and mark them as published after the broker acknowledges them.</p>
+<h2 id="the-message-that-arrives-twice">The message that arrives twice</h2>
+<p>The outbox stops events from being lost, but it does not stop them from arriving twice. The publisher can send a message and then crash before marking the outbox record as published, so on restart it sends the same message again. A similar window exists on the consumer side: the handler can commit its work and lose the acknowledgement, causing the broker to redeliver the message. This is called <strong>at-least-once delivery</strong>.</p>
+<p>This means the consumer needs <strong>idempotent</strong> processing: handling the same message repeatedly has the same business effect as handling it once. Some operations are naturally idempotent. Setting a shipment address to a particular value, for example, has the same result each time. Incrementing a counter, reserving inventory, or charging a payment usually does not.</p>
+<p>For everything else, the obvious fix is to remember which messages we have already handled. The interesting questions are where that memory lives - and what happens if we crash right after checking it. Fulfillment can use the event&rsquo;s <code>messageId</code> as a deduplication key. It keeps an inbox, or simply a table of processed message identifiers, and records the identifier in the same transaction as the business change:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">on OrderReadyForFulfillment message:
+</span></span><span class="line"><span class="cl">transaction:
+</span></span><span class="line"><span class="cl">  if messageId was not already processed:
+</span></span><span class="line"><span class="cl">    prepareOrder(message)
+</span></span><span class="line"><span class="cl">    recordProcessed(messageId)
+</span></span><span class="line"><span class="cl">commit
+</span></span><span class="line"><span class="cl">acknowledge message
+</span></span></code></pre></div><p>If processing fails, the transaction rolls back and the message can be retried. If it keeps failing, it should be moved to a dead-letter queue or equivalent failure store, with enough context for diagnosis and controlled replay. If processing succeeds but the acknowledgement is lost, the next delivery finds the recorded identifier and does nothing.</p>
+<p>One detail is easy to get wrong: the business change and the processed-message record must commit atomically. Record them in separate transactions, and a crash between the two recreates the exact dual-write problem the producer just solved with its outbox. A unique constraint on the processed <code>messageId</code> also protects against two consumer instances receiving the duplicate concurrently.</p>
+<h3 id="charging-the-customer-exactly-once">Charging the customer exactly once</h3>
+<p>The inbox trick works because the business change and the processed-message record are two writes to the same database, so a single transaction covers both. That guarantee disappears as soon as the consumer&rsquo;s event handler does something outside its database. Suppose preparing the order also charges a payment provider. The provider call is not part of the transaction, so we are back to coordinating two independent systems.</p>
+<p>The inbox deduplicates <em>incoming</em> messages, but that only protects the consumer&rsquo;s own database; it cannot stop a redelivered message from calling the payment provider a second time. The handler sees an unprocessed <code>messageId</code>, charges the customer, then crashes before recording the message as processed. On redelivery, it charges them again - and the design gap becomes a refund ticket.</p>
+<p>The payment provider needs its own protection. So Fulfillment sends an <strong>idempotency key</strong> <em>with the call</em>: a stable identifier, which can simply be the <code>messageId</code>, that lets the provider recognize a repeat and charge only once. One key guards the way in, the other guards the way out. To also make the <em>decision</em> to call durable, Fulfillment records the outgoing call as a command in its own outbox, committed in the same transaction as the business change. A separate step then drains the outbox and makes the call, applying the same boundary treatment the producer used with its broker:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">// consumer handler
+</span></span><span class="line"><span class="cl">transaction:
+</span></span><span class="line"><span class="cl">  if messageId not processed:
+</span></span><span class="line"><span class="cl">    prepareOrder(message)
+</span></span><span class="line"><span class="cl">    recordProcessed(messageId)
+</span></span><span class="line"><span class="cl">    saveOutboxCommand(ChargePayment, idempotencyKey = messageId)
+</span></span><span class="line"><span class="cl">commit
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// separate publisher, later
+</span></span><span class="line"><span class="cl">for each pending command:
+</span></span><span class="line"><span class="cl">  call provider with command.idempotencyKey   // safe to retry
+</span></span><span class="line"><span class="cl">  markSent(command)
+</span></span></code></pre></div><p>The outbox makes sure the call is never lost; the idempotency key makes sure it is never applied twice. This assumes, of course, that the payment provider supports idempotency keys of its own.</p>
+<h3 id="when-the-cancellation-arrives-first">When the cancellation arrives first</h3>
+<p>Messages can also arrive out of order. Fulfillment does not care whether unrelated orders arrive in sequence, but order matters for events about the same <code>orderId</code>. For example, <code>OrderCancelled</code> with <code>orderEventSequence: 5</code> might arrive before a delayed <code>OrderReadyForFulfillment</code> with <code>orderEventSequence: 4</code>. Processing the older event sends a warehouse worker to pick and pack an order the customer cancelled minutes ago.</p>
+<p>Using <code>orderId</code> as the broker&rsquo;s partition or session key helps preserve per-order delivery order. The producer-assigned <code>orderEventSequence</code> provides a second safeguard: after recording sequence 5, Fulfillment can ignore sequence 4 as stale. Deduplication prevents one message from taking effect twice; sequence checks prevent older messages from undoing newer facts.</p>
+<h2 id="when-an-integration-event-is-not-a-good-fit">When an integration event is not a good fit</h2>
+<p>An integration event fits when a context can publish a fact and finish its work without waiting for a response. When it needs an immediate answer to continue, a direct API usually makes the dependency clearer.</p>
+<p>Sending a request through a broker does not turn it into an event. A message asking a particular recipient to act is a command; one asking for information is a query. If the sender expects a reply, the interaction is still request-response. The callback described earlier is such a query: it is triggered by the event, but is not part of the event contract.</p>
+<p>Messaging is tempting to reach for, but it does not automatically decouple our systems - and it adds a lot of cases to think about: the outboxes, inboxes, and sequence checks we covered above. It is worth it when contexts need to work independently or several consumers need the same fact. Otherwise, a direct call may be simpler.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Integration events let bounded contexts share business facts without exposing their internal models. That independence depends on both sides of the boundary: producers must publish stable contracts reliably, while consumers must tolerate duplicates, delays, and out-of-order delivery. When those tradeoffs are justified, integration events provide a durable way for contexts to evolve and operate independently.</p>
+<h2 id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://martinfowler.com/articles/201701-event-driven.html">What do you mean by &ldquo;Event-Driven&rdquo;?</a> by Martin Fowler</li>
+<li><em>Enterprise Integration Patterns</em> by Gregor Hohpe and Bobby Woolf</li>
+<li><em>Designing Data-Intensive Applications</em> by Martin Kleppmann; Chapter 11 - Stream Processing</li>
+</ul>
+
+
+		<section class="social-share">
+    
+    
+    <a href="mailto:?subject=Check out 'Crossing%20Boundaries%20with%20Integration%20Events' by Denis%20Kyashif&amp;body=https%3a%2f%2fdeniskyashif.com%2f2026%2f08%2f29%2fcrossing-boundaries-with-integration-events%2f" target="_blank" class="share-btn email" title="Share via Email" aria-label="Share via Email">
+        <i class="fa fa-2x fa-envelope"></i>
+    </a>
+    
+    
+    
+    <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fdeniskyashif.com%2f2026%2f08%2f29%2fcrossing-boundaries-with-integration-events%2f&amp;title=Crossing%20Boundaries%20with%20Integration%20Events" target="_blank" class="share-btn linkedin" title="Share on LinkedIn" aria-label="Share on LinkedIn">
+        <i class="fa fa-2x fa-linkedin"></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="//reddit.com/submit?url=https%3a%2f%2fdeniskyashif.com%2f2026%2f08%2f29%2fcrossing-boundaries-with-integration-events%2f&amp;title=Crossing%20Boundaries%20with%20Integration%20Events" target="_blank" class="share-btn reddit" title="Share on Reddit" aria-label="Share on Reddit">
+        <i class="fa fa-2x fa-reddit-alien"></i>
+    </a>
+    
+    
+    
+    <a href="//news.ycombinator.com/submitlink?u=https%3a%2f%2fdeniskyashif.com%2f2026%2f08%2f29%2fcrossing-boundaries-with-integration-events%2f&amp;t=Crossing%20Boundaries%20with%20Integration%20Events" target="_blank" class="share-btn hacker-news" title="Share on Hacker News" aria-label="Share on Hacker News">
+        <i class="fa fa-2x fa-hacker-news"></i>
+    </a>
+    
+    
+    
+    <a href="//lobste.rs/stories/new?url=https%3a%2f%2fdeniskyashif.com%2f2026%2f08%2f29%2fcrossing-boundaries-with-integration-events%2f&amp;title=Crossing%20Boundaries%20with%20Integration%20Events" target="_blank" class="share-btn lobsters" title="Share on Lobsters" aria-label="Share on Lobsters">
+        <span class="share-glyph" aria-hidden="true">L</span>
+    </a>
+    
+     
+    
+    <a href="https://bsky.app/intent/compose?text=Crossing%20Boundaries%20with%20Integration%20Events https%3a%2f%2fdeniskyashif.com%2f2026%2f08%2f29%2fcrossing-boundaries-with-integration-events%2f" target="_blank" class="share-btn bluesky" title="Share on Bluesky" aria-label="Share on Bluesky">
+        <span class="share-glyph" aria-hidden="true">B</span>
+    </a>
+    
+    
+    
+    
+    
+</section>
+
+
+
+
+
+
+	</div>
+
+	<div class="pagination">
+		<a href="/2026/07/25/modeling-facts-and-reactions-with-domain-events/" class="left arrow">&#8592;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+	<div class="comments">
+		<script src="https://giscus.app/client.js"
+        data-repo="deniskyashif/blog"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkxNjcwMDY3NzQ="
+        data-category="General"
+        data-category-id="DIC_kwDOCfRSNs4DB_xM"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>
+
+	</div>
+</main>
+
+
+        <footer>
+	<span>
+		&copy;&nbsp;<time datetime="2026-08-29 18:33:51.227136 &#43;0300 EEST m=&#43;0.091258460">2026</time>&nbsp;<a href="/about">Denis Kyashif</a>
+	</span>
+    <br/>
+</footer>
+
+    </body>
+</html>

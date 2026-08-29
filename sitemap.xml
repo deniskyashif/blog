@@ -2,22 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://deniskyashif.com/2026/08/29/crossing-boundaries-with-integration-events/</loc>
+    <lastmod>2026-08-29T07:00:00+03:00</lastmod>
+  </url><url>
     <loc>https://deniskyashif.com/</loc>
-    <lastmod>2026-07-25T08:14:19+03:00</lastmod>
+    <lastmod>2026-08-29T07:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/tags/distributed-systems/</loc>
+    <lastmod>2026-08-29T07:00:00+03:00</lastmod>
   </url><url>
     <loc>https://deniskyashif.com/tags/domain-driven-design/</loc>
-    <lastmod>2026-07-25T08:14:19+03:00</lastmod>
-  </url><url>
-    <loc>https://deniskyashif.com/2026/07/25/modeling-facts-and-reactions-with-domain-events/</loc>
-    <lastmod>2026-07-25T08:14:19+03:00</lastmod>
+    <lastmod>2026-08-29T07:00:00+03:00</lastmod>
   </url><url>
     <loc>https://deniskyashif.com/posts/</loc>
-    <lastmod>2026-07-25T08:14:19+03:00</lastmod>
+    <lastmod>2026-08-29T07:00:00+03:00</lastmod>
   </url><url>
     <loc>https://deniskyashif.com/tags/software-architecture/</loc>
-    <lastmod>2026-07-25T08:14:19+03:00</lastmod>
+    <lastmod>2026-08-29T07:00:00+03:00</lastmod>
   </url><url>
     <loc>https://deniskyashif.com/tags/</loc>
+    <lastmod>2026-08-29T07:00:00+03:00</lastmod>
+  </url><url>
+    <loc>https://deniskyashif.com/2026/07/25/modeling-facts-and-reactions-with-domain-events/</loc>
     <lastmod>2026-07-25T08:14:19+03:00</lastmod>
   </url><url>
     <loc>https://deniskyashif.com/tags/csharp/</loc>

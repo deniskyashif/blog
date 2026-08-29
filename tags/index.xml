@@ -10,20 +10,27 @@
 		
 		
 		
-			<lastBuildDate>Sat, 25 Jul 2026 08:14:19 +0300</lastBuildDate>
+			<lastBuildDate>Sat, 29 Aug 2026 07:00:00 +0300</lastBuildDate>
 		
 			<atom:link href="https://deniskyashif.com/tags/index.xml" rel="self" type="application/rss+xml" />
 			<item>
+				<title>Distributed-Systems</title>
+				<link>https://deniskyashif.com/tags/distributed-systems/</link>
+				<pubDate>Sat, 29 Aug 2026 07:00:00 +0300</pubDate>
+				<guid>https://deniskyashif.com/tags/distributed-systems/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>Domain-Driven-Design</title>
 				<link>https://deniskyashif.com/tags/domain-driven-design/</link>
-				<pubDate>Sat, 25 Jul 2026 08:14:19 +0300</pubDate>
+				<pubDate>Sat, 29 Aug 2026 07:00:00 +0300</pubDate>
 				<guid>https://deniskyashif.com/tags/domain-driven-design/</guid>
 				<description></description>
 			</item>
 			<item>
 				<title>Software-Architecture</title>
 				<link>https://deniskyashif.com/tags/software-architecture/</link>
-				<pubDate>Sat, 25 Jul 2026 08:14:19 +0300</pubDate>
+				<pubDate>Sat, 29 Aug 2026 07:00:00 +0300</pubDate>
 				<guid>https://deniskyashif.com/tags/software-architecture/</guid>
 				<description></description>
 			</item>
