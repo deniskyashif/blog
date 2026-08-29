@@ -7,8 +7,6 @@ tags: ["software-architecture", "domain-driven-design", "distributed-systems"]
 editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/2026-08-29-ddd-integration-events.md"
 ---
 
-Ordering saves an order and crashes before publishing the event. The customer sees "order placed". Fulfillment never hears about it. Nobody ships anything.
-
 This article is about everything that has to go right for one bounded context to tell another that something happened - and how to design for the ways it goes wrong.
 
 In [Modeling Facts and Reactions with Domain Events](/2026/07/25/modeling-facts-and-reactions-with-domain-events), we saw how a domain event records a meaningful business fact inside the model where that fact became true. It can trigger local reactions, but its name, types, and payload belong to that domain model and are free to evolve with it. We can think of domain events as **internal events**. Here we cover what happens when a fact must cross into another bounded context: a model with its own language and responsibilities.
