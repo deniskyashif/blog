@@ -1,10 +1,10 @@
 ---
 title: "Crossing Boundaries with Integration Events"
-date: 2026-07-25T12:00:00+03:00
+date: 2026-08-29T07:00:00+03:00
 draft: false
 summary: "How to turn internal domain facts into reliable contracts between bounded contexts."
 tags: ["software-architecture", "domain-driven-design", "distributed-systems"]
-editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/ddd-integration-events.md"
+editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/2026-08-29-ddd-integration-events.md"
 ---
 
 A domain event records a meaningful business fact inside the model where that fact became true. It can trigger local reactions, but its name, types, and payload belong to that domain model and are free to evolve with it. We can therefore think of domain events as **internal events**. For a fuller introduction, see [Modeling Facts and Reactions with Domain Events](/2026/07/25/modeling-facts-and-reactions-with-domain-events).
@@ -15,7 +15,7 @@ In this article, we cover what happens when that fact must cross into another bo
 
 Suppose Ordering and Fulfillment are independently owned and deployed contexts, and Fulfillment needs to prepare a newly placed order. They need a stable public contract containing the business information that Fulfillment requires, without coupling it to Ordering's internal model. This contract is an **integration event**, which we can think of as an **external event**.
 
-<img src="/images/posts/ddd-integration-events/1.svg" alt="Integration event between two contexts" />
+<img src="/images/posts/2026-08-29-ddd-integration-events/1.svg" alt="Integration event between two contexts" />
 
 Delivered through durable asynchronous messaging, using infrastructure such as Apache Kafka, RabbitMQ, or Azure Service Bus, integration events let Ordering finish without waiting for Fulfillment. Each context can process work at its own pace, temporary outages do not have to propagate back to the producer, and messages can remain available until a consumer is ready to handle them.
 
@@ -52,7 +52,7 @@ Instead, Ordering can translate the same fact into an integration event designed
     "type": "order-ready-for-fulfillment",
     "version": 1,
     "messageId": "01JZ2Q5Y7M8K9N0P1R2S3T4V5W",
-    "occurredAt": "2026-07-25T09:42:18Z",
+    "occurredAt": "2026-08-29T09:42:18Z",
     "orderEventSequence": 4
   },
   "body": {
@@ -67,7 +67,7 @@ Instead, Ordering can translate the same fact into an integration event designed
 
 The envelope separates transport and contract metadata from the business payload. `metadata` identifies the event contract and carries information used to route, deduplicate, and interpret the message; `body` contains the fact consumed by Fulfillment. The `orderEventSequence` is a producer-assigned counter per `orderId` that lets consumers detect out-of-order delivery, covered later. Keeping a consistent envelope across event types also lets messaging infrastructure handle concerns such as tracing and deduplication without understanding each body. This exact JSON shape is not essential: some messaging platforms place metadata in headers, and standards such as CloudEvents define their own envelope fields. The important distinction is semantic and consistent across producers and consumers.
 
-The `OrderPlaced` domain event and this integration event describe the same occurrence without sharing a name or shape. The integration event carries stable, serialized values instead of Ordering's value-object classes, adds envelope fields for deduplication, timing, versioning, and ordering, and drops `customer`, which Fulfillment does not need. Each product appears as a stable code agreed at this boundary, which Fulfillment maps to its own product code before selecting a warehouse by rules that it owns.
+The `OrderPlaced` domain event and this integration event describe the same occurrence without sharing a name or shape. The integration event carries stable, serialized values instead of Ordering's value-object classes, adds envelope fields for deduplication, timing, versioning, and ordering, and drops `customer`, which Fulfillment does not need.
 
 Ordering owns this boundary-specific contract, and another boundary may need a different integration event derived from the same domain event. Keeping the payload to the facts the consumer needs limits coupling: the fewer producer-internal details it exposes, the less a producer-side refactor can ripple out. How much data to carry, versus letting the consumer fetch it, is its own tradeoff, covered in the next section.
 
@@ -125,7 +125,7 @@ Translation from an internal fact to a public contract can happen at the boundar
 - A domain event may produce no integration event when the fact does not need to leave the bounded context.
 - A single domain event may also produce more than one integration event.
 
-<img src="/images/posts/ddd-integration-events/2.svg" alt="Concentric architecture layers showing a domain event translated into an integration event at the edge of a bounded context" />
+<img src="/images/posts/2026-08-29-ddd-integration-events/2.svg" alt="Concentric architecture layers showing a domain event translated into an integration event at the edge of a bounded context" />
 
 ```text
 on OrderPlaced event:
@@ -162,13 +162,13 @@ transaction:
 commit
 ```
 
-<img src="/images/posts/ddd-integration-events/3.svg" alt="Transactional outbox flow: save the order and outbox message atomically, then publish and mark the message after acknowledgement" />
+<img src="/images/posts/2026-08-29-ddd-integration-events/3.svg" alt="Transactional outbox flow: save the order and outbox message atomically, then publish and mark the message after acknowledgement" />
 
 The order and its publication intent now commit or roll back together. A separate publisher can poll for pending messages, send them, and mark them as published after the broker acknowledges them.
 
 ## Reliable consumption: duplicates and order
 
-The outbox prevents an event from being lost between the producer's database and the broker, but it does not guarantee that the event is published only once. The publisher can send a message successfully and then crash before marking the outbox record as published. On restart, it sends the same message again. A similar window exists on the consumer side: the handler can commit its work and lose the acknowledgement, causing the broker to redeliver the message. This is **at-least-once delivery**: a message is not silently discarded, but duplicates are possible.
+The outbox stops events from being lost, but it does not stop them from arriving twice. The publisher can send a message and then crash before marking the outbox record as published, so on restart it sends the same message again. A similar window exists on the consumer side: the handler can commit its work and lose the acknowledgement, causing the broker to redeliver the message. This is called **at-least-once delivery**.
 
 This means the consumer needs **idempotent** processing: handling the same message repeatedly has the same business effect as handling it once. Some operations are naturally idempotent. Setting a shipment address to a particular value, for example, has the same result each time. Incrementing a counter, reserving inventory, or charging a payment usually does not.
 
@@ -186,13 +186,11 @@ acknowledge message
 
 If processing fails, the transaction rolls back and the message can be retried. Repeatedly failing messages should be moved to a dead-letter queue or equivalent failure store, with enough context for diagnosis and controlled replay. If processing succeeds but the acknowledgement is lost, the next delivery finds the recorded identifier and does nothing. The business change and the processed-message record must be atomic; otherwise, a crash between them recreates the dual-write problem that the producer solved with its outbox. A unique constraint on the processed `messageId` also protects against two consumer instances receiving the duplicate concurrently.
 
-The inbox trick works because the business change and the processed-message record are two writes to the same database, so a single transaction covers both. That guarantee disappears as soon as the handler does something outside its database. Suppose preparing the order also charges a payment provider. The provider call is not part of the transaction, so we are back to coordinating two independent systems, exactly the dual-write problem the producer faced with its broker.
+### Side effects outside the database
 
-The inbox deduplicates *incoming* messages, but that only protects the consumer's own database. It cannot stop a redelivered message from calling the provider a second time. The handler sees an unprocessed `messageId`, charges the customer, then crashes before recording the message as processed; on redelivery the key is still absent, so the handler charges again.
+The inbox trick works because the business change and the processed-message record are two writes to the same database, so a single transaction covers both. That guarantee disappears as soon as the consumer's event handler does something outside its database. Suppose preparing the order also charges a payment provider. The provider call is not part of the transaction, so we are back to coordinating two independent systems, exactly the dual-write problem the producer faced with its broker. The inbox deduplicates *incoming* messages, but that only protects the consumer's own database; it cannot stop a redelivered message from calling the payment provider a second time. The handler sees an unprocessed `messageId`, charges the customer, then crashes before recording the message as processed.
 
-The provider needs its own protection. So Fulfillment sends an **idempotency key** *with the call*: a stable identifier, which can simply be the `messageId`, that lets the provider recognize a repeat and charge only once. One key guards the way in, the other guards the way out.
-
-To also make the *decision* to call durable, Fulfillment records the outgoing call as a command in its own outbox, committed in the same transaction as the business change. A separate step drains the outbox and makes the call, applying the same boundary treatment the producer used with its broker:
+The payment provider needs its own protection. So Fulfillment sends an **idempotency key** *with the call*: a stable identifier, which can simply be the `messageId`, that lets the provider recognize a repeat and charge only once. One key guards the way in, the other guards the way out. To also make the *decision* to call durable, Fulfillment records the outgoing call as a command in its own outbox, committed in the same transaction as the business change. A separate step then drains the outbox and makes the call, applying the same boundary treatment the producer used with its broker:
 
 ```text
 // consumer handler
@@ -209,7 +207,9 @@ for each pending command:
   markSent(command)
 ```
 
-The outbox makes sure the call is never lost; the idempotency key makes sure it is never applied twice. This assumes the payment provider supports idempotency.
+The outbox makes sure the call is never lost; the idempotency key makes sure it is never applied twice. This assumes, of course, that the payment provider supports idempotency keys of its own.
+
+### Out-of-order delivery
 
 Messages can also arrive out of order. Fulfillment does not care whether unrelated orders arrive in sequence, but order matters for events about the same `orderId`. For example, `OrderCancelled` with `orderEventSequence: 5` might arrive before a delayed `OrderReadyForFulfillment` with `orderEventSequence: 4`. Processing the older event would prepare a cancelled order.
 
