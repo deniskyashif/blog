@@ -7,9 +7,11 @@ tags: ["software-architecture", "domain-driven-design", "distributed-systems"]
 editLink: "https://github.com/deniskyashif/blog/blob/main/content/posts/2026-08-29-ddd-integration-events.md"
 ---
 
-A domain event records a meaningful business fact inside the model where that fact became true. It can trigger local reactions, but its name, types, and payload belong to that domain model and are free to evolve with it. We can therefore think of domain events as **internal events**. For a fuller introduction, see [Modeling Facts and Reactions with Domain Events](/2026/07/25/modeling-facts-and-reactions-with-domain-events).
+Ordering saves an order and crashes before publishing the event. The customer sees "order placed". Fulfillment never hears about it. Nobody ships anything.
 
-In this article, we cover what happens when that fact must cross into another bounded context: a model with its own language and responsibilities.
+This article is about everything that has to go right for one bounded context to tell another that something happened - and how to design for the ways it goes wrong.
+
+In [Modeling Facts and Reactions with Domain Events](/2026/07/25/modeling-facts-and-reactions-with-domain-events), we saw how a domain event records a meaningful business fact inside the model where that fact became true. It can trigger local reactions, but its name, types, and payload belong to that domain model and are free to evolve with it. We can think of domain events as **internal events**. Here we cover what happens when a fact must cross into another bounded context: a model with its own language and responsibilities.
 
 ## Crossing the boundary
 
@@ -17,7 +19,7 @@ Suppose Ordering and Fulfillment are independently owned and deployed contexts, 
 
 <img src="/images/posts/2026-08-29-ddd-integration-events/1.svg" alt="Integration event between two contexts" />
 
-Delivered through durable asynchronous messaging, using infrastructure such as Apache Kafka, RabbitMQ, or Azure Service Bus, integration events let Ordering finish without waiting for Fulfillment. Each context can process work at its own pace, temporary outages do not have to propagate back to the producer, and messages can remain available until a consumer is ready to handle them.
+Integration events travel over durable asynchronous messaging, using infrastructure such as Apache Kafka, RabbitMQ, or Azure Service Bus, so Ordering can finish without waiting for Fulfillment. Each context can process work at its own pace, temporary outages do not have to propagate back to the producer, and messages can remain available until a consumer is ready to handle them.
 
 These benefits come with new challenges: either context may be unavailable, messages may be delayed or duplicated, and the two contexts cannot share a database transaction. We therefore have two problems to solve:
 
@@ -26,23 +28,23 @@ These benefits come with new challenges: either context may be unavailable, mess
 
 ## Designing the contract for the boundary
 
-### A payload shaped for the boundary
+### Don't publish your domain model
 
 Suppose that, in this model, placing an order makes it ready to enter Fulfillment, and Ordering raises this domain event when that happens:
 
 ```text
 OrderPlaced
   orderId: OrderId
-  customer: CustomerRef
+  customer: CustomerId
   items: List<OrderItem>
   placedAt: Timestamp
 
 OrderItem
-  product: ProductId
+  productId: ProductId
   quantity: Quantity
 ```
 
-This event is designed for Ordering's internal handlers. Its `ProductId`, `Quantity`, and other typed identifiers are value objects that enforce invariants and communicate intent: `Quantity` forbids negative values, and an `OrderId` cannot be passed where a `CustomerRef` is expected. These are classes with behavior, not a serialization format. Publishing the event directly would turn its internal types and payload into a public contract. Consumers would then be affected by changes made only for Ordering's own needs. The payload is also a poor fit for the Fulfillment boundary: it exposes `customer`, which Fulfillment does not need, and expresses products using Ordering's internal identifiers.
+This event is designed for Ordering's internal handlers. Its `ProductId`, `Quantity`, and other typed identifiers are value objects that enforce invariants and communicate intent: `Quantity` forbids negative values, and an `OrderId` cannot be passed where a `CustomerId` is expected. Publishing the event directly would turn its internal types and payload into a public contract. This is probably the most common mistake in event-driven integrations. It feels like reuse - the event already exists, why not share it? - but it quietly hands every consumer a dependency on Ordering's internals, and every refactor made for Ordering's own needs starts breaking other teams. The payload is also a poor fit for the Fulfillment boundary: it exposes `customer`, which Fulfillment does not need, and expresses products using Ordering's internal identifiers.
 
 Instead, Ordering can translate the same fact into an integration event designed for the Fulfillment boundary:
 
@@ -65,11 +67,13 @@ Instead, Ordering can translate the same fact into an integration event designed
 }
 ```
 
-The envelope separates transport and contract metadata from the business payload. `metadata` identifies the event contract and carries information used to route, deduplicate, and interpret the message; `body` contains the fact consumed by Fulfillment. The `orderEventSequence` is a producer-assigned counter per `orderId` that lets consumers detect out-of-order delivery, covered later. Keeping a consistent envelope across event types also lets messaging infrastructure handle concerns such as tracing and deduplication without understanding each body. This exact JSON shape is not essential: some messaging platforms place metadata in headers, and standards such as CloudEvents define their own envelope fields. The important distinction is semantic and consistent across producers and consumers.
+The envelope separates transport and contract metadata from the business payload. `metadata` identifies the event contract and carries information used to route, deduplicate, and interpret the message; `body` contains the fact consumed by Fulfillment. The `orderEventSequence` is a producer-assigned counter per `orderId` - we'll see it earn its keep later, when a cancellation overtakes this very message.
 
-The `OrderPlaced` domain event and this integration event describe the same occurrence without sharing a name or shape. The integration event carries stable, serialized values instead of Ordering's value-object classes, adds envelope fields for deduplication, timing, versioning, and ordering, and drops `customer`, which Fulfillment does not need.
+The exact JSON shape is not essential. Some messaging platforms place metadata in headers, and standards such as CloudEvents define their own envelope fields. What matters is that the separation is semantic and consistent across producers and consumers - a uniform envelope lets messaging infrastructure handle concerns such as tracing and deduplication without understanding each body.
 
-Ordering owns this boundary-specific contract, and another boundary may need a different integration event derived from the same domain event. Keeping the payload to the facts the consumer needs limits coupling: the fewer producer-internal details it exposes, the less a producer-side refactor can ripple out. How much data to carry, versus letting the consumer fetch it, is its own tradeoff, covered in the next section.
+The `OrderPlaced` domain event and this integration event describe the same occurrence without sharing a name or shape. The integration event carries stable, serialized values instead of Ordering's value-object classes, and drops `customer`, which Fulfillment does not need.
+
+Ordering owns this boundary-specific contract, and another boundary may need a different integration event derived from the same domain event. Keeping the payload to the facts the consumer needs limits coupling: the fewer producer-internal details it exposes, the less a producer-side refactor can ripple out. How much data to carry, versus letting the consumer fetch it, is its own tradeoff, covered below.
 
 > An integration event is a published interface.
 
@@ -133,14 +137,16 @@ on OrderPlaced event:
     messageId = newId(),
     orderId = event.orderId,
     items = event.items.map(item -> {
-      productCode = item.product.code,
+      productCode = productCodeFor(item.productId),
       quantity = item.quantity.value
     }),
     occurredAt = event.occurredAt,
     orderEventSequence = nextSequenceFor(event.orderId))
 ```
 
-## Reliable publication: the outbox
+This handler is deliberately boring. It maps, flattens, and assigns a sequence number - no business decisions happen here, because the fact was already decided when the aggregate raised `OrderPlaced`. That is exactly what keeps the domain model free of transport concerns, and the contract free of domain internals.
+
+## Surviving the crash between save and publish
 
 Once we've designed the integration event, we still have to publish it. The translated message from the previous step is what we hand to the outbox. The naive sequence is unsafe:
 
@@ -149,7 +155,9 @@ save(order)
 publish(OrderReadyForFulfillmentV1)
 ```
 
-Suppose `save(order)` commits and the process crashes before publishing the event. Ordering now considers the order placed, but Fulfillment never finds out about it. Reversing the two operations does not help. If we publish first and saving the order then fails, Fulfillment may prepare an order that does not exist.
+This is the failure from the opening of this article. `save(order)` commits, the process crashes, and the event never leaves the building. Ordering considers the order placed, Fulfillment never finds out, and the customer waits for a package nobody is preparing.
+
+Why not publish first, then save? Walk it through: the event goes out, saving the order fails, and now Fulfillment prepares an order that does not exist.
 
 The problem is that the database and the message broker are two independent systems. In most applications, we cannot wrap both in one atomic transaction. What we can do is commit the domain change and the **intent to publish** in the same database transaction. This is the idea behind the **transactional outbox** pattern.
 
@@ -166,13 +174,13 @@ commit
 
 The order and its publication intent now commit or roll back together. A separate publisher can poll for pending messages, send them, and mark them as published after the broker acknowledges them.
 
-## Reliable consumption: duplicates and order
+## The message that arrives twice
 
 The outbox stops events from being lost, but it does not stop them from arriving twice. The publisher can send a message and then crash before marking the outbox record as published, so on restart it sends the same message again. A similar window exists on the consumer side: the handler can commit its work and lose the acknowledgement, causing the broker to redeliver the message. This is called **at-least-once delivery**.
 
 This means the consumer needs **idempotent** processing: handling the same message repeatedly has the same business effect as handling it once. Some operations are naturally idempotent. Setting a shipment address to a particular value, for example, has the same result each time. Incrementing a counter, reserving inventory, or charging a payment usually does not.
 
-For operations that are not naturally idempotent, Fulfillment can use the event's `messageId` as a deduplication key. It keeps an inbox, or simply a table of processed message identifiers, and records the identifier in the same transaction as the business change:
+For everything else, the obvious fix is to remember which messages we have already handled. The interesting questions are where that memory lives - and what happens if we crash right after checking it. Fulfillment can use the event's `messageId` as a deduplication key. It keeps an inbox, or simply a table of processed message identifiers, and records the identifier in the same transaction as the business change:
 
 ```text
 on OrderReadyForFulfillment message:
@@ -184,11 +192,15 @@ commit
 acknowledge message
 ```
 
-If processing fails, the transaction rolls back and the message can be retried. Repeatedly failing messages should be moved to a dead-letter queue or equivalent failure store, with enough context for diagnosis and controlled replay. If processing succeeds but the acknowledgement is lost, the next delivery finds the recorded identifier and does nothing. The business change and the processed-message record must be atomic; otherwise, a crash between them recreates the dual-write problem that the producer solved with its outbox. A unique constraint on the processed `messageId` also protects against two consumer instances receiving the duplicate concurrently.
+If processing fails, the transaction rolls back and the message can be retried. If it keeps failing, it should be moved to a dead-letter queue or equivalent failure store, with enough context for diagnosis and controlled replay. If processing succeeds but the acknowledgement is lost, the next delivery finds the recorded identifier and does nothing.
 
-### Side effects outside the database
+One detail is easy to get wrong: the business change and the processed-message record must commit atomically. Record them in separate transactions, and a crash between the two recreates the exact dual-write problem the producer just solved with its outbox. A unique constraint on the processed `messageId` also protects against two consumer instances receiving the duplicate concurrently.
 
-The inbox trick works because the business change and the processed-message record are two writes to the same database, so a single transaction covers both. That guarantee disappears as soon as the consumer's event handler does something outside its database. Suppose preparing the order also charges a payment provider. The provider call is not part of the transaction, so we are back to coordinating two independent systems, exactly the dual-write problem the producer faced with its broker. The inbox deduplicates *incoming* messages, but that only protects the consumer's own database; it cannot stop a redelivered message from calling the payment provider a second time. The handler sees an unprocessed `messageId`, charges the customer, then crashes before recording the message as processed.
+### Charging the customer exactly once
+
+The inbox trick works because the business change and the processed-message record are two writes to the same database, so a single transaction covers both. That guarantee disappears as soon as the consumer's event handler does something outside its database. Suppose preparing the order also charges a payment provider. The provider call is not part of the transaction, so we are back to coordinating two independent systems, exactly the dual-write problem the producer faced with its broker.
+
+The inbox deduplicates *incoming* messages, but that only protects the consumer's own database; it cannot stop a redelivered message from calling the payment provider a second time. The handler sees an unprocessed `messageId`, charges the customer, then crashes before recording the message as processed. On redelivery, it charges them again - and the design gap becomes a refund ticket.
 
 The payment provider needs its own protection. So Fulfillment sends an **idempotency key** *with the call*: a stable identifier, which can simply be the `messageId`, that lets the provider recognize a repeat and charge only once. One key guards the way in, the other guards the way out. To also make the *decision* to call durable, Fulfillment records the outgoing call as a command in its own outbox, committed in the same transaction as the business change. A separate step then drains the outbox and makes the call, applying the same boundary treatment the producer used with its broker:
 
@@ -209,9 +221,9 @@ for each pending command:
 
 The outbox makes sure the call is never lost; the idempotency key makes sure it is never applied twice. This assumes, of course, that the payment provider supports idempotency keys of its own.
 
-### Out-of-order delivery
+### When the cancellation arrives first
 
-Messages can also arrive out of order. Fulfillment does not care whether unrelated orders arrive in sequence, but order matters for events about the same `orderId`. For example, `OrderCancelled` with `orderEventSequence: 5` might arrive before a delayed `OrderReadyForFulfillment` with `orderEventSequence: 4`. Processing the older event would prepare a cancelled order.
+Messages can also arrive out of order. Fulfillment does not care whether unrelated orders arrive in sequence, but order matters for events about the same `orderId`. For example, `OrderCancelled` with `orderEventSequence: 5` might arrive before a delayed `OrderReadyForFulfillment` with `orderEventSequence: 4`. Processing the older event sends a warehouse worker to pick and pack an order the customer cancelled minutes ago.
 
 Using `orderId` as the broker's partition or session key helps preserve per-order delivery order. The producer-assigned `orderEventSequence` provides a second safeguard: after recording sequence 5, Fulfillment can ignore sequence 4 as stale. Deduplication prevents one message from taking effect twice; sequence checks prevent older messages from undoing newer facts.
 
@@ -226,3 +238,11 @@ Messaging also adds operational cost. It becomes useful when contexts need to wo
 ## Conclusion
 
 Integration events let bounded contexts share business facts without exposing their internal models. That independence depends on both sides of the boundary: producers must publish stable contracts reliably, while consumers must tolerate duplicates, delays, and out-of-order delivery. When those tradeoffs are justified, integration events provide a durable way for contexts to evolve and operate independently.
+
+## References and Further Reading
+
+- [What do you mean by "Event-Driven"?](https://martinfowler.com/articles/201701-event-driven.html) by Martin Fowler - distinguishes event notification, event-carried state transfer, and event sourcing
+- [Transactional Outbox](https://microservices.io/patterns/data/transactional-outbox.html) and [Idempotent Consumer](https://microservices.io/patterns/communication-style/idempotent-consumer.html) on microservices.io
+- [CloudEvents](https://cloudevents.io/) - a specification for describing event data in a common way
+- _Enterprise Integration Patterns_ by Gregor Hohpe and Bobby Woolf - the reference catalog for messaging patterns, including [Envelope Wrapper](https://www.enterpriseintegrationpatterns.com/patterns/messaging/EnvelopeWrapper.html), [Idempotent Receiver](https://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html), and [Dead Letter Channel](https://www.enterpriseintegrationpatterns.com/patterns/messaging/DeadLetterChannel.html)
+- _Designing Data-Intensive Applications_ by Martin Kleppmann; Chapter 11 - Stream Processing
