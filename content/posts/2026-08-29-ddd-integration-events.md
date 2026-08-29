@@ -44,9 +44,11 @@ OrderItem
   quantity: Quantity
 ```
 
-This event is designed for Ordering's internal handlers. Its `ProductId`, `Quantity`, and other typed identifiers are value objects that enforce invariants and communicate intent: `Quantity` forbids negative values, and an `OrderId` cannot be passed where a `CustomerId` is expected. Publishing the event directly would turn its internal types and payload into a public contract. This is probably the most common mistake in event-driven integrations. It feels like reuse - the event already exists, why not share it? - but it quietly hands every consumer a dependency on Ordering's internals, and every refactor made for Ordering's own needs starts breaking other teams. The payload is also a poor fit for the Fulfillment boundary: it exposes `customer`, which Fulfillment does not need, and expresses products using Ordering's internal identifiers.
+This event is designed for Ordering's internal handlers. `ProductId`, `Quantity`, and the other typed identifiers are value objects that belong to Ordering's model and are free to change with it.
 
-Instead, Ordering can translate the same fact into an integration event designed for the Fulfillment boundary:
+Publishing the event directly turns those internals into a public contract - probably the most common mistake in event-driven integrations. It feels like reuse: the event already exists, why not share it? But now every consumer depends on Ordering's model, and every refactor made for Ordering's own needs starts breaking other teams. The payload is also a poor fit for the boundary: it exposes `customer`, which Fulfillment does not need, and describes products using Ordering's internal identifiers.
+
+Instead, Ordering can translate the same fact into an integration event designed for the Fulfillment context:
 
 ```json
 {
@@ -67,32 +69,30 @@ Instead, Ordering can translate the same fact into an integration event designed
 }
 ```
 
-The envelope separates transport and contract metadata from the business payload. `metadata` identifies the event contract and carries information used to route, deduplicate, and interpret the message; `body` contains the fact consumed by Fulfillment. The `orderEventSequence` is a producer-assigned counter per `orderId` - we'll see it earn its keep later, when a cancellation overtakes this very message.
+The envelope separates transport and contract metadata from the business payload. `metadata` identifies the event contract and carries information used to route, deduplicate, and interpret the message; `body` contains the fact consumed by Fulfillment. The `orderEventSequence` is a producer-assigned counter per `orderId` - we'll see why it's useful later on.
 
-The exact JSON shape is not essential. Some messaging platforms place metadata in headers, and standards such as CloudEvents define their own envelope fields. What matters is that the separation is semantic and consistent across producers and consumers - a uniform envelope lets messaging infrastructure handle concerns such as tracing and deduplication without understanding each body.
+The exact JSON shape is not essential. Some messaging platforms place metadata in headers, and standards such as [CloudEvents](https://cloudevents.io) define their own envelope fields. What matters is that the separation is semantic and consistent across producers and consumers - a uniform envelope lets messaging infrastructure handle concerns such as tracing and deduplication without understanding each body.
 
 The `OrderPlaced` domain event and this integration event describe the same occurrence without sharing a name or shape. The integration event carries stable, serialized values instead of Ordering's value-object classes, and drops `customer`, which Fulfillment does not need.
 
-Ordering owns this boundary-specific contract, and another boundary may need a different integration event derived from the same domain event. Keeping the payload to the facts the consumer needs limits coupling: the fewer producer-internal details it exposes, the less a producer-side refactor can ripple out. How much data to carry, versus letting the consumer fetch it, is its own tradeoff, covered below.
+Ordering owns this boundary-specific contract, and another boundary may need a different integration event derived from the same domain event. Keeping the payload to the facts the consumer needs limits coupling: the fewer producer-internal details it exposes, the less a producer-side refactor can ripple out. How much data to carry, versus letting the consumer fetch it, is its own tradeoff, which we cover below.
 
-> An integration event is a published interface.
-
-Once another context depends on it, changes carry the same compatibility concerns as changes to a versioned REST or gRPC API. Its schema, field meanings, guarantees, and versioning policy become part of that interface.
+__An integration event is a published interface.__ Once another context depends on it, changes carry the same compatibility concerns as changes to a versioned REST or gRPC API. Its schema, field meanings, guarantees, and versioning policy become part of that interface.
 
 ### Business facts rather than internal state changes
 
-Names can leak the internal model just as easily as payloads. Suppose Fulfillment publishes the following event for Ordering:
+Names can leak the internal domain model just as easily as payloads. Suppose Fulfillment publishes the following event for Ordering:
 
 ```text
 FulfillmentStatusChanged
   orderId
-  oldStatus: PICKING
+  oldStatus: PICKING // or even worse - numeric keys instead of strings
   newStatus: DISPATCHED
 ```
 
 This contract makes Ordering understand Fulfillment's statuses and reproduce part of its state machine. It may expose every transition when Ordering cares about only a few. Changing a status can then affect every consumer, even when the business fact they need has not changed. The contract couples other contexts to Fulfillment's internal model and leaks implementation details.
 
-Asynchronous messaging does not remove coupling by itself; the contract still needs to express the business meaning.
+__Asynchronous messaging does not remove coupling by itself; the contract still needs to express the business meaning.__
 
 The same interaction can instead be expressed as the fact that matters to Ordering:
 
@@ -114,9 +114,9 @@ A CDC record such as `OrderRow.status changed from 2 to 5` forces consumers to k
 
 A consumer often needs data owned by the producing context to act on the fact. There are three common approaches, each with a different tradeoff between autonomy and coupling:
 
-- **Event-carried state transfer:** each event includes the producer-owned data needed to react to that fact. The consumer can act without calling the producer, at the cost of larger payloads and duplicated data.
-- **Thin notification plus callback:** the event carries identifiers, and the consumer queries the producer for details via the producer's public API. This keeps payloads small but creates a runtime dependency and may return data that has changed since the event occurred.
-- **Local replica:** the consumer builds a read model by processing a public integration-event stream from the producer. It can query that data without depending on the producer's availability, but must operate and synchronize additional storage and tolerate replication lag.
+- **Event-carried state transfer:** each event includes the producer-owned data needed to react to that fact. The consumer can act without calling the producer, at the cost of larger payloads and duplicated data. The `order-ready-for-fulfillment` event above takes this approach: it carries the items so Fulfillment never has to ask.
+- **Thin notification plus callback:** the event carries identifiers, and the consumer queries the producer for details via the producer's public API. This keeps payloads small but creates a runtime dependency and may return data that has changed since the event occurred. It fits when many consumers each need different data: rather than one payload bloated to satisfy everyone, each consumer fetches only what it needs.
+- **Local replica:** the consumer builds a read model by processing a public integration-event stream from the producer - for example, Fulfillment maintaining a local product table from a Catalog context's events, so it can look up weights and dimensions without calling Catalog per order. It can query that data without depending on the producer's availability, but must operate and synchronize additional storage and tolerate replication lag.
 
 Whichever approach we choose, **notification does not transfer ownership**: the producing context remains authoritative for its data.
 
@@ -142,17 +142,19 @@ on OrderPlaced event:
     }),
     occurredAt = event.occurredAt,
     orderEventSequence = nextSequenceFor(event.orderId))
+  publish(message)  // this line is about to become a problem
 ```
 
-This handler is deliberately boring. It maps, flattens, and assigns a sequence number - no business decisions happen here, because the fact was already decided when the aggregate raised `OrderPlaced`. That is exactly what keeps the domain model free of transport concerns, and the contract free of domain internals.
+This event handler is deliberately boring. It maps, flattens, assigns a sequence number, and hands the message off for publishing - no business decisions happen here, because the fact was already decided when the aggregate raised `OrderPlaced`. That is exactly what keeps the domain model free of transport concerns, and the contract free of domain internals.
 
 ## Surviving the crash between save and publish
 
-Once we've designed the integration event, we still have to publish it. The translated message from the previous step is what we hand to the outbox. The naive sequence is unsafe:
+Once we've designed the integration event, we still have to deliver it. Zoom out from the translation handler: it runs as part of placing the order, right after the aggregate is saved. The end-to-end sequence is:
 
 ```text
-save(order)
-publish(OrderReadyForFulfillmentV1)
+save(order)                       // commits; raising OrderPlaced triggers the handler
+message = translate(orderPlaced)  // the handler builds the message...
+publish(message)                  // ...and publishes it
 ```
 
 This is the failure from the opening of this article. `save(order)` commits, the process crashes, and the event never leaves the building. Ordering considers the order placed, Fulfillment never finds out, and the customer waits for a package nobody is preparing.
@@ -165,8 +167,8 @@ Instead of sending the event directly, we serialize it into an outbox table stor
 
 ```text
 transaction:
-  save(order)
-  saveOutboxMessage(OrderReadyForFulfillmentV1)
+  save(order)                 // OrderPlaced raised, handler builds message
+  saveOutboxMessage(message)  // instead of publish(message)
 commit
 ```
 
@@ -198,7 +200,7 @@ One detail is easy to get wrong: the business change and the processed-message r
 
 ### Charging the customer exactly once
 
-The inbox trick works because the business change and the processed-message record are two writes to the same database, so a single transaction covers both. That guarantee disappears as soon as the consumer's event handler does something outside its database. Suppose preparing the order also charges a payment provider. The provider call is not part of the transaction, so we are back to coordinating two independent systems, exactly the dual-write problem the producer faced with its broker.
+The inbox trick works because the business change and the processed-message record are two writes to the same database, so a single transaction covers both. That guarantee disappears as soon as the consumer's event handler does something outside its database. Suppose preparing the order also charges a payment provider. The provider call is not part of the transaction, so we are back to coordinating two independent systems.
 
 The inbox deduplicates *incoming* messages, but that only protects the consumer's own database; it cannot stop a redelivered message from calling the payment provider a second time. The handler sees an unprocessed `messageId`, charges the customer, then crashes before recording the message as processed. On redelivery, it charges them again - and the design gap becomes a refund ticket.
 
@@ -233,16 +235,14 @@ An integration event fits when a context can publish a fact and finish its work 
 
 Sending a request through a broker does not turn it into an event. A message asking a particular recipient to act is a command; one asking for information is a query. If the sender expects a reply, the interaction is still request-response. The callback described earlier is such a query: it is triggered by the event, but is not part of the event contract.
 
-Messaging also adds operational cost. It becomes useful when contexts need to work independently or several consumers need the same fact. Otherwise, a direct call may be simpler.
+Messaging is tempting to reach for, but it does not automatically decouple our systems - and it adds a lot of cases to think about: the outboxes, inboxes, and sequence checks we covered above. It is worth it when contexts need to work independently or several consumers need the same fact. Otherwise, a direct call may be simpler.
 
 ## Conclusion
 
 Integration events let bounded contexts share business facts without exposing their internal models. That independence depends on both sides of the boundary: producers must publish stable contracts reliably, while consumers must tolerate duplicates, delays, and out-of-order delivery. When those tradeoffs are justified, integration events provide a durable way for contexts to evolve and operate independently.
 
-## References and Further Reading
+## Further Reading
 
-- [What do you mean by "Event-Driven"?](https://martinfowler.com/articles/201701-event-driven.html) by Martin Fowler - distinguishes event notification, event-carried state transfer, and event sourcing
-- [Transactional Outbox](https://microservices.io/patterns/data/transactional-outbox.html) and [Idempotent Consumer](https://microservices.io/patterns/communication-style/idempotent-consumer.html) on microservices.io
-- [CloudEvents](https://cloudevents.io/) - a specification for describing event data in a common way
-- _Enterprise Integration Patterns_ by Gregor Hohpe and Bobby Woolf - the reference catalog for messaging patterns, including [Envelope Wrapper](https://www.enterpriseintegrationpatterns.com/patterns/messaging/EnvelopeWrapper.html), [Idempotent Receiver](https://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html), and [Dead Letter Channel](https://www.enterpriseintegrationpatterns.com/patterns/messaging/DeadLetterChannel.html)
+- [What do you mean by "Event-Driven"?](https://martinfowler.com/articles/201701-event-driven.html) by Martin Fowler
+- _Enterprise Integration Patterns_ by Gregor Hohpe and Bobby Woolf
 - _Designing Data-Intensive Applications_ by Martin Kleppmann; Chapter 11 - Stream Processing
